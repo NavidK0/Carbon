@@ -48,6 +48,7 @@ public class CarbonWorldGenerator implements Listener {
     
     /**
      * Injects the CarbonWorldGenMinable in place of the BiomeDecorater used by minecraft.
+     * This DOES NOT WORK YET.
      */
     private void inject() {
         Class clazz = BiomeDecorator.class;
