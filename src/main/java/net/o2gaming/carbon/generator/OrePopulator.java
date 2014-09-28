@@ -1,4 +1,4 @@
-package net.o2gaming.carbon.chunkgenerator;
+package net.o2gaming.carbon.generator;
 
 import java.util.Random;
 
@@ -9,18 +9,22 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.Material;
 
 /**
- * @author Lucariatias
+ * @author Lucariatias, NavidK0
  */
 public class OrePopulator extends BlockPopulator {
 	
 	private Material oreType;
+        private byte oreData;
 	private Material replaceType;
+        private byte replaceData;
 	private int pocketsPerChunk;
 	private int maxPocketSize;
 	
-	public OrePopulator(Material oreType, Material replaceType, int pocketsPerChunk, int maxPocketSize) {
+	public OrePopulator(Material oreType, byte oreData, Material replaceType, byte replaceData, int pocketsPerChunk, int maxPocketSize) {
 		this.oreType = oreType;
+                this.oreData = oreData;
 		this.replaceType = replaceType;
+                this.replaceData = replaceData;
 		this.pocketsPerChunk = pocketsPerChunk;
 		this.maxPocketSize = maxPocketSize;
 	}
@@ -55,10 +59,12 @@ public class OrePopulator extends BlockPopulator {
 						if (d13 * d13 + d14 * d14 < 1.0D) {
 							for (int i5 = m; i5 <= i2; i5++) {
 								double d15 = (i5 + 0.5D - d9) / (d11 / 2.0D);
-								if ((d13 * d13 + d14 * d14 + d15 * d15 >= 1.0D) || (world.getBlockAt(i3, i4, i5).getType() != replaceType)) {
+								if ((d13 * d13 + d14 * d14 + d15 * d15 >= 1.0D) || (world.getBlockAt(i3, i4, i5).getType() != replaceType) || 
+                                                                        (world.getBlockAt(i3, i4, i5).getData() != replaceData)) {
 									continue;
 								}
 								world.getBlockAt(i3, i4, i5).setType(oreType);
+                                                                world.getBlockAt(i3, i4, i5).setData(oreData);
 							}
 						}
 					}

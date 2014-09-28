@@ -1,7 +1,7 @@
 package net.o2gaming.carbon;
 
 import java.util.logging.Logger;
-import net.o2gaming.carbon.chunkgenerator.CarbonWorldGenerator;
+import net.o2gaming.carbon.generator.CarbonWorldGenerator;
 import net.o2gaming.carbon.listeners.BlockListener;
 import net.o2gaming.carbon.listeners.ItemListener;
 import net.o2gaming.carbon.reflection.Injector;
@@ -23,21 +23,21 @@ public class Carbon extends JavaPlugin {
         catch (NoSuchMethodException|SecurityException|ClassNotFoundException|IllegalAccessException|IllegalArgumentException|java.lang.reflect.InvocationTargetException e) {
           e.printStackTrace();
         }
-        getServer().getPluginManager().registerEvents(this.blockListener, this);
-        getServer().getPluginManager().registerEvents(this.itemListener, this);
-        getServer().getPluginManager().registerEvents(this.worldGenerator, this);
         injector = new Injector();
         injector.registerAll();
         injector.registerRecipes();
         worldGenerator.populate();
+
         log.info("Carbon has finished injecting all 1.8 functionalities.");
     }
-  
-  
-  @Override
-  public void onEnable() {
-    log.info("[Carbon] Enabled.");
-  }
+
+    @Override
+    public void onEnable() {
+        getServer().getPluginManager().registerEvents(this.blockListener, this);
+        getServer().getPluginManager().registerEvents(this.itemListener, this);
+        getServer().getPluginManager().registerEvents(this.worldGenerator, this);
+        log.info("[Carbon] Enabled.");
+    }
   
   public static Injector injector() {
     return injector;
