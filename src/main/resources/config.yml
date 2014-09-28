@@ -46,4 +46,5 @@ items:
 options:
     sheep:
         dropMutton: true
+    modifyGeneration: true
     worlds: [world]

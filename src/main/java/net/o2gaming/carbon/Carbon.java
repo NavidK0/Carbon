@@ -13,7 +13,7 @@ public class Carbon extends JavaPlugin {
   private ItemListener itemListener = new ItemListener(this);
   private CarbonWorldGenerator worldGenerator = new CarbonWorldGenerator(this);
   public static final Logger log = Logger.getLogger("minecraft");
-  public static Injector injector;
+  private static Injector injector;
 
     @Override
     public void onLoad() {
