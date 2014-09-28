@@ -9,7 +9,7 @@ import net.minecraft.server.v1_7_R4.World;
 
 public class BlockSlime extends BlockHalfTransparent {
     public BlockSlime() {
-        super("slime", Material.CACTUS, false);
+        super("slime", Material.CLAY, false);
         a(CreativeModeTab.c);
         this.frictionFactor = 0.8F;
         this.stepSound = new StepSound("slime", 1.0F, 1.0F);

@@ -25,6 +25,7 @@ public class ItemListener implements Listener {
     
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityKilled(EntityDeathEvent event) {
+        if (plugin.getConfig().getBoolean("options.sheep.dropMutton")) {
         if(event.getEntityType() == EntityType.SHEEP) {
             if(event.getEntity() instanceof Ageable) {
                 Ageable entity = (Ageable) event.getEntity();
@@ -32,6 +33,7 @@ public class ItemListener implements Listener {
                     event.getDrops().add(new ItemStack(Carbon.injector().muttonItemMat, random.nextInt(1) + 1));
                 }
             }
+        }
         }
     }
     

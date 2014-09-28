@@ -1,3 +1,4 @@
+#The blocks and items settings do not function yet, but the world settings do.
 blocks:
     barrier:
         enabled: true
@@ -45,8 +46,4 @@ items:
 options:
     sheep:
         dropMutton: true
-potions:
-    
-entities:
-    armor_stand:
-        enabled: true
+    worlds: [world]
