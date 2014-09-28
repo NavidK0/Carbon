@@ -1,0 +1,39 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.lastabyss.ext.plugins</groupId>
+    <artifactId>Carbon</artifactId>
+    <version>1</version>
+    <name>Carbon</name>
+    <url>http://www.lastabyss.com/</url>
+    <repositories>
+        <repository>
+            <id>bukkit-repo</id>
+            <url>http://repo.bukkit.org/content/groups/public</url>
+        </repository>
+    </repositories>
+    <build>
+        <finalName>Carbon</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0.2</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>spigot</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1479</version>
+            <type>jar</type>
+        </dependency>
+    </dependencies>
+    <description>Made by the Oxygen Gaming Network.
+
+Developed by Navid K.</description>
+</project>
