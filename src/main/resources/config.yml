@@ -1,0 +1,52 @@
+blocks:
+    barrier:
+        enabled: true
+    iron_trapdoor:
+        enabled: true
+    prismarine:
+        enabled: true
+    red_sandstone:
+        enabled: true
+    red_sandstone_stairs:
+        enabled: true
+    sea_lantern:
+        enabled: true
+    slime:
+        enabled: true
+    wet_sponge:
+        enabled: true
+    slab:
+        enabled: true
+    stone:
+        enabled: true
+    colored_doors:
+        enabled: true
+    colored_fences:
+        enabled: true
+    
+items:
+    cooked_mutton:
+        enabled: true
+    cooked_rabbit:
+        enabled: true
+    mutton:
+        enabled: true
+    prismarine_crystal:
+        enabled: true
+    prismarine_shard:
+        enabled: true
+    rabbit:
+        enabled: true
+    rabbit_hide:
+        enabled: true
+    rabbit_stew:
+        enabled: true
+    
+options:
+    sheep:
+        dropMutton: true
+potions:
+    
+entities:
+    armor_stand:
+        enabled: true

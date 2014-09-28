@@ -32,4 +32,14 @@ public class BlockSeaLantern extends BlockLightStone {
     public Item getDropType(int paramInt1, Random paramRandom, int paramInt2) {
     return Carbon.injector().prismarineCrystalItem;
     }
+
+    @Override
+    protected boolean E() {
+        return true;
+    }
+
+    @Override
+    public boolean G() {
+        return true;
+    }
 }

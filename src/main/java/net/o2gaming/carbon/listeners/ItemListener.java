@@ -23,11 +23,6 @@ public class ItemListener implements Listener {
         this.plugin = plugin;
     }
     
-    /**
-     * Added by Aust1n46,
-     * only adult sheeps drop mutton now.
-     * @param event 
-     */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityKilled(EntityDeathEvent event) {
         if(event.getEntityType() == EntityType.SHEEP) {
@@ -39,4 +34,6 @@ public class ItemListener implements Listener {
             }
         }
     }
+    
+    
 }
