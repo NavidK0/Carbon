@@ -11,7 +11,10 @@ import net.minecraft.server.v1_7_R4.World;
 import net.o2gaming.carbon.Carbon;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.generator.BlockPopulator;
 import sun.reflect.generics.scope.ClassScope;
 
@@ -34,19 +37,7 @@ public class CarbonWorldGenerator implements Listener {
                 } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException ex) {
                     Logger.getLogger(CarbonWorldGenerator.class.getName()).log(Level.SEVERE, null, ex);
                 }
-        Carbon.log.info("[Carbon] Done with world generation.");
-        for (String s : plugin.getConfig().getStringList("options.worlds")) {
-            org.bukkit.World world = plugin.getServer().getWorld(s);
-            if (world != null) {
-                Carbon.log.log(Level.INFO, "[Carbon] Editing world: {0}", world.getName());
-                Carbon.log.log(Level.INFO, "[Carbon] Adding populator for world: {0}", world.getName());
-                //world.getPopulators().add(new CarbonPopulator());
-                //world.getPopulators().add(new OrePopulator(Material.STONE, (byte)1, Material.STONE, (byte)0, 10, 33));
-                Carbon.log.log(Level.INFO, "[Carbon] Done editing world: {0}", world.getName());
-            } else {
-                Carbon.log.log(Level.INFO, "[Carbon] World {0} doesn\'t exist! Cannot populate!", s);
-            }
-        }
+        Carbon.log.info("[Carbon] Done with world generation editing.");
     }
     
     /**
@@ -59,63 +50,46 @@ public class CarbonWorldGenerator implements Listener {
         /**
          * Initiate the worst horrible thing you could possibly ever do in Java
          */
-        Class clazz = Blocks.class;
-        Field stoneField = clazz.getDeclaredField("STONE");
+        Class stoneClazz = Blocks.class;
+        Field stoneField = stoneClazz.getDeclaredField("STONE");
         stoneField.setAccessible(true);
-        Field modifiers = Field.class.getDeclaredField("modifiers");
-        modifiers.setAccessible(true);
-        modifiers.setInt(stoneField, stoneField.getModifiers() & ~Modifier.FINAL);
+        Field stoneModifiers = Field.class.getDeclaredField("modifiers");
+        stoneModifiers.setAccessible(true);
+        stoneModifiers.setInt(stoneField, stoneField.getModifiers() & ~Modifier.FINAL);
         stoneField.set(Blocks.STONE, Carbon.injector().stoneBlock);
         Carbon.log.info("[Carbon] Injected Carbon.injector().stoneBlock into Blocks.STONE");
         
-        /**
-        World world;
-        Class clazz = BiomeDecorator.class; 
-            Field h = clazz.getDeclaredField("h");
-            h.setAccessible(true);
-            h.set(new CarbonWorldGenMinable(Blocks.DIRT, 32), new CarbonWorldGenMinable(Blocks.DIRT, 32));
-            
-            Field i = clazz.getDeclaredField("i");
-            i.setAccessible(true);
-            i.set(new CarbonWorldGenMinable(Blocks.GRAVEL, 32), new CarbonWorldGenMinable(Blocks.GRAVEL, 32));
-            
-            Field j = clazz.getDeclaredField("j");
-            j.setAccessible(true);
-            j.set(new CarbonWorldGenMinable(Blocks.COAL_ORE, 16), new CarbonWorldGenMinable(Blocks.COAL_ORE, 16));
-            
-            Field k = clazz.getDeclaredField("k");
-            k.setAccessible(true);
-            k.set(new CarbonWorldGenMinable(Blocks.IRON_ORE, 8), new CarbonWorldGenMinable(Blocks.IRON_ORE, 8));
-            
-            Field l = clazz.getDeclaredField("l");
-            l.setAccessible(true);
-            l.set(new CarbonWorldGenMinable(Blocks.GOLD_ORE, 8), new CarbonWorldGenMinable(Blocks.GOLD_ORE, 8));
-            
-            Field m = clazz.getDeclaredField("m");
-            m.setAccessible(true);
-            m.set(new CarbonWorldGenMinable(Blocks.REDSTONE_ORE, 7), new CarbonWorldGenMinable(Blocks.REDSTONE_ORE, 7));
-            
-            Field n = clazz.getDeclaredField("n");
-            n.setAccessible(true);
-            n.set(new CarbonWorldGenMinable(Blocks.DIAMOND_ORE, 7), new CarbonWorldGenMinable(Blocks.DIAMOND_ORE, 7));
-            
-            Field o = clazz.getDeclaredField("o");
-            o.setAccessible(true);
-            o.set(new CarbonWorldGenMinable(Blocks.LAPIS_ORE, 6), new CarbonWorldGenMinable(Blocks.LAPIS_ORE, 6));
-        * **/
+        Class spongeClazz = Blocks.class;
+        Field spongeField = spongeClazz.getDeclaredField("SPONGE");
+        spongeField.setAccessible(true);
+        Field spongeModifiers = Field.class.getDeclaredField("modifiers");
+        spongeModifiers.setAccessible(true);
+        spongeModifiers.setInt(spongeField, spongeField.getModifiers() & ~Modifier.FINAL);
+        spongeField.set(Blocks.SPONGE, Carbon.injector().spongeBlock);
+        Carbon.log.info("[Carbon] Injected Carbon.injector().spongeBlock into Blocks.SPONGE");
         
+    }
+    
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onWorldLoad(WorldLoadEvent evt) {
+        if (plugin.getConfig().getStringList("options.worlds").contains(evt.getWorld().getName())) {
+            org.bukkit.World world = evt.getWorld();
+            if (world != null) {
+                Carbon.log.log(Level.INFO, "[Carbon] Editing world: {0}", world.getName());
+                Carbon.log.log(Level.INFO, "[Carbon] Adding populator for world: {0}", world.getName());
+                //world.getPopulators().add(new CarbonPopulator());
+                //world.getPopulators().add(new OrePopulator(Material.STONE, (byte)1, Material.STONE, (byte)0, 10, 33));
+                Carbon.log.log(Level.INFO, "[Carbon] Done editing world: {0}", world.getName());
+            } else {
+                Carbon.log.log(Level.INFO, "[Carbon] World {0} doesn\'t exist! Cannot populate!", world.getName());
+            }
+        }
     }
 
     public class CarbonPopulator extends BlockPopulator {
             @Override
             public void populate(org.bukkit.World world, Random random, Chunk chunk) {
-                    chunk.getBlock(8, 72, 8).setType(Material.GLOWSTONE);
-                    for (int x = 0; x < 16; x++) {
-                        for (int z = 0; z < 16; z++) {
-                            chunk.getBlock(x, 69, z).setType(Material.STONE);
-                            chunk.getBlock(x, 69, z).setData((byte)3);
-                        }
-                    }
+                    //Insert generator code here
             }
 
         }
