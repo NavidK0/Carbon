@@ -6,7 +6,6 @@ import net.o2gaming.carbon.generator.CarbonWorldGenerator;
 import net.o2gaming.carbon.listeners.BlockListener;
 import net.o2gaming.carbon.listeners.ItemListener;
 import net.o2gaming.carbon.reflection.Injector;
-import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Carbon extends JavaPlugin {

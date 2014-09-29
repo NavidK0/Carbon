@@ -1,11 +1,9 @@
 package net.o2gaming.carbon.blocks;
 
 import java.util.Random;
-import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.CreativeModeTab;
 import net.minecraft.server.v1_7_R4.Item;
-import net.minecraft.server.v1_7_R4.Material;
 
 
 public class BlockStone extends net.minecraft.server.v1_7_R4.BlockStone {
