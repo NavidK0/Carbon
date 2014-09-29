@@ -3,10 +3,14 @@ package net.o2gaming.carbon;
 
 import java.io.File;
 import java.util.logging.Logger;
+
 import net.o2gaming.carbon.generator.CarbonWorldGenerator;
 import net.o2gaming.carbon.listeners.BlockListener;
 import net.o2gaming.carbon.listeners.ItemListener;
+import net.o2gaming.carbon.protocolmodifier.ChunkDataListener;
 import net.o2gaming.carbon.reflection.Injector;
+
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Carbon extends JavaPlugin {
@@ -44,8 +48,8 @@ public class Carbon extends JavaPlugin {
         getServer().getPluginManager().registerEvents(this.blockListener, this);
         getServer().getPluginManager().registerEvents(this.itemListener, this);
         getServer().getPluginManager().registerEvents(this.worldGenerator, this);
-        
-        
+
+    	new ChunkDataListener(this).init();
         
         log.info("[Carbon] Carbon is enabled.");
     }
