@@ -6,6 +6,7 @@ import net.o2gaming.carbon.Carbon;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
@@ -64,7 +65,9 @@ public class ProtocolBlockListener {
 	public void init() {
 		ProtocolLibrary.getProtocolManager().addPacketListener(
 			new PacketAdapter(
-				PacketAdapter.params(plugin, PacketType.Play.Server.MAP_CHUNK)
+				PacketAdapter
+				.params(plugin, PacketType.Play.Server.MAP_CHUNK)
+				.listenerPriority(ListenerPriority.HIGHEST)
 			) {
 				@Override
 				public void onPacketSending(PacketEvent event) {
@@ -86,7 +89,9 @@ public class ProtocolBlockListener {
 
 		ProtocolLibrary.getProtocolManager().addPacketListener(
 			new PacketAdapter(
-				PacketAdapter.params(plugin, PacketType.Play.Server.MAP_CHUNK_BULK)
+				PacketAdapter
+				.params(plugin, PacketType.Play.Server.MAP_CHUNK_BULK)
+				.listenerPriority(ListenerPriority.HIGHEST)
 			) {
 				@Override
 				public void onPacketSending(PacketEvent event) {
@@ -112,7 +117,9 @@ public class ProtocolBlockListener {
 
 		ProtocolLibrary.getProtocolManager().addPacketListener(
 			new PacketAdapter(
-				PacketAdapter.params(plugin, PacketType.Play.Server.BLOCK_CHANGE)
+				PacketAdapter
+				.params(plugin, PacketType.Play.Server.BLOCK_CHANGE)
+				.listenerPriority(ListenerPriority.HIGHEST)
 			) {
 				@Override
 				public void onPacketSending(PacketEvent event) {
@@ -142,7 +149,9 @@ public class ProtocolBlockListener {
 
 		ProtocolLibrary.getProtocolManager().addPacketListener(
 			new PacketAdapter(
-				PacketAdapter.params(plugin, PacketType.Play.Server.MULTI_BLOCK_CHANGE)
+				PacketAdapter
+				.params(plugin, PacketType.Play.Server.MULTI_BLOCK_CHANGE)
+				.listenerPriority(ListenerPriority.HIGHEST)
 			) {
 				@Override
 				public void onPacketSending(PacketEvent event) {

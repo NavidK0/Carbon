@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
@@ -81,7 +82,9 @@ public class ProtocolItemListener {
 	public void init() {
 		ProtocolLibrary.getProtocolManager().addPacketListener(
 			new PacketAdapter(
-				PacketAdapter.params(plugin, PacketType.Play.Server.WINDOW_ITEMS)
+				PacketAdapter
+				.params(plugin, PacketType.Play.Server.WINDOW_ITEMS)
+				.listenerPriority(ListenerPriority.HIGHEST)
 			) {
 				@SuppressWarnings("deprecation")
 				@Override
@@ -106,7 +109,9 @@ public class ProtocolItemListener {
 
 		ProtocolLibrary.getProtocolManager().addPacketListener(
 			new PacketAdapter(
-				PacketAdapter.params(plugin, PacketType.Play.Server.SET_SLOT)
+				PacketAdapter
+				.params(plugin, PacketType.Play.Server.SET_SLOT)
+				.listenerPriority(ListenerPriority.HIGHEST)
 			) {
 				@SuppressWarnings("deprecation")
 				@Override
@@ -129,7 +134,9 @@ public class ProtocolItemListener {
 
 		ProtocolLibrary.getProtocolManager().addPacketListener(
 			new PacketAdapter(
-				PacketAdapter.params(plugin, PacketType.Play.Server.ENTITY_EQUIPMENT)
+				PacketAdapter
+				.params(plugin, PacketType.Play.Server.ENTITY_EQUIPMENT)
+				.listenerPriority(ListenerPriority.HIGHEST)
 			) {
 				@SuppressWarnings("deprecation")
 				@Override
@@ -152,7 +159,9 @@ public class ProtocolItemListener {
 
 		ProtocolLibrary.getProtocolManager().addPacketListener(			
 			new PacketAdapter(
-				PacketAdapter.params(plugin, PacketType.Play.Server.ENTITY_METADATA)
+				PacketAdapter
+				.params(plugin, PacketType.Play.Server.ENTITY_METADATA)
+				.listenerPriority(ListenerPriority.HIGHEST)
 			) {
 				@Override
 				public void onPacketSending(PacketEvent event) {
