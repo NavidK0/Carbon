@@ -6,6 +6,8 @@ import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.ItemBlock;
 import net.minecraft.server.v1_7_R4.ItemMultiTexture;
 import net.o2gaming.carbon.Utilities;
+import net.o2gaming.carbon.blocks.BlockNewRedstoneTorchOn;
+import net.o2gaming.carbon.blocks.BlockNewRedstoneTorchOff;
 import net.o2gaming.carbon.blocks.BlockBarrier;
 import net.o2gaming.carbon.blocks.BlockIronTrapdoor;
 import net.o2gaming.carbon.blocks.BlockPrismarine;
@@ -44,6 +46,8 @@ import org.bukkit.inventory.ShapelessRecipe;
 public class Injector {
   //Blocks
   public Block stoneBlock = new BlockStone();
+  public Block redstoneTorchBlockOn = new BlockNewRedstoneTorchOn();
+  public Block redstoneTorchBlockOff = new BlockNewRedstoneTorchOff();
   public Block slimeBlock = new BlockSlime();
   public Block torchBlock = new BlockNewTorch();
   public Block redSandstoneBlock = new BlockRedSandstone();
@@ -116,6 +120,8 @@ public class Injector {
   //Items
   public Item stoneItem = new ItemMultiTexture(this.stoneBlock, this.stoneBlock, BlockStone.names).b("stone");
   public Item torchItem = new ItemBlock(this.torchBlock);
+  public Item redstoneTorchItemOn = new ItemBlock(this.redstoneTorchBlockOn);
+  public Item redstoneTorchItemOff = new ItemBlock(this.redstoneTorchBlockOff);
   public Item slimeItem = new ItemBlock(this.slimeBlock);
   public Item barrierItem = new ItemBlock(this.barrierBlock);
   public Item redSandstoneItem = new ItemMultiTexture(this.redSandstoneBlock, this.redSandstoneBlock, BlockRedSandstone.names).b("red_sandstone");
@@ -173,6 +179,8 @@ public class Injector {
     //Register blocks
     registerBlock(org.bukkit.Material.STONE, 1, "stone", this.stoneBlock, this.stoneItem);
     registerBlock(Material.TORCH, 50, "torch", this.torchBlock, this.torchItem);
+    registerBlock(Material.REDSTONE_TORCH_ON, 76, "redstone_torch", this.redstoneTorchBlockOn, this.redstoneTorchItemOn);
+    registerBlock(Material.REDSTONE_TORCH_OFF, 75, "redstone_torch", this.redstoneTorchBlockOff, this.redstoneTorchItemOff);
     registerBlock(Material.SPONGE, 19, "sponge", this.spongeBlock, this.spongeItem);
     registerBlock(this.slimeMat, 165, "slime", this.slimeBlock, this.slimeItem);
     registerBlock(this.barrierMat, 166, "barrier", this.barrierBlock, this.barrierItem);
