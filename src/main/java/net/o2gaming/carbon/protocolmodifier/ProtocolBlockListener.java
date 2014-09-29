@@ -7,11 +7,11 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 
-public class ChunkDataListener {
+public class ProtocolBlockListener {
 
 	private Carbon plugin;
 
-	public ChunkDataListener(Carbon plugin) {
+	public ProtocolBlockListener(Carbon plugin) {
 		this.plugin = plugin;
 	}
 
@@ -75,6 +75,25 @@ public class ChunkDataListener {
 								data[i] = (byte) replacements[id];
 							}
 						}
+					}
+				}
+			}
+		);
+
+		ProtocolLibrary.getProtocolManager().addPacketListener(
+			new PacketAdapter(
+				PacketAdapter.params(plugin, PacketType.Play.Server.BLOCK_CHANGE)
+			) {
+				@Override
+				public void onPacketSending(PacketEvent event) {
+					if (ProtocolLibrary.getProtocolManager().getProtocolVersion(event.getPlayer()) == 47) {
+						return;
+					}
+					net.minecraft.server.v1_7_R4.Block block = event.getPacket().getSpecificModifier(net.minecraft.server.v1_7_R4.Block.class).read(0);
+					int id = net.minecraft.server.v1_7_R4.Block.getId(block);
+					if (replacements[id] != -1) {
+						net.minecraft.server.v1_7_R4.Block newBlock = net.minecraft.server.v1_7_R4.Block.getById(replacements[id]);
+						event.getPacket().getSpecificModifier(net.minecraft.server.v1_7_R4.Block.class).write(0, newBlock);
 					}
 				}
 			}

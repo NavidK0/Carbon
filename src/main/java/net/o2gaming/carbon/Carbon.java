@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import net.o2gaming.carbon.generator.CarbonWorldGenerator;
 import net.o2gaming.carbon.listeners.BlockListener;
 import net.o2gaming.carbon.listeners.ItemListener;
-import net.o2gaming.carbon.protocolmodifier.ChunkDataListener;
+import net.o2gaming.carbon.protocolmodifier.ProtocolBlockListener;
 import net.o2gaming.carbon.reflection.Injector;
 
 import org.bukkit.Bukkit;
@@ -49,7 +49,7 @@ public class Carbon extends JavaPlugin {
         getServer().getPluginManager().registerEvents(this.itemListener, this);
         getServer().getPluginManager().registerEvents(this.worldGenerator, this);
 
-    	new ChunkDataListener(this).init();
+    	new ProtocolBlockListener(this).init();
         
         log.info("[Carbon] Carbon is enabled.");
     }
