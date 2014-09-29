@@ -1,5 +1,6 @@
 package net.o2gaming.carbon;
 
+import java.io.File;
 import java.util.logging.Logger;
 import net.o2gaming.carbon.generator.CarbonWorldGenerator;
 import net.o2gaming.carbon.listeners.BlockListener;
@@ -14,7 +15,8 @@ public class Carbon extends JavaPlugin {
   private CarbonWorldGenerator worldGenerator = new CarbonWorldGenerator(this);
   public static final Logger log = Logger.getLogger("minecraft");
   private static Injector injector;
-
+  private File dataFolder;
+  
     @Override
     public void onLoad() {
         try {
@@ -32,24 +34,35 @@ public class Carbon extends JavaPlugin {
 
     @Override
     public void onEnable() {
+         dataFolder = new File(getDataFolder(), getDescription().getName());
+         if (!dataFolder.exists()) {
+             dataFolder.mkdir();
+        }
+        saveDefaultConfig();
+        reloadConfig();
         worldGenerator.populate();
         getServer().getPluginManager().registerEvents(this.blockListener, this);
         getServer().getPluginManager().registerEvents(this.itemListener, this);
         getServer().getPluginManager().registerEvents(this.worldGenerator, this);
+        
+        
+        
         log.info("[Carbon] Carbon is enabled.");
     }
+    
+    //There is no way to reload this plugin safely do to the fact it adds 1.8 blocks into the server.
   
-  public static Injector injector() {
-    return injector;
-  }
-  
-  public BlockListener getBlockListener() {
-    return this.blockListener;
-  }
-  
-  public ItemListener getItemListener() {
-    return this.itemListener;
-  }
+    public static Injector injector() {
+        return injector;
+    }
+
+    public BlockListener getBlockListener() {
+        return this.blockListener;
+    }
+
+    public ItemListener getItemListener() {
+        return this.itemListener;
+    }
 
     public CarbonWorldGenerator getWorldGenerator() {
         return worldGenerator;

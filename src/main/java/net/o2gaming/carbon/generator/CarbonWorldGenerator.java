@@ -1,5 +1,6 @@
 package net.o2gaming.carbon.generator;
 
+import net.o2gaming.carbon.generator.populator.StoneVariantPopulator;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.logging.Level;

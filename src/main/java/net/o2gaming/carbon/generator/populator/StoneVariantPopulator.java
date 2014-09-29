@@ -1,4 +1,4 @@
-package net.o2gaming.carbon.generator;
+package net.o2gaming.carbon.generator.populator;
 
 import java.util.Random;
 import org.bukkit.Bukkit;
@@ -15,14 +15,14 @@ public class StoneVariantPopulator extends BlockPopulator {
 
     private Material blockType;
     private byte data;
-    private int pocketsPerChunk;
+    private int pockets;
     private int max;
 
     public StoneVariantPopulator(Material blockType, byte data, int max, int pockets) {
             this.blockType = blockType;
             this.data = data;
             this.max = max;
-            this.pocketsPerChunk = pockets;
+            this.pockets = pockets;
     }
 
     @Override
@@ -30,16 +30,15 @@ public class StoneVariantPopulator extends BlockPopulator {
         int x, y, z, i;
         int worldChunkX = chunk.getX() * 16;
         int worldChunkZ = chunk.getZ() * 16;
-        for (i = 0; i < pocketsPerChunk; i++) {
+        for (i = 0; i < pockets; i++) {
                 x = worldChunkX + random.nextInt(16);
                 z = worldChunkZ + random.nextInt(16);
                 y = random.nextInt(128);
-                this.createPocket(world, max, x, y, z);
+                this.createVein(world, max, x, y, z);
         }
     }
     
-    
-    private void createPocket(World world, int size, int x, int y, int z) {
+    public void createVein(World world, int size, int x, int y, int z) {
             Random random = new Random(world.getSeed());
             float f = random.nextFloat() * 3.141593F;
             double d1 = x + 8 + Math.sin(f) * size / 8.0F;
