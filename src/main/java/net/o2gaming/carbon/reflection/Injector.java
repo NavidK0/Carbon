@@ -457,7 +457,7 @@ public class Injector {
     addRecipe(rabbitStew2);
     
     
-    ShapedRecipe mossStone = new ShapedRecipe(new ItemStack(org.bukkit.Material.MOSSY_COBBLESTONE, 6)).shape(new String[] {"s", "v"}).setIngredient('s', org.bukkit.Material.COBBLESTONE)
+    ShapedRecipe mossStone = new ShapedRecipe(new ItemStack(org.bukkit.Material.MOSSY_COBBLESTONE, 1)).shape(new String[] {"s", "v"}).setIngredient('s', org.bukkit.Material.COBBLESTONE)
             .setIngredient('v', org.bukkit.Material.VINE);
     addRecipe(mossStone);
     
