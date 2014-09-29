@@ -1,7 +1,6 @@
 package net.o2gaming.carbon.generator.populator;
 
 import java.util.Random;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
