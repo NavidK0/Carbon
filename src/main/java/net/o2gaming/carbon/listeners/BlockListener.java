@@ -28,9 +28,8 @@ public class BlockListener implements Listener {
     this.plugin = plugin;
   }
   
-  @EventHandler(priority=EventPriority.LOWEST)
+  @EventHandler(priority=EventPriority.LOWEST, ignoreCancelled = true)
   public void onSlimeBlockPlace(BlockPlaceEvent evt) {
-    if (evt.isCancelled()) return;
     if (evt.getBlock().getType() == Material.getMaterial("slime")) {
       Location location = evt.getBlock().getLocation();
       Random rand = new Random();
@@ -43,9 +42,8 @@ public class BlockListener implements Listener {
     }
   }
   
-  @EventHandler(priority=EventPriority.MONITOR)
+  @EventHandler(priority=EventPriority.MONITOR, ignoreCancelled = true)
   public void onCoarseDirtBreak(BlockBreakEvent event) {
-    if (event.isCancelled()) return;
     if (event.getPlayer().getGameMode() == GameMode.CREATIVE) return;
     if (event.getBlock().getState().getData().toString().equals("DIRT(1)")) {
       event.getBlock().setType(Material.AIR);
@@ -55,9 +53,8 @@ public class BlockListener implements Listener {
     }
   }
   
-  @EventHandler(priority=EventPriority.MONITOR)
+  @EventHandler(priority=EventPriority.MONITOR, ignoreCancelled = true)
   public void onDoorBreak(BlockBreakEvent evt) {
-    if (evt.isCancelled()) return;
     if (evt.getPlayer().getGameMode() == GameMode.CREATIVE) return;
     switch (evt.getBlock().getType().toString()) {
     case "spruce_door": 
@@ -77,9 +74,8 @@ public class BlockListener implements Listener {
     }
   }
   
-@EventHandler(priority = EventPriority.MONITOR)
+@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onIndirectDoorBreak(BlockBreakEvent event) {
-        if(event.isCancelled()) return;
         if(event.getBlock().getType().toString().contains("door")) return;
         switch(event.getBlock().getRelative(BlockFace.UP).getType().toString()) {
         case "spruce_door":
@@ -101,7 +97,7 @@ public class BlockListener implements Listener {
     }
   
   @SuppressWarnings("deprecation")
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void slabInteract(PlayerInteractEvent event) {
         if(event.getItem().getType().toString().equals("red_sandstone_slab")) {
             if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
@@ -197,7 +193,7 @@ public class BlockListener implements Listener {
         }
     }
   
-  @EventHandler(priority=EventPriority.HIGHEST)
+  @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
   public void onSlimeBlockFall(EntityDamageEvent evt) {
     if ((evt.getCause() == EntityDamageEvent.DamageCause.FALL) && 
       (evt.getEntity().getLocation().subtract(0.0D, 1.0D, 0.0D).getBlock().getType() == Material.getMaterial("slime"))) {
