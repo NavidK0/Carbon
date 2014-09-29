@@ -95,6 +95,26 @@ public class BlockListener implements Listener {
             break;
         }
     }
+    
+    @SuppressWarnings("deprecation")
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onSpongePlace(BlockPlaceEvent event) {
+		if(event.getBlockPlaced().getState().getData().toString().equals("SPONGE(0)")) {
+			int x = event.getBlockPlaced().getX() - 5;
+			int y = event.getBlockPlaced().getY() - 5;
+			int z = event.getBlockPlaced().getZ() - 5;			
+			for(int a = x; a <= x + 10; a ++) {
+				for(int b = y; b <= y + 10; b ++) {
+					for(int c = z; c <= z + 10; c ++) {						
+						if(event.getBlockPlaced().getWorld().getBlockAt(a, b, c).getType() == Material.WATER || (event.getBlockPlaced().getWorld().getBlockAt(a, b, c).getType() == Material.STATIONARY_WATER)) {
+							event.getBlockPlaced().getWorld().getBlockAt(a, b, c).setType(Material.AIR);
+							event.getBlockPlaced().setData((byte) 1);
+						}
+					}
+				}
+			}
+		}
+	}
   
   @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
