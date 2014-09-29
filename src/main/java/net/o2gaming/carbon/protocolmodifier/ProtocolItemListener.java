@@ -29,7 +29,6 @@ public class ProtocolItemListener {
 		for (int i = 0; i < replacements.length; i++) {
 			replacements[i] = -1;
 		}
-		//TODO: all materials
 		//slime -> emerald block
 		replacements[165] = 133;
 		//barrier -> ? (this is totally needed here to avoid client crash, the question is should we use glass or bedrock) (stone as of now)
@@ -66,17 +65,22 @@ public class ProtocolItemListener {
 		replacements[429] = 64;
 		replacements[430] = 64;
 		replacements[431] = 64;
-		//everything else -> stone as of now
+		//rabbit raw meat -> chicken raw meat
+		replacements[411] = 365;
+		//rabbit cooked meat -> chicken cooked meat
+		replacements[412] = 366;
+		//rabbit stew -> mushroom stew
+		replacements[413] = 282;
+		//raw mutton -> chicken raw meat
+		replacements[423] = 365;
+		//cooked mutton -> chicken cooked meat
+		replacements[424] = 1;
+		//everything else -> stone
 		replacements[409] = 1;
 		replacements[410] = 1;
-		replacements[411] = 1;
-		replacements[412] = 1;
-		replacements[413] = 1;
 		replacements[414] = 1;
 		replacements[415] = 1;
 		replacements[416] = 1;
-		replacements[423] = 1;
-		replacements[424] = 1;
 	}
 
 	public void init() {
