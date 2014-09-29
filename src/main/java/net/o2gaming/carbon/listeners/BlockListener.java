@@ -6,14 +6,21 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * 
+ * @author Navid, Aust1n46
+ */
 public class BlockListener implements Listener {
   private Carbon plugin;
   
@@ -68,8 +75,127 @@ public class BlockListener implements Listener {
     case "dark_oak_door": 
       evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().darkOakDoorMat, 1));
     }
-    
   }
+  
+@EventHandler(priority = EventPriority.MONITOR)
+    public void onIndirectDoorBreak(BlockBreakEvent event) {
+        if(event.isCancelled()) return;
+        if(event.getBlock().getType().toString().contains("door")) return;
+        switch(event.getBlock().getRelative(BlockFace.UP).getType().toString()) {
+        case "spruce_door":
+            event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().spruceDoorMat, 1));
+            break;
+        case "birch_door":
+            event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().birchDoorMat, 1));
+            break;
+        case "jungle_door":
+            event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().jungleDoorMat, 1));
+            break;
+        case "acacia_door":
+            event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().acaciaDoorMat, 1));
+            break;
+        case "dark_oak_door":
+            event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().darkOakDoorMat, 1));
+            break;
+        }
+    }
+  
+  @SuppressWarnings("deprecation")
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void slabInteract(PlayerInteractEvent event) {
+        if(event.getItem().getType().toString().equals("red_sandstone_slab")) {
+            if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                if(event.getClickedBlock().getState().getData().toString().equals("red_sandstone_slab(0)")) {
+                    if(event.getBlockFace().toString().equals("UP")) {
+                        event.getClickedBlock().setType(Carbon.injector().redSandstoneDoubleSlabMat);
+                        if(event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+                            event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount() - 1);
+                        }
+                        event.setCancelled(true);
+                    }
+                }
+                if(event.getClickedBlock().getState().getData().toString().equals("red_sandstone_slab(8)")) {
+                    if(event.getBlockFace().toString().equals("DOWN")) {
+                        event.getClickedBlock().setType(Carbon.injector().redSandstoneDoubleSlabMat);
+                        event.getClickedBlock().setData((byte) 0);
+                        if(event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+                            event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount() - 1);
+                        }
+                        event.setCancelled(true);
+                    }
+                }
+                org.bukkit.block.Block block = event.getClickedBlock();
+                switch(event.getBlockFace().toString()) {
+                case "NORTH": {
+                    org.bukkit.block.Block adjacent = block.getWorld().getBlockAt(block.getX(), block.getY(), block.getZ() - 1);
+                    if(adjacent.getType().toString().equals("red_sandstone_slab")) {
+                        adjacent.setType(Carbon.injector().redSandstoneDoubleSlabMat);
+                        adjacent.setData((byte) 0);
+                        if(event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+                            event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount() - 1);
+                        }
+                        event.setCancelled(true);
+                    }
+                }
+                case "SOUTH": {
+                    org.bukkit.block.Block adjacent = block.getWorld().getBlockAt(block.getX(), block.getY(), block.getZ() + 1);
+                    if(adjacent.getType().toString().equals("red_sandstone_slab")) {
+                        adjacent.setType(Carbon.injector().redSandstoneDoubleSlabMat);
+                        adjacent.setData((byte) 0);
+                        if(event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+                            event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount() - 1);
+                        }
+                        event.setCancelled(true);
+                    }
+                }
+                case "WEST": {
+                    org.bukkit.block.Block adjacent = block.getWorld().getBlockAt(block.getX() - 1, block.getY(), block.getZ());
+                    if(adjacent.getType().toString().equals("red_sandstone_slab")) {
+                        adjacent.setType(Carbon.injector().redSandstoneDoubleSlabMat);
+                        adjacent.setData((byte) 0);
+                        if(event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+                            event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount() - 1);
+                        }
+                        event.setCancelled(true);
+                    }
+                }
+                case "EAST": {
+                    org.bukkit.block.Block adjacent = block.getWorld().getBlockAt(block.getX() + 1, block.getY(), block.getZ());
+                    if(adjacent.getType().toString().equals("red_sandstone_slab")) {
+                        adjacent.setType(Carbon.injector().redSandstoneDoubleSlabMat);
+                        adjacent.setData((byte) 0);
+                        if(event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+                            event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount() - 1);
+                        }
+                        event.setCancelled(true);
+                    }
+                }
+                case "DOWN": {
+                    org.bukkit.block.Block adjacent = block.getWorld().getBlockAt(block.getX(), block.getY() - 1, block.getZ());
+                    if(adjacent.getType().toString().equals("red_sandstone_slab")) {
+                        adjacent.setType(Carbon.injector().redSandstoneDoubleSlabMat);
+                        adjacent.setData((byte) 0);
+                        if(event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+                            event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount() - 1);
+                        }
+                        event.setCancelled(true);
+                    }
+                }
+                case "UP": {
+                    org.bukkit.block.Block adjacent = block.getWorld().getBlockAt(block.getX(), block.getY() + 1, block.getZ());
+                    if(adjacent.getType().toString().equals("red_sandstone_slab")) {
+                        adjacent.setType(Carbon.injector().redSandstoneDoubleSlabMat);
+                        adjacent.setData((byte) 0);
+                        if(event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+                            event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount() - 1);
+                        }
+                        event.setCancelled(true);
+                    }
+                }
+                }
+            }
+        }
+    }
   
   @EventHandler(priority=EventPriority.HIGHEST)
   public void onSlimeBlockFall(EntityDamageEvent evt) {
