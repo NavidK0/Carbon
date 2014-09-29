@@ -1,3 +1,4 @@
+#Put the world name in which you want ore generation to occur in worlds:[]. It is CASE-SENSITIVE, so take caution.
 options:
     sheep:
         dropMutton: true
