@@ -26,17 +26,17 @@ public class Carbon extends JavaPlugin {
         injector = new Injector();
         injector.registerAll();
         injector.registerRecipes();
-        worldGenerator.populate();
-
+        worldGenerator.inject();
         log.info("Carbon has finished injecting all 1.8 functionalities.");
     }
 
     @Override
     public void onEnable() {
+        worldGenerator.populate();
         getServer().getPluginManager().registerEvents(this.blockListener, this);
         getServer().getPluginManager().registerEvents(this.itemListener, this);
         getServer().getPluginManager().registerEvents(this.worldGenerator, this);
-        log.info("[Carbon] Enabled.");
+        log.info("[Carbon] Carbon is enabled.");
     }
   
   public static Injector injector() {

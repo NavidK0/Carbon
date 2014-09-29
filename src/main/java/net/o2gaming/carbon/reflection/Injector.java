@@ -238,9 +238,6 @@ public class Injector {
       if (recipe.getResult().getType() == org.bukkit.Material.FENCE) {
         ri.remove();
       }
-      if (recipe.getResult().getType() == org.bukkit.Material.STONE) {
-        ri.remove();
-      }
     }
     
 
@@ -412,6 +409,8 @@ public class Injector {
     FurnaceRecipe wetSpongeFurnace = new FurnaceRecipe(new ItemStack(Material.SPONGE, 1, (short)0), Material.SPONGE).setInput(Material.SPONGE, 1);
     addRecipe(wetSpongeFurnace);
     
+    /**
+    
 
     FurnaceRecipe cobbleFurnace = new FurnaceRecipe(new ItemStack(org.bukkit.Material.STONE, 1, (short)0), org.bukkit.Material.STONE).setInput(org.bukkit.Material.COBBLESTONE, 1);
     addRecipe(cobbleFurnace);
@@ -442,7 +441,7 @@ public class Injector {
     ShapedRecipe stoneBricks = new ShapedRecipe(new ItemStack(org.bukkit.Material.SMOOTH_BRICK, 4)).shape(new String[] { "xx", "xx" }).setIngredient('x', org.bukkit.Material.STONE);
     addRecipe(stoneBricks);
     
-
+    * **/
 
     FurnaceRecipe rawRabbit = new FurnaceRecipe(new ItemStack(this.cookedRabbitItemMat, 1, (short)0), this.cookedRabbitItemMat).setInput(this.rabbitItemMat);
     addRecipe(rawRabbit);

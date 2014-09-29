@@ -2,21 +2,13 @@ package net.o2gaming.carbon.generator;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.minecraft.server.v1_7_R4.BiomeDecorator;
 import net.minecraft.server.v1_7_R4.Blocks;
-import net.minecraft.server.v1_7_R4.World;
 import net.o2gaming.carbon.Carbon;
-import org.bukkit.Chunk;
 import org.bukkit.Material;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.world.WorldLoadEvent;
-import org.bukkit.generator.BlockPopulator;
-import sun.reflect.generics.scope.ClassScope;
+import org.bukkit.scheduler.BukkitRunnable;
 
 
 /**
@@ -30,14 +22,36 @@ public class CarbonWorldGenerator implements Listener {
     this.plugin = plugin;
     }
 
-    public void populate() {
+    public void inject() {
         Carbon.log.info("[Carbon] Modifying world generation...");
                 try {
-                    inject();
+                    modifyWorldGeneration();
                 } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException ex) {
                     Logger.getLogger(CarbonWorldGenerator.class.getName()).log(Level.SEVERE, null, ex);
                 }
         Carbon.log.info("[Carbon] Done with world generation editing.");
+        
+    }
+    
+    public void populate() {
+        //Run populator tasks after server starts.
+        BukkitRunnable run = new BukkitRunnable() {
+            @Override
+            public void run() {
+                for(String s : plugin.getConfig().getStringList("options.worlds")) {
+                    org.bukkit.World world = plugin.getServer().getWorld(s);
+                if (world != null) {
+                    Carbon.log.log(Level.INFO, "[Carbon] Editing world: {0}", world.getName());
+                    Carbon.log.log(Level.INFO, "[Carbon] Adding populator for world: {0}", world.getName());
+                    world.getPopulators().add(new StoneVariantPopulator(Material.STONE, (byte) 1, 33, 10));
+                    world.getPopulators().add(new StoneVariantPopulator(Material.STONE, (byte) 3, 33, 10));
+                    world.getPopulators().add(new StoneVariantPopulator(Material.STONE, (byte) 5, 33, 10));
+                    Carbon.log.log(Level.INFO, "[Carbon] Done editing world: {0}", world.getName());
+                }
+                }
+            }
+        };
+        run.runTask(plugin);
     }
     
     /**
@@ -46,7 +60,7 @@ public class CarbonWorldGenerator implements Listener {
      * our custom stone block.
      * 
      */
-    private void inject() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+    private void modifyWorldGeneration() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         /**
          * Initiate the worst horrible thing you could possibly ever do in Java
          */
@@ -69,28 +83,5 @@ public class CarbonWorldGenerator implements Listener {
         Carbon.log.info("[Carbon] Injected Carbon.injector().spongeBlock into Blocks.SPONGE");
         
     }
-    
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onWorldLoad(WorldLoadEvent evt) {
-        if (plugin.getConfig().getStringList("options.worlds").contains(evt.getWorld().getName())) {
-            org.bukkit.World world = evt.getWorld();
-            if (world != null) {
-                Carbon.log.log(Level.INFO, "[Carbon] Editing world: {0}", world.getName());
-                Carbon.log.log(Level.INFO, "[Carbon] Adding populator for world: {0}", world.getName());
-                //world.getPopulators().add(new CarbonPopulator());
-                //world.getPopulators().add(new OrePopulator(Material.STONE, (byte)1, Material.STONE, (byte)0, 10, 33));
-                Carbon.log.log(Level.INFO, "[Carbon] Done editing world: {0}", world.getName());
-            } else {
-                Carbon.log.log(Level.INFO, "[Carbon] World {0} doesn\'t exist! Cannot populate!", world.getName());
-            }
-        }
-    }
 
-    public class CarbonPopulator extends BlockPopulator {
-            @Override
-            public void populate(org.bukkit.World world, Random random, Chunk chunk) {
-                    //Insert generator code here
-            }
-
-        }
 }
