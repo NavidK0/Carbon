@@ -54,11 +54,11 @@ public class ProtocolBlockListener {
 		replacements[191] = 85;
 		replacements[192] = 85;
 		//all doors -> door
-		replacements[427] = 64;
-		replacements[428] = 64;
-		replacements[429] = 64;
-		replacements[430] = 64;
-		replacements[431] = 64;
+		replacements[193] = 64;
+		replacements[194] = 64;
+		replacements[195] = 64;
+		replacements[196] = 64;
+		replacements[197] = 64;
 	}
 
 	public void init() {
