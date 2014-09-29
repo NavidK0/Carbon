@@ -8,6 +8,7 @@ import net.o2gaming.carbon.generator.CarbonWorldGenerator;
 import net.o2gaming.carbon.listeners.BlockListener;
 import net.o2gaming.carbon.listeners.ItemListener;
 import net.o2gaming.carbon.protocolmodifier.ProtocolBlockListener;
+import net.o2gaming.carbon.protocolmodifier.ProtocolItemListener;
 import net.o2gaming.carbon.reflection.Injector;
 
 import org.bukkit.Bukkit;
@@ -51,6 +52,7 @@ public class Carbon extends JavaPlugin {
 
         try {
             new ProtocolBlockListener(this).init();
+            new ProtocolItemListener(this).init();
         } catch (Throwable t) {
         }
         

@@ -27,7 +27,7 @@ public class ProtocolBlockListener {
 		replacements[165] = 133;
 		//barrier -> ? (probably not needed) (or maybe glass?)
 
-		// iron trapdoor -> trapdoor
+		//iron trapdoor -> trapdoor
 		replacements[167] = 96;
 		//prismarine -> mossy cobblestone
 		replacements[168] = 48;
@@ -53,12 +53,12 @@ public class ProtocolBlockListener {
 		replacements[190] = 85;
 		replacements[191] = 85;
 		replacements[192] = 85;
-		//add doors -> door
-		replacements[193] = 64;
-		replacements[194] = 64;
-		replacements[195] = 64;
-		replacements[196] = 64;
-		replacements[197] = 64;
+		//all doors -> door
+		replacements[427] = 64;
+		replacements[428] = 64;
+		replacements[429] = 64;
+		replacements[430] = 64;
+		replacements[431] = 64;
 	}
 
 	public void init() {
