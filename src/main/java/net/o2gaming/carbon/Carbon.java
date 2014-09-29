@@ -49,7 +49,10 @@ public class Carbon extends JavaPlugin {
         getServer().getPluginManager().registerEvents(this.itemListener, this);
         getServer().getPluginManager().registerEvents(this.worldGenerator, this);
 
-    	new ProtocolBlockListener(this).init();
+        try {
+            new ProtocolBlockListener(this).init();
+        } catch (Throwable t) {
+        }
         
         log.info("[Carbon] Carbon is enabled.");
     }

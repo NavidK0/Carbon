@@ -1,10 +1,13 @@
 package net.o2gaming.carbon.protocolmodifier;
 
+import java.lang.reflect.InvocationTargetException;
+
 import net.o2gaming.carbon.Carbon;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 
 public class ProtocolBlockListener {
@@ -91,13 +94,22 @@ public class ProtocolBlockListener {
 					if (ProtocolLibrary.getProtocolManager().getProtocolVersion(event.getPlayer()) == 47) {
 						return;
 					}
-					//just modify the block field to the one we need
-					//TODO: looks like this packet is shared between multiple players so we need to create a copy and send it instead of modifying original one
+					//create a new packet with modified block and send it (Had to do it because block change packets are shared)
 					net.minecraft.server.v1_7_R4.Block block = event.getPacket().getSpecificModifier(net.minecraft.server.v1_7_R4.Block.class).read(0);
 					int id = net.minecraft.server.v1_7_R4.Block.getId(block);
 					if (replacements[id] != -1) {
+						event.setCancelled(true);
+						PacketContainer newpacket = new PacketContainer(PacketType.Play.Server.BLOCK_CHANGE);
 						net.minecraft.server.v1_7_R4.Block newBlock = net.minecraft.server.v1_7_R4.Block.getById(replacements[id]);
-						event.getPacket().getSpecificModifier(net.minecraft.server.v1_7_R4.Block.class).write(0, newBlock);
+						newpacket.getSpecificModifier(net.minecraft.server.v1_7_R4.Block.class).write(0, newBlock);
+						newpacket.getIntegers().write(0, event.getPacket().getIntegers().read(0));
+						newpacket.getIntegers().write(1, event.getPacket().getIntegers().read(1));
+						newpacket.getIntegers().write(2, event.getPacket().getIntegers().read(2));
+						newpacket.getIntegers().write(3, event.getPacket().getIntegers().read(3));
+						try {
+							ProtocolLibrary.getProtocolManager().sendServerPacket(event.getPlayer(), newpacket, false);
+						} catch (InvocationTargetException e) {
+						}
 					}
 				}
 			}
