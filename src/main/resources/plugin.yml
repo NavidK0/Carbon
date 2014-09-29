@@ -2,5 +2,5 @@ name: Carbon
 main: net.o2gaming.carbon.Carbon
 description: Adds 1.8 blocks and features to the Spigot protocol hack.
 startup: STARTUP
-version: 1.5
+version: 1.5.1
 author: Navid K.
