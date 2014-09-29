@@ -7,6 +7,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -26,14 +27,17 @@ public class ItemListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityKilled(EntityDeathEvent event) {
         if (plugin.getConfig().getBoolean("options.sheep.dropMutton")) {
-        if(event.getEntityType() == EntityType.SHEEP) {
-            if(event.getEntity() instanceof Ageable) {
-                Ageable entity = (Ageable) event.getEntity();
-                if(entity.isAdult()) {
-                    event.getDrops().add(new ItemStack(Carbon.injector().muttonItemMat, random.nextInt(1) + 1));
+            if(event.getEntityType() == EntityType.SHEEP) {
+                if(event.getEntity() instanceof Ageable) {
+                    Ageable entity = (Ageable) event.getEntity();
+                    if(entity.isAdult()) {
+                        if(entity.getLastDamageCause().getCause().equals(DamageCause.FIRE_TICK) || entity.getLastDamageCause().getCause().equals(DamageCause.FIRE))
+                            event.getDrops().add(new ItemStack(Carbon.injector().cookedMuttonItemMat, random.nextInt(1) + 1));
+                        else
+                            event.getDrops().add(new ItemStack(Carbon.injector().muttonItemMat, random.nextInt(1) + 1));
+                    }
                 }
             }
-        }
         }
     }
     
