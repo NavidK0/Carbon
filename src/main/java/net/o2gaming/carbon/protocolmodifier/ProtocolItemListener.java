@@ -1,13 +1,19 @@
 package net.o2gaming.carbon.protocolmodifier;
 
-import net.o2gaming.carbon.Carbon;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 import org.bukkit.inventory.ItemStack;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
+
+import net.minecraft.server.v1_7_R4.Item;
+import net.minecraft.server.v1_7_R4.WatchableObject;
+import net.o2gaming.carbon.Carbon;
 
 public class ProtocolItemListener {
 
@@ -139,6 +145,37 @@ public class ProtocolItemListener {
 					int itemid = item.getTypeId();
 					if (replacements[itemid] != -1) {
 						item.setTypeId(replacements[itemid]);
+					}
+				}
+			}
+		);
+
+		ProtocolLibrary.getProtocolManager().addPacketListener(			
+			new PacketAdapter(
+				PacketAdapter.params(plugin, PacketType.Play.Server.ENTITY_METADATA)
+			) {
+				@Override
+				public void onPacketSending(PacketEvent event) {
+					if (ProtocolLibrary.getProtocolManager().getProtocolVersion(event.getPlayer()) == 47) {
+						return;
+					}
+					//create a new packet with valid items and send it (Had to do this because metadata packets are shared)
+					event.setCancelled(true);
+					PacketContainer newpacket = event.getPacket().deepClone();
+					List<?> list = newpacket.getSpecificModifier(List.class).read(0);
+					for (Object object : list) {
+						WatchableObject wobject = (WatchableObject) object;
+						if (wobject.b() instanceof net.minecraft.server.v1_7_R4.ItemStack) {
+							net.minecraft.server.v1_7_R4.ItemStack itemStack = (net.minecraft.server.v1_7_R4.ItemStack) wobject.b();
+							int itemid = Item.getId(itemStack.getItem());
+							if (replacements[itemid] != -1) {
+								itemStack.setItem(Item.getById(replacements[itemid]));
+							}
+						}
+					}
+					try {
+						ProtocolLibrary.getProtocolManager().sendServerPacket(event.getPlayer(), newpacket, false);
+					} catch (InvocationTargetException e) {
 					}
 				}
 			}

@@ -156,7 +156,7 @@ public class ProtocolBlockListener {
 						int id = iddata >> 4;
 						int data = iddata & 0xF;
 						if (replacements[id] != -1) {
-							int newiddata = (replacements[id] << 4) | data;
+							int newiddata = replacements[id] << 4 | data;
 							bytes[i] = (byte) (newiddata >> 8);
 							bytes[i + 1] = (byte) newiddata;
 						}
