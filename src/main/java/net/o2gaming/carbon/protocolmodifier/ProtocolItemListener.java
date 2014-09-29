@@ -60,11 +60,11 @@ public class ProtocolItemListener {
 		replacements[191] = 85;
 		replacements[192] = 85;
 		//all doors -> door
-		replacements[427] = 64;
-		replacements[428] = 64;
-		replacements[429] = 64;
-		replacements[430] = 64;
-		replacements[431] = 64;
+		replacements[427] = 324;
+		replacements[428] = 324;
+		replacements[429] = 324;
+		replacements[430] = 324;
+		replacements[431] = 324;
 		//rabbit raw meat -> chicken raw meat
 		replacements[411] = 365;
 		//rabbit cooked meat -> chicken cooked meat
