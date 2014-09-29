@@ -1,14 +1,13 @@
+
 package net.o2gaming.carbon;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 import net.o2gaming.carbon.generator.CarbonWorldGenerator;
 import net.o2gaming.carbon.listeners.BlockListener;
 import net.o2gaming.carbon.listeners.ItemListener;
 import net.o2gaming.carbon.reflection.Injector;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcstats.Metrics;
 
 public class Carbon extends JavaPlugin {
   private BlockListener blockListener = new BlockListener(this);
@@ -46,10 +45,8 @@ public class Carbon extends JavaPlugin {
         getServer().getPluginManager().registerEvents(this.itemListener, this);
         getServer().getPluginManager().registerEvents(this.worldGenerator, this);
         
-        try {
-            Metrics metrics = new Metrics(this);
-            metrics.start();
-        } catch (IOException e) {}
+        
+        
         log.info("[Carbon] Carbon is enabled.");
     }
     

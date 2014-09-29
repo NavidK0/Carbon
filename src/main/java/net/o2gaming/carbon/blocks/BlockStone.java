@@ -1,3 +1,4 @@
+
 package net.o2gaming.carbon.blocks;
 
 import java.util.Random;
@@ -31,5 +32,4 @@ public class BlockStone extends net.minecraft.server.v1_7_R4.BlockStone {
     public int getDropData(int i) {
         return i;
     }
-
 }
