@@ -25,14 +25,40 @@ public class ProtocolBlockListener {
 		}
 		//slime -> emerald block
 		replacements[165] = 133;
-		//barrier -> ? (probably not needed)
+		//barrier -> ? (probably not needed) (or maybe glass?)
 
 		// iron trapdoor -> trapdoor
 		replacements[167] = 96;
 		//prismarine -> mossy cobblestone
 		replacements[168] = 48;
-		//sea lantern -> ?
-
+		//sea lantern -> glowstone
+		replacements[169] = 89;
+		//red sandstone -> sandstone
+		replacements[179] = 24;
+		//red sandstone stairs -> sandstone stairs
+		replacements[180] = 128;
+		//red sandstone doubleslab -> double step
+		replacements[181] = 43;
+		//red sandstone slab -> step
+		replacements[182] = 44;
+		//all fence gates -> fence gate
+		replacements[183] = 107;
+		replacements[184] = 107;
+		replacements[185] = 107;
+		replacements[186] = 107;
+		replacements[187] = 107;
+		//all fences -> fence
+		replacements[188] = 85;
+		replacements[189] = 85;
+		replacements[190] = 85;
+		replacements[191] = 85;
+		replacements[192] = 85;
+		//add doors -> door
+		replacements[193] = 64;
+		replacements[194] = 64;
+		replacements[195] = 64;
+		replacements[196] = 64;
+		replacements[197] = 64;
 		//TODO
 	}
 
