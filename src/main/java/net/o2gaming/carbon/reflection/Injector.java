@@ -448,15 +448,26 @@ public class Injector {
     FurnaceRecipe rawMutton = new FurnaceRecipe(new ItemStack(this.cookedMuttonItemMat, 1, (short)0), this.cookedMuttonItemMat).setInput(this.muttonItemMat);
     addRecipe(rawMutton);
     
-
-
+    
     ShapedRecipe rabbitStew = new ShapedRecipe(new ItemStack(this.rabbitStewItemMat, 1)).shape(new String[] { " r ", "cpm", " b " }).setIngredient('r', this.cookedRabbitItemMat).setIngredient('c', org.bukkit.Material.CARROT_ITEM).setIngredient('p', org.bukkit.Material.BAKED_POTATO).setIngredient('m', org.bukkit.Material.RED_MUSHROOM).setIngredient('b', org.bukkit.Material.BOWL);
     addRecipe(rabbitStew);
     
-
-
+    
     ShapedRecipe rabbitStew2 = new ShapedRecipe(new ItemStack(this.rabbitStewItemMat, 1)).shape(new String[] { " r ", "cpm", " b " }).setIngredient('r', this.cookedRabbitItemMat).setIngredient('c', org.bukkit.Material.CARROT_ITEM).setIngredient('p', org.bukkit.Material.BAKED_POTATO).setIngredient('m', org.bukkit.Material.BROWN_MUSHROOM).setIngredient('b', org.bukkit.Material.BOWL);
     addRecipe(rabbitStew2);
+    
+    
+    ShapedRecipe mossStone = new ShapedRecipe(new ItemStack(org.bukkit.Material.MOSSY_COBBLESTONE, 6)).shape(new String[] {"s", "v"}).setIngredient('s', org.bukkit.Material.COBBLESTONE)
+            .setIngredient('v', org.bukkit.Material.VINE);
+    addRecipe(mossStone);
+    
+    
+    ShapedRecipe cobbleWall = new ShapedRecipe(new ItemStack(org.bukkit.Material.COBBLE_WALL, 6)).shape(new String[] {"sss", "sss"}).setIngredient('s', org.bukkit.Material.COBBLESTONE);
+    addRecipe(cobbleWall);
+    
+    
+    ShapedRecipe mossyCobbleWall = new ShapedRecipe(new ItemStack(org.bukkit.Material.COBBLE_WALL, 6, (short)1)).shape(new String[] {"sss", "sss"}).setIngredient('s', org.bukkit.Material.MOSSY_COBBLESTONE);
+    addRecipe(mossyCobbleWall);
   }
 
   public void addRecipe(Recipe recipe) {
