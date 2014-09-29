@@ -59,7 +59,6 @@ public class ProtocolBlockListener {
 		replacements[195] = 64;
 		replacements[196] = 64;
 		replacements[197] = 64;
-		//TODO
 	}
 
 	public void init() {
