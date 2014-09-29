@@ -19,6 +19,7 @@ import net.o2gaming.carbon.blocks.BlockStone;
 import net.o2gaming.carbon.blocks.BlockWoodenDoor;
 import net.o2gaming.carbon.blocks.BlockWoodenFence;
 import net.o2gaming.carbon.blocks.BlockWoodenFenceGate;
+import net.o2gaming.carbon.blocks.BlockNewTorch;
 import net.o2gaming.carbon.items.ItemCookedMutton;
 import net.o2gaming.carbon.items.ItemCookedRabbit;
 import net.o2gaming.carbon.items.ItemMutton;
@@ -44,6 +45,7 @@ public class Injector {
   //Blocks
   public Block stoneBlock = new BlockStone();
   public Block slimeBlock = new BlockSlime();
+  public Block torchBlock = new BlockNewTorch();
   public Block redSandstoneBlock = new BlockRedSandstone();
   public Block barrierBlock = new BlockBarrier();
   public Block spruceFenceBlock = new BlockWoodenFence("spruce_fence", net.minecraft.server.v1_7_R4.Material.WOOD);
@@ -113,6 +115,7 @@ public class Injector {
 
   //Items
   public Item stoneItem = new ItemMultiTexture(this.stoneBlock, this.stoneBlock, BlockStone.names).b("stone");
+  public Item torchItem = new ItemBlock(this.torchBlock);
   public Item slimeItem = new ItemBlock(this.slimeBlock);
   public Item barrierItem = new ItemBlock(this.barrierBlock);
   public Item redSandstoneItem = new ItemMultiTexture(this.redSandstoneBlock, this.redSandstoneBlock, BlockRedSandstone.names).b("red_sandstone");
@@ -169,6 +172,7 @@ public class Injector {
   public void registerAll() {
     //Register blocks
     registerBlock(org.bukkit.Material.STONE, 1, "stone", this.stoneBlock, this.stoneItem);
+    registerBlock(Material.TORCH, 50, "torch", this.torchBlock, this.torchItem);
     registerBlock(Material.SPONGE, 19, "sponge", this.spongeBlock, this.spongeItem);
     registerBlock(this.slimeMat, 165, "slime", this.slimeBlock, this.slimeItem);
     registerBlock(this.barrierMat, 166, "barrier", this.barrierBlock, this.barrierItem);
