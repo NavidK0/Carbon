@@ -21,7 +21,16 @@ public class ChunkDataListener {
 			replacements[i] = -1;
 		}
 		//slime -> emerald block
-		replacements[165] = (byte) 133;
+		replacements[165] = 133;
+		//barrier -> ? (probably not needed)
+
+		// iron trapdoor -> trapdoor
+		replacements[167] = 96;
+		//prismarine -> mossy cobblestone
+		replacements[168] = 48;
+		//sea lantern -> ?
+
+		//TODO
 	}
 
 	public void init() {
