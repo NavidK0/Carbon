@@ -99,6 +99,9 @@ public class BlockListener implements Listener {
   @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void slabInteract(PlayerInteractEvent event) {
+	    if (event.getItem() == null) {
+	    	return;
+	    }
         if(event.getItem().getType().toString().equals("red_sandstone_slab")) {
             if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 if(event.getClickedBlock().getState().getData().toString().equals("red_sandstone_slab(0)")) {
