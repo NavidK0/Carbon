@@ -1,13 +1,13 @@
 package net.o2gaming.carbon.protocolmodifier;
 
+import net.o2gaming.carbon.Carbon;
+
 import org.bukkit.inventory.ItemStack;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
-
-import net.o2gaming.carbon.Carbon;
 
 public class ProtocolItemListener {
 
@@ -83,6 +83,7 @@ public class ProtocolItemListener {
 					if (ProtocolLibrary.getProtocolManager().getProtocolVersion(event.getPlayer()) == 47) {
 						return;
 					}
+					//replace all items with valid ones
 					ItemStack[] items = event.getPacket().getItemArrayModifier().read(0);
 					for (int i = 0; i < items.length; i++) {
 						if (items[i] == null) {
@@ -107,6 +108,30 @@ public class ProtocolItemListener {
 					if (ProtocolLibrary.getProtocolManager().getProtocolVersion(event.getPlayer()) == 47) {
 						return;
 					}
+					//replace item with valid one
+					ItemStack item = event.getPacket().getItemModifier().read(0);
+					if (item == null) {
+						return;
+					}
+					int itemid = item.getTypeId();
+					if (replacements[itemid] != -1) {
+						item.setTypeId(replacements[itemid]);
+					}
+				}
+			}
+		);
+
+		ProtocolLibrary.getProtocolManager().addPacketListener(
+			new PacketAdapter(
+				PacketAdapter.params(plugin, PacketType.Play.Server.ENTITY_EQUIPMENT)
+			) {
+				@SuppressWarnings("deprecation")
+				@Override
+				public void onPacketSending(PacketEvent event) {
+					if (ProtocolLibrary.getProtocolManager().getProtocolVersion(event.getPlayer()) == 47) {
+						return;
+					}
+					//replace item valid one
 					ItemStack item = event.getPacket().getItemModifier().read(0);
 					if (item == null) {
 						return;
