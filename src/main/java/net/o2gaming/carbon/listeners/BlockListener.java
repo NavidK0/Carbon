@@ -116,7 +116,7 @@ public class BlockListener implements Listener {
 		}
 	}
   
-  @SuppressWarnings("deprecation")
+   @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void slabInteract(PlayerInteractEvent event) {
 	    if (event.getItem() == null) {
@@ -142,11 +142,11 @@ public class BlockListener implements Listener {
                         }
                         event.setCancelled(true);
                     }
-                }
+                }          
                 org.bukkit.block.Block block = event.getClickedBlock();
                 switch(event.getBlockFace().toString()) {
-                case "NORTH": {
-                    org.bukkit.block.Block adjacent = block.getWorld().getBlockAt(block.getX(), block.getY(), block.getZ() - 1);
+                case "NORTH": {             	
+                    org.bukkit.block.Block adjacent = block.getWorld().getBlockAt(block.getX(), block.getY(), block.getZ() - 1);                    
                     if(adjacent.getType().toString().equals("red_sandstone_slab")) {
                         adjacent.setType(Carbon.injector().redSandstoneDoubleSlabMat);
                         adjacent.setData((byte) 0);
@@ -155,6 +155,7 @@ public class BlockListener implements Listener {
                         }
                         event.setCancelled(true);
                     }
+                    break;
                 }
                 case "SOUTH": {
                     org.bukkit.block.Block adjacent = block.getWorld().getBlockAt(block.getX(), block.getY(), block.getZ() + 1);
@@ -166,6 +167,7 @@ public class BlockListener implements Listener {
                         }
                         event.setCancelled(true);
                     }
+                    break;
                 }
                 case "WEST": {
                     org.bukkit.block.Block adjacent = block.getWorld().getBlockAt(block.getX() - 1, block.getY(), block.getZ());
@@ -177,6 +179,7 @@ public class BlockListener implements Listener {
                         }
                         event.setCancelled(true);
                     }
+                    break;
                 }
                 case "EAST": {
                     org.bukkit.block.Block adjacent = block.getWorld().getBlockAt(block.getX() + 1, block.getY(), block.getZ());
@@ -188,6 +191,7 @@ public class BlockListener implements Listener {
                         }
                         event.setCancelled(true);
                     }
+                    break;
                 }
                 case "DOWN": {
                     org.bukkit.block.Block adjacent = block.getWorld().getBlockAt(block.getX(), block.getY() - 1, block.getZ());
@@ -199,6 +203,7 @@ public class BlockListener implements Listener {
                         }
                         event.setCancelled(true);
                     }
+                    break;
                 }
                 case "UP": {
                     org.bukkit.block.Block adjacent = block.getWorld().getBlockAt(block.getX(), block.getY() + 1, block.getZ());
@@ -210,6 +215,7 @@ public class BlockListener implements Listener {
                         }
                         event.setCancelled(true);
                     }
+                    break;
                 }
                 }
             }
