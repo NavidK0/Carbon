@@ -11,10 +11,10 @@ import net.o2gaming.carbon.protocolmodifier.ProtocolBlockListener;
 import net.o2gaming.carbon.protocolmodifier.ProtocolItemListener;
 import net.o2gaming.carbon.reflection.Injector;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Carbon extends JavaPlugin {
+
   private BlockListener blockListener = new BlockListener(this);
   private ItemListener itemListener = new ItemListener(this);
   private CarbonWorldGenerator worldGenerator = new CarbonWorldGenerator(this);
