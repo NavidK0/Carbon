@@ -10,6 +10,11 @@ public class BlockNewTorch extends BlockTorch {
 
 	public BlockNewTorch() {
 		super();
+		c(0.0F);
+		a(0.9375F);
+		a(f);
+		c("torch");
+		d("torch_on");
 	}
 
 	@Override

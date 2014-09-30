@@ -11,8 +11,12 @@ public class BlockNewRedstoneTorchOn extends BlockRedstoneTorch {
 
 	public BlockNewRedstoneTorchOn() {
 		super(true);
-		a(true);
-		a(CreativeModeTab.c);
+		c(0.0F);
+		a(0.5F);
+		a(f);
+		c("notGate");
+		a(CreativeModeTab.d);
+		d("redstone_torch_on");
 	}
 
 	@Override
@@ -44,18 +48,6 @@ public class BlockNewRedstoneTorchOn extends BlockRedstoneTorch {
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	protected boolean e(World paramWorld, int paramInt1, int paramInt2, int paramInt3) {
-		if(!canPlace(paramWorld, paramInt1, paramInt2, paramInt3)) {
-			if(paramWorld.getType(paramInt1, paramInt2, paramInt3) == this) {
-				b(paramWorld, paramInt1, paramInt2, paramInt3, paramWorld.getData(paramInt1, paramInt2, paramInt3), 0);
-				paramWorld.setAir(paramInt1, paramInt2, paramInt3);
-			}
-			return true;
-		}
-		return true;
 	}
 
 	@Override
