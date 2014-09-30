@@ -15,6 +15,7 @@ public class BlockSeaLantern extends BlockLightStone {
     public BlockSeaLantern() {
         super(Material.SHATTERABLE);
         c(0.3f);
+        a(1.0f);
         b(1.5f);
     }
     
