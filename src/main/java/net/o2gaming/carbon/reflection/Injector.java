@@ -235,7 +235,7 @@ public class Injector {
         Class<Blocks> blocksClass = Blocks.class;
         setFinalField(blocksClass, "STONE", Blocks.STONE, Carbon.injector().stoneBlock);
         setFinalField(blocksClass, "SPONGE", Blocks.SPONGE, Carbon.injector().spongeBlock);
-        setFinalField(blocksClass, "TORCH", Blocks.TORCH, Carbon.injector().torchBlock);
+        //setFinalField(blocksClass, "TORCH", Blocks.TORCH, Carbon.injector().torchBlock);
         setFinalField(blocksClass, "REDSTONE_TORCH_ON", Blocks.REDSTONE_TORCH_ON, Carbon.injector().redstoneTorchBlockOn);
         setFinalField(blocksClass, "REDSTONE_TORCH_OFF", Blocks.REDSTONE_TORCH_OFF, Carbon.injector().redstoneTorchBlockOff);
      } catch (Throwable t) {
