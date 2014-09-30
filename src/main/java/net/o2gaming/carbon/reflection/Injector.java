@@ -186,7 +186,7 @@ public class Injector {
     registerBlock(Material.STONE, 1, "stone", this.stoneBlock, this.stoneItem);
     registerBlock(Material.TORCH, 50, "torch", this.torchBlock, this.torchItem);
     registerBlock(Material.REDSTONE_TORCH_ON, 76, "redstone_torch", this.redstoneTorchBlockOn, this.redstoneTorchItemOn);
-    registerBlock(Material.REDSTONE_TORCH_OFF, 75, "redstone_torch", this.redstoneTorchBlockOff, this.redstoneTorchItemOff);
+    registerBlock(Material.REDSTONE_TORCH_OFF, 75, "unlit_redstone_torch", this.redstoneTorchBlockOff, this.redstoneTorchItemOff);
     registerBlock(Material.SPONGE, 19, "sponge", this.spongeBlock, this.spongeItem);
     registerBlock(this.slimeMat, 165, "slime", this.slimeBlock, this.slimeItem);
     registerBlock(this.barrierMat, 166, "barrier", this.barrierBlock, this.barrierItem);
@@ -230,14 +230,14 @@ public class Injector {
     registerItem(this.muttonItemMat, 423, "mutton", this.muttonItem);
     registerItem(this.cookedMuttonItemMat, 424, "cooked_mutton", this.cookedMuttonItem);
 
-    //inject our new stone, sponge, torch and redstone torches
+    //inject our new stone, sponge, torch and redstone torches to blocks class
     try {
         Class<Blocks> blocksClass = Blocks.class;
-        setFinalField(blocksClass, "STONE", Blocks.STONE, Carbon.injector().stoneBlock);
-        setFinalField(blocksClass, "SPONGE", Blocks.SPONGE, Carbon.injector().spongeBlock);
-        //setFinalField(blocksClass, "TORCH", Blocks.TORCH, Carbon.injector().torchBlock);
-        setFinalField(blocksClass, "REDSTONE_TORCH_ON", Blocks.REDSTONE_TORCH_ON, Carbon.injector().redstoneTorchBlockOn);
-        setFinalField(blocksClass, "REDSTONE_TORCH_OFF", Blocks.REDSTONE_TORCH_OFF, Carbon.injector().redstoneTorchBlockOff);
+        setStaticFinalField(blocksClass, "STONE", Carbon.injector().stoneBlock);
+        setStaticFinalField(blocksClass, "SPONGE", Carbon.injector().spongeBlock);
+        setStaticFinalField(blocksClass, "TORCH", Carbon.injector().torchBlock);
+        setStaticFinalField(blocksClass, "REDSTONE_TORCH_ON", Carbon.injector().redstoneTorchBlockOn);
+        setStaticFinalField(blocksClass, "REDSTONE_TORCH_OFF", Carbon.injector().redstoneTorchBlockOff);
      } catch (Throwable t) {
     	 t.printStackTrace();
     	 Bukkit.shutdown();
@@ -245,13 +245,13 @@ public class Injector {
 
   }
 
-  private void setFinalField(Class<?> clazz, String fieldname, Object object, Object newValue) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+  private void setStaticFinalField(Class<?> clazz, String fieldname, Object newValue) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 	  Field field = clazz.getDeclaredField(fieldname);
 	  field.setAccessible(true);
 	  Field fieldModifiers = Field.class.getDeclaredField("modifiers");
 	  fieldModifiers.setAccessible(true);
 	  fieldModifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-	  field.set(object, newValue);
+	  field.set(null, newValue);
   }
   
 
