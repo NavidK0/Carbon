@@ -122,7 +122,7 @@ public class Injector {
   public Material birchDoorMat = Utilities.addMaterial("BIRCH_DOOR", 428);
   public Material jungleDoorMat = Utilities.addMaterial("JUNGLE_DOOR", 429);
   public Material acaciaDoorMat = Utilities.addMaterial("ACACIA_DOOR", 430);
-  public Material darkOakDoorMat = Utilities.addMaterial("CARK_OAK_DOOR", 431);
+  public Material darkOakDoorMat = Utilities.addMaterial("DARK_OAK_DOOR", 431);
   
 
   //Items

@@ -10,17 +10,16 @@ import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.material.MaterialData;
 
 import net.minecraft.server.v1_7_R4.Block;
-import net.minecraft.server.v1_7_R4.BlockFire;
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.World;
 import net.minecraft.server.v1_7_R4.WorldProviderTheEnd;
 import net.o2gaming.carbon.Carbon;
 
-public class BlockNewFire extends BlockFire {
+public class BlockFire extends net.minecraft.server.v1_7_R4.BlockFire {
 	private int[] a = new int[256];
 	private int[] b = new int[256];
 
-	public BlockNewFire() {
+	public BlockFire() {
 	}
 
 	public static void e() {
