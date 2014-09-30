@@ -307,7 +307,9 @@ public class Injector {
     ShapelessRecipe granite = new ShapelessRecipe(new ItemStack(org.bukkit.Material.STONE, 1, (short)1)).addIngredient(1, org.bukkit.Material.STONE, 3).addIngredient(1, org.bukkit.Material.QUARTZ);
     addRecipe(granite);
     
-
+    ShapelessRecipe chiseledStone = new ShapelessRecipe(new ItemStack(org.bukkit.Material.SMOOTH_BRICK, 1, (short)2)).addIngredient(1, org.bukkit.Material.STONE, 1).addIngredient(1, org.bukkit.Material.VINE);
+    addRecipe(chiseledStone);
+    
     ShapedRecipe polishedDiorite = new ShapedRecipe(new ItemStack(org.bukkit.Material.STONE, 4, (short)4)).shape(new String[] { "ss", "ss" }).setIngredient('s', org.bukkit.Material.STONE, 3);
     addRecipe(polishedDiorite);
     
@@ -495,7 +497,10 @@ public class Injector {
     ShapedRecipe rabbitStew2 = new ShapedRecipe(new ItemStack(this.rabbitStewItemMat, 1)).shape(new String[] { " r ", "cpm", " b " }).setIngredient('r', this.cookedRabbitItemMat).setIngredient('c', org.bukkit.Material.CARROT_ITEM).setIngredient('p', org.bukkit.Material.BAKED_POTATO).setIngredient('m', org.bukkit.Material.BROWN_MUSHROOM).setIngredient('b', org.bukkit.Material.BOWL);
     addRecipe(rabbitStew2);
     
-    ShapelessRecipe mossStone = new ShapelessRecipe(new ItemStack(org.bukkit.Material.SMOOTH_BRICK, 1, (short)2)).addIngredient(1, org.bukkit.Material.SMOOTH_BRICK).addIngredient(1, org.bukkit.Material.VINE);
+    ShapelessRecipe mossyStoneBrick = new ShapelessRecipe(new ItemStack(org.bukkit.Material.SMOOTH_BRICK, 1, (short)1)).addIngredient(1, org.bukkit.Material.SMOOTH_BRICK).addIngredient(1, org.bukkit.Material.VINE);
+    addRecipe(mossyStoneBrick);
+    
+    ShapelessRecipe mossStone = new ShapelessRecipe(new ItemStack(org.bukkit.Material.MOSSY_COBBLESTONE, 1)).addIngredient(1, org.bukkit.Material.COBBLESTONE).addIngredient(1, org.bukkit.Material.VINE);
     addRecipe(mossStone);
     
     ShapedRecipe leather = new ShapedRecipe(new ItemStack(Material.LEATHER, 1)).shape(new String[] { "ll", "ll" }).setIngredient('l', this.rabbitHideItemMat);

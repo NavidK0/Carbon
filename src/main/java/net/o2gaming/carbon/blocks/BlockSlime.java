@@ -18,7 +18,7 @@ public class BlockSlime extends BlockHalfTransparent {
         c(0);
         H();
     }
-
+    
     @Override
     public void a(World paramaqu, int x, int y, int z, Entity paramwv, float paramFloat) {
         if (paramwv.isSneaking())
@@ -35,4 +35,5 @@ public class BlockSlime extends BlockHalfTransparent {
         }
         super.a(paramaqu, x, y, z, paramwv);
     }
+    
 }

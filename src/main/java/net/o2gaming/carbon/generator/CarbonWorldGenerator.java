@@ -29,9 +29,9 @@ public class CarbonWorldGenerator implements Listener {
                 if (world != null) {
                     Carbon.log.log(Level.INFO, "[Carbon] Editing world: {0}", world.getName());
                     Carbon.log.log(Level.INFO, "[Carbon] Adding populator for world: {0}", world.getName());
-                    world.getPopulators().add(new StoneVariantPopulator(Material.STONE, (byte) 1, 33, 10));
-                    world.getPopulators().add(new StoneVariantPopulator(Material.STONE, (byte) 3, 33, 10));
-                    world.getPopulators().add(new StoneVariantPopulator(Material.STONE, (byte) 5, 33, 10));
+                    world.getPopulators().add(new StoneVariantPopulator(Material.STONE, (byte) 1, 33, 4));
+                    world.getPopulators().add(new StoneVariantPopulator(Material.STONE, (byte) 3, 33, 4));
+                    world.getPopulators().add(new StoneVariantPopulator(Material.STONE, (byte) 5, 33, 4));
                     Carbon.log.log(Level.INFO, "[Carbon] Done editing world: {0}", world.getName());
                 }
                 }
