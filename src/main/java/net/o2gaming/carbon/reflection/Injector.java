@@ -1,10 +1,15 @@
 package net.o2gaming.carbon.reflection;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Iterator;
+
 import net.minecraft.server.v1_7_R4.Block;
+import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.ItemBlock;
 import net.minecraft.server.v1_7_R4.ItemMultiTexture;
+import net.o2gaming.carbon.Carbon;
 import net.o2gaming.carbon.Utilities;
 import net.o2gaming.carbon.blocks.BlockNewRedstoneTorchOn;
 import net.o2gaming.carbon.blocks.BlockNewRedstoneTorchOff;
@@ -32,6 +37,7 @@ import net.o2gaming.carbon.items.ItemRabbitFoot;
 import net.o2gaming.carbon.items.ItemRabbitHide;
 import net.o2gaming.carbon.items.ItemRabbitStew;
 import net.o2gaming.carbon.items.ItemWoodenDoor;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.FurnaceRecipe;
@@ -223,6 +229,29 @@ public class Injector {
     registerItem(this.rabbitHideItemMat, 415, "rabbit_hide", this.rabbitHideItem);
     registerItem(this.muttonItemMat, 423, "mutton", this.muttonItem);
     registerItem(this.cookedMuttonItemMat, 424, "cooked_mutton", this.cookedMuttonItem);
+
+    //inject our new stone, sponge, torch and redstone torches
+    try {
+        Class<Blocks> blocksClass = Blocks.class;
+        setFinalField(blocksClass, "STONE", Blocks.STONE, Carbon.injector().stoneBlock);
+        setFinalField(blocksClass, "SPONGE", Blocks.SPONGE, Carbon.injector().spongeBlock);
+        setFinalField(blocksClass, "TORCH", Blocks.TORCH, Carbon.injector().torchBlock);
+        setFinalField(blocksClass, "REDSTONE_TORCH_ON", Blocks.REDSTONE_TORCH_ON, Carbon.injector().redstoneTorchBlockOn);
+        setFinalField(blocksClass, "REDSTONE_TORCH_OFF", Blocks.REDSTONE_TORCH_OFF, Carbon.injector().redstoneTorchBlockOff);
+     } catch (Throwable t) {
+    	 t.printStackTrace();
+    	 Bukkit.shutdown();
+     }
+
+  }
+
+  private void setFinalField(Class<?> clazz, String fieldname, Object object, Object newValue) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+	  Field field = clazz.getDeclaredField(fieldname);
+	  field.setAccessible(true);
+	  Field fieldModifiers = Field.class.getDeclaredField("modifiers");
+	  fieldModifiers.setAccessible(true);
+	  fieldModifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+	  field.set(object, newValue);
   }
   
 
