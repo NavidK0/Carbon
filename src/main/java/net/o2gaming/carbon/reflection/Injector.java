@@ -119,8 +119,8 @@ public class Injector {
   public Material spruceDoorMat = Utilities.addMaterial("spruce_door", 427);
   public Material birchDoorMat = Utilities.addMaterial("birch_door", 428);
   public Material jungleDoorMat = Utilities.addMaterial("jungle_door", 429);
-  public org.bukkit.Material acaciaDoorMat = Utilities.addMaterial("acacia_door", 430);
-  public org.bukkit.Material darkOakDoorMat = Utilities.addMaterial("dark_oak_door", 431);
+  public Material acaciaDoorMat = Utilities.addMaterial("acacia_door", 430);
+  public Material darkOakDoorMat = Utilities.addMaterial("dark_oak_door", 431);
   
 
   //Items
@@ -165,17 +165,17 @@ public class Injector {
   public Item prismarineShardItem = new ItemPrismarineShard();
   public Item prismarineCrystalItem = new ItemPrismarineCrystal();
   
-  public static void registerBlock(org.bukkit.Material mat, int id, String name, Block block)
+  public static void registerBlock(Material mat, int id, String name, Block block)
   {
     Block.REGISTRY.a(id, name, block);
   }
   
-  public static void registerBlock(org.bukkit.Material mat, int id, String name, Block block, Item item) {
+  public static void registerBlock(Material mat, int id, String name, Block block, Item item) {
     Block.REGISTRY.a(id, name, block);
     Item.REGISTRY.a(id, name, item);
   }
   
-  public static void registerItem(org.bukkit.Material mat, int id, String name, Item item) {
+  public static void registerItem(Material mat, int id, String name, Item item) {
     Item.REGISTRY.a(id, name, item);
   }
   
@@ -183,7 +183,7 @@ public class Injector {
 
   public void registerAll() {
     //Register blocks
-    registerBlock(org.bukkit.Material.STONE, 1, "stone", this.stoneBlock, this.stoneItem);
+    registerBlock(Material.STONE, 1, "stone", this.stoneBlock, this.stoneItem);
     registerBlock(Material.TORCH, 50, "torch", this.torchBlock, this.torchItem);
     registerBlock(Material.REDSTONE_TORCH_ON, 76, "redstone_torch", this.redstoneTorchBlockOn, this.redstoneTorchItemOn);
     registerBlock(Material.REDSTONE_TORCH_OFF, 75, "redstone_torch", this.redstoneTorchBlockOff, this.redstoneTorchItemOff);
