@@ -11,6 +11,7 @@ import net.o2gaming.carbon.protocolmodifier.ProtocolBlockListener;
 import net.o2gaming.carbon.protocolmodifier.ProtocolItemListener;
 import net.o2gaming.carbon.reflection.Injector;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Carbon extends JavaPlugin {
@@ -24,6 +25,13 @@ public class Carbon extends JavaPlugin {
   
     @Override
     public void onLoad() {
+    	//call to server shutdown if worlds are already loaded, prevents various errors when loading plugin on the fly
+    	if (!Bukkit.getWorlds().isEmpty()) {
+    		Bukkit.shutdown();
+    		return;
+    	}
+
+    	//inject new blocks
         try {
           DynamicEnumType.loadReflection();
         }
@@ -38,8 +46,8 @@ public class Carbon extends JavaPlugin {
 
     @Override
     public void onEnable() {
-         dataFolder = new File(getDataFolder(), getDescription().getName());
-         if (!dataFolder.exists()) {
+        dataFolder = new File(getDataFolder(), getDescription().getName());
+        if (!dataFolder.exists()) {
              dataFolder.mkdir();
         }
         saveDefaultConfig();
@@ -56,6 +64,12 @@ public class Carbon extends JavaPlugin {
         }
         
         log.info("[Carbon] Carbon is enabled.");
+    }
+
+    @Override
+    public void onDisable() {
+    	//call to server shutdown on disable, won't hurt if server already disables itslef, but will prevent plugin unload/reload
+    	Bukkit.shutdown();
     }
     
     //There is no way to reload this plugin safely do to the fact it adds 1.8 blocks into the server.
