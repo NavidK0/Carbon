@@ -27,7 +27,7 @@ public class ProtocolBlockListener {
 		//slime -> emerald block
 		replacements[165] = 133;
 		//barrier -> ? (probably not needed) (or maybe glass?)
-
+		replacements[166] = 20;
 		//iron trapdoor -> trapdoor
 		replacements[167] = 96;
 		//prismarine -> mossy cobblestone

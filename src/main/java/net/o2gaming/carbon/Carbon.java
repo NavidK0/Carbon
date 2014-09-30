@@ -61,6 +61,7 @@ public class Carbon extends JavaPlugin {
             new ProtocolBlockListener(this).init();
             new ProtocolItemListener(this).init();
         } catch (Throwable t) {
+        	t.printStackTrace();
         }
         
         log.info("[Carbon] Carbon is enabled.");
@@ -68,7 +69,7 @@ public class Carbon extends JavaPlugin {
 
     @Override
     public void onDisable() {
-    	//call to server shutdown on disable, won't hurt if server already disables itslef, but will prevent plugin unload/reload
+    	//call to server shutdown on disable, won't hurt if server already disables itself, but will prevent plugin unload/reload
     	Bukkit.shutdown();
     }
     
