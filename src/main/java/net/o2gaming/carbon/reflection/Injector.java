@@ -3,7 +3,6 @@ package net.o2gaming.carbon.reflection;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Iterator;
-
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.Item;
@@ -11,22 +10,24 @@ import net.minecraft.server.v1_7_R4.ItemBlock;
 import net.minecraft.server.v1_7_R4.ItemMultiTexture;
 import net.o2gaming.carbon.Carbon;
 import net.o2gaming.carbon.Utilities;
-import net.o2gaming.carbon.blocks.BlockNewRedstoneTorchOn;
-import net.o2gaming.carbon.blocks.BlockNewRedstoneTorchOff;
 import net.o2gaming.carbon.blocks.BlockBarrier;
 import net.o2gaming.carbon.blocks.BlockIronTrapdoor;
 import net.o2gaming.carbon.blocks.BlockPrismarine;
 import net.o2gaming.carbon.blocks.BlockRedSandstone;
 import net.o2gaming.carbon.blocks.BlockRedSandstoneStairs;
+import net.o2gaming.carbon.blocks.BlockRedstoneTorchOff;
+import net.o2gaming.carbon.blocks.BlockRedstoneTorchOn;
 import net.o2gaming.carbon.blocks.BlockSeaLantern;
 import net.o2gaming.carbon.blocks.BlockSlime;
 import net.o2gaming.carbon.blocks.BlockSponge;
 import net.o2gaming.carbon.blocks.BlockStep;
 import net.o2gaming.carbon.blocks.BlockStone;
+import net.o2gaming.carbon.blocks.BlockStoneButton;
+import net.o2gaming.carbon.blocks.BlockTorch;
+import net.o2gaming.carbon.blocks.BlockWoodButton;
 import net.o2gaming.carbon.blocks.BlockWoodenDoor;
 import net.o2gaming.carbon.blocks.BlockWoodenFence;
 import net.o2gaming.carbon.blocks.BlockWoodenFenceGate;
-import net.o2gaming.carbon.blocks.BlockNewTorch;
 import net.o2gaming.carbon.items.ItemCookedMutton;
 import net.o2gaming.carbon.items.ItemCookedRabbit;
 import net.o2gaming.carbon.items.ItemMutton;
@@ -37,7 +38,6 @@ import net.o2gaming.carbon.items.ItemRabbitFoot;
 import net.o2gaming.carbon.items.ItemRabbitHide;
 import net.o2gaming.carbon.items.ItemRabbitStew;
 import net.o2gaming.carbon.items.ItemWoodenDoor;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.FurnaceRecipe;
@@ -52,10 +52,10 @@ import org.bukkit.inventory.ShapelessRecipe;
 public class Injector {
   //Blocks
   public Block stoneBlock = new BlockStone();
-  public Block redstoneTorchBlockOn = new BlockNewRedstoneTorchOn();
-  public Block redstoneTorchBlockOff = new BlockNewRedstoneTorchOff();
+  public Block redstoneTorchBlockOn = new BlockRedstoneTorchOn();
+  public Block redstoneTorchBlockOff = new BlockRedstoneTorchOff();
   public Block slimeBlock = new BlockSlime();
-  public Block torchBlock = new BlockNewTorch();
+  public Block torchBlock = new BlockTorch();
   public Block redSandstoneBlock = new BlockRedSandstone();
   public Block barrierBlock = new BlockBarrier();
   public Block spruceFenceBlock = new BlockWoodenFence("spruce_fence", net.minecraft.server.v1_7_R4.Material.WOOD);
@@ -80,47 +80,49 @@ public class Injector {
   public Block prismarineBlock = new BlockPrismarine();
   public Block seaLanternBlock = new BlockSeaLantern();
   public Block spongeBlock = new BlockSponge();
-
+  public Block stoneButtonBlock = new BlockStoneButton();
+  public Block woodButtonBlock = new BlockWoodButton();
+  
   //Bukkit materials
-  public Material slimeMat = Utilities.addMaterial("slime", 165);
-  public Material barrierMat = Utilities.addMaterial("barrier", 166);
-  public Material ironTrapdoorMat = Utilities.addMaterial("iron_trapdoor", 167);
-  public Material prismarineBlockMat = Utilities.addMaterial("prismarine", 168);
-  public Material seaLaternMat = Utilities.addMaterial("sea_lantern", 169);
-  public Material redSandstoneMat = Utilities.addMaterial("red_sandstone", 179);
-  public Material redSandstoneStairsMat = Utilities.addMaterial("red_sandstone_stairs", 180);
-  public Material redSandstoneDoubleSlabMat = Utilities.addMaterial("red_sandstone_doubleslab", 181);
-  public Material redSandstoneSlabMat = Utilities.addMaterial("red_sandstone_slab", 182);
-  public Material spruceFenceGateMat = Utilities.addMaterial("spruce_fence_gate", 183);
-  public Material birchFenceGateMat = Utilities.addMaterial("birch_fence_gate", 184);
-  public Material jungleFenceGateMat = Utilities.addMaterial("jungle_fence_gate", 185);
-  public Material darkOakFenceGateMat = Utilities.addMaterial("dark_oak_fence_gate", 186);
-  public Material acaciaFenceGateMat = Utilities.addMaterial("acacia_fence_gate", 187);
-  public Material spruceFenceMat = Utilities.addMaterial("spruce_fence", 188);
-  public Material birchFenceMat = Utilities.addMaterial("birch_fence", 189);
-  public Material jungleFenceMat = Utilities.addMaterial("jungle_fence", 190);
-  public Material darkOakFenceMat = Utilities.addMaterial("dark_oak_fence", 191);
-  public Material acaciaFenceMat = Utilities.addMaterial("acacia_fence", 192);
-  public Material spruceDoorBlockMat = Utilities.addMaterial("spruce_door", 193);
-  public Material birchDoorBlockMat = Utilities.addMaterial("birch_door", 194);
-  public Material jungleDoorBlockMat = Utilities.addMaterial("jungle_door", 195);
-  public Material acaciaDoorBlockMat = Utilities.addMaterial("acacia_door", 196);
-  public Material darkOakDoorBlockMat = Utilities.addMaterial("dark_oak_door", 197);
-  public Material prismarineShardMat = Utilities.addMaterial("prismarine_shard", 409);
-  public Material prismarineCrystalsMat = Utilities.addMaterial("prismarine_crystals", 410);
-  public Material rabbitItemMat = Utilities.addMaterial("rabbit", 411);
-  public Material cookedRabbitItemMat = Utilities.addMaterial("cooked_rabbit", 412);
-  public Material rabbitStewItemMat = Utilities.addMaterial("rabbit_stew", 413);
-  public Material rabbitFootItemMat = Utilities.addMaterial("rabbit_foot", 414);
-  public Material rabbitHideItemMat = Utilities.addMaterial("rabbit_hide", 415);
-  public Material armorStandEntityMat = Utilities.addMaterial("armor_stand", 416);
-  public Material muttonItemMat = Utilities.addMaterial("mutton", 423);
-  public Material cookedMuttonItemMat = Utilities.addMaterial("cooked_mutton", 424);
-  public Material spruceDoorMat = Utilities.addMaterial("spruce_door", 427);
-  public Material birchDoorMat = Utilities.addMaterial("birch_door", 428);
-  public Material jungleDoorMat = Utilities.addMaterial("jungle_door", 429);
-  public Material acaciaDoorMat = Utilities.addMaterial("acacia_door", 430);
-  public Material darkOakDoorMat = Utilities.addMaterial("dark_oak_door", 431);
+  public Material slimeMat = Utilities.addMaterial("SLIME", 165);
+  public Material barrierMat = Utilities.addMaterial("BARRIER", 166);
+  public Material ironTrapdoorMat = Utilities.addMaterial("IRON_TRAPDOOR", 167);
+  public Material prismarineBlockMat = Utilities.addMaterial("PRISMARINE", 168);
+  public Material seaLaternMat = Utilities.addMaterial("SEA_LANTERN", 169);
+  public Material redSandstoneMat = Utilities.addMaterial("RED_SANDSTONE", 179);
+  public Material redSandstoneStairsMat = Utilities.addMaterial("RED_SANDSTONE_STAIRS", 180);
+  public Material redSandstoneDoubleSlabMat = Utilities.addMaterial("RED_SANDSTONE_DOUBLESLAB", 181);
+  public Material redSandstoneSlabMat = Utilities.addMaterial("RED_SANDSTONE_SLAB", 182);
+  public Material spruceFenceGateMat = Utilities.addMaterial("SPRUCE_FENCE_GATE", 183);
+  public Material birchFenceGateMat = Utilities.addMaterial("BIRCH_FENCE_GATE", 184);
+  public Material jungleFenceGateMat = Utilities.addMaterial("JUNGLE_FENCE_GATE", 185);
+  public Material darkOakFenceGateMat = Utilities.addMaterial("DARK_OAK_FENCE_GATE", 186);
+  public Material acaciaFenceGateMat = Utilities.addMaterial("ACACIA_FENCE_GATE", 187);
+  public Material spruceFenceMat = Utilities.addMaterial("SPRUCE_FENCE", 188);
+  public Material birchFenceMat = Utilities.addMaterial("BIRCH_FENCE", 189);
+  public Material jungleFenceMat = Utilities.addMaterial("JUNGLE_FENCE", 190);
+  public Material darkOakFenceMat = Utilities.addMaterial("DARK_OAK_FENCE", 191);
+  public Material acaciaFenceMat = Utilities.addMaterial("ACACIA_FENCE", 192);
+  public Material spruceDoorBlockMat = Utilities.addMaterial("SPRUCE_DOOR_BLOCK", 193);
+  public Material birchDoorBlockMat = Utilities.addMaterial("BIRCH_DOOR_BLOCK", 194);
+  public Material jungleDoorBlockMat = Utilities.addMaterial("JUNGLE_DOOR_BLOCK", 195);
+  public Material acaciaDoorBlockMat = Utilities.addMaterial("ACACIA_DOOR_BLOCK", 196);
+  public Material darkOakDoorBlockMat = Utilities.addMaterial("DARK_OAK_DOOR_BLOCK", 197);
+  public Material prismarineShardMat = Utilities.addMaterial("PRISMARINE_SHARD", 409);
+  public Material prismarineCrystalsMat = Utilities.addMaterial("PRISMARINE_CRYSTALS", 410);
+  public Material rabbitItemMat = Utilities.addMaterial("RABBIT", 411);
+  public Material cookedRabbitItemMat = Utilities.addMaterial("COOKED_RABBIT", 412);
+  public Material rabbitStewItemMat = Utilities.addMaterial("RABBIT_STEW", 413);
+  public Material rabbitFootItemMat = Utilities.addMaterial("RABBIT_FOOT", 414);
+  public Material rabbitHideItemMat = Utilities.addMaterial("RABBIT_HIDE", 415);
+  public Material armorStandEntityMat = Utilities.addMaterial("ARMOR_STAND", 416);
+  public Material muttonItemMat = Utilities.addMaterial("MUTTON", 423);
+  public Material cookedMuttonItemMat = Utilities.addMaterial("COOKED_MUTTON", 424);
+  public Material spruceDoorMat = Utilities.addMaterial("SPRUCE_DOOR", 427);
+  public Material birchDoorMat = Utilities.addMaterial("BIRCH_DOOR", 428);
+  public Material jungleDoorMat = Utilities.addMaterial("JUNGLE_DOOR", 429);
+  public Material acaciaDoorMat = Utilities.addMaterial("ACACIA_DOOR", 430);
+  public Material darkOakDoorMat = Utilities.addMaterial("CARK_OAK_DOOR", 431);
   
 
   //Items
@@ -153,7 +155,8 @@ public class Injector {
   public Item prismarineItem = new ItemMultiTexture(this.prismarineBlock, this.prismarineBlock, BlockPrismarine.names);
   public Item seaLanternItem = new ItemBlock(this.seaLanternBlock);
   public Item spongeItem = new ItemMultiTexture(this.spongeBlock, this.spongeBlock, BlockSponge.names);
-  
+  public Item stoneButtonItem = new ItemBlock(stoneButtonBlock);
+  public Item woodButtonItem = new ItemBlock(woodButtonBlock);
 
   public Item rabbitItem = new ItemRabbit();
   public Item cookedRabbitItem = new ItemCookedRabbit();
@@ -183,52 +186,54 @@ public class Injector {
 
   public void registerAll() {
     //Register blocks
-    registerBlock(Material.STONE, 1, "stone", this.stoneBlock, this.stoneItem);
-    registerBlock(Material.TORCH, 50, "torch", this.torchBlock, this.torchItem);
-    registerBlock(Material.REDSTONE_TORCH_ON, 76, "redstone_torch", this.redstoneTorchBlockOn, this.redstoneTorchItemOn);
-    registerBlock(Material.REDSTONE_TORCH_OFF, 75, "unlit_redstone_torch", this.redstoneTorchBlockOff, this.redstoneTorchItemOff);
-    registerBlock(Material.SPONGE, 19, "sponge", this.spongeBlock, this.spongeItem);
-    registerBlock(this.slimeMat, 165, "slime", this.slimeBlock, this.slimeItem);
-    registerBlock(this.barrierMat, 166, "barrier", this.barrierBlock, this.barrierItem);
-    registerBlock(this.ironTrapdoorMat, 167, "iron_trapdoor", this.ironTrapDoorBlock, this.ironTrapDoorItem);
-    registerBlock(this.prismarineBlockMat, 168, "prismarine", this.prismarineBlock, this.prismarineItem);
-    registerBlock(this.seaLaternMat, 169, "sea_lantern", this.seaLanternBlock, this.seaLanternItem);
-    registerBlock(this.redSandstoneMat, 179, "red_sandstone", this.redSandstoneBlock, this.redSandstoneItem);
-    registerBlock(this.redSandstoneStairsMat, 180, "red_sandstone_stairs", this.redSandstoneStairsBlock, this.redSandstoneStairsItem);
-    registerBlock(this.redSandstoneDoubleSlabMat, 181, "double_stone_slab2", this.redSandstoneDoubleSlabBlock, this.redSandstoneDoubleSlabItem);
-    registerBlock(this.redSandstoneSlabMat, 182, "stone_slab2", this.redSandstoneSlabBlock, this.redSandstoneSlabItem);
-    registerBlock(this.spruceFenceGateMat, 183, "spruce_fence_gate", this.spruceFenceBlockGate, this.spruceFenceGateItem);
-    registerBlock(this.birchFenceGateMat, 184, "birch_fence_gate", this.birchFenceBlockGate, this.birchFenceGateItem);
-    registerBlock(this.jungleFenceGateMat, 185, "jungle_fence_gate", this.jungleFenceBlockGate, this.jungleFenceGateItem);
-    registerBlock(this.darkOakFenceGateMat, 186, "dark_oak_fence_gate", this.darkOakFenceBlockGate, this.darkOakFenceGateItem);
-    registerBlock(this.acaciaFenceGateMat, 187, "acacia_fence_gate", this.acaciaFenceBlockGate, this.acaciaFenceGateItem);
-    registerBlock(this.spruceFenceMat, 188, "spruce_fence", this.spruceFenceBlock, this.spruceFenceItem);
-    registerBlock(this.birchFenceMat, 189, "birch_fence", this.birchFenceBlock, this.birchFenceItem);
-    registerBlock(this.jungleFenceMat, 190, "jungle_fence", this.jungleFenceBlock, this.jungleFenceItem);
-    registerBlock(this.darkOakFenceMat, 191, "dark_oak_fence", this.darkOakFenceBlock, this.darkOakFenceItem);
-    registerBlock(this.acaciaFenceMat, 192, "acacia_fence", this.acaciaFenceBlock, this.acaciaFenceItem);
-    registerBlock(this.spruceDoorMat, 193, "spruce_door", this.spruceDoorBlock);
-    registerItem(this.spruceDoorMat, 427, "spruce_door", this.spruceDoorItem);
-    registerBlock(this.birchDoorMat, 194, "birch_door", this.birchDoorBlock);
-    registerItem(this.birchDoorMat, 428, "birch_door", this.birchDoorItem);
-    registerBlock(this.jungleDoorMat, 195, "jungle_door", this.jungleDoorBlock);
-    registerItem(this.jungleDoorMat, 429, "jungle_door", this.jungleDoorItem);
-    registerBlock(this.acaciaDoorMat, 196, "acacia_door", this.acaciaDoorBlock);
-    registerItem(this.acaciaDoorMat, 430, "acacia_door", this.acaciaDoorItem);
-    registerBlock(this.darkOakDoorMat, 197, "dark_oak_door", this.darkOakDoorBlock);
-    registerItem(this.darkOakDoorMat, 431, "dark_oak_door", this.darkOakDoorItem);
+    registerBlock(Material.STONE, 1, "stone", stoneBlock, stoneItem);
+    registerBlock(Material.SPONGE, 19, "sponge", spongeBlock, spongeItem);
+    registerBlock(Material.STONE_BUTTON, 77, "stone_button", stoneButtonBlock,stoneButtonItem);
+    registerBlock(Material.TORCH, 50, "torch", torchBlock, torchItem);
+    registerBlock(Material.REDSTONE_TORCH_OFF, 75, "unlit_redstone_torch", redstoneTorchBlockOff, redstoneTorchItemOff);
+    registerBlock(Material.REDSTONE_TORCH_ON, 76, "redstone_torch", redstoneTorchBlockOn, redstoneTorchItemOn);
+    registerBlock(Material.WOOD_BUTTON, 143, "wooden_button", woodButtonBlock, woodButtonItem);
+    registerBlock(slimeMat, 165, "slime", slimeBlock, slimeItem);
+    registerBlock(barrierMat, 166, "barrier", barrierBlock, barrierItem);
+    registerBlock(ironTrapdoorMat, 167, "iron_trapdoor", ironTrapDoorBlock, ironTrapDoorItem);
+    registerBlock(prismarineBlockMat, 168, "prismarine", prismarineBlock, prismarineItem);
+    registerBlock(seaLaternMat, 169, "sea_lantern", seaLanternBlock, seaLanternItem);
+    registerBlock(redSandstoneMat, 179, "red_sandstone", redSandstoneBlock, redSandstoneItem);
+    registerBlock(redSandstoneStairsMat, 180, "red_sandstone_stairs", redSandstoneStairsBlock, redSandstoneStairsItem);
+    registerBlock(redSandstoneDoubleSlabMat, 181, "double_stone_slab2", redSandstoneDoubleSlabBlock, redSandstoneDoubleSlabItem);
+    registerBlock(redSandstoneSlabMat, 182, "stone_slab2", redSandstoneSlabBlock, redSandstoneSlabItem);
+    registerBlock(spruceFenceGateMat, 183, "spruce_fence_gate", spruceFenceBlockGate, spruceFenceGateItem);
+    registerBlock(birchFenceGateMat, 184, "birch_fence_gate", birchFenceBlockGate, birchFenceGateItem);
+    registerBlock(jungleFenceGateMat, 185, "jungle_fence_gate", jungleFenceBlockGate, jungleFenceGateItem);
+    registerBlock(darkOakFenceGateMat, 186, "dark_oak_fence_gate", darkOakFenceBlockGate, darkOakFenceGateItem);
+    registerBlock(acaciaFenceGateMat, 187, "acacia_fence_gate", acaciaFenceBlockGate, acaciaFenceGateItem);
+    registerBlock(spruceFenceMat, 188, "spruce_fence", spruceFenceBlock, spruceFenceItem);
+    registerBlock(birchFenceMat, 189, "birch_fence", birchFenceBlock, birchFenceItem);
+    registerBlock(jungleFenceMat, 190, "jungle_fence", jungleFenceBlock, jungleFenceItem);
+    registerBlock(darkOakFenceMat, 191, "dark_oak_fence", darkOakFenceBlock, darkOakFenceItem);
+    registerBlock(acaciaFenceMat, 192, "acacia_fence", acaciaFenceBlock, acaciaFenceItem);
+    registerBlock(spruceDoorMat, 193, "spruce_door", spruceDoorBlock);
+    registerItem(spruceDoorMat, 427, "spruce_door", spruceDoorItem);
+    registerBlock(birchDoorMat, 194, "birch_door", birchDoorBlock);
+    registerItem(birchDoorMat, 428, "birch_door", birchDoorItem);
+    registerBlock(jungleDoorMat, 195, "jungle_door", jungleDoorBlock);
+    registerItem(jungleDoorMat, 429, "jungle_door", jungleDoorItem);
+    registerBlock(acaciaDoorMat, 196, "acacia_door", acaciaDoorBlock);
+    registerItem(acaciaDoorMat, 430, "acacia_door", acaciaDoorItem);
+    registerBlock(darkOakDoorMat, 197, "dark_oak_door", darkOakDoorBlock);
+    registerItem(darkOakDoorMat, 431, "dark_oak_door", darkOakDoorItem);
     
 
     //Register items
-    registerItem(this.prismarineShardMat, 409, "prismarine_shard", this.prismarineShardItem);
-    registerItem(this.prismarineCrystalsMat, 410, "prismarine_crystals", this.prismarineCrystalItem);
-    registerItem(this.rabbitItemMat, 411, "rabbit", this.rabbitItem);
-    registerItem(this.cookedRabbitItemMat, 412, "cooked_rabbit", this.cookedRabbitItem);
-    registerItem(this.rabbitStewItemMat, 413, "rabbit_stew", this.rabbitStewItem);
-    registerItem(this.rabbitFootItemMat, 414, "rabbit_foot", this.rabbitFootItem);
-    registerItem(this.rabbitHideItemMat, 415, "rabbit_hide", this.rabbitHideItem);
-    registerItem(this.muttonItemMat, 423, "mutton", this.muttonItem);
-    registerItem(this.cookedMuttonItemMat, 424, "cooked_mutton", this.cookedMuttonItem);
+    registerItem(prismarineShardMat, 409, "prismarine_shard", prismarineShardItem);
+    registerItem(prismarineCrystalsMat, 410, "prismarine_crystals", prismarineCrystalItem);
+    registerItem(rabbitItemMat, 411, "rabbit", rabbitItem);
+    registerItem(cookedRabbitItemMat, 412, "cooked_rabbit", cookedRabbitItem);
+    registerItem(rabbitStewItemMat, 413, "rabbit_stew", rabbitStewItem);
+    registerItem(rabbitFootItemMat, 414, "rabbit_foot", rabbitFootItem);
+    registerItem(rabbitHideItemMat, 415, "rabbit_hide", rabbitHideItem);
+    registerItem(muttonItemMat, 423, "mutton", muttonItem);
+    registerItem(cookedMuttonItemMat, 424, "cooked_mutton", cookedMuttonItem);
 
     //inject our new stone, sponge, torch and redstone torches to blocks class
     try {
@@ -238,6 +243,8 @@ public class Injector {
         setStaticFinalField(blocksClass, "TORCH", Carbon.injector().torchBlock);
         setStaticFinalField(blocksClass, "REDSTONE_TORCH_ON", Carbon.injector().redstoneTorchBlockOn);
         setStaticFinalField(blocksClass, "REDSTONE_TORCH_OFF", Carbon.injector().redstoneTorchBlockOff);
+        setStaticFinalField(blocksClass, "STONE_BUTTON", Carbon.injector().stoneButtonBlock);
+        setStaticFinalField(blocksClass, "WOOD_BUTTON", Carbon.injector().woodButtonBlock);
      } catch (Throwable t) {
     	 t.printStackTrace();
     	 Bukkit.shutdown();

@@ -7,9 +7,9 @@ import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.CreativeModeTab;
 import net.minecraft.server.v1_7_R4.World;
 
-public class BlockNewRedstoneTorchOn extends BlockRedstoneTorch {
+public class BlockRedstoneTorchOn extends BlockRedstoneTorch {
 
-	public BlockNewRedstoneTorchOn() {
+	public BlockRedstoneTorchOn() {
 		super(true);
 		c(0.0F);
 		a(0.5F);

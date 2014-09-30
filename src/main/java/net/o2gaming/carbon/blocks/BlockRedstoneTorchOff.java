@@ -2,19 +2,18 @@ package net.o2gaming.carbon.blocks;
 
 import net.o2gaming.carbon.Carbon;
 import net.minecraft.server.v1_7_R4.Block;
-import net.minecraft.server.v1_7_R4.BlockTorch;
+import net.minecraft.server.v1_7_R4.BlockRedstoneTorch;
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.World;
 
-public class BlockNewTorch extends BlockTorch {
+public class BlockRedstoneTorchOff extends BlockRedstoneTorch {
 
-	public BlockNewTorch() {
-		super();
+	public BlockRedstoneTorchOff() {
+		super(false);
 		c(0.0F);
-		a(0.9375F);
 		a(f);
-		c("torch");
-		d("torch_on");
+		c("notGate");
+		d("redstone_torch_off");
 	}
 
 	@Override
