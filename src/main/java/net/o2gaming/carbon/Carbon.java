@@ -41,6 +41,7 @@ public class Carbon extends JavaPlugin {
         injector = new Injector();
         injector.registerAll();
         injector.registerRecipes();
+        
         log.info("Carbon has finished injecting all 1.8 functionalities.");
     }
 
