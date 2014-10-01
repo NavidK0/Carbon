@@ -3,11 +3,19 @@ package net.o2gaming.carbon.reflection;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.Blocks;
+import net.minecraft.server.v1_7_R4.CraftingManager;
+import net.minecraft.server.v1_7_R4.IRecipe;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.ItemBlock;
 import net.minecraft.server.v1_7_R4.ItemMultiTexture;
+import net.minecraft.server.v1_7_R4.RecipesFurnace;
+import net.minecraft.server.v1_7_R4.ShapedRecipes;
+import net.minecraft.server.v1_7_R4.ShapelessRecipes;
 import net.o2gaming.carbon.Carbon;
 import net.o2gaming.carbon.Utilities;
 import net.o2gaming.carbon.blocks.BlockBarrier;
@@ -38,6 +46,7 @@ import net.o2gaming.carbon.items.ItemRabbitFoot;
 import net.o2gaming.carbon.items.ItemRabbitHide;
 import net.o2gaming.carbon.items.ItemRabbitStew;
 import net.o2gaming.carbon.items.ItemWoodenDoor;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.FurnaceRecipe;
@@ -284,6 +293,7 @@ public class Injector {
     }
     
 
+    //now register our recipes
     ShapedRecipe coarseDirt = new ShapedRecipe(new ItemStack(org.bukkit.Material.DIRT, 4, (short)1)).shape(new String[] { "dg", "gd" }).setIngredient('d', org.bukkit.Material.DIRT).setIngredient('g', org.bukkit.Material.GRAVEL);
     addRecipe(coarseDirt);
     
@@ -458,27 +468,7 @@ public class Injector {
     addRecipe(cobbleFurnace);
     
     FurnaceRecipe crackedStoneBricks = new FurnaceRecipe(new ItemStack(org.bukkit.Material.SMOOTH_BRICK, 1, (short)2), org.bukkit.Material.SMOOTH_BRICK).setInput(org.bukkit.Material.SMOOTH_BRICK);
-    addRecipe(crackedStoneBricks);
-
-    ShapelessRecipe button = new ShapelessRecipe(new ItemStack(org.bukkit.Material.STONE_BUTTON)).addIngredient(1, org.bukkit.Material.STONE);
-    addRecipe(button);
-
-    ShapedRecipe stonePlate = new ShapedRecipe(new ItemStack(org.bukkit.Material.STONE_PLATE, 1)).shape(new String[] { "xx" }).setIngredient('x', org.bukkit.Material.STONE);
-    addRecipe(stonePlate);
-
-
-    ShapedRecipe comparator = new ShapedRecipe(new ItemStack(org.bukkit.Material.REDSTONE_COMPARATOR, 1)).shape(new String[] { " r ", "rqr", "sss" }).setIngredient('r', org.bukkit.Material.REDSTONE_TORCH_ON).setIngredient('q', org.bukkit.Material.QUARTZ).setIngredient('s', org.bukkit.Material.STONE, 0);
-    addRecipe(comparator);
-    
-
-
-    ShapedRecipe repeater = new ShapedRecipe(new ItemStack(org.bukkit.Material.DIODE, 1)).shape(new String[] { "trt", "sss" }).setIngredient('t', org.bukkit.Material.REDSTONE_TORCH_ON).setIngredient('r', org.bukkit.Material.REDSTONE).setIngredient('s', org.bukkit.Material.STONE, 0);
-    addRecipe(repeater);
-    
-
-    ShapedRecipe stoneSlab = new ShapedRecipe(new ItemStack(org.bukkit.Material.STEP, 6)).shape(new String[] { "sss" }).setIngredient('s', org.bukkit.Material.STONE);
-    addRecipe(stoneSlab);
-    
+    addRecipe(crackedStoneBricks);    
 
     ShapedRecipe stoneBricks = new ShapedRecipe(new ItemStack(org.bukkit.Material.SMOOTH_BRICK, 4)).shape(new String[] { "xx", "xx" }).setIngredient('x', org.bukkit.Material.STONE);
     addRecipe(stoneBricks);
@@ -504,19 +494,47 @@ public class Injector {
     
     ShapedRecipe leather = new ShapedRecipe(new ItemStack(Material.LEATHER, 1)).shape(new String[] { "ll", "ll" }).setIngredient('l', this.rabbitHideItemMat);
     addRecipe(leather);
-    
-    ShapedRecipe torch = new ShapedRecipe(new ItemStack(Material.TORCH, 1)).shape(new String[] { "c", "s" }).setIngredient('c', Material.STICK).setIngredient('s', Material.COAL);
-    addRecipe(torch);
-    
-    ShapedRecipe torch2 = new ShapedRecipe(new ItemStack(Material.TORCH, 1)).shape(new String[] { "c", "s" }).setIngredient('s', Material.STICK).setIngredient('c', Material.COAL, (short)1);
-    addRecipe(torch2);
-    
-    ShapedRecipe redstoneTorch = new ShapedRecipe(new ItemStack(Material.REDSTONE_TORCH_ON, 1)).shape(new String[] { "c", "s" }).setIngredient('s', Material.STICK).setIngredient('c', Material.REDSTONE);
-    addRecipe(redstoneTorch);
-    
-    ShapedRecipe jackolantern = new ShapedRecipe(new ItemStack(Material.JACK_O_LANTERN, 1)).shape(new String[] { "c", "s" }).setIngredient('s', Material.STICK).setIngredient('c', Material.PUMPKIN);
-    addRecipe(jackolantern);
-    
+
+    //fix already registered recipes
+    for (Object obj : CraftingManager.getInstance().getRecipes()) {
+    	IRecipe iRecipe = (IRecipe) obj;
+    	fixItemStack(iRecipe.b());
+    	if (iRecipe instanceof ShapedRecipes) {
+    		ShapedRecipes shapedRecipe = (ShapedRecipes) iRecipe;
+    		for (net.minecraft.server.v1_7_R4.ItemStack ingredient : shapedRecipe.getIngredients()) {
+    			if (ingredient == null) {
+    				continue;
+    			}
+    			fixItemStack(ingredient);
+    		}
+    	} else if (iRecipe instanceof ShapelessRecipes) {
+    		ShapelessRecipes shapelessRecipe = (ShapelessRecipes) iRecipe;
+    		for (net.minecraft.server.v1_7_R4.ItemStack ingredient : shapelessRecipe.getIngredients()) {
+    			if (ingredient == null) {
+    				continue;
+    			}
+    			fixItemStack(ingredient);
+    		}
+    	}
+    }
+
+    for (Object obj : RecipesFurnace.getInstance().getRecipes().entrySet()) {
+    	Entry<net.minecraft.server.v1_7_R4.ItemStack, net.minecraft.server.v1_7_R4.ItemStack> entry = (Entry<net.minecraft.server.v1_7_R4.ItemStack, net.minecraft.server.v1_7_R4.ItemStack>) obj;
+    	fixItemStack(entry.getKey());
+    	fixItemStack(entry.getValue());
+    }
+
+    for (Object obj : RecipesFurnace.getInstance().customRecipes.entrySet()) {
+    	Entry<net.minecraft.server.v1_7_R4.ItemStack, net.minecraft.server.v1_7_R4.ItemStack> entry = (Entry<net.minecraft.server.v1_7_R4.ItemStack, net.minecraft.server.v1_7_R4.ItemStack>) obj;
+    	fixItemStack(entry.getKey());
+    	fixItemStack(entry.getValue());
+    }
+
+  }
+
+  private void fixItemStack(net.minecraft.server.v1_7_R4.ItemStack itemStack) {
+	  Item validitem = Item.getById(Item.getId(itemStack.getItem()));
+	  itemStack.setItem(validitem);
   }
 
   public void addRecipe(Recipe recipe) {
