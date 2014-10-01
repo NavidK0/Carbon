@@ -2,4 +2,6 @@
 options:
     sheep:
         dropMutton: true
+    creeper:
+        dropMobHead:
     worlds: [world]

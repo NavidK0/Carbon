@@ -64,4 +64,9 @@ public class ItemListener implements Listener {
             }
         }
     }
+    
+    @EventHandler
+    public void onCreeperDeath(EntityDeathEvent evt) {
+        
+    }
 }

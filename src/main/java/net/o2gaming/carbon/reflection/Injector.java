@@ -457,7 +457,7 @@ public class Injector {
     FurnaceRecipe cobbleFurnace = new FurnaceRecipe(new ItemStack(org.bukkit.Material.STONE, 1, (short)0), org.bukkit.Material.STONE).setInput(org.bukkit.Material.COBBLESTONE, 1);
     addRecipe(cobbleFurnace);
     
-    FurnaceRecipe crackedStoneBricks = new FurnaceRecipe(new ItemStack(org.bukkit.Material.SMOOTH_BRICK, 1, (short)1), org.bukkit.Material.SMOOTH_BRICK).setInput(org.bukkit.Material.SMOOTH_BRICK);
+    FurnaceRecipe crackedStoneBricks = new FurnaceRecipe(new ItemStack(org.bukkit.Material.SMOOTH_BRICK, 1, (short)2), org.bukkit.Material.SMOOTH_BRICK).setInput(org.bukkit.Material.SMOOTH_BRICK);
     addRecipe(crackedStoneBricks);
 
     ShapelessRecipe button = new ShapelessRecipe(new ItemStack(org.bukkit.Material.STONE_BUTTON)).addIngredient(1, org.bukkit.Material.STONE);
