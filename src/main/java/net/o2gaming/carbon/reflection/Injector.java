@@ -490,7 +490,6 @@ public class Injector {
     FurnaceRecipe rawMutton = new FurnaceRecipe(new ItemStack(this.cookedMuttonItemMat, 1, (short)0), this.cookedMuttonItemMat).setInput(this.muttonItemMat);
     addRecipe(rawMutton);
     
-    
     ShapedRecipe rabbitStew = new ShapedRecipe(new ItemStack(this.rabbitStewItemMat, 1)).shape(new String[] { " r ", "cpm", " b " }).setIngredient('r', this.cookedRabbitItemMat).setIngredient('c', org.bukkit.Material.CARROT_ITEM).setIngredient('p', org.bukkit.Material.BAKED_POTATO).setIngredient('m', org.bukkit.Material.RED_MUSHROOM).setIngredient('b', org.bukkit.Material.BOWL);
     addRecipe(rabbitStew);
     
@@ -505,6 +504,15 @@ public class Injector {
     
     ShapedRecipe leather = new ShapedRecipe(new ItemStack(Material.LEATHER, 1)).shape(new String[] { "ll", "ll" }).setIngredient('l', this.rabbitHideItemMat);
     addRecipe(leather);
+    
+    ShapedRecipe torch = new ShapedRecipe(new ItemStack(Material.TORCH, 1)).shape(new String[] { "c", "s" }).setIngredient('c', Material.STICK).setIngredient('s', Material.COAL);
+    addRecipe(torch);
+    
+    ShapedRecipe torch2 = new ShapedRecipe(new ItemStack(Material.TORCH, 1)).shape(new String[] { "c", "s" }).setIngredient('s', Material.STICK).setIngredient('c', Material.COAL, (short)1);
+    addRecipe(torch2);
+    
+    ShapedRecipe redstoneTorch = new ShapedRecipe(new ItemStack(Material.REDSTONE_TORCH_ON, 1)).shape(new String[] { "c", "s" }).setIngredient('s', Material.STICK).setIngredient('c', Material.REDSTONE);
+    addRecipe(redstoneTorch);
     
   }
 
