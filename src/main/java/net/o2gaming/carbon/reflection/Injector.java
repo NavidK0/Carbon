@@ -514,6 +514,9 @@ public class Injector {
     ShapedRecipe redstoneTorch = new ShapedRecipe(new ItemStack(Material.REDSTONE_TORCH_ON, 1)).shape(new String[] { "c", "s" }).setIngredient('s', Material.STICK).setIngredient('c', Material.REDSTONE);
     addRecipe(redstoneTorch);
     
+    ShapedRecipe jackolantern = new ShapedRecipe(new ItemStack(Material.JACK_O_LANTERN, 1)).shape(new String[] { "c", "s" }).setIngredient('s', Material.STICK).setIngredient('c', Material.PUMPKIN);
+    addRecipe(jackolantern);
+    
   }
 
   public void addRecipe(Recipe recipe) {
