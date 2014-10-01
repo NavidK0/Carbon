@@ -3,7 +3,6 @@ package com.lastabyss.carbon.reflection;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import net.minecraft.server.v1_7_R4.Block;
@@ -46,6 +45,7 @@ import com.lastabyss.carbon.items.ItemRabbitFoot;
 import com.lastabyss.carbon.items.ItemRabbitHide;
 import com.lastabyss.carbon.items.ItemRabbitStew;
 import com.lastabyss.carbon.items.ItemWoodenDoor;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -534,7 +534,11 @@ public class Injector {
 
   private void fixItemStack(net.minecraft.server.v1_7_R4.ItemStack itemStack) {
 	  Item validitem = Item.getById(Item.getId(itemStack.getItem()));
-	  itemStack.setItem(validitem);
+          if (validitem != null) {
+            itemStack.setItem(validitem);
+          } else {
+              Carbon.log.log(Level.WARNING, "[Carbon] Failed to set itemStack \"{0}\"''s item because it was null.", itemStack.getName());
+          }
   }
 
   public void addRecipe(Recipe recipe) {
