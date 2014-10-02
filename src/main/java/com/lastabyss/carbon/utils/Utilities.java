@@ -2,7 +2,6 @@ package com.lastabyss.carbon.utils;
 
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.DynamicEnumType;
-import com.lastabyss.carbon.worldborder.CommandWorldBorder;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.lastabyss.carbon.worldborder;
+package com.lastabyss.carbon.commands;
 
 public class WorldBorderHell extends WorldBorder {
 	public double getX() {

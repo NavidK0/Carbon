@@ -1,4 +1,4 @@
-package com.lastabyss.carbon.worldborder;
+package com.lastabyss.carbon.commands;
 
 import net.minecraft.server.v1_7_R4.ChunkCoordinates;
 import net.minecraft.server.v1_7_R4.IChatBaseComponent;

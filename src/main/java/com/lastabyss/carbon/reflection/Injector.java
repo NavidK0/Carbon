@@ -19,6 +19,7 @@ import com.lastabyss.carbon.blocks.BlockWoodButton;
 import com.lastabyss.carbon.blocks.BlockWoodenDoor;
 import com.lastabyss.carbon.blocks.BlockWoodenFence;
 import com.lastabyss.carbon.blocks.BlockWoodenFenceGate;
+import com.lastabyss.carbon.commands.CommandWorldBorder;
 import com.lastabyss.carbon.entity.EntityEndermite;
 import com.lastabyss.carbon.entity.EntityGuardian;
 import com.lastabyss.carbon.entity.EntityRabbit;
@@ -36,7 +37,6 @@ import com.lastabyss.carbon.items.ItemRabbitHide;
 import com.lastabyss.carbon.items.ItemRabbitStew;
 import com.lastabyss.carbon.items.ItemWoodenDoor;
 import com.lastabyss.carbon.utils.Utilities;
-import com.lastabyss.carbon.worldborder.CommandWorldBorder;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -277,7 +277,7 @@ public class Injector {
     registerEntity(EntityRabbit.class, "Rabbit", 101, 10051392, 7555121);
     
     //Register commands from 1.8
-    Utilities.registerBukkitCommand(" ", new CommandWorldBorder());
+    Utilities.registerBukkitCommand("minecraft", new CommandWorldBorder());
     
 
     //inject our new stone, sponge, torch and redstone torches to blocks class

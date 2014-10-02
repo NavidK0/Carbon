@@ -6,14 +6,14 @@
 
 package com.lastabyss.carbon.entity;
 
-import net.minecraft.server.v1_7_R4.EntitySquid;
+import net.minecraft.server.v1_7_R4.EntityMonster;
 import net.minecraft.server.v1_7_R4.World;
 
 /**
  *
  * @author Navid
  */
-public class EntityGuardian extends EntitySquid {
+public class EntityGuardian extends EntityMonster {
 
     public EntityGuardian(World world) {
         super(world);

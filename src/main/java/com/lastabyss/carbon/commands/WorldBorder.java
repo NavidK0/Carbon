@@ -1,4 +1,4 @@
-package com.lastabyss.carbon.worldborder;
+package com.lastabyss.carbon.commands;
 
 import com.google.common.collect.Lists;
 
