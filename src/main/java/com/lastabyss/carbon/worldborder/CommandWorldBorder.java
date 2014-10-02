@@ -15,7 +15,7 @@ public class CommandWorldBorder extends Command {
     public static WorldBorderCommand cmd = new WorldBorderCommand();
     
     public CommandWorldBorder() {
-        super("border", "Vanilla 1.8 border command.", "/border <args>", new ArrayList<String>());
+        super("worldborder", "Vanilla 1.8 border command.", "/worldborder <args>", new ArrayList<String>());
     }
 
     @Override
