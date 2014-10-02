@@ -15,6 +15,7 @@ import net.minecraft.server.v1_7_R4.ItemMultiTexture;
 import net.minecraft.server.v1_7_R4.RecipesFurnace;
 import net.minecraft.server.v1_7_R4.ShapedRecipes;
 import net.minecraft.server.v1_7_R4.ShapelessRecipes;
+
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.Utilities;
 import com.lastabyss.carbon.blocks.BlockBarrier;
@@ -45,7 +46,6 @@ import com.lastabyss.carbon.items.ItemRabbitFoot;
 import com.lastabyss.carbon.items.ItemRabbitHide;
 import com.lastabyss.carbon.items.ItemRabbitStew;
 import com.lastabyss.carbon.items.ItemWoodenDoor;
-import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -190,8 +190,6 @@ public class Injector {
   public static void registerItem(Material mat, int id, String name, Item item) {
     Item.REGISTRY.a(id, name, item);
   }
-  
-
 
   public void registerAll() {
     //Register blocks
@@ -271,6 +269,9 @@ public class Injector {
   }
 
   public void registerRecipes() {
+	//reset recipes, this will restore original recipes, but with proper items now
+	Bukkit.resetRecipes();
+
     //Remove all recipes that have the new items so we can add the recipes later
     Iterator<Recipe> ri = Bukkit.getServer().recipeIterator();
     while (ri.hasNext()) {
@@ -290,8 +291,10 @@ public class Injector {
       if (recipe.getResult().getType() == org.bukkit.Material.STONE) {
         ri.remove();
       }
+      if (recipe.getResult().getType() == org.bukkit.Material.SMOOTH_BRICK) {
+    	ri.remove();
+      }
     }
-    
 
     //now register our recipes
     ShapedRecipe coarseDirt = new ShapedRecipe(new ItemStack(org.bukkit.Material.DIRT, 4, (short)1)).shape(new String[] { "dg", "gd" }).setIngredient('d', org.bukkit.Material.DIRT).setIngredient('g', org.bukkit.Material.GRAVEL);
@@ -495,50 +498,6 @@ public class Injector {
     ShapedRecipe leather = new ShapedRecipe(new ItemStack(Material.LEATHER, 1)).shape(new String[] { "ll", "ll" }).setIngredient('l', this.rabbitHideItemMat);
     addRecipe(leather);
 
-    //fix already registered recipes
-    for (Object obj : CraftingManager.getInstance().getRecipes()) {
-    	IRecipe iRecipe = (IRecipe) obj;
-    	fixItemStack(iRecipe.b());
-    	if (iRecipe instanceof ShapedRecipes) {
-    		ShapedRecipes shapedRecipe = (ShapedRecipes) iRecipe;
-    		for (net.minecraft.server.v1_7_R4.ItemStack ingredient : shapedRecipe.getIngredients()) {
-    			if (ingredient == null) {
-    				continue;
-    			}
-    			fixItemStack(ingredient);
-    		}
-    	} else if (iRecipe instanceof ShapelessRecipes) {
-    		ShapelessRecipes shapelessRecipe = (ShapelessRecipes) iRecipe;
-    		for (net.minecraft.server.v1_7_R4.ItemStack ingredient : shapelessRecipe.getIngredients()) {
-    			if (ingredient == null) {
-    				continue;
-    			}
-    			fixItemStack(ingredient);
-    		}
-    	}
-    }
-
-    for (Object obj : RecipesFurnace.getInstance().getRecipes().entrySet()) {
-    	Entry<net.minecraft.server.v1_7_R4.ItemStack, net.minecraft.server.v1_7_R4.ItemStack> entry = (Entry<net.minecraft.server.v1_7_R4.ItemStack, net.minecraft.server.v1_7_R4.ItemStack>) obj;
-    	fixItemStack(entry.getKey());
-    	fixItemStack(entry.getValue());
-    }
-
-    for (Object obj : RecipesFurnace.getInstance().customRecipes.entrySet()) {
-    	Entry<net.minecraft.server.v1_7_R4.ItemStack, net.minecraft.server.v1_7_R4.ItemStack> entry = (Entry<net.minecraft.server.v1_7_R4.ItemStack, net.minecraft.server.v1_7_R4.ItemStack>) obj;
-    	fixItemStack(entry.getKey());
-    	fixItemStack(entry.getValue());
-    }
-
-  }
-
-  private void fixItemStack(net.minecraft.server.v1_7_R4.ItemStack itemStack) {
-	  Item validitem = Item.getById(Item.getId(itemStack.getItem()));
-          if (validitem != null) {
-            itemStack.setItem(validitem);
-          } else {
-              Carbon.log.log(Level.WARNING, "[Carbon] Failed to set itemStack \"{0}\"''s item because it was null.", itemStack.getName());
-          }
   }
 
   public void addRecipe(Recipe recipe) {
