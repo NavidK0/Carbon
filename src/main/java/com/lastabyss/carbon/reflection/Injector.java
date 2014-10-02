@@ -185,7 +185,7 @@ public class Injector {
   public Item prismarineCrystalItem = new ItemPrismarineCrystal();
   
   //Entities
-  public EntityType endermiteEntity = Utilities.addEntity("Endermite", 67, Endermite.class);
+ // public EntityType endermiteEntity = Utilities.addEntity("Endermite", 67, Endermite.class);
   
   
   public static void registerBlock(Material mat, int id, String name, Block block)

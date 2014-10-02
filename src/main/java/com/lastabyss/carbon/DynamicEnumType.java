@@ -10,10 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.Material;
 
-public class DynamicEnumType
-{
+public class DynamicEnumType {
 	private static Method reflectionFactory;
 	private static Object reflectionRealFactory;
 	private static Method newconstructorAccesor;
@@ -113,9 +111,7 @@ public class DynamicEnumType
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T extends Enum<?>> T addEnum(Class<T> enumType,
-			String enumName, Class<?>[] paramTypes, Object[] paramValues)
-	{
+	public static <T extends Enum<?>> T addEnum(Class<T> enumType, String enumName, Class<?>[] paramTypes, Object[] paramValues) {
 		if (!Enum.class.isAssignableFrom(enumType))
 		{
 			throw new RuntimeException("class " + enumType
@@ -123,7 +119,7 @@ public class DynamicEnumType
 		}
 
 		Field valuesField = null;
-		Field[] fields = Material.class.getDeclaredFields();
+		Field[] fields = enumType.getDeclaredFields();
 		for (Field field : fields)
 		{
 			if (field.getName().contains("$VALUES"))
