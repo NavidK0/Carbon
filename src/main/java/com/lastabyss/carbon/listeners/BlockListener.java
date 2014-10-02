@@ -115,6 +115,13 @@ public class BlockListener implements Listener {
 			}
 		}
 	}
+	
+	public boolean isTouching(Block block, String material) {
+		for(BlockFace b : BlockFace.values()) {
+			if(block.getRelative(b).getType() == Material.getMaterial(material)) return true;
+		}
+		return false;
+	}
   
    @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
