@@ -20,7 +20,11 @@ import com.lastabyss.carbon.blocks.BlockWoodenDoor;
 import com.lastabyss.carbon.blocks.BlockWoodenFence;
 import com.lastabyss.carbon.blocks.BlockWoodenFenceGate;
 import com.lastabyss.carbon.entity.EntityEndermite;
+import com.lastabyss.carbon.entity.EntityGuardian;
+import com.lastabyss.carbon.entity.EntityRabbit;
 import com.lastabyss.carbon.entity.bukkit.Endermite;
+import com.lastabyss.carbon.entity.bukkit.Guardian;
+import com.lastabyss.carbon.entity.bukkit.Rabbit;
 import com.lastabyss.carbon.items.ItemCookedMutton;
 import com.lastabyss.carbon.items.ItemCookedRabbit;
 import com.lastabyss.carbon.items.ItemMutton;
@@ -31,7 +35,6 @@ import com.lastabyss.carbon.items.ItemRabbitFoot;
 import com.lastabyss.carbon.items.ItemRabbitHide;
 import com.lastabyss.carbon.items.ItemRabbitStew;
 import com.lastabyss.carbon.items.ItemWoodenDoor;
-
 import com.lastabyss.carbon.utils.Utilities;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -52,7 +55,6 @@ import net.minecraft.server.v1_7_R4.ItemMultiTexture;
 import net.minecraft.server.v1_7_R4.RecipesFurnace;
 import net.minecraft.server.v1_7_R4.ShapedRecipes;
 import net.minecraft.server.v1_7_R4.ShapelessRecipes;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -186,6 +188,9 @@ public class Injector {
   
   //Entities
   public EntityType endermiteEntity = Utilities.addEntity("Endermite", 67, Endermite.class);
+  public EntityType guardianEntity = Utilities.addEntity("Guardian", 68, Guardian.class);
+  public EntityType rabbitEntity = Utilities.addEntity("Rabbit", 101, Rabbit.class);
+  
   
   
   public static void registerBlock(Material mat, int id, String name, Block block)
@@ -267,6 +272,8 @@ public class Injector {
     
     //Register entities (data copied straight from 1.8, from EntityList.java)
     registerEntity(EntityEndermite.class, "Endermite", 67, 1447446, 7237230);
+    registerEntity(EntityGuardian.class, "Guardian", 68, 5931634, 15826224);
+    registerEntity(EntityRabbit.class, "Rabbit", 101, 10051392, 7555121);
     
 
     //inject our new stone, sponge, torch and redstone torches to blocks class

@@ -189,4 +189,5 @@ public class EntityEndermite extends EntityMonster {
     public EnumMonsterType getMonsterType() {
         return EnumMonsterType.ARTHROPOD;
     }
+    
 }
