@@ -1,22 +1,6 @@
 package com.lastabyss.carbon.reflection;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.Iterator;
-import java.util.Map.Entry;
-
-import net.minecraft.server.v1_7_R4.Block;
-import net.minecraft.server.v1_7_R4.Blocks;
-import net.minecraft.server.v1_7_R4.CraftingManager;
-import net.minecraft.server.v1_7_R4.IRecipe;
-import net.minecraft.server.v1_7_R4.Item;
-import net.minecraft.server.v1_7_R4.ItemBlock;
-import net.minecraft.server.v1_7_R4.ItemMultiTexture;
-import net.minecraft.server.v1_7_R4.RecipesFurnace;
-import net.minecraft.server.v1_7_R4.ShapedRecipes;
-import net.minecraft.server.v1_7_R4.ShapelessRecipes;
 import com.lastabyss.carbon.Carbon;
-import com.lastabyss.carbon.Utilities;
 import com.lastabyss.carbon.blocks.BlockBarrier;
 import com.lastabyss.carbon.blocks.BlockIronTrapdoor;
 import com.lastabyss.carbon.blocks.BlockPrismarine;
@@ -35,6 +19,8 @@ import com.lastabyss.carbon.blocks.BlockWoodButton;
 import com.lastabyss.carbon.blocks.BlockWoodenDoor;
 import com.lastabyss.carbon.blocks.BlockWoodenFence;
 import com.lastabyss.carbon.blocks.BlockWoodenFenceGate;
+import com.lastabyss.carbon.entity.EntityEndermite;
+import com.lastabyss.carbon.entity.bukkit.Endermite;
 import com.lastabyss.carbon.items.ItemCookedMutton;
 import com.lastabyss.carbon.items.ItemCookedRabbit;
 import com.lastabyss.carbon.items.ItemMutton;
@@ -45,10 +31,29 @@ import com.lastabyss.carbon.items.ItemRabbitFoot;
 import com.lastabyss.carbon.items.ItemRabbitHide;
 import com.lastabyss.carbon.items.ItemRabbitStew;
 import com.lastabyss.carbon.items.ItemWoodenDoor;
+import com.lastabyss.carbon.utils.Utilities;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.logging.Level;
-
+import net.minecraft.server.v1_7_R4.Block;
+import net.minecraft.server.v1_7_R4.Blocks;
+import net.minecraft.server.v1_7_R4.CraftingManager;
+import net.minecraft.server.v1_7_R4.Entity;
+import net.minecraft.server.v1_7_R4.EntityTypes;
+import net.minecraft.server.v1_7_R4.IRecipe;
+import net.minecraft.server.v1_7_R4.Item;
+import net.minecraft.server.v1_7_R4.ItemBlock;
+import net.minecraft.server.v1_7_R4.ItemMultiTexture;
+import net.minecraft.server.v1_7_R4.RecipesFurnace;
+import net.minecraft.server.v1_7_R4.ShapedRecipes;
+import net.minecraft.server.v1_7_R4.ShapelessRecipes;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -177,6 +182,10 @@ public class Injector {
   public Item prismarineShardItem = new ItemPrismarineShard();
   public Item prismarineCrystalItem = new ItemPrismarineCrystal();
   
+  //Entities
+  public EntityType endermiteEntity = Utilities.addEntity("Endermite", 67, Endermite.class);
+  
+  
   public static void registerBlock(Material mat, int id, String name, Block block)
   {
     Block.REGISTRY.a(id, name, block);
@@ -185,12 +194,24 @@ public class Injector {
   public static void registerBlock(Material mat, int id, String name, Block block, Item item) {
     Block.REGISTRY.a(id, name, block);
     Item.REGISTRY.a(id, name, item);
+    
   }
   
   public static void registerItem(Material mat, int id, String name, Item item) {
     Item.REGISTRY.a(id, name, item);
   }
   
+  
+  public static void registerEntity(Class entityClass, String name, int id, int monsterEgg, int monsterEggData2) {
+      try {
+          Class clazz = EntityTypes.class;
+          Method register = clazz.getDeclaredMethod("a", new Class[] {Class.class, String.class, Integer.TYPE, Integer.TYPE, Integer.TYPE});
+          register.setAccessible(true);
+          register.invoke(null, entityClass, name, id, monsterEgg, monsterEggData2);
+      } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+        e.printStackTrace();
+      }
+  }
 
 
   public void registerAll() {
@@ -243,6 +264,10 @@ public class Injector {
     registerItem(rabbitHideItemMat, 415, "rabbit_hide", rabbitHideItem);
     registerItem(muttonItemMat, 423, "mutton", muttonItem);
     registerItem(cookedMuttonItemMat, 424, "cooked_mutton", cookedMuttonItem);
+    
+    //Register entities (data copied straight from 1.8, from EntityList.java)
+    registerEntity(EntityEndermite.class, "Endermite", 67, 1447446, 7237230);
+    
 
     //inject our new stone, sponge, torch and redstone torches to blocks class
     try {
@@ -533,12 +558,14 @@ public class Injector {
   }
 
   private void fixItemStack(net.minecraft.server.v1_7_R4.ItemStack itemStack) {
+      if (itemStack != null) {
 	  Item validitem = Item.getById(Item.getId(itemStack.getItem()));
           if (validitem != null) {
             itemStack.setItem(validitem);
           } else {
               Carbon.log.log(Level.WARNING, "[Carbon] Failed to set itemStack \"{0}\"''s item because it was null.", itemStack.getName());
           }
+      }
   }
 
   public void addRecipe(Recipe recipe) {

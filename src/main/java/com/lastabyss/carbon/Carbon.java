@@ -10,6 +10,7 @@ import com.lastabyss.carbon.listeners.ItemListener;
 import com.lastabyss.carbon.protocolmodifier.ProtocolBlockListener;
 import com.lastabyss.carbon.protocolmodifier.ProtocolItemListener;
 import com.lastabyss.carbon.reflection.Injector;
+import com.lastabyss.carbon.utils.Utilities;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -30,7 +31,6 @@ public class Carbon extends JavaPlugin {
     		Bukkit.shutdown();
     		return;
     	}
-
     	//inject new blocks
         try {
           DynamicEnumType.loadReflection();
@@ -47,6 +47,7 @@ public class Carbon extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        Utilities.instantiate(this);
         dataFolder = new File(getDataFolder(), getDescription().getName());
         if (!dataFolder.exists()) {
              dataFolder.mkdir();
@@ -58,13 +59,16 @@ public class Carbon extends JavaPlugin {
         getServer().getPluginManager().registerEvents(this.itemListener, this);
         getServer().getPluginManager().registerEvents(this.worldGenerator, this);
 
+        if (getServer().getPluginManager().getPlugin("ProtocolLib") != null) {
         try {
             new ProtocolBlockListener(this).init();
             new ProtocolItemListener(this).init();
         } catch (Throwable t) {
         	t.printStackTrace();
         }
-        
+        } else {
+            log.info("[Carbon] ProtocolLib not found, not hooking. 1.7 clients not supported.");
+        }
         log.info("[Carbon] Carbon is enabled.");
     }
 

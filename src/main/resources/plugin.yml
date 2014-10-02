@@ -4,4 +4,4 @@ description: Adds 1.8 blocks and features to the Spigot protocol hack.
 softdepend: [ProtocolLib]
 startup: STARTUP
 version: 1.6
-author: Navid K.
+authors: [Navid K., Shevchik, Aust1n46]

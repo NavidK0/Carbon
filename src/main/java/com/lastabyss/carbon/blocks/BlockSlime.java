@@ -19,10 +19,14 @@ public class BlockSlime extends BlockHalfTransparent {
         H();
     }
     
+    //onEntityLanded
     @Override
-    public void a(World paramaqu, int x, int y, int z, Entity paramwv, float paramFloat) {
-        if (paramwv.isSneaking())
-          super.a(paramaqu, x, y, z, paramwv, paramFloat);
+    public void a(World world, int x, int y, int z, Entity entityIn, float fallDistance) {
+        if (entityIn.isSneaking())
+          super.a(world, x, y, z, entityIn, fallDistance);
+        else 
+          super.a(world, x, y, z, entityIn, fallDistance);
+        
     }
 
     @Override

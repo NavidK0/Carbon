@@ -1,21 +1,28 @@
 package com.lastabyss.carbon.listeners;
 
-import java.util.Random;
 import com.lastabyss.carbon.Carbon;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPistonExtendEvent;
+import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.PistonBaseMaterial;
 
 /**
  * 
@@ -28,16 +35,16 @@ public class BlockListener implements Listener {
     this.plugin = plugin;
   }
   
-  @EventHandler(priority=EventPriority.LOWEST, ignoreCancelled = true)
+  @EventHandler(priority=EventPriority.MONITOR, ignoreCancelled = true)
   public void onSlimeBlockPlace(BlockPlaceEvent evt) {
     if (evt.getBlock().getType() == Material.getMaterial("slime")) {
       Location location = evt.getBlock().getLocation();
       Random rand = new Random();
       boolean bool = rand.nextBoolean();
       if (bool) {
-        evt.getPlayer().getWorld().playSound(location, Sound.SLIME_ATTACK, 1.0F, 10.0F);
+        evt.getPlayer().getWorld().playSound(location, Sound.SLIME_WALK, 1.0F, 10.0F);
       } else {
-        evt.getPlayer().getWorld().playSound(location, Sound.SLIME_ATTACK, 0.5F, 10.0F);
+        evt.getPlayer().getWorld().playSound(location, Sound.SLIME_WALK2, 0.5F, 10.0F);
       }
     }
   }
@@ -143,10 +150,10 @@ public class BlockListener implements Listener {
                         event.setCancelled(true);
                     }
                 }          
-                org.bukkit.block.Block block = event.getClickedBlock();
+                Block block = event.getClickedBlock();
                 switch(event.getBlockFace().toString()) {
                 case "NORTH": {             	
-                    org.bukkit.block.Block adjacent = block.getWorld().getBlockAt(block.getX(), block.getY(), block.getZ() - 1);                    
+                    Block adjacent = block.getWorld().getBlockAt(block.getX(), block.getY(), block.getZ() - 1);                    
                     if(adjacent.getType().toString().equals("red_sandstone_slab")) {
                         adjacent.setType(Carbon.injector().redSandstoneDoubleSlabMat);
                         adjacent.setData((byte) 0);
@@ -158,7 +165,7 @@ public class BlockListener implements Listener {
                     break;
                 }
                 case "SOUTH": {
-                    org.bukkit.block.Block adjacent = block.getWorld().getBlockAt(block.getX(), block.getY(), block.getZ() + 1);
+                    Block adjacent = block.getWorld().getBlockAt(block.getX(), block.getY(), block.getZ() + 1);
                     if(adjacent.getType().toString().equals("red_sandstone_slab")) {
                         adjacent.setType(Carbon.injector().redSandstoneDoubleSlabMat);
                         adjacent.setData((byte) 0);
@@ -170,7 +177,7 @@ public class BlockListener implements Listener {
                     break;
                 }
                 case "WEST": {
-                    org.bukkit.block.Block adjacent = block.getWorld().getBlockAt(block.getX() - 1, block.getY(), block.getZ());
+                    Block adjacent = block.getWorld().getBlockAt(block.getX() - 1, block.getY(), block.getZ());
                     if(adjacent.getType().toString().equals("red_sandstone_slab")) {
                         adjacent.setType(Carbon.injector().redSandstoneDoubleSlabMat);
                         adjacent.setData((byte) 0);
@@ -182,7 +189,7 @@ public class BlockListener implements Listener {
                     break;
                 }
                 case "EAST": {
-                    org.bukkit.block.Block adjacent = block.getWorld().getBlockAt(block.getX() + 1, block.getY(), block.getZ());
+                    Block adjacent = block.getWorld().getBlockAt(block.getX() + 1, block.getY(), block.getZ());
                     if(adjacent.getType().toString().equals("red_sandstone_slab")) {
                         adjacent.setType(Carbon.injector().redSandstoneDoubleSlabMat);
                         adjacent.setData((byte) 0);
@@ -194,7 +201,7 @@ public class BlockListener implements Listener {
                     break;
                 }
                 case "DOWN": {
-                    org.bukkit.block.Block adjacent = block.getWorld().getBlockAt(block.getX(), block.getY() - 1, block.getZ());
+                    Block adjacent = block.getWorld().getBlockAt(block.getX(), block.getY() - 1, block.getZ());
                     if(adjacent.getType().toString().equals("red_sandstone_slab")) {
                         adjacent.setType(Carbon.injector().redSandstoneDoubleSlabMat);
                         adjacent.setData((byte) 0);
@@ -206,7 +213,7 @@ public class BlockListener implements Listener {
                     break;
                 }
                 case "UP": {
-                    org.bukkit.block.Block adjacent = block.getWorld().getBlockAt(block.getX(), block.getY() + 1, block.getZ());
+                    Block adjacent = block.getWorld().getBlockAt(block.getX(), block.getY() + 1, block.getZ());
                     if(adjacent.getType().toString().equals("red_sandstone_slab")) {
                         adjacent.setType(Carbon.injector().redSandstoneDoubleSlabMat);
                         adjacent.setData((byte) 0);
@@ -222,6 +229,7 @@ public class BlockListener implements Listener {
         }
     }
   
+    
   @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
   public void onSlimeBlockFall(EntityDamageEvent evt) {
     if ((evt.getCause() == EntityDamageEvent.DamageCause.FALL) && 
@@ -229,4 +237,5 @@ public class BlockListener implements Listener {
       evt.setCancelled(true);
     }
   }
+  
 }
