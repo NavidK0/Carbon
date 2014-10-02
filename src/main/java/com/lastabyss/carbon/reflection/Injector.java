@@ -532,52 +532,6 @@ public class Injector {
     ShapedRecipe leather = new ShapedRecipe(new ItemStack(Material.LEATHER, 1)).shape(new String[] { "ll", "ll" }).setIngredient('l', this.rabbitHideItemMat);
     addRecipe(leather);
 
-    //fix already registered recipes
-    for (Object obj : CraftingManager.getInstance().getRecipes()) {
-    	IRecipe iRecipe = (IRecipe) obj;
-    	fixItemStack(iRecipe.b());
-    	if (iRecipe instanceof ShapedRecipes) {
-    		ShapedRecipes shapedRecipe = (ShapedRecipes) iRecipe;
-    		for (net.minecraft.server.v1_7_R4.ItemStack ingredient : shapedRecipe.getIngredients()) {
-    			if (ingredient == null) {
-    				continue;
-    			}
-    			fixItemStack(ingredient);
-    		}
-    	} else if (iRecipe instanceof ShapelessRecipes) {
-    		ShapelessRecipes shapelessRecipe = (ShapelessRecipes) iRecipe;
-    		for (net.minecraft.server.v1_7_R4.ItemStack ingredient : shapelessRecipe.getIngredients()) {
-    			if (ingredient == null) {
-    				continue;
-    			}
-    			fixItemStack(ingredient);
-    		}
-    	}
-    }
-
-    for (Object obj : RecipesFurnace.getInstance().getRecipes().entrySet()) {
-    	Entry<net.minecraft.server.v1_7_R4.ItemStack, net.minecraft.server.v1_7_R4.ItemStack> entry = (Entry<net.minecraft.server.v1_7_R4.ItemStack, net.minecraft.server.v1_7_R4.ItemStack>) obj;
-    	fixItemStack(entry.getKey());
-    	fixItemStack(entry.getValue());
-    }
-
-    for (Object obj : RecipesFurnace.getInstance().customRecipes.entrySet()) {
-    	Entry<net.minecraft.server.v1_7_R4.ItemStack, net.minecraft.server.v1_7_R4.ItemStack> entry = (Entry<net.minecraft.server.v1_7_R4.ItemStack, net.minecraft.server.v1_7_R4.ItemStack>) obj;
-    	fixItemStack(entry.getKey());
-    	fixItemStack(entry.getValue());
-    }
-
-  }
-
-  private void fixItemStack(net.minecraft.server.v1_7_R4.ItemStack itemStack) {
-      if (itemStack != null) {
-	  Item validitem = Item.getById(Item.getId(itemStack.getItem()));
-          if (validitem != null) {
-            itemStack.setItem(validitem);
-          } else {
-              Carbon.log.log(Level.WARNING, "[Carbon] Failed to set itemStack \"{0}\"''s item because it was null.", itemStack.getName());
-          }
-      }
   }
 
   public void addRecipe(Recipe recipe) {
