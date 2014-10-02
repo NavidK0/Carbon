@@ -131,7 +131,6 @@ public class EntityEndermite extends EntityMonster {
                                         this.world.setAir(i + l, j + i1, k + j1, false);
                                     }
 
-                                    Blocks.MONSTER_EGGS.postBreak(this.world, i + l, j + i1, k + j1, 0);
                                     if (this.random.nextBoolean()) {
                                         flag = true;
                                         break;
@@ -144,20 +143,7 @@ public class EntityEndermite extends EntityMonster {
             }
 
             if (this.target == null && !this.bS()) {
-                i = MathHelper.floor(this.locX);
-                j = MathHelper.floor(this.locY + 0.5D);
-                k = MathHelper.floor(this.locZ);
-                int l1 = this.random.nextInt(6);
-                Block block = this.world.getType(i + Facing.b[l1], j + Facing.c[l1], k + Facing.d[l1]);
-
-                l = this.world.getData(i + Facing.b[l1], j + Facing.c[l1], k + Facing.d[l1]);
-                if (BlockMonsterEggs.a(block)) {
-                    this.world.setTypeAndData(i + Facing.b[l1], j + Facing.c[l1], k + Facing.d[l1], Blocks.MONSTER_EGGS, BlockMonsterEggs.a(block, l), 3);
-                    this.s();
-                    this.die();
-                } else {
-                    this.bQ();
-                }
+              this.bQ();
             } else if (this.target != null && !this.bS()) {
                 this.target = null;
             }

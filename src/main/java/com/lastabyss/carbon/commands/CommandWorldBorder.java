@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
  * @author minelazz
  */
 public class CommandWorldBorder extends Command {
-    public static WorldBorder worldBorder;
     public static WorldBorderCommand cmd = new WorldBorderCommand();
     
     public CommandWorldBorder() {
@@ -20,8 +19,11 @@ public class CommandWorldBorder extends Command {
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        if (sender instanceof Player) {
         Player p = (Player) sender;
+        if (p.isOp())
 	cmd.execute(new ICommandConv(p), args);
+        }
 	return true;
     }
 }

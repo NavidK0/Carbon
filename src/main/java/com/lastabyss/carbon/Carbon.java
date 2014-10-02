@@ -23,7 +23,8 @@ public class Carbon extends JavaPlugin {
   private CarbonWorldGenerator worldGenerator = new CarbonWorldGenerator(this);
   public static final Logger log = Logger.getLogger("minecraft");
   private static Injector injector;
-  private File dataFolder;
+  private File carbonFolder;
+  private double localConfigVersion = 0.1;
   
     @Override
     public void onLoad() {
@@ -49,9 +50,9 @@ public class Carbon extends JavaPlugin {
     @Override
     public void onEnable() {
         Utilities.instantiate(this);
-        dataFolder = new File(getDataFolder(), getDescription().getName());
-        if (!dataFolder.exists()) {
-             dataFolder.mkdir();
+        carbonFolder = new File(getDataFolder(), getDescription().getName());
+        if (!carbonFolder.exists()) {
+             carbonFolder.mkdir();
         }
         saveDefaultConfig();
         reloadConfig();
@@ -59,6 +60,10 @@ public class Carbon extends JavaPlugin {
         getServer().getPluginManager().registerEvents(this.blockListener, this);
         getServer().getPluginManager().registerEvents(this.itemListener, this);
         getServer().getPluginManager().registerEvents(this.worldGenerator, this);
+        
+        if (getConfig().getDouble("donottouch.configVersion", 0.0f) < localConfigVersion) {
+            log.warning("[Carbon] Please delete your Carbon config and let it regenerate! Yours is outdated and may cause issues with the mod!");
+        }
 
         if (getServer().getPluginManager().getPlugin("ProtocolLib") != null) {
         try {
@@ -97,5 +102,8 @@ public class Carbon extends JavaPlugin {
     public CarbonWorldGenerator getWorldGenerator() {
         return worldGenerator;
     }
-  
+
+    public File getCarbonFolder() {
+        return carbonFolder;
+    }
 }

@@ -1,14 +1,16 @@
 package com.lastabyss.carbon.listeners;
 
-import java.util.Random;
-
 import com.lastabyss.carbon.Carbon;
-
+import java.util.Random;
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Skeleton;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -16,6 +18,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.material.Skull;
 
 /**
  *
@@ -67,6 +71,40 @@ public class ItemListener implements Listener {
     
     @EventHandler
     public void onCreeperDeath(EntityDeathEvent evt) {
-        
+        if (plugin.getConfig().getBoolean("creeper.dropMobHead"))
+            if (evt.getEntity().getLastDamageCause().getCause() == DamageCause.ENTITY_EXPLOSION) {
+                if (evt.getEntity().getLastDamageCause().getEntity().getType() == EntityType.CREEPER) {
+                if (!((Creeper)evt.getEntity().getLastDamageCause().getEntity()).isPowered()) {
+                    return;
+                }
+                LivingEntity entity = evt.getEntity();
+                ItemStack skullItem = null;
+                switch (evt.getEntityType()) {
+                    case SKELETON:
+                        Skeleton skeleton = (Skeleton) evt.getEntity();
+                        if (skeleton.getSkeletonType() == Skeleton.SkeletonType.NORMAL)
+                            skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)0);  
+                        else if (skeleton.getSkeletonType() == Skeleton.SkeletonType.WITHER)
+                            skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)1); 
+                        break;
+                    case ZOMBIE:
+                        skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)2); 
+                        break;
+                    case PLAYER:
+                        Player p = (Player) entity;
+                        skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)3);
+                        SkullMeta meta = (SkullMeta) skullItem.getItemMeta();
+                        meta.setOwner(p.getName());
+                        meta.setDisplayName(p.getName() + "'s Head");
+                        skullItem.setItemMeta(meta);
+                        break;
+                    case CREEPER:
+                        skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)4); 
+                        break;
+                }
+                if (skullItem != null)
+                    entity.getWorld().dropItemNaturally(entity.getLocation(), skullItem);
+                }
+            }
     }
 }

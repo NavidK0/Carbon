@@ -3,5 +3,8 @@ options:
     sheep:
         dropMutton: true
     creeper:
-        dropMobHead:
+        dropMobHead: true
     worlds: [world]
+    
+    
+donottouch.configVersion: 0.1

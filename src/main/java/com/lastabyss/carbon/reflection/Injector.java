@@ -20,7 +20,7 @@ import com.lastabyss.carbon.blocks.BlockWoodenDoor;
 import com.lastabyss.carbon.blocks.BlockWoodenFence;
 import com.lastabyss.carbon.blocks.BlockWoodenFenceGate;
 import com.lastabyss.carbon.commands.CommandWorldBorder;
-import com.lastabyss.carbon.commands.PacketPlayOutWorldBorder;
+import com.lastabyss.carbon.commands.WorldBorder;
 import com.lastabyss.carbon.entity.EntityEndermite;
 import com.lastabyss.carbon.entity.EntityGuardian;
 import com.lastabyss.carbon.entity.EntityRabbit;
@@ -37,12 +37,16 @@ import com.lastabyss.carbon.items.ItemRabbitFoot;
 import com.lastabyss.carbon.items.ItemRabbitHide;
 import com.lastabyss.carbon.items.ItemRabbitStew;
 import com.lastabyss.carbon.items.ItemWoodenDoor;
+import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
 import com.lastabyss.carbon.utils.Utilities;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.Entity;
@@ -51,6 +55,7 @@ import net.minecraft.server.v1_7_R4.EnumProtocol;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.ItemBlock;
 import net.minecraft.server.v1_7_R4.ItemMultiTexture;
+import net.minecraft.server.v1_7_R4.World;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -187,7 +192,7 @@ public class Injector {
   public EntityType guardianEntity = Utilities.addEntity("Guardian", 68, Guardian.class);
   public EntityType rabbitEntity = Utilities.addEntity("Rabbit", 101, Rabbit.class);
   
-  
+  public Map<World, WorldBorder> worldBorders = new HashMap<>();
   
   public static void registerBlock(Material mat, int id, String name, Block block)
   {
@@ -272,10 +277,11 @@ public class Injector {
     registerEntity(EntityRabbit.class, "Rabbit", 101, 10051392, 7555121);
     
     //Register commands from 1.8
-    Utilities.registerBukkitCommand(" ", new CommandWorldBorder());
+    //Utilities.registerBukkitCommand("minecraft", new CommandWorldBorder());
 
     //Register additional packets
     EnumProtocol.PLAY.b().put(68, PacketPlayOutWorldBorder.class);
+    
 
     //inject our new stone, sponge, torch and redstone torches to blocks class
     try {
@@ -534,6 +540,37 @@ public class Injector {
     addRecipe(leather);
 
   }
+  
+  /**
+  private void worldBorderListeners() {
+      p_72364_1_[0].getWorldBorder().addListener(new IBorderListener()
+        {
+            private static final String __OBFID = "CL_00002267";
+            public void onSizeChanged(WorldBorder border, double newSize)
+            {
+                ServerConfigurationManager.this.sendPacketToAllPlayers(new S44PacketWorldBorder(border, S44PacketWorldBorder.Action.SET_SIZE));
+            }
+            public void func_177692_a(WorldBorder border, double p_177692_2_, double p_177692_4_, long p_177692_6_)
+            {
+                ServerConfigurationManager.this.sendPacketToAllPlayers(new S44PacketWorldBorder(border, S44PacketWorldBorder.Action.LERP_SIZE));
+            }
+            public void onCenterChanged(WorldBorder border, double x, double z)
+            {
+                ServerConfigurationManager.this.sendPacketToAllPlayers(new S44PacketWorldBorder(border, S44PacketWorldBorder.Action.SET_CENTER));
+            }
+            public void onWarningTimeChanged(WorldBorder border, int p_177691_2_)
+            {
+                ServerConfigurationManager.this.sendPacketToAllPlayers(new S44PacketWorldBorder(border, S44PacketWorldBorder.Action.SET_WARNING_TIME));
+            }
+            public void onWarningDistanceChanged(WorldBorder border, int p_177690_2_)
+            {
+                ServerConfigurationManager.this.sendPacketToAllPlayers(new S44PacketWorldBorder(border, S44PacketWorldBorder.Action.SET_WARNING_BLOCKS));
+            }
+            public void func_177696_b(WorldBorder border, double p_177696_2_) {}
+            public void func_177695_c(WorldBorder border, double p_177695_2_) {}
+        });
+  }
+  * **/
 
   public void addRecipe(Recipe recipe) {
     Bukkit.getServer().addRecipe(recipe);
