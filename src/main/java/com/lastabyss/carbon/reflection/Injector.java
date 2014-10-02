@@ -37,6 +37,8 @@ import com.lastabyss.carbon.items.ItemRabbitStew;
 import com.lastabyss.carbon.items.ItemWoodenDoor;
 import com.lastabyss.carbon.utils.Utilities;
 import com.lastabyss.carbon.worldborder.CommandWorldBorder;
+import com.lastabyss.carbon.worldborder.PacketPlayOutWorldBorder;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -44,11 +46,13 @@ import java.lang.reflect.Modifier;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.logging.Level;
+
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.CraftingManager;
 import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.EntityTypes;
+import net.minecraft.server.v1_7_R4.EnumProtocol;
 import net.minecraft.server.v1_7_R4.IRecipe;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.ItemBlock;
@@ -56,6 +60,7 @@ import net.minecraft.server.v1_7_R4.ItemMultiTexture;
 import net.minecraft.server.v1_7_R4.RecipesFurnace;
 import net.minecraft.server.v1_7_R4.ShapedRecipes;
 import net.minecraft.server.v1_7_R4.ShapelessRecipes;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -278,7 +283,9 @@ public class Injector {
     
     //Register commands from 1.8
     Utilities.registerBukkitCommand(" ", new CommandWorldBorder());
-    
+
+    //Register additional packets
+    EnumProtocol.PLAY.b().put(68, PacketPlayOutWorldBorder.class);
 
     //inject our new stone, sponge, torch and redstone torches to blocks class
     try {

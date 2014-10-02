@@ -1,14 +1,10 @@
 package com.lastabyss.carbon.worldborder;
 
-import java.io.IOException;
-
 import net.minecraft.server.v1_7_R4.Packet;
 import net.minecraft.server.v1_7_R4.PacketDataSerializer;
 import net.minecraft.server.v1_7_R4.PacketListener;
-import net.minecraft.server.v1_7_R4.PacketPlayOutCustomPayload;
-import net.minecraft.server.v1_7_R4.PacketPlayOutListener;
 
-public class PacketPlayOutWorldBorder extends PacketPlayOutCustomPayload {
+public class PacketPlayOutWorldBorder extends Packet {
 
 	private WorldBorderAction action;
 	private int teleportBoundary;
@@ -23,8 +19,7 @@ public class PacketPlayOutWorldBorder extends PacketPlayOutCustomPayload {
 	public PacketPlayOutWorldBorder() {
 	}
 
-	public PacketPlayOutWorldBorder(WorldBorder worldborder,
-			WorldBorderAction action) {
+	public PacketPlayOutWorldBorder(WorldBorder worldborder, WorldBorderAction action) {
 		this.action = action;
 		this.x = worldborder.getX();
 		this.z = worldborder.getZ();
@@ -37,8 +32,7 @@ public class PacketPlayOutWorldBorder extends PacketPlayOutCustomPayload {
 	}
 
 	public void a(PacketDataSerializer serializer) {
-		this.action = (WorldBorderAction) readEnum(serializer,
-				WorldBorderAction.class);
+		this.action = (WorldBorderAction) readEnum(serializer, WorldBorderAction.class);
 		switch (action) {
 		case SET_SIZE: {
 			this.radius = serializer.readDouble();
@@ -128,12 +122,8 @@ public class PacketPlayOutWorldBorder extends PacketPlayOutCustomPayload {
 		SET_SIZE, LERP_SIZE, SET_CENTER, INITIALIZE, SET_WARNING_TIME, SET_WARNING_BLOCKS;
 	}
 
-	public void a(PacketPlayOutListener packetplayoutlistener) {
-		packetplayoutlistener.a(this);
-	}
-
-	public void handle(PacketListener packetlistener) {
-		this.a((PacketPlayOutListener) packetlistener);
+	@Override
+	public void handle(PacketListener listener) {
 	}
 
 }

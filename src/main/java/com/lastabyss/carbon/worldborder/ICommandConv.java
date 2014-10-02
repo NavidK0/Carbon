@@ -6,7 +6,6 @@ import net.minecraft.server.v1_7_R4.ICommandListener;
 import net.minecraft.server.v1_7_R4.PacketPlayOutChat;
 import net.minecraft.server.v1_7_R4.World;
 
-import org.bukkit.craftbukkit.v1_7_R4.CraftChunk;
 import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
