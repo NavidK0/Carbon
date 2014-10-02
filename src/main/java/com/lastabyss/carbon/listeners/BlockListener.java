@@ -1,8 +1,6 @@
 package com.lastabyss.carbon.listeners;
 
 import com.lastabyss.carbon.Carbon;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -10,19 +8,15 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPistonExtendEvent;
-import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.PistonBaseMaterial;
 
 /**
  * 
@@ -121,6 +115,13 @@ public class BlockListener implements Listener {
 				}
 			}
 		}
+	}
+	
+	public boolean isTouching(Block block, String material) {
+		for(BlockFace b : BlockFace.values()) {
+			if(block.getRelative(b).getType() == Material.getMaterial(material)) return true;
+		}
+		return false;
 	}
   
    @SuppressWarnings("deprecation")

@@ -31,6 +31,7 @@ import com.lastabyss.carbon.items.ItemRabbitFoot;
 import com.lastabyss.carbon.items.ItemRabbitHide;
 import com.lastabyss.carbon.items.ItemRabbitStew;
 import com.lastabyss.carbon.items.ItemWoodenDoor;
+
 import com.lastabyss.carbon.utils.Utilities;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -51,6 +52,7 @@ import net.minecraft.server.v1_7_R4.ItemMultiTexture;
 import net.minecraft.server.v1_7_R4.RecipesFurnace;
 import net.minecraft.server.v1_7_R4.ShapedRecipes;
 import net.minecraft.server.v1_7_R4.ShapelessRecipes;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -201,7 +203,6 @@ public class Injector {
     Item.REGISTRY.a(id, name, item);
   }
   
-  
   public static void registerEntity(Class entityClass, String name, int id, int monsterEgg, int monsterEggData2) {
       try {
           Class clazz = EntityTypes.class;
@@ -212,7 +213,6 @@ public class Injector {
         e.printStackTrace();
       }
   }
-
 
   public void registerAll() {
     //Register blocks
@@ -296,6 +296,9 @@ public class Injector {
   }
 
   public void registerRecipes() {
+	//reset recipes, this will restore original recipes, but with proper items now
+	Bukkit.resetRecipes();
+
     //Remove all recipes that have the new items so we can add the recipes later
     Iterator<Recipe> ri = Bukkit.getServer().recipeIterator();
     while (ri.hasNext()) {
@@ -315,8 +318,10 @@ public class Injector {
       if (recipe.getResult().getType() == org.bukkit.Material.STONE) {
         ri.remove();
       }
+      if (recipe.getResult().getType() == org.bukkit.Material.SMOOTH_BRICK) {
+    	ri.remove();
+      }
     }
-    
 
     //now register our recipes
     ShapedRecipe coarseDirt = new ShapedRecipe(new ItemStack(org.bukkit.Material.DIRT, 4, (short)1)).shape(new String[] { "dg", "gd" }).setIngredient('d', org.bukkit.Material.DIRT).setIngredient('g', org.bukkit.Material.GRAVEL);
