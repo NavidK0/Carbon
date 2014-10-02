@@ -15,21 +15,13 @@ public class CommandWorldBorder extends Command {
     public static WorldBorderCommand cmd = new WorldBorderCommand();
     
     public CommandWorldBorder() {
-        super("worldborder", "Vanilla 1.8 border command.", "/worldborder <args>", new ArrayList<String>(){});
+        super("worldborder", "Vanilla 1.8 border command.", "/worldborder <args>", new ArrayList<String>());
     }
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        if (sender instanceof Player) {
-            Player p = (Player) sender;
-            if (p.isOp()) {
-                cmd.execute(new ICommandConv(p), args);
-            } else {
-                p.sendMessage("You must be operator in order to use this command.");
-            }
-        } else {
-            sender.sendMessage("This command can only be entered in game!");
-        }
+        Player p = (Player) sender;
+	cmd.execute(new ICommandConv(p), args);
 	return true;
     }
 }

@@ -20,6 +20,7 @@ import com.lastabyss.carbon.blocks.BlockWoodenDoor;
 import com.lastabyss.carbon.blocks.BlockWoodenFence;
 import com.lastabyss.carbon.blocks.BlockWoodenFenceGate;
 import com.lastabyss.carbon.commands.CommandWorldBorder;
+import com.lastabyss.carbon.commands.PacketPlayOutWorldBorder;
 import com.lastabyss.carbon.entity.EntityEndermite;
 import com.lastabyss.carbon.entity.EntityGuardian;
 import com.lastabyss.carbon.entity.EntityRabbit;
@@ -42,20 +43,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Iterator;
-import java.util.Map.Entry;
-import java.util.logging.Level;
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.Blocks;
-import net.minecraft.server.v1_7_R4.CraftingManager;
 import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.EntityTypes;
-import net.minecraft.server.v1_7_R4.IRecipe;
+import net.minecraft.server.v1_7_R4.EnumProtocol;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.ItemBlock;
 import net.minecraft.server.v1_7_R4.ItemMultiTexture;
-import net.minecraft.server.v1_7_R4.RecipesFurnace;
-import net.minecraft.server.v1_7_R4.ShapedRecipes;
-import net.minecraft.server.v1_7_R4.ShapelessRecipes;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -277,8 +272,10 @@ public class Injector {
     registerEntity(EntityRabbit.class, "Rabbit", 101, 10051392, 7555121);
     
     //Register commands from 1.8
-    Utilities.registerBukkitCommand("minecraft", new CommandWorldBorder());
-    
+    Utilities.registerBukkitCommand(" ", new CommandWorldBorder());
+
+    //Register additional packets
+    EnumProtocol.PLAY.b().put(68, PacketPlayOutWorldBorder.class);
 
     //inject our new stone, sponge, torch and redstone torches to blocks class
     try {

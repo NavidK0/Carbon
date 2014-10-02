@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import net.minecraft.server.v1_7_R4.EntityPlayer;
+import net.minecraft.server.v1_7_R4.Packet;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,8 +19,10 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 
 /**
  *
@@ -209,6 +215,15 @@ public class Utilities {
         }
         return list;
     }
-    
-    
+
+    /**
+     * Sends packet to a player
+     * @param player
+     * @param packet
+     */
+    public static void sendPacket(Player player, Packet packet) {
+    	EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
+    	nmsPlayer.playerConnection.sendPacket(packet);
+    }
+
 }
