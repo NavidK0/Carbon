@@ -8,6 +8,7 @@ import com.lastabyss.carbon.generator.CarbonWorldGenerator;
 import com.lastabyss.carbon.listeners.BlockListener;
 import com.lastabyss.carbon.listeners.ItemListener;
 import com.lastabyss.carbon.protocolmodifier.ProtocolBlockListener;
+import com.lastabyss.carbon.protocolmodifier.ProtocolEntityListener;
 import com.lastabyss.carbon.protocolmodifier.ProtocolItemListener;
 import com.lastabyss.carbon.reflection.Injector;
 import com.lastabyss.carbon.utils.Utilities;
@@ -63,6 +64,7 @@ public class Carbon extends JavaPlugin {
         try {
             new ProtocolBlockListener(this).init();
             new ProtocolItemListener(this).init();
+            new ProtocolEntityListener(this).init();
         } catch (Throwable t) {
         	t.printStackTrace();
         }
