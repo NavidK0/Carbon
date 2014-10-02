@@ -22,6 +22,10 @@ public class ProtocolEntityListener {
 		}
 		//endermite -> silverfish
 		replacements[67] = 60;
+		//guardian -> sqiud
+		replacements[68] = 94;
+		//rabbit -> chicken
+		replacements[101] = 93;
 	}
 
 	public void init() {
