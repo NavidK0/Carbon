@@ -2,15 +2,20 @@ package com.lastabyss.carbon.utils;
 
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.DynamicEnumType;
+import com.lastabyss.carbon.worldborder.CommandWorldBorder;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandMap;
+import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
@@ -37,7 +42,29 @@ public class Utilities {
     }
     
     /**
-     * Returns the BUKKIT ENTITY.
+     * Registers a bukkit command without the need for a plugin.yml entry.
+     * 
+     * Yes, I'm terrible.
+     * @param fallbackPrefix
+     * @param cmd
+     */
+    public static void registerBukkitCommand(String fallbackPrefix, Command cmd) {
+        try {
+        if (Bukkit.getServer() instanceof CraftServer) {
+            Field f = CraftServer.class.getDeclaredField("commandMap");
+            f.setAccessible(true);
+            CommandMap cmap = (CommandMap) f.get(Bukkit.getServer());
+            cmap.register(fallbackPrefix, cmd);
+        }
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Returns the BUKKIT ENTITYTYPE.
      * @param name
      * @param id
      * @param entityClass
