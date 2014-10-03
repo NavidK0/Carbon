@@ -315,9 +315,6 @@ public class Injector {
     ShapelessRecipe granite = new ShapelessRecipe(new ItemStack(Material.STONE, 1, (short)1)).addIngredient(Material.STONE, 3).addIngredient(Material.QUARTZ);
     addRecipe(granite);
     
-    ShapelessRecipe chiseledStone = new ShapelessRecipe(new ItemStack(Material.SMOOTH_BRICK, 1, (short)2)).addIngredient(Material.STONE, 1).addIngredient(Material.VINE);
-    addRecipe(chiseledStone);
-    
     ShapedRecipe polishedDiorite = new ShapedRecipe(new ItemStack(Material.STONE, 4, (short)4)).shape(new String[] { "ss", "ss" }).setIngredient('s', Material.STONE, 3);
     addRecipe(polishedDiorite);
     
@@ -464,16 +461,12 @@ public class Injector {
     
     FurnaceRecipe cobbleFurnace = new FurnaceRecipe(new ItemStack(Material.STONE, 1, (short)0), Material.STONE).setInput(Material.COBBLESTONE, 1);
     addRecipe(cobbleFurnace);
-    
-    FurnaceRecipe crackedStoneBricks = new FurnaceRecipe(new ItemStack(Material.SMOOTH_BRICK, 1, (short)2), Material.SMOOTH_BRICK).setInput(Material.SMOOTH_BRICK);
-    addRecipe(crackedStoneBricks);    
-
-    ShapedRecipe stoneBricks = new ShapedRecipe(new ItemStack(Material.SMOOTH_BRICK, 4)).shape(new String[] { "xx", "xx" }).setIngredient('x', Material.STONE);
-    addRecipe(stoneBricks);
 
     FurnaceRecipe rawRabbit = new FurnaceRecipe(new ItemStack(this.cookedRabbitItemMat, 1, (short)0), this.cookedRabbitItemMat).setInput(this.rabbitItemMat);
     addRecipe(rawRabbit);
-    
+ 
+    FurnaceRecipe crackedStoneBricks = new FurnaceRecipe(new ItemStack(Material.SMOOTH_BRICK, 1, (short)2), Material.SMOOTH_BRICK).setInput(Material.SMOOTH_BRICK);
+    addRecipe(crackedStoneBricks);    
 
     FurnaceRecipe rawMutton = new FurnaceRecipe(new ItemStack(this.cookedMuttonItemMat, 1, (short)0), this.cookedMuttonItemMat).setInput(this.muttonItemMat);
     addRecipe(rawMutton);
@@ -483,6 +476,15 @@ public class Injector {
     
     ShapedRecipe rabbitStew2 = new ShapedRecipe(new ItemStack(this.rabbitStewItemMat, 1)).shape(new String[] { " r ", "cpm", " b " }).setIngredient('r', this.cookedRabbitItemMat).setIngredient('c', Material.CARROT_ITEM).setIngredient('p', Material.BAKED_POTATO).setIngredient('m', Material.BROWN_MUSHROOM).setIngredient('b', Material.BOWL);
     addRecipe(rabbitStew2);
+
+    ShapelessRecipe chiseledStone = new ShapelessRecipe(new ItemStack(Material.SMOOTH_BRICK, 1, (short)2)).addIngredient(Material.STONE, 1).addIngredient(Material.VINE);
+    addRecipe(chiseledStone);
+
+    ShapelessRecipe chiseledStone2 = new ShapelessRecipe(new ItemStack(Material.SMOOTH_BRICK, 1, (short)3)).addIngredient(Material.STEP, 5).addIngredient(Material.STEP, 5);
+    addRecipe(chiseledStone2);
+
+    ShapedRecipe stoneBricks = new ShapedRecipe(new ItemStack(Material.SMOOTH_BRICK, 4)).shape(new String[] { "xx", "xx" }).setIngredient('x', Material.STONE);
+    addRecipe(stoneBricks);
     
     ShapelessRecipe mossyStoneBrick = new ShapelessRecipe(new ItemStack(Material.SMOOTH_BRICK, 1, (short)1)).addIngredient(1, Material.SMOOTH_BRICK).addIngredient(1, Material.VINE);
     addRecipe(mossyStoneBrick);
