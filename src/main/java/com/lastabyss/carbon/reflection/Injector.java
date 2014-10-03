@@ -351,11 +351,11 @@ public class Injector {
     addRecipe(redSandstoneSlabs);
     
 
-    ShapedRecipe redSandstoneStairs = new ShapedRecipe(new ItemStack(this.redSandstoneStairsMat, 4)).shape(new String[] { "  s", " ss", "sss" }).setIngredient('s', this.redSandstoneMat);
+    ShapedRecipe redSandstoneStairs = new ShapedRecipe(new ItemStack(this.redSandstoneStairsMat, 4)).shape(new String[] { "  s", " ss", "sss" }).setIngredient('s', this.redSandstoneMat, Short.MAX_VALUE);
     addRecipe(redSandstoneStairs);
     
 
-    ShapedRecipe redSandstoneStairs2 = new ShapedRecipe(new ItemStack(this.redSandstoneStairsMat, 4)).shape(new String[] { "s  ", "ss ", "sss" }).setIngredient('s', this.redSandstoneMat);
+    ShapedRecipe redSandstoneStairs2 = new ShapedRecipe(new ItemStack(this.redSandstoneStairsMat, 4)).shape(new String[] { "s  ", "ss ", "sss" }).setIngredient('s', this.redSandstoneMat, Short.MAX_VALUE);
     addRecipe(redSandstoneStairs2);
     
 
