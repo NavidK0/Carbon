@@ -18,7 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Carbon extends JavaPlugin {
 
-  private BlockListener blockListener = new BlockListener(this);
+  private BlockListener blockListener = new BlockListener();
   private ItemListener itemListener = new ItemListener(this);
   private CarbonWorldGenerator worldGenerator = new CarbonWorldGenerator(this);
   public static final Logger log = Logger.getLogger("minecraft");

@@ -347,7 +347,7 @@ public class Injector {
     addRecipe(chiseledRedSandstone);
     
 
-    ShapedRecipe redSandstoneSlabs = new ShapedRecipe(new ItemStack(this.redSandstoneSlabMat, 6, (short)0)).shape(new String[] { "sss" }).setIngredient('s', this.redSandstoneMat);
+    ShapedRecipe redSandstoneSlabs = new ShapedRecipe(new ItemStack(this.redSandstoneSlabMat, 6, (short)0)).shape(new String[] { "sss" }).setIngredient('s', this.redSandstoneMat, Short.MAX_VALUE);
     addRecipe(redSandstoneSlabs);
     
 
