@@ -1,5 +1,7 @@
 package com.lastabyss.carbon.blocks;
 
+import com.lastabyss.carbon.entity.TileEntityBanner;
+
 import net.minecraft.server.v1_7_R4.AxisAlignedBB;
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.BlockContainer;

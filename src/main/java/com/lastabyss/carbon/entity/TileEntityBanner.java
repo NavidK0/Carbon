@@ -1,4 +1,4 @@
-package com.lastabyss.carbon.blocks;
+package com.lastabyss.carbon.entity;
 
 import java.util.List;
 
