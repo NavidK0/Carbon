@@ -1,25 +1,7 @@
 package com.lastabyss.carbon.reflection;
 
 import com.lastabyss.carbon.Carbon;
-import com.lastabyss.carbon.blocks.BlockBarrier;
-import com.lastabyss.carbon.blocks.BlockIronTrapdoor;
-import com.lastabyss.carbon.blocks.BlockPrismarine;
-import com.lastabyss.carbon.blocks.BlockRedSandstone;
-import com.lastabyss.carbon.blocks.BlockRedSandstoneStairs;
-import com.lastabyss.carbon.blocks.BlockRedstoneTorchOff;
-import com.lastabyss.carbon.blocks.BlockRedstoneTorchOn;
-import com.lastabyss.carbon.blocks.BlockSeaLantern;
-import com.lastabyss.carbon.blocks.BlockSlime;
-import com.lastabyss.carbon.blocks.BlockSponge;
-import com.lastabyss.carbon.blocks.BlockStep;
-import com.lastabyss.carbon.blocks.BlockStone;
-import com.lastabyss.carbon.blocks.BlockStoneButton;
-import com.lastabyss.carbon.blocks.BlockTorch;
-import com.lastabyss.carbon.blocks.BlockWoodButton;
-import com.lastabyss.carbon.blocks.BlockWoodenDoor;
-import com.lastabyss.carbon.blocks.BlockWoodenFence;
-import com.lastabyss.carbon.blocks.BlockWoodenFenceGate;
-import com.lastabyss.carbon.commands.CommandWorldBorder;
+import com.lastabyss.carbon.blocks.*;
 import com.lastabyss.carbon.commands.WorldBorder;
 import com.lastabyss.carbon.entity.EntityEndermite;
 import com.lastabyss.carbon.entity.EntityGuardian;
@@ -27,16 +9,7 @@ import com.lastabyss.carbon.entity.EntityRabbit;
 import com.lastabyss.carbon.entity.bukkit.Endermite;
 import com.lastabyss.carbon.entity.bukkit.Guardian;
 import com.lastabyss.carbon.entity.bukkit.Rabbit;
-import com.lastabyss.carbon.items.ItemCookedMutton;
-import com.lastabyss.carbon.items.ItemCookedRabbit;
-import com.lastabyss.carbon.items.ItemMutton;
-import com.lastabyss.carbon.items.ItemPrismarineCrystal;
-import com.lastabyss.carbon.items.ItemPrismarineShard;
-import com.lastabyss.carbon.items.ItemRabbit;
-import com.lastabyss.carbon.items.ItemRabbitFoot;
-import com.lastabyss.carbon.items.ItemRabbitHide;
-import com.lastabyss.carbon.items.ItemRabbitStew;
-import com.lastabyss.carbon.items.ItemWoodenDoor;
+import com.lastabyss.carbon.items.*;
 import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
 import com.lastabyss.carbon.utils.Utilities;
 import java.lang.reflect.Field;
@@ -45,7 +18,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.Blocks;
@@ -64,8 +36,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
-
-
 
 
 public class Injector {
@@ -316,75 +286,59 @@ public class Injector {
     //Remove all recipes that have the new items so we can add the recipes later
     Iterator<Recipe> ri = Bukkit.getServer().recipeIterator();
     while (ri.hasNext()) {
-      Recipe recipe = (Recipe)ri.next();
-      if (recipe.getResult().getType() == org.bukkit.Material.WOOD_DOOR) {
+      Material m = ((Recipe)ri.next()).getResult().getType();
+      if(m.equals(Material.WOOD_DOOR) || m.equals(Material.IRON_DOOR) || m.equals(Material.FENCE_GATE) || m.equals(Material.FENCE) ||m.equals(Material.STONE) || m.equals(Material.SMOOTH_BRICK))
         ri.remove();
-      }
-      if (recipe.getResult().getType() == org.bukkit.Material.IRON_DOOR) {
-        ri.remove();
-      }
-      if (recipe.getResult().getType() == org.bukkit.Material.FENCE_GATE) {
-        ri.remove();
-      }
-      if (recipe.getResult().getType() == org.bukkit.Material.FENCE) {
-        ri.remove();
-      }
-      if (recipe.getResult().getType() == org.bukkit.Material.STONE) {
-        ri.remove();
-      }
-      if (recipe.getResult().getType() == org.bukkit.Material.SMOOTH_BRICK) {
-    	ri.remove();
-      }
     }
 
     //now register our recipes
-    ShapedRecipe coarseDirt = new ShapedRecipe(new ItemStack(org.bukkit.Material.DIRT, 4, (short)1)).shape(new String[] { "dg", "gd" }).setIngredient('d', org.bukkit.Material.DIRT).setIngredient('g', org.bukkit.Material.GRAVEL);
+    ShapedRecipe coarseDirt = new ShapedRecipe(new ItemStack(Material.DIRT, 4, (short)1)).shape(new String[] { "dg", "gd" }).setIngredient('d', Material.DIRT).setIngredient('g', Material.GRAVEL);
     addRecipe(coarseDirt);
     
 
-    ShapedRecipe coarseDirt2 = new ShapedRecipe(new ItemStack(org.bukkit.Material.DIRT, 4, (short)1)).shape(new String[] { "gd", "dg" }).setIngredient('d', org.bukkit.Material.DIRT).setIngredient('g', org.bukkit.Material.GRAVEL);
+    ShapedRecipe coarseDirt2 = new ShapedRecipe(new ItemStack(Material.DIRT, 4, (short)1)).shape(new String[] { "gd", "dg" }).setIngredient('d', Material.DIRT).setIngredient('g', Material.GRAVEL);
     addRecipe(coarseDirt2);
     
 
-    ShapedRecipe diorite = new ShapedRecipe(new ItemStack(org.bukkit.Material.STONE, 2, (short)3)).shape(new String[] { "cq", "qc" }).setIngredient('c', org.bukkit.Material.COBBLESTONE).setIngredient('q', org.bukkit.Material.QUARTZ);
+    ShapedRecipe diorite = new ShapedRecipe(new ItemStack(Material.STONE, 2, (short)3)).shape(new String[] { "cq", "qc" }).setIngredient('c', Material.COBBLESTONE).setIngredient('q', Material.QUARTZ);
     addRecipe(diorite);
     
 
-    ShapedRecipe diorite2 = new ShapedRecipe(new ItemStack(org.bukkit.Material.STONE, 2, (short)3)).shape(new String[] { "cq", "qc" }).setIngredient('c', org.bukkit.Material.COBBLESTONE).setIngredient('q', org.bukkit.Material.QUARTZ);
+    ShapedRecipe diorite2 = new ShapedRecipe(new ItemStack(Material.STONE, 2, (short)3)).shape(new String[] { "cq", "qc" }).setIngredient('c', Material.COBBLESTONE).setIngredient('q', Material.QUARTZ);
     addRecipe(diorite2);
     
 
-    ShapelessRecipe andesite = new ShapelessRecipe(new ItemStack(org.bukkit.Material.STONE, 2, (short)5)).addIngredient(1, org.bukkit.Material.STONE, 3).addIngredient(1, org.bukkit.Material.COBBLESTONE);
+    ShapelessRecipe andesite = new ShapelessRecipe(new ItemStack(Material.STONE, 2, (short)5)).addIngredient(Material.STONE, 3).addIngredient(Material.COBBLESTONE);
     addRecipe(andesite);
     
 
-    ShapelessRecipe granite = new ShapelessRecipe(new ItemStack(org.bukkit.Material.STONE, 1, (short)1)).addIngredient(1, org.bukkit.Material.STONE, 3).addIngredient(1, org.bukkit.Material.QUARTZ);
+    ShapelessRecipe granite = new ShapelessRecipe(new ItemStack(Material.STONE, 1, (short)1)).addIngredient(Material.STONE, 3).addIngredient(Material.QUARTZ);
     addRecipe(granite);
     
-    ShapelessRecipe chiseledStone = new ShapelessRecipe(new ItemStack(org.bukkit.Material.SMOOTH_BRICK, 1, (short)2)).addIngredient(1, org.bukkit.Material.STONE, 1).addIngredient(1, org.bukkit.Material.VINE);
+    ShapelessRecipe chiseledStone = new ShapelessRecipe(new ItemStack(Material.SMOOTH_BRICK, 1, (short)2)).addIngredient(Material.STONE, 1).addIngredient(Material.VINE);
     addRecipe(chiseledStone);
     
-    ShapedRecipe polishedDiorite = new ShapedRecipe(new ItemStack(org.bukkit.Material.STONE, 4, (short)4)).shape(new String[] { "ss", "ss" }).setIngredient('s', org.bukkit.Material.STONE, 3);
+    ShapedRecipe polishedDiorite = new ShapedRecipe(new ItemStack(Material.STONE, 4, (short)4)).shape(new String[] { "ss", "ss" }).setIngredient('s', Material.STONE, 3);
     addRecipe(polishedDiorite);
     
 
-    ShapedRecipe polishedAndesite = new ShapedRecipe(new ItemStack(org.bukkit.Material.STONE, 4, (short)6)).shape(new String[] { "ss", "ss" }).setIngredient('s', org.bukkit.Material.STONE, 5);
+    ShapedRecipe polishedAndesite = new ShapedRecipe(new ItemStack(Material.STONE, 4, (short)6)).shape(new String[] { "ss", "ss" }).setIngredient('s', Material.STONE, 5);
     addRecipe(polishedAndesite);
     
 
-    ShapedRecipe polishedGranite = new ShapedRecipe(new ItemStack(org.bukkit.Material.STONE, 4, (short)2)).shape(new String[] { "ss", "ss" }).setIngredient('s', org.bukkit.Material.STONE, 1);
+    ShapedRecipe polishedGranite = new ShapedRecipe(new ItemStack(Material.STONE, 4, (short)2)).shape(new String[] { "ss", "ss" }).setIngredient('s', Material.STONE, 1);
     addRecipe(polishedGranite);
     
 
-    ShapedRecipe slimeRec = new ShapedRecipe(new ItemStack(this.slimeMat)).shape(new String[] { "sss", "sss", "sss" }).setIngredient('s', org.bukkit.Material.SLIME_BALL);
+    ShapedRecipe slimeRec = new ShapedRecipe(new ItemStack(this.slimeMat)).shape(new String[] { "sss", "sss", "sss" }).setIngredient('s', Material.SLIME_BALL);
     addRecipe(slimeRec);
     
 
-    ShapelessRecipe slimeBalls = new ShapelessRecipe(new ItemStack(org.bukkit.Material.SLIME_BALL, 9)).addIngredient(this.slimeMat);
+    ShapelessRecipe slimeBalls = new ShapelessRecipe(new ItemStack(Material.SLIME_BALL, 9)).addIngredient(this.slimeMat);
     addRecipe(slimeBalls);
     
 
-    ShapedRecipe redSandstone = new ShapedRecipe(new ItemStack(this.redSandstoneMat, 4, (short)0)).shape(new String[] { "ss", "ss" }).setIngredient('s', org.bukkit.Material.SAND, 1);
+    ShapedRecipe redSandstone = new ShapedRecipe(new ItemStack(this.redSandstoneMat, 4, (short)0)).shape(new String[] { "ss", "ss" }).setIngredient('s', Material.SAND, 1);
     addRecipe(redSandstone);
     
 
@@ -421,100 +375,100 @@ public class Injector {
     addRecipe(prismarineBricksRecipe);
     
 
-    ShapedRecipe prismarineDarkRecipe = new ShapedRecipe(new ItemStack(this.prismarineBlockMat, 1, (short)2)).shape(new String[] { "***", "*x*", "***" }).setIngredient('*', this.prismarineShardMat).setIngredient('x', org.bukkit.Material.INK_SACK, 0);
+    ShapedRecipe prismarineDarkRecipe = new ShapedRecipe(new ItemStack(this.prismarineBlockMat, 1, (short)2)).shape(new String[] { "***", "*x*", "***" }).setIngredient('*', this.prismarineShardMat).setIngredient('x', Material.INK_SACK, 0);
     addRecipe(prismarineDarkRecipe);
     
 
-    ShapedRecipe oakFence = new ShapedRecipe(new ItemStack(org.bukkit.Material.FENCE, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', org.bukkit.Material.WOOD, 0).setIngredient('x', org.bukkit.Material.STICK);
+    ShapedRecipe oakFence = new ShapedRecipe(new ItemStack(Material.FENCE, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', Material.WOOD, 0).setIngredient('x', Material.STICK);
     addRecipe(oakFence);
     
 
-    ShapedRecipe spruceFence = new ShapedRecipe(new ItemStack(this.spruceFenceMat, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', org.bukkit.Material.WOOD, 1).setIngredient('x', org.bukkit.Material.STICK);
+    ShapedRecipe spruceFence = new ShapedRecipe(new ItemStack(this.spruceFenceMat, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', Material.WOOD, 1).setIngredient('x', Material.STICK);
     addRecipe(spruceFence);
     
 
-    ShapedRecipe birchFence = new ShapedRecipe(new ItemStack(this.birchFenceMat, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', org.bukkit.Material.WOOD, 2).setIngredient('x', org.bukkit.Material.STICK);
+    ShapedRecipe birchFence = new ShapedRecipe(new ItemStack(this.birchFenceMat, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', Material.WOOD, 2).setIngredient('x', Material.STICK);
     addRecipe(birchFence);
     
 
-    ShapedRecipe jungleFence = new ShapedRecipe(new ItemStack(this.jungleFenceMat, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', org.bukkit.Material.WOOD, 3).setIngredient('x', org.bukkit.Material.STICK);
+    ShapedRecipe jungleFence = new ShapedRecipe(new ItemStack(this.jungleFenceMat, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', Material.WOOD, 3).setIngredient('x', Material.STICK);
     addRecipe(jungleFence);
     
 
-    ShapedRecipe darkOakFence = new ShapedRecipe(new ItemStack(this.darkOakFenceMat, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', org.bukkit.Material.WOOD, 5).setIngredient('x', org.bukkit.Material.STICK);
+    ShapedRecipe darkOakFence = new ShapedRecipe(new ItemStack(this.darkOakFenceMat, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', Material.WOOD, 5).setIngredient('x', Material.STICK);
     addRecipe(darkOakFence);
     
 
-    ShapedRecipe acaciaFence = new ShapedRecipe(new ItemStack(this.acaciaFenceMat, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', org.bukkit.Material.WOOD, 4).setIngredient('x', org.bukkit.Material.STICK);
+    ShapedRecipe acaciaFence = new ShapedRecipe(new ItemStack(this.acaciaFenceMat, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', Material.WOOD, 4).setIngredient('x', Material.STICK);
     addRecipe(acaciaFence);
     
 
-    ShapedRecipe oakGate = new ShapedRecipe(new ItemStack(org.bukkit.Material.FENCE_GATE, 1)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', org.bukkit.Material.WOOD, 0).setIngredient('*', org.bukkit.Material.STICK);
+    ShapedRecipe oakGate = new ShapedRecipe(new ItemStack(Material.FENCE_GATE, 1)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', Material.WOOD, 0).setIngredient('*', Material.STICK);
     addRecipe(oakGate);
     
 
-    ShapedRecipe spruceGate = new ShapedRecipe(new ItemStack(this.spruceFenceGateMat, 1)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', org.bukkit.Material.WOOD, 1).setIngredient('*', org.bukkit.Material.STICK);
+    ShapedRecipe spruceGate = new ShapedRecipe(new ItemStack(this.spruceFenceGateMat, 1)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', Material.WOOD, 1).setIngredient('*', Material.STICK);
     addRecipe(spruceGate);
     
 
-    ShapedRecipe birchGate = new ShapedRecipe(new ItemStack(this.birchFenceGateMat, 1)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', org.bukkit.Material.WOOD, 2).setIngredient('*', org.bukkit.Material.STICK);
+    ShapedRecipe birchGate = new ShapedRecipe(new ItemStack(this.birchFenceGateMat, 1)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', Material.WOOD, 2).setIngredient('*', Material.STICK);
     addRecipe(birchGate);
     
 
-    ShapedRecipe jungleGate = new ShapedRecipe(new ItemStack(this.jungleFenceGateMat, 1)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', org.bukkit.Material.WOOD, 3).setIngredient('*', org.bukkit.Material.STICK);
+    ShapedRecipe jungleGate = new ShapedRecipe(new ItemStack(this.jungleFenceGateMat, 1)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', Material.WOOD, 3).setIngredient('*', Material.STICK);
     addRecipe(jungleGate);
     
 
-    ShapedRecipe darkOakGate = new ShapedRecipe(new ItemStack(this.darkOakFenceGateMat, 1)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', org.bukkit.Material.WOOD, 5).setIngredient('*', org.bukkit.Material.STICK);
+    ShapedRecipe darkOakGate = new ShapedRecipe(new ItemStack(this.darkOakFenceGateMat, 1)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', Material.WOOD, 5).setIngredient('*', Material.STICK);
     addRecipe(darkOakGate);
     
 
-    ShapedRecipe acaciaGate = new ShapedRecipe(new ItemStack(this.acaciaFenceGateMat, 1)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', org.bukkit.Material.WOOD, 4).setIngredient('*', org.bukkit.Material.STICK);
+    ShapedRecipe acaciaGate = new ShapedRecipe(new ItemStack(this.acaciaFenceGateMat, 1)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', Material.WOOD, 4).setIngredient('*', Material.STICK);
     addRecipe(acaciaGate);
     
 
-    ShapedRecipe oakDoor = new ShapedRecipe(new ItemStack(org.bukkit.Material.WOOD_DOOR, 3)).shape(new String[] { "xx ", "xx ", "xx " }).setIngredient('x', org.bukkit.Material.WOOD, 0);
+    ShapedRecipe oakDoor = new ShapedRecipe(new ItemStack(Material.WOOD_DOOR, 3)).shape(new String[] { "xx ", "xx ", "xx " }).setIngredient('x', Material.WOOD, 0);
     addRecipe(oakDoor);
     
 
-    ShapedRecipe ironDoor = new ShapedRecipe(new ItemStack(org.bukkit.Material.IRON_DOOR, 3)).shape(new String[] { "xx ", "xx ", "xx " }).setIngredient('x', org.bukkit.Material.IRON_INGOT);
+    ShapedRecipe ironDoor = new ShapedRecipe(new ItemStack(Material.IRON_DOOR, 3)).shape(new String[] { "xx ", "xx ", "xx " }).setIngredient('x', Material.IRON_INGOT);
     addRecipe(ironDoor);
     
 
-    ShapedRecipe spruceDoor = new ShapedRecipe(new ItemStack(this.spruceDoorMat, 3)).shape(new String[] { "xx ", "xx ", "xx " }).setIngredient('x', org.bukkit.Material.WOOD, 1);
+    ShapedRecipe spruceDoor = new ShapedRecipe(new ItemStack(this.spruceDoorMat, 3)).shape(new String[] { "xx ", "xx ", "xx " }).setIngredient('x', Material.WOOD, 1);
     addRecipe(spruceDoor);
     
 
-    ShapedRecipe birchDoor = new ShapedRecipe(new ItemStack(this.birchDoorMat, 3)).shape(new String[] { "xx ", "xx ", "xx " }).setIngredient('x', org.bukkit.Material.WOOD, 2);
+    ShapedRecipe birchDoor = new ShapedRecipe(new ItemStack(this.birchDoorMat, 3)).shape(new String[] { "xx ", "xx ", "xx " }).setIngredient('x', Material.WOOD, 2);
     addRecipe(birchDoor);
     
 
-    ShapedRecipe jungleDoor = new ShapedRecipe(new ItemStack(this.jungleDoorMat, 3)).shape(new String[] { "xx ", "xx ", "xx " }).setIngredient('x', org.bukkit.Material.WOOD, 3);
+    ShapedRecipe jungleDoor = new ShapedRecipe(new ItemStack(this.jungleDoorMat, 3)).shape(new String[] { "xx ", "xx ", "xx " }).setIngredient('x', Material.WOOD, 3);
     addRecipe(jungleDoor);
     
 
-    ShapedRecipe darkOakDoor = new ShapedRecipe(new ItemStack(this.darkOakDoorMat, 3)).shape(new String[] { "xx ", "xx ", "xx " }).setIngredient('x', org.bukkit.Material.WOOD, 5);
+    ShapedRecipe darkOakDoor = new ShapedRecipe(new ItemStack(this.darkOakDoorMat, 3)).shape(new String[] { "xx ", "xx ", "xx " }).setIngredient('x', Material.WOOD, 5);
     addRecipe(darkOakDoor);
     
 
-    ShapedRecipe acaciaDoor = new ShapedRecipe(new ItemStack(this.acaciaDoorMat, 3)).shape(new String[] { "xx ", "xx ", "xx " }).setIngredient('x', org.bukkit.Material.WOOD, 4);
+    ShapedRecipe acaciaDoor = new ShapedRecipe(new ItemStack(this.acaciaDoorMat, 3)).shape(new String[] { "xx ", "xx ", "xx " }).setIngredient('x', Material.WOOD, 4);
     addRecipe(acaciaDoor);
     
 
-    ShapedRecipe ironTrapDoor = new ShapedRecipe(new ItemStack(this.ironTrapdoorMat, 1)).shape(new String[] { "xx", "xx" }).setIngredient('x', org.bukkit.Material.IRON_INGOT);
+    ShapedRecipe ironTrapDoor = new ShapedRecipe(new ItemStack(this.ironTrapdoorMat, 1)).shape(new String[] { "xx", "xx" }).setIngredient('x', Material.IRON_INGOT);
     addRecipe(ironTrapDoor);
     
 
     FurnaceRecipe wetSpongeFurnace = new FurnaceRecipe(new ItemStack(Material.SPONGE, 1, (short)0), Material.SPONGE).setInput(Material.SPONGE, 1);
     addRecipe(wetSpongeFurnace);
     
-    FurnaceRecipe cobbleFurnace = new FurnaceRecipe(new ItemStack(org.bukkit.Material.STONE, 1, (short)0), org.bukkit.Material.STONE).setInput(org.bukkit.Material.COBBLESTONE, 1);
+    FurnaceRecipe cobbleFurnace = new FurnaceRecipe(new ItemStack(Material.STONE, 1, (short)0), Material.STONE).setInput(Material.COBBLESTONE, 1);
     addRecipe(cobbleFurnace);
     
-    FurnaceRecipe crackedStoneBricks = new FurnaceRecipe(new ItemStack(org.bukkit.Material.SMOOTH_BRICK, 1, (short)2), org.bukkit.Material.SMOOTH_BRICK).setInput(org.bukkit.Material.SMOOTH_BRICK);
+    FurnaceRecipe crackedStoneBricks = new FurnaceRecipe(new ItemStack(Material.SMOOTH_BRICK, 1, (short)2), Material.SMOOTH_BRICK).setInput(Material.SMOOTH_BRICK);
     addRecipe(crackedStoneBricks);    
 
-    ShapedRecipe stoneBricks = new ShapedRecipe(new ItemStack(org.bukkit.Material.SMOOTH_BRICK, 4)).shape(new String[] { "xx", "xx" }).setIngredient('x', org.bukkit.Material.STONE);
+    ShapedRecipe stoneBricks = new ShapedRecipe(new ItemStack(Material.SMOOTH_BRICK, 4)).shape(new String[] { "xx", "xx" }).setIngredient('x', Material.STONE);
     addRecipe(stoneBricks);
 
     FurnaceRecipe rawRabbit = new FurnaceRecipe(new ItemStack(this.cookedRabbitItemMat, 1, (short)0), this.cookedRabbitItemMat).setInput(this.rabbitItemMat);
@@ -524,16 +478,16 @@ public class Injector {
     FurnaceRecipe rawMutton = new FurnaceRecipe(new ItemStack(this.cookedMuttonItemMat, 1, (short)0), this.cookedMuttonItemMat).setInput(this.muttonItemMat);
     addRecipe(rawMutton);
     
-    ShapedRecipe rabbitStew = new ShapedRecipe(new ItemStack(this.rabbitStewItemMat, 1)).shape(new String[] { " r ", "cpm", " b " }).setIngredient('r', this.cookedRabbitItemMat).setIngredient('c', org.bukkit.Material.CARROT_ITEM).setIngredient('p', org.bukkit.Material.BAKED_POTATO).setIngredient('m', org.bukkit.Material.RED_MUSHROOM).setIngredient('b', org.bukkit.Material.BOWL);
+    ShapedRecipe rabbitStew = new ShapedRecipe(new ItemStack(this.rabbitStewItemMat, 1)).shape(new String[] { " r ", "cpm", " b " }).setIngredient('r', this.cookedRabbitItemMat).setIngredient('c', Material.CARROT_ITEM).setIngredient('p', Material.BAKED_POTATO).setIngredient('m', Material.RED_MUSHROOM).setIngredient('b', Material.BOWL);
     addRecipe(rabbitStew);
     
-    ShapedRecipe rabbitStew2 = new ShapedRecipe(new ItemStack(this.rabbitStewItemMat, 1)).shape(new String[] { " r ", "cpm", " b " }).setIngredient('r', this.cookedRabbitItemMat).setIngredient('c', org.bukkit.Material.CARROT_ITEM).setIngredient('p', org.bukkit.Material.BAKED_POTATO).setIngredient('m', org.bukkit.Material.BROWN_MUSHROOM).setIngredient('b', org.bukkit.Material.BOWL);
+    ShapedRecipe rabbitStew2 = new ShapedRecipe(new ItemStack(this.rabbitStewItemMat, 1)).shape(new String[] { " r ", "cpm", " b " }).setIngredient('r', this.cookedRabbitItemMat).setIngredient('c', Material.CARROT_ITEM).setIngredient('p', Material.BAKED_POTATO).setIngredient('m', Material.BROWN_MUSHROOM).setIngredient('b', Material.BOWL);
     addRecipe(rabbitStew2);
     
-    ShapelessRecipe mossyStoneBrick = new ShapelessRecipe(new ItemStack(org.bukkit.Material.SMOOTH_BRICK, 1, (short)1)).addIngredient(1, org.bukkit.Material.SMOOTH_BRICK).addIngredient(1, org.bukkit.Material.VINE);
+    ShapelessRecipe mossyStoneBrick = new ShapelessRecipe(new ItemStack(Material.SMOOTH_BRICK, 1, (short)1)).addIngredient(1, Material.SMOOTH_BRICK).addIngredient(1, Material.VINE);
     addRecipe(mossyStoneBrick);
     
-    ShapelessRecipe mossStone = new ShapelessRecipe(new ItemStack(org.bukkit.Material.MOSSY_COBBLESTONE, 1)).addIngredient(1, org.bukkit.Material.COBBLESTONE).addIngredient(1, org.bukkit.Material.VINE);
+    ShapelessRecipe mossStone = new ShapelessRecipe(new ItemStack(Material.MOSSY_COBBLESTONE, 1)).addIngredient(1, Material.COBBLESTONE).addIngredient(1, Material.VINE);
     addRecipe(mossStone);
     
     ShapedRecipe leather = new ShapedRecipe(new ItemStack(Material.LEATHER, 1)).shape(new String[] { "ll", "ll" }).setIngredient('l', this.rabbitHideItemMat);
