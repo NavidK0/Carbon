@@ -1,7 +1,9 @@
 package com.lastabyss.carbon.listeners;
 
 import com.lastabyss.carbon.Carbon;
+
 import java.util.Random;
+
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Ageable;
@@ -19,7 +21,6 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.material.Skull;
 
 /**
  *
@@ -35,11 +36,11 @@ public class ItemListener implements Listener {
     }
     
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onEntityKilled(EntityDeathEvent event) {
+    public void onEntityKilled(EntityDeathEvent e) {
         if (plugin.getConfig().getBoolean("options.sheep.dropMutton")) {
-            if(event.getEntityType() == EntityType.SHEEP) {
-                if(event.getEntity() instanceof Ageable) {
-                    Ageable entity = (Ageable) event.getEntity();
+            if(e.getEntityType().equals(EntityType.SHEEP)) {
+                if(e.getEntity() instanceof Ageable) {
+                    Ageable entity = (Ageable) e.getEntity();
                     if(entity.isAdult()) {
                         boolean fireaspect = false;
                         int looting = 1;
@@ -60,9 +61,9 @@ public class ItemListener implements Listener {
                         }
                         if(entity.getLastDamageCause().getCause().equals(DamageCause.FIRE_TICK) || entity.getLastDamageCause().getCause().equals(DamageCause.FIRE) ||
                                 entity.getLastDamageCause().getCause().equals(DamageCause.LAVA) || fireaspect)
-                            event.getDrops().add(new ItemStack(Carbon.injector().cookedMuttonItemMat, random.nextInt(2) + 1 + random.nextInt(looting)));
+                            e.getDrops().add(new ItemStack(Carbon.injector().cookedMuttonItemMat, random.nextInt(2) + 1 + random.nextInt(looting)));
                         else
-                            event.getDrops().add(new ItemStack(Carbon.injector().muttonItemMat, random.nextInt(2) + 1 + random.nextInt(looting)));
+                            e.getDrops().add(new ItemStack(Carbon.injector().muttonItemMat, random.nextInt(2) + 1 + random.nextInt(looting)));
                     }
                 }
             }
@@ -70,41 +71,34 @@ public class ItemListener implements Listener {
     }
     
     @EventHandler
-    public void onCreeperDeath(EntityDeathEvent evt) {
-        if (plugin.getConfig().getBoolean("creeper.dropMobHead"))
-            if (evt.getEntity().getLastDamageCause().getCause() == DamageCause.ENTITY_EXPLOSION) {
-                if (evt.getEntity().getLastDamageCause().getEntity().getType() == EntityType.CREEPER) {
-                if (!((Creeper)evt.getEntity().getLastDamageCause().getEntity()).isPowered()) {
-                    return;
-                }
-                LivingEntity entity = evt.getEntity();
+    public void onCreeperDeath(EntityDeathEvent e) {
+        LivingEntity entity = e.getEntity();
+        if (plugin.getConfig().getBoolean("options.creeper.dropMobHead"))
+            if (entity.getLastDamageCause().getCause().equals(DamageCause.ENTITY_EXPLOSION) &&
+                    entity.getLastDamageCause() instanceof EntityDamageByEntityEvent &&
+                    ((EntityDamageByEntityEvent) entity.getLastDamageCause()).getDamager() != null &&
+                    ((EntityDamageByEntityEvent) entity.getLastDamageCause()).getDamager() instanceof Creeper &&
+                    ((Creeper)((EntityDamageByEntityEvent) entity.getLastDamageCause()).getDamager()).isPowered()){
                 ItemStack skullItem = null;
-                switch (evt.getEntityType()) {
-                    case SKELETON:
-                        Skeleton skeleton = (Skeleton) evt.getEntity();
-                        if (skeleton.getSkeletonType() == Skeleton.SkeletonType.NORMAL)
-                            skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)0);  
-                        else if (skeleton.getSkeletonType() == Skeleton.SkeletonType.WITHER)
-                            skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)1); 
-                        break;
-                    case ZOMBIE:
-                        skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)2); 
-                        break;
-                    case PLAYER:
-                        Player p = (Player) entity;
-                        skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)3);
-                        SkullMeta meta = (SkullMeta) skullItem.getItemMeta();
-                        meta.setOwner(p.getName());
-                        meta.setDisplayName(p.getName() + "'s Head");
-                        skullItem.setItemMeta(meta);
-                        break;
-                    case CREEPER:
-                        skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)4); 
-                        break;
-                }
+                if (entity.getType().equals(EntityType.SKELETON)) {
+                    Skeleton skeleton = (Skeleton) e.getEntity();
+                    if (skeleton.getSkeletonType() == Skeleton.SkeletonType.NORMAL)
+                        skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)0);  
+                    else if (skeleton.getSkeletonType() == Skeleton.SkeletonType.WITHER)
+                        skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)1);
+                } else if (entity.getType().equals(EntityType.ZOMBIE))
+                    skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)2); 
+                else if (entity.getType().equals(EntityType.PLAYER)) {
+                    Player p = (Player) entity;
+                    skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)3);
+                    SkullMeta meta = (SkullMeta) skullItem.getItemMeta();
+                    meta.setOwner(p.getName());
+                    meta.setDisplayName(p.getName() + "'s Head");
+                    skullItem.setItemMeta(meta);
+                } else if (entity.getType().equals(EntityType.CREEPER))
+                    skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)4); 
                 if (skullItem != null)
                     entity.getWorld().dropItemNaturally(entity.getLocation(), skullItem);
-                }
             }
     }
 }
