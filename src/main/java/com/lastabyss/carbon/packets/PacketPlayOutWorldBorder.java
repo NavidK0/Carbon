@@ -20,9 +20,6 @@ public class PacketPlayOutWorldBorder extends Packet {
 	private int warningTime;
 	private int warningBlocks;
 
-	public PacketPlayOutWorldBorder() {
-	}
-
 	public PacketPlayOutWorldBorder(WorldBorder worldborder, WorldBorderAction action) {
 		this.action = action;
 		this.x = worldborder.getX();

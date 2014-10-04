@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import com.lastabyss.carbon.generator.CarbonWorldGenerator;
 import com.lastabyss.carbon.listeners.BlockListener;
 import com.lastabyss.carbon.listeners.ItemListener;
+import com.lastabyss.carbon.listeners.WorldBorderListener;
 import com.lastabyss.carbon.protocolmodifier.ProtocolBlockListener;
 import com.lastabyss.carbon.protocolmodifier.ProtocolEntityListener;
 import com.lastabyss.carbon.protocolmodifier.ProtocolItemListener;
@@ -20,6 +21,7 @@ public class Carbon extends JavaPlugin {
 
   private BlockListener blockListener = new BlockListener();
   private ItemListener itemListener = new ItemListener(this);
+  private WorldBorderListener worldBorderListener = new WorldBorderListener();
   private CarbonWorldGenerator worldGenerator = new CarbonWorldGenerator(this);
   public static final Logger log = Logger.getLogger("minecraft");
   private static Injector injector;
@@ -60,19 +62,20 @@ public class Carbon extends JavaPlugin {
         getServer().getPluginManager().registerEvents(this.blockListener, this);
         getServer().getPluginManager().registerEvents(this.itemListener, this);
         getServer().getPluginManager().registerEvents(this.worldGenerator, this);
+        getServer().getPluginManager().registerEvents(this.worldBorderListener, this);
         
         if (getConfig().getDouble("donottouch.configVersion", 0.0f) < localConfigVersion) {
             log.warning("[Carbon] Please delete your Carbon config and let it regenerate! Yours is outdated and may cause issues with the mod!");
         }
 
         if (getServer().getPluginManager().getPlugin("ProtocolLib") != null) {
-        try {
-            new ProtocolBlockListener(this).init();
-            new ProtocolItemListener(this).init();
-            new ProtocolEntityListener(this).init();
-        } catch (Throwable t) {
-        	t.printStackTrace();
-        }
+	        try {
+	            new ProtocolBlockListener(this).init();
+	            new ProtocolItemListener(this).init();
+	            new ProtocolEntityListener(this).init();
+	        } catch (Throwable t) {
+	        	t.printStackTrace();
+	        }
         } else {
             log.info("[Carbon] ProtocolLib not found, not hooking. 1.7 clients not supported.");
         }
@@ -89,18 +92,6 @@ public class Carbon extends JavaPlugin {
   
     public static Injector injector() {
         return injector;
-    }
-
-    public BlockListener getBlockListener() {
-        return this.blockListener;
-    }
-
-    public ItemListener getItemListener() {
-        return this.itemListener;
-    }
-
-    public CarbonWorldGenerator getWorldGenerator() {
-        return worldGenerator;
     }
 
     public File getCarbonFolder() {

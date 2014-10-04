@@ -12,7 +12,6 @@ import net.minecraft.server.v1_7_R4.Position;
 import net.minecraft.util.com.google.common.primitives.Doubles;
 
 public class WorldBorderCommand extends CommandAbstract {
-	public static WorldBorder worldBorder = new WorldBorder();
 
 	public String getCommand() {
 		return "worldborder";
@@ -365,7 +364,7 @@ public class WorldBorderCommand extends CommandAbstract {
 	}
 
 	protected WorldBorder d() {
-		return worldBorder;
+		return WorldBorder.getInstance();
 	}
 
 	public List getTabCompleteList(ICommandListener var1, String[] var2,

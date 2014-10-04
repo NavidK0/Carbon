@@ -11,6 +11,11 @@ import net.minecraft.server.v1_7_R4.Position;
 
 public class WorldBorder {
 
+	private static WorldBorder instance = new WorldBorder();
+	public static WorldBorder getInstance() {
+		return instance;
+	}
+
 	private final List<WorldBorderChangeListener> listeners = Lists.newArrayList();
 	private double x = 0.0D;
 	private double z = 0.0D;
@@ -24,7 +29,7 @@ public class WorldBorder {
 	private int warningTime;
 	private int warningBlocks;
 
-	public WorldBorder() {
+	protected WorldBorder() {
 		this.currentRadius = this.oldRadius;
 		this.portalTeleportBoundary = 29999984;
 		this.damageAmount = 0.2D;
