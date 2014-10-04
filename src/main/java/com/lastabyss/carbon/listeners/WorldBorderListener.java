@@ -7,6 +7,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
 import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder.WorldBorderAction;
@@ -23,6 +24,12 @@ public class WorldBorderListener implements Listener {
 
 	@EventHandler
 	public void onPlayerWorldChange(PlayerChangedWorldEvent event) {
+		PacketPlayOutWorldBorder packet = new PacketPlayOutWorldBorder(WorldBorder.getInstance(event.getPlayer().getWorld()), WorldBorderAction.INITIALIZE);
+		Utilities.sendPacket(event.getPlayer(), packet);
+	}
+
+	@EventHandler
+	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		PacketPlayOutWorldBorder packet = new PacketPlayOutWorldBorder(WorldBorder.getInstance(event.getPlayer().getWorld()), WorldBorderAction.INITIALIZE);
 		Utilities.sendPacket(event.getPlayer(), packet);
 	}
