@@ -1,4 +1,4 @@
-package com.lastabyss.carbon.commands;
+package com.lastabyss.carbon.worldborder;
 
 import net.minecraft.server.v1_7_R4.CommandAbstract;
 import net.minecraft.server.v1_7_R4.ICommandListener;

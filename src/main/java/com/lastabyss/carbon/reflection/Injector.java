@@ -2,7 +2,7 @@ package com.lastabyss.carbon.reflection;
 
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.blocks.*;
-import com.lastabyss.carbon.commands.WorldBorder;
+import com.lastabyss.carbon.commands.CommandWorldBorder;
 import com.lastabyss.carbon.entity.EntityEndermite;
 import com.lastabyss.carbon.entity.EntityGuardian;
 import com.lastabyss.carbon.entity.EntityRabbit;
@@ -13,6 +13,8 @@ import com.lastabyss.carbon.entity.bukkit.Rabbit;
 import com.lastabyss.carbon.items.*;
 import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
 import com.lastabyss.carbon.utils.Utilities;
+import com.lastabyss.carbon.worldborder.WorldBorder;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -20,6 +22,7 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.Entity;
@@ -28,8 +31,10 @@ import net.minecraft.server.v1_7_R4.EnumProtocol;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.ItemBlock;
 import net.minecraft.server.v1_7_R4.ItemMultiTexture;
+import net.minecraft.server.v1_7_R4.Packet;
 import net.minecraft.server.v1_7_R4.TileEntity;
 import net.minecraft.server.v1_7_R4.World;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -204,6 +209,23 @@ public class Injector {
       }
   }
 
+  @SuppressWarnings("unchecked")
+  public static void registerPacket(EnumProtocol protocol, Class<? extends Packet> packetClass, int packetID, boolean isClientbound) {
+      try {
+         if (isClientbound) {
+           protocol.b().put(packetID, packetClass);
+         } else {
+           protocol.a().put(packetID, packetClass);
+         }
+         Field mapField = EnumProtocol.class.getDeclaredField("f");
+         mapField.setAccessible(true);
+         Map<Class<? extends Packet>, EnumProtocol> map = (Map<Class<? extends Packet>, EnumProtocol>) mapField.get(null);
+         map.put(packetClass, protocol);
+      } catch (SecurityException | IllegalAccessException | IllegalArgumentException | NoSuchFieldException e) {
+         e.printStackTrace();
+      }
+  }
+
   public void registerAll() {
     //Register blocks
     registerBlock(1, "stone", stoneBlock, stoneItem);
@@ -264,10 +286,10 @@ public class Injector {
     registerTileEntity(TileEntityBanner.class, "Banner");
     
     //Register commands from 1.8
-    //Utilities.registerBukkitCommand("minecraft", new CommandWorldBorder());
+    Utilities.registerBukkitCommand("minecraft", new CommandWorldBorder());
 
     //Register additional packets
-    EnumProtocol.PLAY.b().put(68, PacketPlayOutWorldBorder.class);
+    registerPacket(EnumProtocol.PLAY, PacketPlayOutWorldBorder.class, 68, true);
 
     //inject our new stone, sponge, torch and redstone torches to blocks class
     try {
