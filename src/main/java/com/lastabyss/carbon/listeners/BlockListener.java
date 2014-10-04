@@ -101,25 +101,23 @@ public class BlockListener implements Listener {
 	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onSpongePlace(BlockPlaceEvent event) {
-		if (event.getBlockPlaced().getState().getData().toString().equals("SPONGE(0)")) {
+		if(event.getBlockPlaced().getState().getData().toString().equals("SPONGE(0)") && (isTouching(event.getBlockPlaced(), Material.WATER) || isTouching(event.getBlockPlaced(), Material.STATIONARY_WATER))) {
 			int x = event.getBlockPlaced().getX() - 5;
 			int y = event.getBlockPlaced().getY() - 5;
 			int z = event.getBlockPlaced().getZ() - 5;
-			for (int a = x; a <= x + 10; a++)
-				for (int b = y; b <= y + 10; b++)
-					for (int c = z; c <= z + 10; c++)
-						if (event.getBlockPlaced().getWorld().getBlockAt(a, b, c).getType().equals(Material.WATER) ||
-								(event.getBlockPlaced().getWorld().getBlockAt(a, b, c).getType().equals(Material.STATIONARY_WATER))) {
+			for(int a = x; a <= x + 10; a++)
+				for(int b = y; b <= y + 10; b++)
+					for(int c = z; c <= z + 10; c++)
+						if(event.getBlockPlaced().getWorld().getBlockAt(a, b, c).getType().equals(Material.WATER) || (event.getBlockPlaced().getWorld().getBlockAt(a, b, c).getType().equals(Material.STATIONARY_WATER))) {
 							event.getBlockPlaced().getWorld().getBlockAt(a, b, c).setType(Material.AIR);
 							event.getBlockPlaced().setData((byte) 1);
 						}
 		}
 	}
 
-	public boolean isTouching(Block block, String material) {
-		for (BlockFace b : BlockFace.values())
-			if (block.getRelative(b).getType().equals(Material.getMaterial(material)))
-				return true;
+	public boolean isTouching(Block block, Material material) {
+		for(BlockFace b : BlockFace.values())
+			if(block.getRelative(b).getType() == material) return true;
 		return false;
 	}
 
