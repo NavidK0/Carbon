@@ -13,93 +13,74 @@ import net.minecraft.server.v1_7_R4.TileEntity;
 
 @SuppressWarnings("unused")
 public class TileEntityBanner extends TileEntity {
+
 	private int baseColor;
-    private NBTTagList field_175118_f;
+	private NBTTagList patterns;
 	private boolean field_175119_g;
-    @SuppressWarnings("rawtypes")
+	@SuppressWarnings("rawtypes")
 	private List field_175122_h;
 	@SuppressWarnings("rawtypes")
-	private List field_175123_i; 
+	private List field_175123_i;
 	private String field_175121_j;
-    private static final String __OBFID = "CL_00002044";
 
-    public void setItemValues(ItemStack p_175112_1_)
-    {
-        this.field_175118_f = null;
+	public void setItemValues(ItemStack itemStack) {
+		this.patterns = null;
 
-        /*if (p_175112_1_.hasTagCompound() && p_175112_1_.getTagCompound().hasKey("BlockEntityTag", 10))
-        {
-            NBTTagCompound var2 = p_175112_1_.getTagCompound().getCompoundTag("BlockEntityTag");
+		if (itemStack.hasTag() && itemStack.getTag().hasKeyOfType("BlockEntityTag", 10)) {
+			NBTTagCompound compound = itemStack.getTag().getCompound("BlockEntityTag");
 
-            if (var2.hasKey("Patterns"))
-            {
-                this.field_175118_f = (NBTTagList)var2.getList("Patterns", 10).copy();
-            }
+			if (compound.hasKey("Patterns")) {
+				this.patterns = (NBTTagList) compound.getList("Patterns", 10).clone();
+			}
 
-            if (var2.hasKeyOfType("Base", 99))
-            {
-                this.baseColor = var2.getInt("Base");
-            }
-            else
-            {
-                this.baseColor = p_175112_1_.getData() & 15;
-            }
-        }
-        else
-        {
-            this.baseColor = p_175112_1_.getData() & 15;
-        }
-        */
+			if (compound.hasKeyOfType("Base", 99)) {
+				this.baseColor = compound.getInt("Base");
+			} else {
+				this.baseColor = itemStack.getData() & 15;
+			}
+		} else {
+			this.baseColor = itemStack.getData() & 15;
+		}
 
-        this.field_175122_h = null;
-        this.field_175123_i = null;
-        this.field_175121_j = "";
-        this.field_175119_g = true;
-    }
+		this.field_175122_h = null;
+		this.field_175123_i = null;
+		this.field_175121_j = "";
+		this.field_175119_g = true;
+	}
 
-    public void writeToNBT(NBTTagCompound compound)
-    {
-        //super.writeToNBT(compound);
-        compound.setInt("Base", this.baseColor);
+	public void a(NBTTagCompound compound) {
+		super.a(compound);
+		this.baseColor = compound.getInt("Base");
+		this.patterns = compound.getList("Patterns", 10);
+		this.field_175122_h = null;
+		this.field_175123_i = null;
+		this.field_175121_j = null;
+		this.field_175119_g = true;
+	}
 
-        if (this.field_175118_f != null)
-        {
-            compound.set("Patterns", this.field_175118_f);
-        }
-    }
+	public void b(NBTTagCompound compound) {
+		super.b(compound);
+		compound.setInt("Base", this.baseColor);
 
-    public void readFromNBT(NBTTagCompound compound)
-    {
-        //super.readFromNBT(compound);
-        this.baseColor = compound.getInt("Base");
-        this.field_175118_f = compound.getList("Patterns", 10);
-        this.field_175122_h = null;
-        this.field_175123_i = null;
-        this.field_175121_j = null;
-        this.field_175119_g = true;
-    }
+		if (this.patterns != null) {
+			compound.set("Patterns", this.patterns);
+		}
+	}
 
-    /**
-     * Overriden in a sign to provide the text.
-     */
-    public Packet getDescriptionPacket()
-    {
-        NBTTagCompound var1 = new NBTTagCompound();
-        this.writeToNBT(var1);
-        return new PacketPlayOutTileEntityData();
-        //this.pos, 6, var1
-    }
+	public Packet getDescriptionPacket() {
+		NBTTagCompound updatePacketTag = new NBTTagCompound();
+		this.b(updatePacketTag);
+		return new PacketPlayOutTileEntityData(x, y, z, 6, updatePacketTag);
+	}
 
-    public int getBaseColor()
-    {
-        return this.baseColor;
-    }
+	public int getBaseColor() {
+		return this.baseColor;
+	}
 
     public static int getBaseColor(ItemStack stack)
     {
-        /*NBTTagCompound var1 = stack.getSubCompound("BlockEntityTag", false);
-        return var1 != null && var1.hasKey("Base") ? var1.getInt("Base") : stack.getData();*/
-    	return 0;
+        NBTTagCompound tag = stack.getTag().getCompound("BlockEntityTag");
+        return tag != null && tag.hasKey("Base") ? tag.getInt("Base") : stack.getData();
     }
 
     public static int func_175113_c(ItemStack p_175113_0_)
@@ -134,8 +115,7 @@ public class TileEntityBanner extends TileEntity {
         }*/
     }
 
-    public static enum EnumBannerPattern
-    {
+    public static enum EnumBannerPattern {
         BASE("BASE", 0, "base", "b"),
         SQUARE_BOTTOM_LEFT("SQUARE_BOTTOM_LEFT", 1, "square_bottom_left", "bl", "   ", "   ", "#  "),
         SQUARE_BOTTOM_RIGHT("SQUARE_BOTTOM_RIGHT", 2, "square_bottom_right", "br", "   ", "   ", "  #"),
@@ -181,52 +161,45 @@ public class TileEntityBanner extends TileEntity {
         private ItemStack field_177290_Q;
 
         private static final TileEntityBanner.EnumBannerPattern[] $VALUES = new TileEntityBanner.EnumBannerPattern[]{BASE, SQUARE_BOTTOM_LEFT, SQUARE_BOTTOM_RIGHT, SQUARE_TOP_LEFT, SQUARE_TOP_RIGHT, STRIPE_BOTTOM, STRIPE_TOP, STRIPE_LEFT, STRIPE_RIGHT, STRIPE_CENTER, STRIPE_MIDDLE, STRIPE_DOWNRIGHT, STRIPE_DOWNLEFT, STRIPE_SMALL, CROSS, STRAIGHT_CROSS, TRIANGLE_BOTTOM, TRIANGLE_TOP, TRIANGLES_BOTTOM, TRIANGLES_TOP, DIAGONAL_LEFT, DIAGONAL_RIGHT, DIAGONAL_LEFT_MIRROR, DIAGONAL_RIGHT_MIRROR, CIRCLE_MIDDLE, RHOMBUS_MIDDLE, HALF_VERTICAL, HALF_HORIZONTAL, HALF_VERTICAL_MIRROR, HALF_HORIZONTAL_MIRROR, BORDER, CURLY_BORDER, CREEPER, GRADIENT, GRADIENT_UP, BRICKS, SKULL, FLOWER, MOJANG};
-        private static final String __OBFID = "CL_00002043";
 
-        private EnumBannerPattern(String p_i45670_1_, int p_i45670_2_, String p_i45670_3_, String p_i45670_4_)
-        {
+        private EnumBannerPattern(String p_i45670_1_, int p_i45670_2_, String p_i45670_3_, String p_i45670_4_) {
             this.field_177291_P = new String[3];
             this.field_177284_N = p_i45670_3_;
             this.field_177285_O = p_i45670_4_;
         }
 
-        private EnumBannerPattern(String p_i45671_1_, int p_i45671_2_, String p_i45671_3_, String p_i45671_4_, ItemStack p_i45671_5_)
-        {
+        private EnumBannerPattern(String p_i45671_1_, int p_i45671_2_, String p_i45671_3_, String p_i45671_4_, ItemStack p_i45671_5_) {
             this(p_i45671_1_, p_i45671_2_, p_i45671_3_, p_i45671_4_);
             this.field_177290_Q = p_i45671_5_;
         }
 
-        private EnumBannerPattern(String p_i45672_1_, int p_i45672_2_, String p_i45672_3_, String p_i45672_4_, String p_i45672_5_, String p_i45672_6_, String p_i45672_7_)
-        {
+        private EnumBannerPattern(String p_i45672_1_, int p_i45672_2_, String p_i45672_3_, String p_i45672_4_, String p_i45672_5_, String p_i45672_6_, String p_i45672_7_) {
             this(p_i45672_1_, p_i45672_2_, p_i45672_3_, p_i45672_4_);
             this.field_177291_P[0] = p_i45672_5_;
             this.field_177291_P[1] = p_i45672_6_;
             this.field_177291_P[2] = p_i45672_7_;
         }
 
-        public String func_177273_b()
-        {
+        public String func_177273_b() {
             return this.field_177285_O;
         }
 
-        public String[] func_177267_c()
-        {
+        public String[] func_177267_c() {
             return this.field_177291_P;
         }
 
-        public boolean func_177270_d()
-        {
+        public boolean func_177270_d() {
             return this.field_177290_Q != null || this.field_177291_P[0] != null;
         }
 
-        public boolean func_177269_e()
-        {
+        public boolean func_177269_e() {
             return this.field_177290_Q != null;
         }
 
-        public ItemStack func_177272_f()
-        {
+        public ItemStack func_177272_f() {
             return this.field_177290_Q;
         }
+
     }
+
 }
