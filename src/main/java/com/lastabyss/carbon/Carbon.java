@@ -7,6 +7,7 @@ import com.lastabyss.carbon.generator.CarbonWorldGenerator;
 import com.lastabyss.carbon.listeners.BlockListener;
 import com.lastabyss.carbon.listeners.ItemListener;
 import com.lastabyss.carbon.listeners.WorldBorderListener;
+import com.lastabyss.carbon.protocolblocker.ProtocolBlocker;
 import com.lastabyss.carbon.protocolmodifier.ProtocolBlockListener;
 import com.lastabyss.carbon.protocolmodifier.ProtocolEntityListener;
 import com.lastabyss.carbon.protocolmodifier.ProtocolItemListener;
@@ -22,6 +23,7 @@ public class Carbon extends JavaPlugin {
   private BlockListener blockListener = new BlockListener();
   private ItemListener itemListener = new ItemListener(this);
   private WorldBorderListener worldBorderListener = new WorldBorderListener();
+  private ProtocolBlocker protocolBlocker = new ProtocolBlocker(this);
   private CarbonWorldGenerator worldGenerator = new CarbonWorldGenerator(this);
   public static final Logger log = Logger.getLogger("minecraft");
   private static Injector injector;
@@ -61,6 +63,8 @@ public class Carbon extends JavaPlugin {
         getServer().getPluginManager().registerEvents(this.itemListener, this);
         getServer().getPluginManager().registerEvents(this.worldGenerator, this);
         getServer().getPluginManager().registerEvents(this.worldBorderListener, this);
+        protocolBlocker.loadConfig();
+        getServer().getPluginManager().registerEvents(this.protocolBlocker, this);
         
         if (getConfig().getDouble("donottouch.configVersion", 0.0f) < localConfigVersion) {
             log.warning("[Carbon] Please delete your Carbon config and let it regenerate! Yours is outdated and may cause issues with the mod!");
