@@ -79,6 +79,8 @@ public class Injector {
   public Material ironTrapdoorMat = Utilities.addMaterial("IRON_TRAPDOOR", 167);
   public Material prismarineBlockMat = Utilities.addMaterial("PRISMARINE", 168);
   public Material seaLaternMat = Utilities.addMaterial("SEA_LANTERN", 169);
+  public Material freeStandingBannerMat = Utilities.addMaterial("FREE_STANDING_BANNER", 176);
+  public Material wallMountedBannerMat = Utilities.addMaterial("WALL_MOUNTED_BANNER", 177);
   public Material redSandstoneMat = Utilities.addMaterial("RED_SANDSTONE", 179);
   public Material redSandstoneStairsMat = Utilities.addMaterial("RED_SANDSTONE_STAIRS", 180);
   public Material redSandstoneDoubleSlabMat = Utilities.addMaterial("RED_SANDSTONE_DOUBLESLAB", 181);
@@ -108,6 +110,7 @@ public class Injector {
   public Material armorStandEntityMat = Utilities.addMaterial("ARMOR_STAND", 416);
   public Material muttonItemMat = Utilities.addMaterial("MUTTON", 423);
   public Material cookedMuttonItemMat = Utilities.addMaterial("COOKED_MUTTON", 424);
+  public Material bannerItemMat = Utilities.addMaterial("BANNER", 425);
   public Material spruceDoorMat = Utilities.addMaterial("SPRUCE_DOOR", 427);
   public Material birchDoorMat = Utilities.addMaterial("BIRCH_DOOR", 428);
   public Material jungleDoorMat = Utilities.addMaterial("JUNGLE_DOOR", 429);
