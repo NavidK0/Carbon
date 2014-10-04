@@ -18,7 +18,7 @@ public class BlockPrismarine extends Block {
         //Sets hardness of block
         c(1.2f);
         //Sets blast
-        b(30.0F);
+        b(10.0F);
     }
 
     @Override
