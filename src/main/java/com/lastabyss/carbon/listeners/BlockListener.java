@@ -18,6 +18,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -33,11 +34,10 @@ public class BlockListener implements Listener {
 			Location location = evt.getBlock().getLocation();
 			Random rand = new Random();
 			boolean bool = rand.nextBoolean();
-			if (bool) {
+			if (bool)
 				evt.getPlayer().getWorld().playSound(location, Sound.SLIME_WALK, 1.0F, 10.0F);
-			} else {
+			else
 				evt.getPlayer().getWorld().playSound(location, Sound.SLIME_WALK2, 0.5F, 10.0F);
-			}
 		}
 	}
 
@@ -105,48 +105,36 @@ public class BlockListener implements Listener {
 			int x = event.getBlockPlaced().getX() - 5;
 			int y = event.getBlockPlaced().getY() - 5;
 			int z = event.getBlockPlaced().getZ() - 5;
-			for (int a = x; a <= x + 10; a++) {
-				for (int b = y; b <= y + 10; b++) {
-					for (int c = z; c <= z + 10; c++) {
-						if (event.getBlockPlaced().getWorld().getBlockAt(a, b, c).getType() == Material.WATER || (event.getBlockPlaced().getWorld().getBlockAt(a, b, c).getType() == Material.STATIONARY_WATER)) {
+			for (int a = x; a <= x + 10; a++)
+				for (int b = y; b <= y + 10; b++)
+					for (int c = z; c <= z + 10; c++)
+						if (event.getBlockPlaced().getWorld().getBlockAt(a, b, c).getType().equals(Material.WATER) ||
+								(event.getBlockPlaced().getWorld().getBlockAt(a, b, c).getType().equals(Material.STATIONARY_WATER))) {
 							event.getBlockPlaced().getWorld().getBlockAt(a, b, c).setType(Material.AIR);
 							event.getBlockPlaced().setData((byte) 1);
 						}
-					}
-				}
-			}
 		}
 	}
 
 	public boolean isTouching(Block block, String material) {
-		for (BlockFace b : BlockFace.values()) {
-			if (block.getRelative(b).getType() == Material.getMaterial(material))
+		for (BlockFace b : BlockFace.values())
+			if (block.getRelative(b).getType().equals(Material.getMaterial(material)))
 				return true;
-		}
 		return false;
 	}
 
 	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void slabInteract(PlayerInteractEvent event) {
-		if (event.getItem() == null || event.getAction() != Action.RIGHT_CLICK_BLOCK || event.getItem().getType() != Carbon.injector().redSandstoneSlabMat) {
+		if (event.getItem() == null || event.getAction() != Action.RIGHT_CLICK_BLOCK || event.getItem().getType() != Carbon.injector().redSandstoneSlabMat)
 			return;
-		}
 		Block clickedBlock = event.getClickedBlock();
-		if (clickedBlock.getType() == Carbon.injector().redSandstoneSlabMat && clickedBlock.getData() == 0) {
-			if (event.getBlockFace() == BlockFace.UP) {
+		if (clickedBlock.getType() == Carbon.injector().redSandstoneSlabMat)
+			if ((clickedBlock.getData() == 0 && event.getBlockFace() == BlockFace.UP) || (clickedBlock.getData() == 8 && event.getBlockFace() == BlockFace.DOWN)) {
 				setDoubleSlab(event.getPlayer(), clickedBlock);
 				event.setCancelled(true);
 				return;
 			}
-		}
-		if (clickedBlock.getType() == Carbon.injector().redSandstoneSlabMat && clickedBlock.getData() == 8) {
-			if (event.getBlockFace() == BlockFace.DOWN) {
-				setDoubleSlab(event.getPlayer(), clickedBlock);
-				event.setCancelled(true);
-				return;
-			}
-		}
 		Block block = event.getClickedBlock();
 		Block adjacent = block.getRelative(event.getBlockFace());
 		if (adjacent.getType() == Carbon.injector().redSandstoneSlabMat) {
@@ -160,19 +148,16 @@ public class BlockListener implements Listener {
 		block.setType(Carbon.injector().redSandstoneDoubleSlabMat);
 		block.setData((byte) 0);
 		if (player.getGameMode() != GameMode.CREATIVE) {
-			if (player.getItemInHand().getAmount() > 1) {
+			if (player.getItemInHand().getAmount() > 1)
 				player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
-			} else {
+			else
 				player.setItemInHand(null);
-			}
 		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onSlimeBlockFall(EntityDamageEvent evt) {
-		if ((evt.getCause() == EntityDamageEvent.DamageCause.FALL) && (evt.getEntity().getLocation().subtract(0.0D, 1.0D, 0.0D).getBlock().getType() == Material.getMaterial("slime"))) {
+		if (evt.getCause().equals(DamageCause.FALL) && evt.getEntity().getLocation().subtract(0.0D, 1.0D, 0.0D).getBlock().getType().equals(Carbon.injector().slimeMat))
 			evt.setCancelled(true);
-		}
 	}
-
 }
