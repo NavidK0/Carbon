@@ -8,7 +8,6 @@ import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder.WorldBorderAction;
 import com.lastabyss.carbon.utils.Utilities;
 
 import net.minecraft.server.v1_7_R4.Packet;
-import net.minecraft.server.v1_7_R4.PlayerList;
 
 public class WorldBorderPlayerUpdater implements WorldBorderChangeListener {
 

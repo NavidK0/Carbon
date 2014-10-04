@@ -2,8 +2,12 @@ package com.lastabyss.carbon.utils;
 
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.DynamicEnumType;
+import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -222,8 +226,21 @@ public class Utilities {
      * @param player
      * @param packet
      */
+    public static int CLIENT_1_8_PROTOCOL_VERSION = 47;
+    private static HashSet<Class<?>> newPackets = new HashSet<Class<?>>(
+    	Arrays.asList(
+    		new Class<?>[] {
+    			PacketPlayOutWorldBorder.class
+    		}
+    	)
+    );
     public static void sendPacket(Player player, Packet packet) {
     	EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
+    	if (nmsPlayer.playerConnection.networkManager.getVersion() != CLIENT_1_8_PROTOCOL_VERSION) {
+    		if (newPackets.contains(packet.getClass())) {
+    			return;
+    		}
+    	}
     	nmsPlayer.playerConnection.sendPacket(packet);
     }
 
