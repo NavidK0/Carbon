@@ -15,6 +15,8 @@ public class BlockBarrier extends Block {
     b(6000000.0F);
     //Prevents piston pushing
     H();
+    //Allows light to pass through
+    s = true;
   }
 
   @Override
