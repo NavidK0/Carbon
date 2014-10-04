@@ -1,7 +1,6 @@
 
 package com.lastabyss.carbon;
 
-import java.io.File;
 import java.util.logging.Logger;
 
 import com.lastabyss.carbon.generator.CarbonWorldGenerator;
@@ -13,6 +12,7 @@ import com.lastabyss.carbon.protocolmodifier.ProtocolEntityListener;
 import com.lastabyss.carbon.protocolmodifier.ProtocolItemListener;
 import com.lastabyss.carbon.reflection.Injector;
 import com.lastabyss.carbon.utils.Utilities;
+import com.lastabyss.carbon.worldborder.WorldBorder;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -25,7 +25,6 @@ public class Carbon extends JavaPlugin {
   private CarbonWorldGenerator worldGenerator = new CarbonWorldGenerator(this);
   public static final Logger log = Logger.getLogger("minecraft");
   private static Injector injector;
-  private File carbonFolder;
   private double localConfigVersion = 0.1;
   
     @Override
@@ -52,13 +51,13 @@ public class Carbon extends JavaPlugin {
     @Override
     public void onEnable() {
         Utilities.instantiate(this);
-        carbonFolder = new File(getDataFolder(), getDescription().getName());
-        if (!carbonFolder.exists()) {
-             carbonFolder.mkdir();
-        }
         saveDefaultConfig();
+        if (!this.getDataFolder().exists()) {
+        	this.getDataFolder().mkdirs();
+        }
         reloadConfig();
         worldGenerator.populate();
+        WorldBorder.getInstance().loadFromConfig(this);
         getServer().getPluginManager().registerEvents(this.blockListener, this);
         getServer().getPluginManager().registerEvents(this.itemListener, this);
         getServer().getPluginManager().registerEvents(this.worldGenerator, this);
@@ -84,6 +83,7 @@ public class Carbon extends JavaPlugin {
 
     @Override
     public void onDisable() {
+    	WorldBorder.getInstance().saveToConfig(this);
     	//call to server shutdown on disable, won't hurt if server already disables itself, but will prevent plugin unload/reload
     	Bukkit.shutdown();
     }
@@ -94,7 +94,4 @@ public class Carbon extends JavaPlugin {
         return injector;
     }
 
-    public File getCarbonFolder() {
-        return carbonFolder;
-    }
 }

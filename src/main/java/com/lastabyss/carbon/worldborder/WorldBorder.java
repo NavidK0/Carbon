@@ -1,11 +1,15 @@
 package com.lastabyss.carbon.worldborder;
 
 import com.google.common.collect.Lists;
+import com.lastabyss.carbon.Carbon;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import net.minecraft.server.v1_7_R4.AxisAlignedBB;
 import net.minecraft.server.v1_7_R4.ChunkCoordIntPair;
@@ -13,6 +17,41 @@ import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.Position;
 
 public class WorldBorder {
+
+	public void loadFromConfig(Carbon plugin) {
+		YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "worldborder.yml"));
+		setCenter(config.getDouble("x", x), config.getDouble("z", z));
+		setDamageAmount(config.getDouble("damageAmount", damageAmount));
+		setDamageBuffer(config.getDouble("damageBuffer", damageBuffer));
+		setWarningBlocks(config.getInt("warningBlocks", warningBlocks));
+		setWarningTime(config.getInt("warningTime", warningTime));
+		long lerpTime = config.getLong("lerpTime", 0);
+		double oldSize = config.getDouble("oldRadius", oldRadius);
+		if (lerpTime > 0L) {
+			changeSize(oldSize, config.getDouble("currentRadius", oldSize), lerpTime);
+		} else {
+			setSize(oldSize);
+		}
+	}
+
+	public void saveToConfig(Carbon plugin) {
+		YamlConfiguration config = new YamlConfiguration();
+		config.set("x", x);
+		config.set("z", z);
+		config.set("damageAmount", damageAmount);
+		config.set("damageBuffer", damageBuffer);
+		config.set("warningBlocks", warningBlocks);
+		config.set("warningTime", warningTime);
+		if (getStatus() != EnumWorldBorderStatus.STATIONARY) {
+			config.set("lerpTime", lerpEndTime - lerpStartTime);
+			config.set("currentRadius", currentRadius);
+		}
+		config.set("oldRadius", oldRadius);
+		try {
+			config.save(new File(plugin.getDataFolder(), "worldborder.yml"));
+		} catch (IOException e) {
+		}
+	}
 
 	private static WorldBorder instance = new WorldBorder();
 	public static WorldBorder getInstance() {
@@ -23,22 +62,16 @@ public class WorldBorder {
 	private double x = 0.0D;
 	private double z = 0.0D;
 	private double oldRadius = 6.0E7D;
-	private double currentRadius;
+	private double currentRadius = oldRadius;
 	private long lerpEndTime;
 	private long lerpStartTime;
-	private int portalTeleportBoundary;
-	private double damageAmount;
-	private double damageBuffer;
-	private int warningTime;
-	private int warningBlocks;
+	private int portalTeleportBoundary = 29999984;
+	private double damageAmount = 0.2D;
+	private double damageBuffer = 5.0D;
+	private int warningTime = 15;
+	private int warningBlocks = 5;
 
 	protected WorldBorder() {
-		this.currentRadius = this.oldRadius;
-		this.portalTeleportBoundary = 29999984;
-		this.damageAmount = 0.2D;
-		this.damageBuffer = 5.0D;
-		this.warningTime = 15;
-		this.warningBlocks = 5;
 		listeners.add(new WorldBorderPlayerUpdater());
 	}
 
@@ -164,8 +197,7 @@ public class WorldBorder {
 		if (this.getStatus() != EnumWorldBorderStatus.STATIONARY) {
 			double var1 = (double) ((float) (System.currentTimeMillis() - this.lerpStartTime) / (float) (this.lerpEndTime - this.lerpStartTime));
 			if (var1 < 1.0D) {
-				return this.oldRadius + (this.currentRadius - this.oldRadius)
-						* var1;
+				return this.oldRadius + (this.currentRadius - this.oldRadius) * var1;
 			}
 
 			this.setSize(this.currentRadius);

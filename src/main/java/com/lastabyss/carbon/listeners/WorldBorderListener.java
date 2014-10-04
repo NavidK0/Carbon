@@ -1,9 +1,5 @@
 package com.lastabyss.carbon.listeners;
 
-import net.minecraft.server.v1_7_R4.Position;
-
-import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
