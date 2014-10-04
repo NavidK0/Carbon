@@ -6,6 +6,7 @@ import com.lastabyss.carbon.commands.WorldBorder;
 import com.lastabyss.carbon.entity.EntityEndermite;
 import com.lastabyss.carbon.entity.EntityGuardian;
 import com.lastabyss.carbon.entity.EntityRabbit;
+import com.lastabyss.carbon.entity.TileEntityBanner;
 import com.lastabyss.carbon.entity.bukkit.Endermite;
 import com.lastabyss.carbon.entity.bukkit.Guardian;
 import com.lastabyss.carbon.entity.bukkit.Rabbit;
@@ -27,6 +28,7 @@ import net.minecraft.server.v1_7_R4.EnumProtocol;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.ItemBlock;
 import net.minecraft.server.v1_7_R4.ItemMultiTexture;
+import net.minecraft.server.v1_7_R4.TileEntity;
 import net.minecraft.server.v1_7_R4.World;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -162,17 +164,28 @@ public class Injector {
   
   public Map<World, WorldBorder> worldBorders = new HashMap<>();
   
-  public static void registerBlock(Material mat, int id, String name, Block block) {
+  public static void registerBlock(int id, String name, Block block) {
       Block.REGISTRY.a(id, name, block);
   }
   
-  public static void registerBlock(Material mat, int id, String name, Block block, Item item) {
+  public static void registerBlock(int id, String name, Block block, Item item) {
       Block.REGISTRY.a(id, name, block);
       Item.REGISTRY.a(id, name, item);
   }
   
-  public static void registerItem(Material mat, int id, String name, Item item) {
+  public static void registerItem(int id, String name, Item item) {
       Item.REGISTRY.a(id, name, item);
+  }
+  
+  public static void registerTileEntity(Class<? extends TileEntity> entityClass, String name) {
+      try {
+          Class<TileEntity> clazz = TileEntity.class;
+          Method register = clazz.getDeclaredMethod("a", new Class[] {Class.class, String.class});
+          register.setAccessible(true);
+          register.invoke(null, entityClass, name);
+      } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+        e.printStackTrace();
+      }
   }
   
   public static void registerEntity(Class<? extends Entity> entityClass, String name, int id, int monsterEgg, int monsterEggData2) {
@@ -188,58 +201,61 @@ public class Injector {
 
   public void registerAll() {
     //Register blocks
-    registerBlock(Material.STONE, 1, "stone", stoneBlock, stoneItem);
-    registerBlock(Material.SPONGE, 19, "sponge", spongeBlock, spongeItem);
-    registerBlock(Material.STONE_BUTTON, 77, "stone_button", stoneButtonBlock,stoneButtonItem);
-    registerBlock(Material.TORCH, 50, "torch", torchBlock, torchItem);
-    registerBlock(Material.REDSTONE_TORCH_OFF, 75, "unlit_redstone_torch", redstoneTorchBlockOff, redstoneTorchItemOff);
-    registerBlock(Material.REDSTONE_TORCH_ON, 76, "redstone_torch", redstoneTorchBlockOn, redstoneTorchItemOn);
-    registerBlock(Material.WOOD_BUTTON, 143, "wooden_button", woodButtonBlock, woodButtonItem);
-    registerBlock(slimeMat, 165, "slime", slimeBlock, slimeItem);
-    registerBlock(barrierMat, 166, "barrier", barrierBlock, barrierItem);
-    registerBlock(ironTrapdoorMat, 167, "iron_trapdoor", ironTrapDoorBlock, ironTrapDoorItem);
-    registerBlock(prismarineBlockMat, 168, "prismarine", prismarineBlock, prismarineItem);
-    registerBlock(seaLaternMat, 169, "sea_lantern", seaLanternBlock, seaLanternItem);
-    registerBlock(redSandstoneMat, 179, "red_sandstone", redSandstoneBlock, redSandstoneItem);
-    registerBlock(redSandstoneStairsMat, 180, "red_sandstone_stairs", redSandstoneStairsBlock, redSandstoneStairsItem);
-    registerBlock(redSandstoneDoubleSlabMat, 181, "double_stone_slab2", redSandstoneDoubleSlabBlock, redSandstoneDoubleSlabItem);
-    registerBlock(redSandstoneSlabMat, 182, "stone_slab2", redSandstoneSlabBlock, redSandstoneSlabItem);
-    registerBlock(spruceFenceGateMat, 183, "spruce_fence_gate", spruceFenceBlockGate, spruceFenceGateItem);
-    registerBlock(birchFenceGateMat, 184, "birch_fence_gate", birchFenceBlockGate, birchFenceGateItem);
-    registerBlock(jungleFenceGateMat, 185, "jungle_fence_gate", jungleFenceBlockGate, jungleFenceGateItem);
-    registerBlock(darkOakFenceGateMat, 186, "dark_oak_fence_gate", darkOakFenceBlockGate, darkOakFenceGateItem);
-    registerBlock(acaciaFenceGateMat, 187, "acacia_fence_gate", acaciaFenceBlockGate, acaciaFenceGateItem);
-    registerBlock(spruceFenceMat, 188, "spruce_fence", spruceFenceBlock, spruceFenceItem);
-    registerBlock(birchFenceMat, 189, "birch_fence", birchFenceBlock, birchFenceItem);
-    registerBlock(jungleFenceMat, 190, "jungle_fence", jungleFenceBlock, jungleFenceItem);
-    registerBlock(darkOakFenceMat, 191, "dark_oak_fence", darkOakFenceBlock, darkOakFenceItem);
-    registerBlock(acaciaFenceMat, 192, "acacia_fence", acaciaFenceBlock, acaciaFenceItem);
-    registerBlock(spruceDoorMat, 193, "spruce_door", spruceDoorBlock);
-    registerItem(spruceDoorMat, 427, "spruce_door", spruceDoorItem);
-    registerBlock(birchDoorMat, 194, "birch_door", birchDoorBlock);
-    registerItem(birchDoorMat, 428, "birch_door", birchDoorItem);
-    registerBlock(jungleDoorMat, 195, "jungle_door", jungleDoorBlock);
-    registerItem(jungleDoorMat, 429, "jungle_door", jungleDoorItem);
-    registerBlock(acaciaDoorMat, 196, "acacia_door", acaciaDoorBlock);
-    registerItem(acaciaDoorMat, 430, "acacia_door", acaciaDoorItem);
-    registerBlock(darkOakDoorMat, 197, "dark_oak_door", darkOakDoorBlock);
-    registerItem(darkOakDoorMat, 431, "dark_oak_door", darkOakDoorItem);
+    registerBlock(1, "stone", stoneBlock, stoneItem);
+    registerBlock(19, "sponge", spongeBlock, spongeItem);
+    registerBlock(77, "stone_button", stoneButtonBlock,stoneButtonItem);
+    registerBlock(50, "torch", torchBlock, torchItem);
+    registerBlock(75, "unlit_redstone_torch", redstoneTorchBlockOff, redstoneTorchItemOff);
+    registerBlock(76, "redstone_torch", redstoneTorchBlockOn, redstoneTorchItemOn);
+    registerBlock(143, "wooden_button", woodButtonBlock, woodButtonItem);
+    registerBlock(165, "slime", slimeBlock, slimeItem);
+    registerBlock(166, "barrier", barrierBlock, barrierItem);
+    registerBlock(167, "iron_trapdoor", ironTrapDoorBlock, ironTrapDoorItem);
+    registerBlock(168, "prismarine", prismarineBlock, prismarineItem);
+    registerBlock(169, "sea_lantern", seaLanternBlock, seaLanternItem);
+    registerBlock(179, "red_sandstone", redSandstoneBlock, redSandstoneItem);
+    registerBlock(180, "red_sandstone_stairs", redSandstoneStairsBlock, redSandstoneStairsItem);
+    registerBlock(181, "double_stone_slab2", redSandstoneDoubleSlabBlock, redSandstoneDoubleSlabItem);
+    registerBlock(182, "stone_slab2", redSandstoneSlabBlock, redSandstoneSlabItem);
+    registerBlock(183, "spruce_fence_gate", spruceFenceBlockGate, spruceFenceGateItem);
+    registerBlock(184, "birch_fence_gate", birchFenceBlockGate, birchFenceGateItem);
+    registerBlock(185, "jungle_fence_gate", jungleFenceBlockGate, jungleFenceGateItem);
+    registerBlock(186, "dark_oak_fence_gate", darkOakFenceBlockGate, darkOakFenceGateItem);
+    registerBlock(187, "acacia_fence_gate", acaciaFenceBlockGate, acaciaFenceGateItem);
+    registerBlock(188, "spruce_fence", spruceFenceBlock, spruceFenceItem);
+    registerBlock(189, "birch_fence", birchFenceBlock, birchFenceItem);
+    registerBlock(190, "jungle_fence", jungleFenceBlock, jungleFenceItem);
+    registerBlock(191, "dark_oak_fence", darkOakFenceBlock, darkOakFenceItem);
+    registerBlock(192, "acacia_fence", acaciaFenceBlock, acaciaFenceItem);
+    registerBlock(193, "spruce_door", spruceDoorBlock);
+    registerItem(427, "spruce_door", spruceDoorItem);
+    registerBlock(194, "birch_door", birchDoorBlock);
+    registerItem(428, "birch_door", birchDoorItem);
+    registerBlock(195, "jungle_door", jungleDoorBlock);
+    registerItem(429, "jungle_door", jungleDoorItem);
+    registerBlock(196, "acacia_door", acaciaDoorBlock);
+    registerItem(430, "acacia_door", acaciaDoorItem);
+    registerBlock(197, "dark_oak_door", darkOakDoorBlock);
+    registerItem(431, "dark_oak_door", darkOakDoorItem);
 
     //Register items
-    registerItem(prismarineShardMat, 409, "prismarine_shard", prismarineShardItem);
-    registerItem(prismarineCrystalsMat, 410, "prismarine_crystals", prismarineCrystalItem);
-    registerItem(rabbitItemMat, 411, "rabbit", rabbitItem);
-    registerItem(cookedRabbitItemMat, 412, "cooked_rabbit", cookedRabbitItem);
-    registerItem(rabbitStewItemMat, 413, "rabbit_stew", rabbitStewItem);
-    registerItem(rabbitFootItemMat, 414, "rabbit_foot", rabbitFootItem);
-    registerItem(rabbitHideItemMat, 415, "rabbit_hide", rabbitHideItem);
-    registerItem(muttonItemMat, 423, "mutton", muttonItem);
-    registerItem(cookedMuttonItemMat, 424, "cooked_mutton", cookedMuttonItem);
+    registerItem(409, "prismarine_shard", prismarineShardItem);
+    registerItem(410, "prismarine_crystals", prismarineCrystalItem);
+    registerItem(411, "rabbit", rabbitItem);
+    registerItem(412, "cooked_rabbit", cookedRabbitItem);
+    registerItem(413, "rabbit_stew", rabbitStewItem);
+    registerItem(414, "rabbit_foot", rabbitFootItem);
+    registerItem(415, "rabbit_hide", rabbitHideItem);
+    registerItem(423, "mutton", muttonItem);
+    registerItem(424, "cooked_mutton", cookedMuttonItem);
     
     //Register entities (data copied straight from 1.8, from EntityList.java)
     registerEntity(EntityEndermite.class, "Endermite", 67, 1447446, 7237230);
     registerEntity(EntityGuardian.class, "Guardian", 68, 5931634, 15826224);
     registerEntity(EntityRabbit.class, "Rabbit", 101, 10051392, 7555121);
+    
+    //Register tile entities
+    registerTileEntity(TileEntityBanner.class, "Banner");
     
     //Register commands from 1.8
     //Utilities.registerBukkitCommand("minecraft", new CommandWorldBorder());

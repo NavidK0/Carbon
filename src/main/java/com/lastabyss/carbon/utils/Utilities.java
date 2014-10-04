@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import net.minecraft.server.v1_7_R4.EntityPlayer;
 import net.minecraft.server.v1_7_R4.Packet;
+import net.minecraft.server.v1_7_R4.TileEntity;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
