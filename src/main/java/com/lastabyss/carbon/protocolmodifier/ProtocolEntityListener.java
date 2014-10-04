@@ -6,6 +6,7 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import com.lastabyss.carbon.Carbon;
+import com.lastabyss.carbon.utils.Utilities;
 
 public class ProtocolEntityListener {
 
@@ -37,7 +38,7 @@ public class ProtocolEntityListener {
 			) {
 				@Override
 				public void onPacketSending(PacketEvent event) {
-					if (ProtocolLibrary.getProtocolManager().getProtocolVersion(event.getPlayer()) == 47) {
+					if (Utilities.getProtocolVersion(event.getPlayer()) == Utilities.CLIENT_1_8_PROTOCOL_VERSION) {
 						return;
 					}
 					int type = event.getPacket().getIntegers().read(1);

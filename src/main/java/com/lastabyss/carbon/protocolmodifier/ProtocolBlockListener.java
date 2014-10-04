@@ -3,7 +3,7 @@ package com.lastabyss.carbon.protocolmodifier;
 import java.lang.reflect.InvocationTargetException;
 
 import com.lastabyss.carbon.Carbon;
-
+import com.lastabyss.carbon.utils.Utilities;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
@@ -71,7 +71,7 @@ public class ProtocolBlockListener {
 			) {
 				@Override
 				public void onPacketSending(PacketEvent event) {
-					if (ProtocolLibrary.getProtocolManager().getProtocolVersion(event.getPlayer()) == 47) {
+					if (Utilities.getProtocolVersion(event.getPlayer()) == Utilities.CLIENT_1_8_PROTOCOL_VERSION) {
 						return;
 					}
 					//chunk packet is split to 16 columns 16*16*16, if column doesn't have any blocks - it is not sent
@@ -95,7 +95,7 @@ public class ProtocolBlockListener {
 			) {
 				@Override
 				public void onPacketSending(PacketEvent event) {
-					if (ProtocolLibrary.getProtocolManager().getProtocolVersion(event.getPlayer()) == 47) {
+					if (Utilities.getProtocolVersion(event.getPlayer()) == Utilities.CLIENT_1_8_PROTOCOL_VERSION) {
 						return;
 					}
 					//the same as map chunk, but we have multiple chunks data store in inflatedbuffers
@@ -123,7 +123,7 @@ public class ProtocolBlockListener {
 			) {
 				@Override
 				public void onPacketSending(PacketEvent event) {
-					if (ProtocolLibrary.getProtocolManager().getProtocolVersion(event.getPlayer()) == 47) {
+					if (Utilities.getProtocolVersion(event.getPlayer()) == Utilities.CLIENT_1_8_PROTOCOL_VERSION) {
 						return;
 					}
 					//create a new packet with modified block and send it (Had to do it because block change packets are shared)
@@ -155,7 +155,7 @@ public class ProtocolBlockListener {
 			) {
 				@Override
 				public void onPacketSending(PacketEvent event) {
-					if (ProtocolLibrary.getProtocolManager().getProtocolVersion(event.getPlayer()) == 47) {
+					if (Utilities.getProtocolVersion(event.getPlayer()) == Utilities.CLIENT_1_8_PROTOCOL_VERSION) {
 						return;
 					}
 					//the format is: 4 bytes (1st byte - ZX (or XZ, i don't remember and that doesn't matter here), 2nd byte - Y, 3,4th bytes - id 12 bits + data 4 bits)

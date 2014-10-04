@@ -14,7 +14,9 @@ import com.comphenix.protocol.events.PacketEvent;
 
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.WatchableObject;
+
 import com.lastabyss.carbon.Carbon;
+import com.lastabyss.carbon.utils.Utilities;
 
 public class ProtocolItemListener {
 
@@ -93,7 +95,7 @@ public class ProtocolItemListener {
 				@SuppressWarnings("deprecation")
 				@Override
 				public void onPacketSending(PacketEvent event) {
-					if (ProtocolLibrary.getProtocolManager().getProtocolVersion(event.getPlayer()) == 47) {
+					if (Utilities.getProtocolVersion(event.getPlayer()) == Utilities.CLIENT_1_8_PROTOCOL_VERSION) {
 						return;
 					}
 					//replace all items with valid ones
@@ -120,7 +122,7 @@ public class ProtocolItemListener {
 				@SuppressWarnings("deprecation")
 				@Override
 				public void onPacketSending(PacketEvent event) {
-					if (ProtocolLibrary.getProtocolManager().getProtocolVersion(event.getPlayer()) == 47) {
+					if (Utilities.getProtocolVersion(event.getPlayer()) == Utilities.CLIENT_1_8_PROTOCOL_VERSION) {
 						return;
 					}
 					//replace item with valid one
@@ -145,7 +147,7 @@ public class ProtocolItemListener {
 				@SuppressWarnings("deprecation")
 				@Override
 				public void onPacketSending(PacketEvent event) {
-					if (ProtocolLibrary.getProtocolManager().getProtocolVersion(event.getPlayer()) == 47) {
+					if (Utilities.getProtocolVersion(event.getPlayer()) == Utilities.CLIENT_1_8_PROTOCOL_VERSION) {
 						return;
 					}
 					//replace item valid one
@@ -169,7 +171,7 @@ public class ProtocolItemListener {
 			) {
 				@Override
 				public void onPacketSending(PacketEvent event) {
-					if (ProtocolLibrary.getProtocolManager().getProtocolVersion(event.getPlayer()) == 47) {
+					if (Utilities.getProtocolVersion(event.getPlayer()) == Utilities.CLIENT_1_8_PROTOCOL_VERSION) {
 						return;
 					}
 					//create a new packet with valid items and send it (Had to do this because metadata packets are shared)

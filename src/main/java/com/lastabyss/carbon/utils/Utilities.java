@@ -221,11 +221,6 @@ public class Utilities {
         return list;
     }
 
-    /**
-     * Sends packet to a player
-     * @param player
-     * @param packet
-     */
     public static int CLIENT_1_8_PROTOCOL_VERSION = 47;
     private static HashSet<Class<?>> newPackets = new HashSet<Class<?>>(
     	Arrays.asList(
@@ -234,9 +229,26 @@ public class Utilities {
     		}
     	)
     );
+    /**
+     * Gets protocol version of a player
+     * @param player
+     * @return
+     */
+    public static int getProtocolVersion(Player player) {
+    	EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
+    	return getProtocolVersion(nmsPlayer);
+    }
+    private static int getProtocolVersion(EntityPlayer nmsPlayer) {
+    	return nmsPlayer.playerConnection.networkManager.getVersion();
+    }
+    /**
+     * Sends packet to a player
+     * @param player
+     * @param packet
+     */
     public static void sendPacket(Player player, Packet packet) {
     	EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
-    	if (nmsPlayer.playerConnection.networkManager.getVersion() != CLIENT_1_8_PROTOCOL_VERSION) {
+    	if (getProtocolVersion(nmsPlayer) != CLIENT_1_8_PROTOCOL_VERSION) {
     		if (newPackets.contains(packet.getClass())) {
     			return;
     		}

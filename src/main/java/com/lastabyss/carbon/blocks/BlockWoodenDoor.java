@@ -8,7 +8,6 @@ import net.minecraft.server.v1_7_R4.BlockDoor;
 import net.minecraft.server.v1_7_R4.CreativeModeTab;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.Material;
-import net.minecraft.server.v1_7_R4.World;
 
 /**
  *
@@ -29,11 +28,6 @@ public class BlockWoodenDoor extends BlockDoor {
     @Override
     public Item getDropType(int i, Random random, int j) {
          return null;
-    }
-
-    @Override 
-    public boolean canPlace(World world, int x, int y, int z) {
-    	return y < 255 && world.getType(x, y, z).getMaterial().isReplaceable();
     }
 
 }

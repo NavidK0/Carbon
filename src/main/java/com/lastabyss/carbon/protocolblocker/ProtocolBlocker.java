@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.ChatColor;
@@ -13,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import com.lastabyss.carbon.Carbon;
+import com.lastabyss.carbon.utils.Utilities;
 
 public class ProtocolBlocker implements Listener {
 
@@ -43,7 +43,7 @@ public class ProtocolBlocker implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		int version = ((CraftPlayer) event.getPlayer()).getHandle().playerConnection.networkManager.getVersion();
+		int version = Utilities.getProtocolVersion(event.getPlayer());
 		if (restrictedProtocols.containsKey(version)) {
 			event.getPlayer().kickPlayer(restrictedProtocols.get(version));
 		}
