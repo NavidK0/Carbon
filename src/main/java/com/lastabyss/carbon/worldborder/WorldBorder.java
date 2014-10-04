@@ -1,11 +1,9 @@
 package com.lastabyss.carbon.worldborder;
 
 import com.google.common.collect.Lists;
-import com.lastabyss.carbon.Carbon;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.WeakHashMap;
@@ -15,10 +13,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import net.minecraft.server.v1_7_R4.AxisAlignedBB;
-import net.minecraft.server.v1_7_R4.ChunkCoordIntPair;
 import net.minecraft.server.v1_7_R4.Entity;
-import net.minecraft.server.v1_7_R4.Position;
 
 public class WorldBorder {
 
@@ -83,51 +78,18 @@ public class WorldBorder {
 		listeners.add(new WorldBorderPlayerUpdater());
 	}
 
-	public boolean isInside(Position position) {
-		return (double) (position.getX() + 1) > this.getMinX()
-				&& (double) position.getX() < this.getMaxX()
-				&& (double) (position.getZ() + 1) > this.getMinZ()
-				&& (double) position.getZ() < this.getMaxZ();
-	}
-
 	public boolean isInside(Location location) {
 		return (double) (location.getX() + 1) > this.getMinX()
-				&& (double) location.getX() < this.getMaxX()
+				&& (double) location.getX() - 1 < this.getMaxX()
 				&& (double) (location.getZ() + 1) > this.getMinZ()
-				&& (double) location.getZ() < this.getMaxZ();
+				&& (double) location.getZ() - 1 < this.getMaxZ();
 	}
 
 	public boolean isInside(Block block) {
 		return (double) (block.getX() + 1) > this.getMinX()
-				&& (double) block.getX() < this.getMaxX()
+				&& (double) block.getX() - 1 < this.getMaxX()
 				&& (double) (block.getZ() + 1) > this.getMinZ()
-				&& (double) block.getZ() < this.getMaxZ();
-	}
-
-	public boolean isInside(ChunkCoordIntPair var1) {
-		return (double) getBlockMaxX(var1) > this.getMinX()
-				&& (double) getBlockMinX(var1) < this.getMaxX()
-				&& (double) getBlockMaxZ(var1) > this.getMinZ()
-				&& (double) getBlockMinZ(var1) < this.getMaxZ();
-	}
-	public int getBlockMinX(ChunkCoordIntPair c) {
-		return c.x << 4;
-	}
-
-	public int getBlockMinZ(ChunkCoordIntPair c) {
-		return c.z<< 4;
-	}
-
-	public int getBlockMaxX(ChunkCoordIntPair c) {
-		return (c.x << 4) + 15;
-	}
-
-	public int getBlockMaxZ(ChunkCoordIntPair c) {
-		return (c.z << 4) + 15;
-	}
-
-	public boolean isInside(AxisAlignedBB axis) {
-		return axis.d > this.getMinX() && axis.a < this.getMaxX() && axis.f > this.getMinZ() && axis.c < this.getMaxZ();
+				&& (double) block.getZ() - 1 < this.getMaxZ();
 	}
 
 	public double getDistance(Entity entity) {
