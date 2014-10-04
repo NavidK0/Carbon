@@ -1,4 +1,4 @@
-package com.lastabyss.carbon.commands;
+package com.lastabyss.carbon.worldborder;
 
 import java.util.List;
 

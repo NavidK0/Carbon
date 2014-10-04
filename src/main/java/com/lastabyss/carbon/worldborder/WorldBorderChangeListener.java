@@ -1,4 +1,4 @@
-package com.lastabyss.carbon.commands;
+package com.lastabyss.carbon.worldborder;
 
 public interface WorldBorderChangeListener {
 	void onSizeSet(WorldBorder worldborder, double size);

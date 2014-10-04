@@ -1,4 +1,4 @@
-package com.lastabyss.carbon.commands;
+package com.lastabyss.carbon.worldborder;
 
 import com.google.common.collect.Lists;
 
@@ -11,8 +11,7 @@ import net.minecraft.server.v1_7_R4.Position;
 
 public class WorldBorder {
 
-	private final List<WorldBorderChangeListener> listeners = Lists
-			.newArrayList();
+	private final List<WorldBorderChangeListener> listeners = Lists.newArrayList();
 	private double x = 0.0D;
 	private double z = 0.0D;
 	private double oldRadius = 6.0E7D;
@@ -32,6 +31,7 @@ public class WorldBorder {
 		this.damageBuffer = 5.0D;
 		this.warningTime = 15;
 		this.warningBlocks = 5;
+		listeners.add(new WorldBorderPlayerUpdater());
 	}
 
 	public boolean isInside(Position position) {
@@ -64,8 +64,7 @@ public class WorldBorder {
 	}
 
 	public boolean isInside(AxisAlignedBB axis) {
-		return axis.d > this.getMinX() && axis.a < this.getMaxX()
-				&& axis.f > this.getMinZ() && axis.c < this.getMaxZ();
+		return axis.d > this.getMinX() && axis.a < this.getMaxX() && axis.f > this.getMinZ() && axis.c < this.getMaxZ();
 	}
 
 	public double getDistance(Entity entity) {
@@ -83,9 +82,7 @@ public class WorldBorder {
 	}
 
 	public EnumWorldBorderStatus getStatus() {
-		return this.currentRadius < this.oldRadius ? EnumWorldBorderStatus.SHRINKING
-				: (this.currentRadius > this.oldRadius ? EnumWorldBorderStatus.GROWING
-						: EnumWorldBorderStatus.STATIONARY);
+		return this.currentRadius < this.oldRadius ? EnumWorldBorderStatus.SHRINKING : (this.currentRadius > this.oldRadius ? EnumWorldBorderStatus.GROWING : EnumWorldBorderStatus.STATIONARY);
 	}
 
 	public double getMinX() {
