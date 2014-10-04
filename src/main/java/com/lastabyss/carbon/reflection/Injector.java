@@ -77,6 +77,7 @@ public class Injector {
   public Block spongeBlock = new BlockSponge();
   public Block stoneButtonBlock = new BlockStoneButton();
   public Block woodButtonBlock = new BlockWoodButton();
+  public Block standingBannerBlock = new BlockBanner();
   
   //Bukkit materials
   public Material slimeMat = Utilities.addMaterial("SLIME", 165);
@@ -84,8 +85,8 @@ public class Injector {
   public Material ironTrapdoorMat = Utilities.addMaterial("IRON_TRAPDOOR", 167);
   public Material prismarineBlockMat = Utilities.addMaterial("PRISMARINE", 168);
   public Material seaLaternMat = Utilities.addMaterial("SEA_LANTERN", 169);
-  public Material freeStandingBannerMat = Utilities.addMaterial("FREE_STANDING_BANNER", 176);
-  public Material wallMountedBannerMat = Utilities.addMaterial("WALL_MOUNTED_BANNER", 177);
+  public Material freeStandingBannerMat = Utilities.addMaterial("STANDING_BANNER", 176);
+  public Material wallMountedBannerMat = Utilities.addMaterial("WALL_BANNER", 177);
   public Material redSandstoneMat = Utilities.addMaterial("RED_SANDSTONE", 179);
   public Material redSandstoneStairsMat = Utilities.addMaterial("RED_SANDSTONE_STAIRS", 180);
   public Material redSandstoneDoubleSlabMat = Utilities.addMaterial("RED_SANDSTONE_DOUBLESLAB", 181);
@@ -154,6 +155,7 @@ public class Injector {
   public Item spongeItem = new ItemMultiTexture(this.spongeBlock, this.spongeBlock, BlockSponge.names);
   public Item stoneButtonItem = new ItemBlock(stoneButtonBlock);
   public Item woodButtonItem = new ItemBlock(woodButtonBlock);
+  public Item standingBannerItem = new ItemBlock(standingBannerBlock);
 
   public Item rabbitItem = new ItemRabbit();
   public Item cookedRabbitItem = new ItemCookedRabbit();
@@ -238,6 +240,7 @@ public class Injector {
     registerBlock(167, "iron_trapdoor", ironTrapDoorBlock, ironTrapDoorItem);
     registerBlock(168, "prismarine", prismarineBlock, prismarineItem);
     registerBlock(169, "sea_lantern", seaLanternBlock, seaLanternItem);
+    registerBlock(176, "standing_banner", standingBannerBlock, standingBannerItem);
     registerBlock(179, "red_sandstone", redSandstoneBlock, redSandstoneItem);
     registerBlock(180, "red_sandstone_stairs", redSandstoneStairsBlock, redSandstoneStairsItem);
     registerBlock(181, "double_stone_slab2", redSandstoneDoubleSlabBlock, redSandstoneDoubleSlabItem);
