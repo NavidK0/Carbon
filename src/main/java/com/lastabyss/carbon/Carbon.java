@@ -57,7 +57,6 @@ public class Carbon extends JavaPlugin {
         }
         reloadConfig();
         worldGenerator.populate();
-        WorldBorder.getInstance().loadFromConfig(this);
         getServer().getPluginManager().registerEvents(this.blockListener, this);
         getServer().getPluginManager().registerEvents(this.itemListener, this);
         getServer().getPluginManager().registerEvents(this.worldGenerator, this);
@@ -83,7 +82,7 @@ public class Carbon extends JavaPlugin {
 
     @Override
     public void onDisable() {
-    	WorldBorder.getInstance().saveToConfig(this);
+    	WorldBorder.save();
     	//call to server shutdown on disable, won't hurt if server already disables itself, but will prevent plugin unload/reload
     	Bukkit.shutdown();
     }

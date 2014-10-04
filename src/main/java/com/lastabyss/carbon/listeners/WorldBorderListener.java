@@ -17,33 +17,33 @@ public class WorldBorderListener implements Listener {
 
 	@EventHandler
 	public void onPayerJoin(PlayerJoinEvent event) {
-		PacketPlayOutWorldBorder packet = new PacketPlayOutWorldBorder(WorldBorder.getInstance(), WorldBorderAction.INITIALIZE);
+		PacketPlayOutWorldBorder packet = new PacketPlayOutWorldBorder(WorldBorder.getInstance(event.getPlayer().getWorld()), WorldBorderAction.INITIALIZE);
 		Utilities.sendPacket(event.getPlayer(), packet);
 	}
 
 	@EventHandler
 	public void onPlayerWorldChange(PlayerChangedWorldEvent event) {
-		PacketPlayOutWorldBorder packet = new PacketPlayOutWorldBorder(WorldBorder.getInstance(), WorldBorderAction.INITIALIZE);
+		PacketPlayOutWorldBorder packet = new PacketPlayOutWorldBorder(WorldBorder.getInstance(event.getPlayer().getWorld()), WorldBorderAction.INITIALIZE);
 		Utilities.sendPacket(event.getPlayer(), packet);
 	}
 
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) {
-		if (!WorldBorder.getInstance().isInside(event.getBlock())) {
+		if (!WorldBorder.getInstance(event.getPlayer().getWorld()).isInside(event.getBlock())) {
 			event.setCancelled(true);
 		}
 	}
 
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
-		if (!WorldBorder.getInstance().isInside(event.getBlock())) {
+		if (!WorldBorder.getInstance(event.getPlayer().getWorld()).isInside(event.getBlock())) {
 			event.setCancelled(true);
 		}
 	}
 
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event) {
-		if (!WorldBorder.getInstance().isInside(event.getTo()) && WorldBorder.getInstance().isInside(event.getFrom())) {
+		if (!WorldBorder.getInstance(event.getPlayer().getWorld()).isInside(event.getTo()) && WorldBorder.getInstance(event.getPlayer().getWorld()).isInside(event.getFrom())) {
 			event.setCancelled(true);
 		}
 	}

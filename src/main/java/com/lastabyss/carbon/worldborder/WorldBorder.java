@@ -5,9 +5,13 @@ import com.lastabyss.carbon.Carbon;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.WeakHashMap;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -18,44 +22,48 @@ import net.minecraft.server.v1_7_R4.Position;
 
 public class WorldBorder {
 
-	public void loadFromConfig(Carbon plugin) {
-		YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "worldborder.yml"));
-		setCenter(config.getDouble("x", x), config.getDouble("z", z));
-		setDamageAmount(config.getDouble("damageAmount", damageAmount));
-		setDamageBuffer(config.getDouble("damageBuffer", damageBuffer));
-		setWarningBlocks(config.getInt("warningBlocks", warningBlocks));
-		setWarningTime(config.getInt("warningTime", warningTime));
-		long lerpTime = config.getLong("lerpTime", 0);
-		double oldSize = config.getDouble("oldRadius", oldRadius);
-		if (lerpTime > 0L) {
-			changeSize(oldSize, config.getDouble("currentRadius", oldSize), lerpTime);
-		} else {
-			setSize(oldSize);
+	private static WeakHashMap<World, WorldBorder> worldsWorldBorder = new WeakHashMap<World, WorldBorder>();
+	public static WorldBorder getInstance(World world) {
+		if (!worldsWorldBorder.containsKey(world)) {
+			WorldBorder newWorldBorder = new WorldBorder();
+			worldsWorldBorder.put(world, newWorldBorder);
+			YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(world.getWorldFolder(), "worldborder.yml"));
+			newWorldBorder.setCenter(config.getDouble("x", newWorldBorder.x), config.getDouble("z", newWorldBorder.z));
+			newWorldBorder.setDamageAmount(config.getDouble("damageAmount", newWorldBorder.damageAmount));
+			newWorldBorder.setDamageBuffer(config.getDouble("damageBuffer", newWorldBorder.damageBuffer));
+			newWorldBorder.setWarningBlocks(config.getInt("warningBlocks", newWorldBorder.warningBlocks));
+			newWorldBorder.setWarningTime(config.getInt("warningTime", newWorldBorder.warningTime));
+			long lerpTime = config.getLong("lerpTime", 0);
+			double oldSize = config.getDouble("oldRadius", newWorldBorder.oldRadius);
+			if (lerpTime > 0L) {
+				newWorldBorder.changeSize(oldSize, config.getDouble("currentRadius", oldSize), lerpTime);
+			} else {
+				newWorldBorder.setSize(oldSize);
+			}
 		}
+		return worldsWorldBorder.get(world);
 	}
 
-	public void saveToConfig(Carbon plugin) {
-		YamlConfiguration config = new YamlConfiguration();
-		config.set("x", x);
-		config.set("z", z);
-		config.set("damageAmount", damageAmount);
-		config.set("damageBuffer", damageBuffer);
-		config.set("warningBlocks", warningBlocks);
-		config.set("warningTime", warningTime);
-		if (getStatus() != EnumWorldBorderStatus.STATIONARY) {
-			config.set("lerpTime", lerpEndTime - lerpStartTime);
-			config.set("currentRadius", currentRadius);
+	public static void save() {
+		for (Entry<World, WorldBorder> entry : worldsWorldBorder.entrySet()) {
+			WorldBorder worldborder = entry.getValue();
+			YamlConfiguration config = new YamlConfiguration();
+			config.set("x", worldborder.x);
+			config.set("z", worldborder.z);
+			config.set("damageAmount", worldborder.damageAmount);
+			config.set("damageBuffer", worldborder.damageBuffer);
+			config.set("warningBlocks", worldborder.warningBlocks);
+			config.set("warningTime", worldborder.warningTime);
+			if (worldborder.getStatus() != EnumWorldBorderStatus.STATIONARY) {
+				config.set("lerpTime", worldborder.lerpEndTime - worldborder.lerpStartTime);
+				config.set("currentRadius", worldborder.currentRadius);
+			}
+			config.set("oldRadius", worldborder.oldRadius);
+			try {
+				config.save(new File(entry.getKey().getWorldFolder(), "worldborder.yml"));
+			} catch (IOException e) {
+			}
 		}
-		config.set("oldRadius", oldRadius);
-		try {
-			config.save(new File(plugin.getDataFolder(), "worldborder.yml"));
-		} catch (IOException e) {
-		}
-	}
-
-	private static WorldBorder instance = new WorldBorder();
-	public static WorldBorder getInstance() {
-		return instance;
 	}
 
 	private final List<WorldBorderChangeListener> listeners = Lists.newArrayList();

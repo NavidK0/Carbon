@@ -32,7 +32,7 @@ public class WorldBorderCommand extends CommandAbstract {
 			throw new ExceptionUsage("commands.worldborder.usage",
 					new Object[0]);
 		} else {
-			WorldBorder var3 = this.d();
+			WorldBorder var3 = WorldBorder.getInstance(var1.getWorld().getWorld());
 			double var4;
 			double var6;
 			long var8;
@@ -361,10 +361,6 @@ public class WorldBorderCommand extends CommandAbstract {
 		} else {
 			return var5;
 		}
-	}
-
-	protected WorldBorder d() {
-		return WorldBorder.getInstance();
 	}
 
 	public List getTabCompleteList(ICommandListener var1, String[] var2,
