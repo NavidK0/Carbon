@@ -30,7 +30,7 @@ public class BlockListener implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onSlimeBlockPlace(BlockPlaceEvent evt) {
-		if (evt.getBlock().getType() == Material.getMaterial("slime")) {
+		if (evt.getBlock().getType() == Material.getMaterial("SLIME")) {
 			Location location = evt.getBlock().getLocation();
 			Random rand = new Random();
 			boolean bool = rand.nextBoolean();
