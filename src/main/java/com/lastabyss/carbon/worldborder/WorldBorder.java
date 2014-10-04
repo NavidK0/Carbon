@@ -4,6 +4,9 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+
 import net.minecraft.server.v1_7_R4.AxisAlignedBB;
 import net.minecraft.server.v1_7_R4.ChunkCoordIntPair;
 import net.minecraft.server.v1_7_R4.Entity;
@@ -44,6 +47,20 @@ public class WorldBorder {
 				&& (double) position.getX() < this.getMaxX()
 				&& (double) (position.getZ() + 1) > this.getMinZ()
 				&& (double) position.getZ() < this.getMaxZ();
+	}
+
+	public boolean isInside(Location location) {
+		return (double) (location.getX() + 1) > this.getMinX()
+				&& (double) location.getX() < this.getMaxX()
+				&& (double) (location.getZ() + 1) > this.getMinZ()
+				&& (double) location.getZ() < this.getMaxZ();
+	}
+
+	public boolean isInside(Block block) {
+		return (double) (block.getX() + 1) > this.getMinX()
+				&& (double) block.getX() < this.getMaxX()
+				&& (double) (block.getZ() + 1) > this.getMinZ()
+				&& (double) block.getZ() < this.getMaxZ();
 	}
 
 	public boolean isInside(ChunkCoordIntPair var1) {
