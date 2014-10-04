@@ -1,6 +1,7 @@
 /**
 package com.lastabyss.carbon.items;
 
+import com.lastabyss.carbon.Carbon;
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.CreativeModeTab;
 import net.minecraft.server.v1_7_R4.EntityHuman;
@@ -16,12 +17,11 @@ import org.bukkit.inventory.ItemStack;
 public class ItemBanner extends ItemBlock {
 
 	public ItemBanner() {
-		super(Blocks.STANDING_BANNER);
+		super(Carbon.injector().standingBannerBlock);
 		this.maxStackSize = 16;
 		a(CreativeModeTab.l);
-                
 		this.a(true);
-		this.setDurability(0);
+                this.setMaxDurability(0);
 	}
 
 	public boolean a(ItemStack var1, EntityHuman var2, World var3, Position var4, BlockFace var5, float var6, float var7, float var8) {
