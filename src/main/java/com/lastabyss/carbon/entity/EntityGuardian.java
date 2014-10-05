@@ -8,18 +8,15 @@ package com.lastabyss.carbon.entity;
 
 import com.lastabyss.carbon.ai.PathfinderWrapper;
 import com.lastabyss.carbon.utils.Utilities;
-import net.minecraft.server.v1_7_R4.Entity;
+
 import net.minecraft.server.v1_7_R4.EntityHuman;
 import net.minecraft.server.v1_7_R4.EntityLiving;
 import net.minecraft.server.v1_7_R4.EntityMonster;
 import net.minecraft.server.v1_7_R4.GenericAttributes;
 import net.minecraft.server.v1_7_R4.Item;
-import net.minecraft.server.v1_7_R4.ItemStack;
-import net.minecraft.server.v1_7_R4.Items;
 import net.minecraft.server.v1_7_R4.Material;
 import net.minecraft.server.v1_7_R4.MathHelper;
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
-import net.minecraft.server.v1_7_R4.PathfinderGoal;
 import net.minecraft.server.v1_7_R4.PathfinderGoalHurtByTarget;
 import net.minecraft.server.v1_7_R4.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_7_R4.World;
@@ -120,12 +117,6 @@ public class EntityGuardian extends EntityMonster {
         return !this.isInWater() ? "mob.guardian.land.death" : (this.isElder() ? "mob.guardian.elder.death" : "mob.guardian.death");
     }
 
-    //getSoundVolume
-    @Override
-    protected float bf() {
-        return super.bf();
-    }
-
     @Override
     protected Item getLoot() {
         return Item.getById(0);
@@ -146,7 +137,7 @@ public class EntityGuardian extends EntityMonster {
     //isInWater
     @Override
     public boolean M() {
-        return this.world.a(this.boundingBox.grow(0.0D, -0.6000000238418579D, 0.0D), Material.WATER, (Entity) this);
+        return this.world.a(this.boundingBox.grow(0.0D, -0.6000000238418579D, 0.0D), Material.WATER, this);
     }
 
     /** 

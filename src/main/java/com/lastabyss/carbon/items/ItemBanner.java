@@ -1,9 +1,5 @@
 package com.lastabyss.carbon.items;
 
-import org.bukkit.Location;
-import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.v1_7_R4.block.CraftBlock;
-
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.entity.TileEntityBanner;
 
@@ -15,6 +11,9 @@ import net.minecraft.server.v1_7_R4.ItemStack;
 import net.minecraft.server.v1_7_R4.MathHelper;
 import net.minecraft.server.v1_7_R4.TileEntity;
 import net.minecraft.server.v1_7_R4.World;
+
+import org.bukkit.block.BlockFace;
+import org.bukkit.craftbukkit.v1_7_R4.block.CraftBlock;
 
 public class ItemBanner extends ItemBlock {
 

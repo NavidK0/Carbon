@@ -4,15 +4,6 @@ import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.DynamicEnumType;
 import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import net.minecraft.server.v1_7_R4.EntityPlayer;
 import net.minecraft.server.v1_7_R4.Packet;
 
@@ -27,6 +18,15 @@ import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -105,7 +105,7 @@ public class Utilities {
 
     @SuppressWarnings("unchecked")
     public static Material addMaterial(String name, int id) {
-        Material material = (Material) DynamicEnumType.addEnum(Material.class, name, new Class[] { Integer.TYPE }, new Object[] { id });
+        Material material = DynamicEnumType.addEnum(Material.class, name, new Class[] { Integer.TYPE }, new Object[] { id });
         try {
                 Field field = Material.class.getDeclaredField("BY_NAME");
                 field.setAccessible(true);
@@ -119,7 +119,7 @@ public class Utilities {
         try {
                 Field field = Material.class.getDeclaredField("byId");
                 field.setAccessible(true);
-                Object object = field.get((int)0);
+                Object object = field.get(0);
                 Material[] byId = (Material[]) object;
                 byId[id] = material;
                 field.set(object, byId);
@@ -132,7 +132,7 @@ public class Utilities {
     
     @SuppressWarnings("unchecked")
     public static Material addMaterial(String name, int id, short data) {
-        Material material = (Material) DynamicEnumType.addEnum(Material.class, name, new Class[] { Integer.TYPE }, new Object[] { id });
+        Material material = DynamicEnumType.addEnum(Material.class, name, new Class[] { Integer.TYPE }, new Object[] { id });
         try {
                 Field field = Material.class.getDeclaredField("BY_NAME");
                 field.setAccessible(true);
@@ -146,7 +146,7 @@ public class Utilities {
         try {
                 Field field = Material.class.getDeclaredField("byId");
                 field.setAccessible(true);
-                Object object = field.get((int)0);
+                Object object = field.get(0);
                 Material[] byId = (Material[]) object;
                 byId[id] = material;
                 field.set(object, byId);
@@ -221,7 +221,7 @@ public class Utilities {
     }
 
     public static int CLIENT_1_8_PROTOCOL_VERSION = 47;
-    private static HashSet<Class<?>> newPackets = new HashSet<Class<?>>(
+    private static HashSet<Class<?>> newPackets = new HashSet<>(
     	Arrays.asList(
     		new Class<?>[] {
     			PacketPlayOutWorldBorder.class

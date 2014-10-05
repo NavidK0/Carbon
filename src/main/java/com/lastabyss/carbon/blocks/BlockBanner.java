@@ -34,16 +34,11 @@ public class BlockBanner extends BlockContainer {
 	public boolean c() {
 		return false;
 	}
-	
-	@Override
-	public boolean d() {
-		return false;
-	}
 
-	@Override
-	public void onPlace(World paramWorld, int paramInt1, int paramInt2, int paramInt3) {
-		super.onPlace(paramWorld, paramInt1, paramInt2, paramInt3);
-	}
+        @Override
+        public boolean d() {
+          return false;
+        }
 
 	@Override
 	public void remove(World paramWorld, int paramInt1, int paramInt2, int paramInt3, Block paramBlock, int paramInt4) {

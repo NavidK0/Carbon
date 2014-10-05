@@ -125,7 +125,8 @@ public class EntityEndermite extends EntityMonster {
                                         int k1 = this.world.getData(i + l, j + i1, k + j1);
                                         ImmutablePair immutablepair = BlockMonsterEggs.b(k1);
 
-                                        this.world.setTypeAndData(i + l, j + i1, k + j1, (Block) immutablepair.getLeft(), ((Integer) immutablepair.getRight()).intValue(), 3);
+                                        this.world.setTypeAndData(i + l, j + i1, k + j1, (Block) immutablepair.getLeft(),
+                                                                  (Integer) immutablepair.getRight(), 3);
                                     } else {
                                         this.world.setAir(i + l, j + i1, k + j1, false);
                                     }

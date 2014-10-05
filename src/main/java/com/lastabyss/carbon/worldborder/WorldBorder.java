@@ -2,18 +2,18 @@ package com.lastabyss.carbon.worldborder;
 
 import com.google.common.collect.Lists;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.WeakHashMap;
+import net.minecraft.server.v1_7_R4.Entity;
 
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import net.minecraft.server.v1_7_R4.Entity;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.WeakHashMap;
 
 public class WorldBorder {
 
@@ -57,6 +57,7 @@ public class WorldBorder {
 			try {
 				config.save(new File(entry.getKey().getWorldFolder(), "worldborder.yml"));
 			} catch (IOException e) {
+                          e.printStackTrace();
 			}
 		}
 	}
@@ -79,10 +80,10 @@ public class WorldBorder {
 	}
 
 	public boolean isInside(Location location) {
-		return (double) (location.getX() + 1) > this.getMinX()
-				&& (double) location.getX() - 1 < this.getMaxX()
-				&& (double) (location.getZ() + 1) > this.getMinZ()
-				&& (double) location.getZ() - 1 < this.getMaxZ();
+		return location.getX() + 1 > this.getMinX()
+			&& location.getX() - 1 < this.getMaxX()
+			&& location.getZ() + 1 > this.getMinZ()
+			&& location.getZ() - 1 < this.getMaxZ();
 	}
 
 	public boolean isInside(Block block) {

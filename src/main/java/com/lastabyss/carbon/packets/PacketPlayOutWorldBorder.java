@@ -1,12 +1,12 @@
 package com.lastabyss.carbon.packets;
 
-import java.io.IOException;
-
 import com.lastabyss.carbon.worldborder.WorldBorder;
 
 import net.minecraft.server.v1_7_R4.Packet;
 import net.minecraft.server.v1_7_R4.PacketDataSerializer;
 import net.minecraft.server.v1_7_R4.PacketListener;
+
+import java.io.IOException;
 
 public class PacketPlayOutWorldBorder extends Packet {
 
@@ -92,7 +92,7 @@ public class PacketPlayOutWorldBorder extends Packet {
 	}
 
 	public enum WorldBorderAction {
-		SET_SIZE, LERP_SIZE, SET_CENTER, INITIALIZE, SET_WARNING_TIME, SET_WARNING_BLOCKS;
+		SET_SIZE, LERP_SIZE, SET_CENTER, INITIALIZE, SET_WARNING_TIME, SET_WARNING_BLOCKS
 	}
 
 	@Override

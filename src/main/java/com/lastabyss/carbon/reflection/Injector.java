@@ -1,7 +1,25 @@
 package com.lastabyss.carbon.reflection;
 
 import com.lastabyss.carbon.Carbon;
-import com.lastabyss.carbon.blocks.*;
+import com.lastabyss.carbon.blocks.BlockBanner;
+import com.lastabyss.carbon.blocks.BlockBarrier;
+import com.lastabyss.carbon.blocks.BlockIronTrapdoor;
+import com.lastabyss.carbon.blocks.BlockPrismarine;
+import com.lastabyss.carbon.blocks.BlockRedSandstone;
+import com.lastabyss.carbon.blocks.BlockRedSandstoneStairs;
+import com.lastabyss.carbon.blocks.BlockRedstoneTorchOff;
+import com.lastabyss.carbon.blocks.BlockRedstoneTorchOn;
+import com.lastabyss.carbon.blocks.BlockSeaLantern;
+import com.lastabyss.carbon.blocks.BlockSlime;
+import com.lastabyss.carbon.blocks.BlockSponge;
+import com.lastabyss.carbon.blocks.BlockStep;
+import com.lastabyss.carbon.blocks.BlockStone;
+import com.lastabyss.carbon.blocks.BlockStoneButton;
+import com.lastabyss.carbon.blocks.BlockTorch;
+import com.lastabyss.carbon.blocks.BlockWoodButton;
+import com.lastabyss.carbon.blocks.BlockWoodenDoor;
+import com.lastabyss.carbon.blocks.BlockWoodenFence;
+import com.lastabyss.carbon.blocks.BlockWoodenFenceGate;
 import com.lastabyss.carbon.commands.CommandWorldBorder;
 import com.lastabyss.carbon.entity.EntityEndermite;
 import com.lastabyss.carbon.entity.EntityGuardian;
@@ -10,18 +28,20 @@ import com.lastabyss.carbon.entity.TileEntityBanner;
 import com.lastabyss.carbon.entity.bukkit.Endermite;
 import com.lastabyss.carbon.entity.bukkit.Guardian;
 import com.lastabyss.carbon.entity.bukkit.Rabbit;
-import com.lastabyss.carbon.items.*;
+import com.lastabyss.carbon.items.ItemBanner;
+import com.lastabyss.carbon.items.ItemCookedMutton;
+import com.lastabyss.carbon.items.ItemCookedRabbit;
+import com.lastabyss.carbon.items.ItemMutton;
+import com.lastabyss.carbon.items.ItemPrismarineCrystal;
+import com.lastabyss.carbon.items.ItemPrismarineShard;
+import com.lastabyss.carbon.items.ItemRabbit;
+import com.lastabyss.carbon.items.ItemRabbitFoot;
+import com.lastabyss.carbon.items.ItemRabbitHide;
+import com.lastabyss.carbon.items.ItemRabbitStew;
+import com.lastabyss.carbon.items.ItemWoodenDoor;
 import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
 import com.lastabyss.carbon.utils.Utilities;
 import com.lastabyss.carbon.worldborder.WorldBorder;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.Blocks;
@@ -43,6 +63,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class Injector {
   //Blocks
@@ -191,7 +219,7 @@ public class Injector {
   public static void registerTileEntity(Class<? extends TileEntity> entityClass, String name) {
       try {
           Class<TileEntity> clazz = TileEntity.class;
-          Method register = clazz.getDeclaredMethod("a", new Class[] {Class.class, String.class});
+          Method register = clazz.getDeclaredMethod("a", Class.class, String.class);
           register.setAccessible(true);
           register.invoke(null, entityClass, name);
       } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
@@ -202,7 +230,8 @@ public class Injector {
   public static void registerEntity(Class<? extends Entity> entityClass, String name, int id, int monsterEgg, int monsterEggData2) {
       try {
           Class<EntityTypes> clazz = EntityTypes.class;
-          Method register = clazz.getDeclaredMethod("a", new Class[] {Class.class, String.class, Integer.TYPE, Integer.TYPE, Integer.TYPE});
+          Method register = clazz.getDeclaredMethod("a", Class.class, String.class, Integer.TYPE, Integer.TYPE,
+                                                    Integer.TYPE);
           register.setAccessible(true);
           register.invoke(null, entityClass, name, id, monsterEgg, monsterEggData2);
       } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
@@ -326,7 +355,7 @@ public class Injector {
       //Remove all recipes that have the new items so we can add the recipes later
       Iterator<Recipe> ri = Bukkit.getServer().recipeIterator();
       while (ri.hasNext()) {
-          Material m = ((Recipe)ri.next()).getResult().getType();
+          Material m = (ri.next()).getResult().getType();
           if(m.equals(Material.WOOD_DOOR) || m.equals(Material.IRON_DOOR) || m.equals(Material.FENCE_GATE) || m.equals(Material.FENCE) || m.equals(Material.STONE) || m.equals(Material.SMOOTH_BRICK))
               ri.remove();
       }

@@ -1,24 +1,23 @@
 package com.lastabyss.carbon.protocolmodifier;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-
-import org.bukkit.inventory.ItemStack;
-
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
+import com.lastabyss.carbon.Carbon;
+import com.lastabyss.carbon.utils.Utilities;
 
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.PacketDataSerializer;
 import net.minecraft.server.v1_7_R4.WatchableObject;
 import net.minecraft.util.io.netty.buffer.Unpooled;
 
-import com.lastabyss.carbon.Carbon;
-import com.lastabyss.carbon.utils.Utilities;
+import org.bukkit.inventory.ItemStack;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 public class ProtocolItemListener {
 
@@ -192,6 +191,7 @@ public class ProtocolItemListener {
 					try {
 						ProtocolLibrary.getProtocolManager().sendServerPacket(event.getPlayer(), newpacket, false);
 					} catch (InvocationTargetException e) {
+                                          e.printStackTrace();
 					}
 				}
 			}

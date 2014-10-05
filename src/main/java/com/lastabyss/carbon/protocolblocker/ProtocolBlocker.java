@@ -2,17 +2,19 @@ package com.lastabyss.carbon.protocolblocker;
 
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.utils.Utilities;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.HashMap;
+
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.HashMap;
 
 public class ProtocolBlocker implements Listener {
 
@@ -37,6 +39,7 @@ public class ProtocolBlocker implements Listener {
                                 config.save(configFile);
                                 config = YamlConfiguration.loadConfiguration(configFile);
 			} catch (IOException e) {
+                          e.printStackTrace();
 			}
 		} else {
                     config = YamlConfiguration.loadConfiguration(configFile);
@@ -45,11 +48,12 @@ public class ProtocolBlocker implements Listener {
 			try {
 				restrictedProtocols.put(Integer.parseInt(version), ChatColor.translateAlternateColorCodes('&', config.getString(version)));
 			} catch (Exception e) {
+                          e.printStackTrace();
 			}
 		}
 	}
 
-	private HashMap<Integer, String> restrictedProtocols = new HashMap<Integer, String>();
+	private HashMap<Integer, String> restrictedProtocols = new HashMap<>();
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerJoin(PlayerJoinEvent event) {
