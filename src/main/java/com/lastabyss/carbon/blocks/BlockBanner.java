@@ -35,6 +35,11 @@ public class BlockBanner extends BlockContainer {
 		return false;
 	}
 
+        @Override
+        public boolean d() {
+          return false;
+        }
+
 	@Override
 	public void remove(World paramWorld, int paramInt1, int paramInt2, int paramInt3, Block paramBlock, int paramInt4) {
 		super.remove(paramWorld, paramInt1, paramInt2, paramInt3, paramBlock, paramInt4);

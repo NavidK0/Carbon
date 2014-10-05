@@ -53,7 +53,7 @@ public class ProtocolBlocker implements Listener {
 		}
 	}
 
-	private HashMap<Integer, String> restrictedProtocols = new HashMap<Integer, String>();
+	private HashMap<Integer, String> restrictedProtocols = new HashMap<>();
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerJoin(PlayerJoinEvent event) {

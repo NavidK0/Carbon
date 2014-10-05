@@ -13,7 +13,7 @@ public class ChunkProviderGeneratePropertiesHolder {
 			return new ChunkProviderGeneratePropertiesHolder();
 		} else {
 			try {
-				return (ChunkProviderGeneratePropertiesHolder) gson.fromJson(jsonString, ChunkProviderGeneratePropertiesHolder.class);
+				return gson.fromJson(jsonString, ChunkProviderGeneratePropertiesHolder.class);
 			} catch (JsonSyntaxException var2) {
 				return new ChunkProviderGeneratePropertiesHolder();
 			}
@@ -182,7 +182,7 @@ public class ChunkProviderGeneratePropertiesHolder {
 
 
 	public String toString() {
-		return gson.toJson((Object) this);
+		return gson.toJson(this);
 	}
 
 	public boolean equals(Object obj) {

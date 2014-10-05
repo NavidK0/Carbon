@@ -9,7 +9,6 @@ package com.lastabyss.carbon.entity;
 import com.lastabyss.carbon.ai.PathfinderWrapper;
 import com.lastabyss.carbon.utils.Utilities;
 
-import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.EntityHuman;
 import net.minecraft.server.v1_7_R4.EntityLiving;
 import net.minecraft.server.v1_7_R4.EntityMonster;
@@ -138,7 +137,7 @@ public class EntityGuardian extends EntityMonster {
     //isInWater
     @Override
     public boolean M() {
-        return this.world.a(this.boundingBox.grow(0.0D, -0.6000000238418579D, 0.0D), Material.WATER, (Entity) this);
+        return this.world.a(this.boundingBox.grow(0.0D, -0.6000000238418579D, 0.0D), Material.WATER, this);
     }
 
     /** 

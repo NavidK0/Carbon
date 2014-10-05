@@ -80,10 +80,10 @@ public class WorldBorder {
 	}
 
 	public boolean isInside(Location location) {
-		return (double) (location.getX() + 1) > this.getMinX()
-				&& (double) location.getX() - 1 < this.getMaxX()
-				&& (double) (location.getZ() + 1) > this.getMinZ()
-				&& (double) location.getZ() - 1 < this.getMaxZ();
+		return location.getX() + 1 > this.getMinX()
+			&& location.getX() - 1 < this.getMaxX()
+			&& location.getZ() + 1 > this.getMinZ()
+			&& location.getZ() - 1 < this.getMaxZ();
 	}
 
 	public boolean isInside(Block block) {
