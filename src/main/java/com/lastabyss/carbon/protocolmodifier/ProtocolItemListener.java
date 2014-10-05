@@ -1,11 +1,5 @@
 package com.lastabyss.carbon.protocolmodifier;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -21,7 +15,6 @@ import com.comphenix.protocol.events.PacketEvent;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.PacketDataSerializer;
 import net.minecraft.server.v1_7_R4.WatchableObject;
-import net.minecraft.util.io.netty.buffer.ByteBuf;
 import net.minecraft.util.io.netty.buffer.Unpooled;
 
 import com.lastabyss.carbon.Carbon;
@@ -85,7 +78,7 @@ public class ProtocolItemListener {
 		//raw mutton -> chicken raw meat
 		replacements[423] = 365;
 		//cooked mutton -> chicken cooked meat
-		replacements[424] = 1;
+		replacements[424] = 366;
 		//banner -> sign
 		replacements[425] = 323;
 		//everything else -> stone
