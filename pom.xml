@@ -5,12 +5,6 @@
     <version>1</version>
     <name>Carbon</name>
     <url>http://www.lastabyss.com/</url>
-    <packaging>jar</packaging>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <repositories>
         <repository>
             <id>bukkit-repo</id>
@@ -22,35 +16,15 @@
         </repository>
     </repositories>
     <build>
-        <defaultGoal>install</defaultGoal>
-        <sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <!--<version>2.0.2</version>-->
+                <version>2.0.2</version>
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.4.1</version>
-                <configuration>
-                    <descriptor>${basedir}/src/main/assembly/default.xml</descriptor>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -78,19 +52,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.3</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
+
             </plugin>
         </plugins>
     </build>
@@ -100,8 +62,6 @@
             <artifactId>spigot</artifactId>
             <version>1479</version>
             <type>jar</type>
-            <scope>system</scope>
-            <systemPath>${env.SYSTEMDRIVE}/spigot1649-patched.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.mcstats.bukkit</groupId>
@@ -119,8 +79,11 @@
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
             <version>3.6.0</version>
-            <scope>system</scope>
-            <systemPath>${env.SYSTEMDRIVE}/ProtocolLib-Spigot-3.6.0-SNAPSHOT.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>nocheatplus</groupId>
+            <artifactId>nocheatplus</artifactId>
+            <version>3.11</version>
         </dependency>
     </dependencies>
 </project>
