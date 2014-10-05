@@ -9,6 +9,7 @@ package com.lastabyss.carbon.entity;
 import com.lastabyss.carbon.ai.PathfinderWrapper;
 import com.lastabyss.carbon.utils.Utilities;
 import net.minecraft.server.v1_7_R4.Entity;
+import net.minecraft.server.v1_7_R4.EntityHuman;
 import net.minecraft.server.v1_7_R4.EntityLiving;
 import net.minecraft.server.v1_7_R4.EntityMonster;
 import net.minecraft.server.v1_7_R4.GenericAttributes;
@@ -19,6 +20,8 @@ import net.minecraft.server.v1_7_R4.Material;
 import net.minecraft.server.v1_7_R4.MathHelper;
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
 import net.minecraft.server.v1_7_R4.PathfinderGoal;
+import net.minecraft.server.v1_7_R4.PathfinderGoalHurtByTarget;
+import net.minecraft.server.v1_7_R4.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_7_R4.World;
 
 /**
@@ -49,9 +52,11 @@ public class EntityGuardian extends EntityMonster {
         super(world);
         this.a(0.95F, 0.95F);
         this.by = 1.0F / (this.random.nextFloat() + 1.0F) * 0.2F;
-        //Add pathfinding goal, or something
-        this.goalSelector.a();
+        //Add pathfinding goals
+        //this.goalSelector.a();
         
+        this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, false));
+        this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget(this, EntityHuman.class, 0, true));
     }
 
     //entityInit

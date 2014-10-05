@@ -485,7 +485,7 @@ public class Injector {
       //Add temporary banners
       
       for (int c = 0; c < 16; c++) {
-          ShapedRecipe defaultBanners = new ShapedRecipe(new ItemStack(bannerItemMat)).shape(new String[] { "www", "www", " s "}).setIngredient('w', Material.WOOL, c).setIngredient('s', Material.STICK);
+          ShapedRecipe defaultBanners = new ShapedRecipe(new ItemStack(bannerItemMat, 1, (short)c)).shape(new String[] { "www", "www", " s "}).setIngredient('w', Material.WOOL, c).setIngredient('s', Material.STICK);
           addRecipe(defaultBanners);
       }
       
