@@ -111,8 +111,8 @@ public class EntityRabbit extends EntityAnimal {
         }
     }
 
-    protected Item getLoot() {
-        return this.isBurning() ? Items.GRILLED_PORK : Items.PORK;
+     protected Item getLoot() {
+        return this.isBurning() ? Carbon.injector().cookedRabbitItem : Carbon.injector().rabbitItem;
     }
 
     protected void dropDeathLoot(boolean flag, int i) {
@@ -120,9 +120,9 @@ public class EntityRabbit extends EntityAnimal {
 
         for (int k = 0; k < j; ++k) {
             if (this.isBurning()) {
-                this.a(Items.GRILLED_PORK, 1);
+                this.a( Carbon.injector().cookedRabbitItem, 1);
             } else {
-                this.a(Items.PORK, 1);
+                this.a( Carbon.injector().rabbitItem, 1);
             }
         }
 
