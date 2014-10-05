@@ -15,12 +15,11 @@ import net.minecraft.server.v1_7_R4.EntityLiving;
 import net.minecraft.server.v1_7_R4.EntityMonster;
 import net.minecraft.server.v1_7_R4.GenericAttributes;
 import net.minecraft.server.v1_7_R4.Item;
-import net.minecraft.server.v1_7_R4.ItemStack;
-import net.minecraft.server.v1_7_R4.Items;
 import net.minecraft.server.v1_7_R4.Material;
 import net.minecraft.server.v1_7_R4.MathHelper;
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
-import net.minecraft.server.v1_7_R4.PathfinderGoal;
+import net.minecraft.server.v1_7_R4.PathfinderGoalHurtByTarget;
+import net.minecraft.server.v1_7_R4.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_7_R4.World;
 
 /**
