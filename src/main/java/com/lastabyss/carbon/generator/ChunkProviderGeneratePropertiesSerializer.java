@@ -102,7 +102,8 @@ public class ChunkProviderGeneratePropertiesSerializer implements JsonDeserializ
 			properties.lapisCount = JSONParser.getInt(jsonObject, "lapisCount", properties.lapisCount);
 			properties.lapisCenterHeight = JSONParser.getInt(jsonObject, "lapisCenterHeight", properties.lapisCenterHeight);
 			properties.lapisSpread = JSONParser.getInt(jsonObject, "lapisSpread", properties.lapisSpread);
-		} catch (Exception ex) {
+		} catch (Exception e) {
+                  e.printStackTrace();
 		}
 
 		return properties;

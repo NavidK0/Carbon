@@ -15,7 +15,6 @@ import net.minecraft.server.v1_7_R4.PathfinderGoalFloat;
 import net.minecraft.server.v1_7_R4.PathfinderGoalFollowParent;
 import net.minecraft.server.v1_7_R4.PathfinderGoalLookAtPlayer;
 import net.minecraft.server.v1_7_R4.PathfinderGoalPanic;
-import net.minecraft.server.v1_7_R4.PathfinderGoalPassengerCarrotStick;
 import net.minecraft.server.v1_7_R4.PathfinderGoalRandomLookaround;
 import net.minecraft.server.v1_7_R4.PathfinderGoalRandomStroll;
 import net.minecraft.server.v1_7_R4.PathfinderGoalTempt;
@@ -100,7 +99,7 @@ public class EntityRabbit extends EntityAnimal {
 
     protected void c() {
         super.c();
-        this.datawatcher.a(16, Byte.valueOf((byte) 0));
+        this.datawatcher.a(16, (byte) 0);
     }
 
     protected String t() {

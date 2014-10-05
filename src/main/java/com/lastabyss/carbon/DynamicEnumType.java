@@ -24,24 +24,24 @@ public class DynamicEnumType {
 			IllegalArgumentException, InvocationTargetException
 	{
 		reflectionFactory = Class.forName("sun.reflect.ReflectionFactory")
-				.getDeclaredMethod("getReflectionFactory", new Class[0]);
+				.getDeclaredMethod("getReflectionFactory");
 
 		reflectionFactory.setAccessible(true);
-		reflectionRealFactory = reflectionFactory.invoke(null, new Object[0]);
+		reflectionRealFactory = reflectionFactory.invoke(null);
 
 		fieldAccesorSet = Class.forName("sun.reflect.FieldAccessor")
 				.getDeclaredMethod("set",
-						new Class[] { Object.class, Object.class });
+                                                   Object.class, Object.class);
 		newFieldAccesor = Class.forName("sun.reflect.ReflectionFactory")
 				.getDeclaredMethod("newFieldAccessor",
-						new Class[] { Field.class, Boolean.TYPE });
+                                                   Field.class, Boolean.TYPE);
 		constructorAccesor = Class.forName("sun.reflect.ConstructorAccessor")
 				.getDeclaredMethod("newInstance", Object[].class);
 
 		constructorAccesor.setAccessible(true);
 		newconstructorAccesor = Class.forName("sun.reflect.ReflectionFactory")
 				.getDeclaredMethod("newConstructorAccessor",
-						new Class[] { Constructor.class });
+                                                   Constructor.class);
 	}
 
 	private static void setFailsafeFieldValue(Field field, Object target,
@@ -54,9 +54,8 @@ public class DynamicEnumType {
 		int modifiers = modifiersField.getInt(field);
 		modifiers &= -17;
 		modifiersField.setInt(field, modifiers);
-		Object fieldAccesor = newFieldAccesor.invoke(reflectionRealFactory,
-				new Object[] { field, Boolean.valueOf(false) });
-		fieldAccesorSet.invoke(fieldAccesor, new Object[] { target, value });
+		Object fieldAccesor = newFieldAccesor.invoke(reflectionRealFactory, field, false);
+		fieldAccesorSet.invoke(fieldAccesor, target, value);
 	}
 
 	private static void blankField(Class<?> enumClass, String fieldName)
@@ -102,10 +101,10 @@ public class DynamicEnumType {
 	{
 		Object[] parms = new Object[additionalValues.length + 2];
 		parms[0] = value;
-		parms[1] = Integer.valueOf(ordinal);
+		parms[1] = ordinal;
 		System.arraycopy(additionalValues, 0, parms, 2, additionalValues.length);
 
-		return (Enum<?>) enumClass.cast(constructorAccesor.invoke(
+		return enumClass.cast(constructorAccesor.invoke(
 				getConstructorAccessor(enumClass, additionalTypes),
 				new Object[] { parms }));
 	}
@@ -132,7 +131,7 @@ public class DynamicEnumType {
 		try
 		{
 			T[] previousValues = (T[]) valuesField.get(enumType);
-			List<T> values = new ArrayList<T>(Arrays.asList(previousValues));
+			List<T> values = new ArrayList<>(Arrays.asList(previousValues));
 
 			T newValue = (T) makeEnum(enumType, enumName, values.size(),
 					paramTypes, paramValues);

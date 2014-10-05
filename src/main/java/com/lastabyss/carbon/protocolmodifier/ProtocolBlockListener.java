@@ -1,15 +1,15 @@
 package com.lastabyss.carbon.protocolmodifier;
 
-import java.lang.reflect.InvocationTargetException;
-
-import com.lastabyss.carbon.Carbon;
-import com.lastabyss.carbon.utils.Utilities;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
+import com.lastabyss.carbon.Carbon;
+import com.lastabyss.carbon.utils.Utilities;
+
+import java.lang.reflect.InvocationTargetException;
 
 public class ProtocolBlockListener {
 
@@ -145,6 +145,7 @@ public class ProtocolBlockListener {
 						try {
 							ProtocolLibrary.getProtocolManager().sendServerPacket(event.getPlayer(), newpacket, false);
 						} catch (InvocationTargetException e) {
+                                                  e.printStackTrace();
 						}
 					}
 				}

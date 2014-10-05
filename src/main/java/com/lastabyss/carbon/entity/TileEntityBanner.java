@@ -1,7 +1,5 @@
 package com.lastabyss.carbon.entity;
 
-import java.util.List;
-
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.Items;
 import net.minecraft.server.v1_7_R4.ItemStack;
