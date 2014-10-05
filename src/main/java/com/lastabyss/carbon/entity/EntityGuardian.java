@@ -101,11 +101,8 @@ public class EntityGuardian extends EntityMonster {
 
     @Override
     protected void dropDeathLoot(boolean flag, int i) {
-        int j = this.random.nextInt(3 + i) + 1;
-
-        for (int k = 0; k < j; ++k) {
-            this.a(new ItemStack(Items.INK_SACK, 1, 0), 0.0F);
-        }
+        //Drops nothing currently
+        //Change to prismarine shards etc. later
     }
 
     //isInWater

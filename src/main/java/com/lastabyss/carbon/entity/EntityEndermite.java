@@ -9,7 +9,6 @@ import net.minecraft.server.v1_7_R4.EntityDamageSource;
 import net.minecraft.server.v1_7_R4.EntityHuman;
 import net.minecraft.server.v1_7_R4.EntityMonster;
 import net.minecraft.server.v1_7_R4.EnumMonsterType;
-import net.minecraft.server.v1_7_R4.Facing;
 import net.minecraft.server.v1_7_R4.GenericAttributes;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.MathHelper;
