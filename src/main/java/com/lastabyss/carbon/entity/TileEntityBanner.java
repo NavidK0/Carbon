@@ -16,16 +16,9 @@ public class TileEntityBanner extends TileEntity {
 
 	private int baseColor;
 	private NBTTagList patterns;
-	private boolean field_175119_g;
-	@SuppressWarnings("rawtypes")
-	private List field_175122_h;
-	@SuppressWarnings("rawtypes")
-	private List field_175123_i;
-	private String field_175121_j;
 
 	public void setItemValues(ItemStack itemStack) {
 		this.patterns = null;
-
 		if (itemStack.hasTag() && itemStack.getTag().hasKeyOfType("BlockEntityTag", 10)) {
 			NBTTagCompound compound = itemStack.getTag().getCompound("BlockEntityTag");
 
@@ -41,23 +34,16 @@ public class TileEntityBanner extends TileEntity {
 		} else {
 			this.baseColor = itemStack.getData() & 15;
 		}
-
-		this.field_175122_h = null;
-		this.field_175123_i = null;
-		this.field_175121_j = "";
-		this.field_175119_g = true;
 	}
 
+	@Override
 	public void a(NBTTagCompound compound) {
 		super.a(compound);
 		this.baseColor = compound.getInt("Base");
 		this.patterns = compound.getList("Patterns", 10);
-		this.field_175122_h = null;
-		this.field_175123_i = null;
-		this.field_175121_j = null;
-		this.field_175119_g = true;
 	}
 
+	@Override
 	public void b(NBTTagCompound compound) {
 		super.b(compound);
 		compound.setInt("Base", this.baseColor);
@@ -67,7 +53,8 @@ public class TileEntityBanner extends TileEntity {
 		}
 	}
 
-	public Packet getDescriptionPacket() {
+	@Override
+	public Packet getUpdatePacket() {
 		NBTTagCompound updatePacketTag = new NBTTagCompound();
 		this.b(updatePacketTag);
 		return new PacketPlayOutTileEntityData(x, y, z, 6, updatePacketTag);
@@ -159,8 +146,6 @@ public class TileEntityBanner extends TileEntity {
         private String field_177285_O;
         private String[] field_177291_P;
         private ItemStack field_177290_Q;
-
-        private static final TileEntityBanner.EnumBannerPattern[] $VALUES = new TileEntityBanner.EnumBannerPattern[]{BASE, SQUARE_BOTTOM_LEFT, SQUARE_BOTTOM_RIGHT, SQUARE_TOP_LEFT, SQUARE_TOP_RIGHT, STRIPE_BOTTOM, STRIPE_TOP, STRIPE_LEFT, STRIPE_RIGHT, STRIPE_CENTER, STRIPE_MIDDLE, STRIPE_DOWNRIGHT, STRIPE_DOWNLEFT, STRIPE_SMALL, CROSS, STRAIGHT_CROSS, TRIANGLE_BOTTOM, TRIANGLE_TOP, TRIANGLES_BOTTOM, TRIANGLES_TOP, DIAGONAL_LEFT, DIAGONAL_RIGHT, DIAGONAL_LEFT_MIRROR, DIAGONAL_RIGHT_MIRROR, CIRCLE_MIDDLE, RHOMBUS_MIDDLE, HALF_VERTICAL, HALF_HORIZONTAL, HALF_VERTICAL_MIRROR, HALF_HORIZONTAL_MIRROR, BORDER, CURLY_BORDER, CREEPER, GRADIENT, GRADIENT_UP, BRICKS, SKULL, FLOWER, MOJANG};
 
         private EnumBannerPattern(String p_i45670_1_, int p_i45670_2_, String p_i45670_3_, String p_i45670_4_) {
             this.field_177291_P = new String[3];

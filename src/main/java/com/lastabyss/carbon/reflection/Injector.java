@@ -155,7 +155,7 @@ public class Injector {
   public Item spongeItem = new ItemMultiTexture(this.spongeBlock, this.spongeBlock, BlockSponge.names);
   public Item stoneButtonItem = new ItemBlock(stoneButtonBlock);
   public Item woodButtonItem = new ItemBlock(woodButtonBlock);
-  public Item standingBannerItem = new ItemBlock(standingBannerBlock);
+  public Item standingBannerItem = new ItemBanner(standingBannerBlock);
 
   public Item rabbitItem = new ItemRabbit();
   public Item cookedRabbitItem = new ItemCookedRabbit();
@@ -240,7 +240,7 @@ public class Injector {
     registerBlock(167, "iron_trapdoor", ironTrapDoorBlock, ironTrapDoorItem);
     registerBlock(168, "prismarine", prismarineBlock, prismarineItem);
     registerBlock(169, "sea_lantern", seaLanternBlock, seaLanternItem);
-    registerBlock(176, "standing_banner", standingBannerBlock, standingBannerItem);
+    registerBlock(176, "standing_banner", standingBannerBlock);
     registerBlock(179, "red_sandstone", redSandstoneBlock, redSandstoneItem);
     registerBlock(180, "red_sandstone_stairs", redSandstoneStairsBlock, redSandstoneStairsItem);
     registerBlock(181, "double_stone_slab2", redSandstoneDoubleSlabBlock, redSandstoneDoubleSlabItem);
@@ -276,6 +276,7 @@ public class Injector {
     registerItem(415, "rabbit_hide", rabbitHideItem);
     registerItem(423, "mutton", muttonItem);
     registerItem(424, "cooked_mutton", cookedMuttonItem);
+    registerItem(425, "banner", standingBannerItem);
     
     //Register entities (data copied straight from 1.8, from EntityList.java)
     registerEntity(EntityEndermite.class, "Endermite", 67, 1447446, 7237230);
