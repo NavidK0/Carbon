@@ -8,6 +8,7 @@ package com.lastabyss.carbon.entity;
 
 import com.lastabyss.carbon.ai.PathfinderWrapper;
 import com.lastabyss.carbon.utils.Utilities;
+
 import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.EntityHuman;
 import net.minecraft.server.v1_7_R4.EntityLiving;
@@ -20,8 +21,6 @@ import net.minecraft.server.v1_7_R4.Material;
 import net.minecraft.server.v1_7_R4.MathHelper;
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
 import net.minecraft.server.v1_7_R4.PathfinderGoal;
-import net.minecraft.server.v1_7_R4.PathfinderGoalHurtByTarget;
-import net.minecraft.server.v1_7_R4.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_7_R4.World;
 
 /**
@@ -118,12 +117,6 @@ public class EntityGuardian extends EntityMonster {
     @Override
     protected String aU() {
         return !this.isInWater() ? "mob.guardian.land.death" : (this.isElder() ? "mob.guardian.elder.death" : "mob.guardian.death");
-    }
-
-    //getSoundVolume
-    @Override
-    protected float bf() {
-        return super.bf();
     }
 
     @Override

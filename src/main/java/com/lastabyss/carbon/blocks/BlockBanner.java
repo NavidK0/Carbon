@@ -41,11 +41,6 @@ public class BlockBanner extends BlockContainer {
 	}
 
 	@Override
-	public void onPlace(World paramWorld, int paramInt1, int paramInt2, int paramInt3) {
-		super.onPlace(paramWorld, paramInt1, paramInt2, paramInt3);
-	}
-
-	@Override
 	public void remove(World paramWorld, int paramInt1, int paramInt2, int paramInt3, Block paramBlock, int paramInt4) {
 		super.remove(paramWorld, paramInt1, paramInt2, paramInt3, paramBlock, paramInt4);
 		paramWorld.p(paramInt1, paramInt2, paramInt3);

@@ -1,7 +1,6 @@
 package com.lastabyss.carbon.blocks;
 
 import net.minecraft.server.v1_7_R4.CreativeModeTab;
-import net.minecraft.server.v1_7_R4.World;
 
 /**
  *
@@ -18,15 +17,7 @@ public class BlockSponge extends net.minecraft.server.v1_7_R4.BlockSponge {
     }
 
     @Override
-    public void onPlace(World world, int i, int j, int k) {
-        super.onPlace(world, i, j, k);
-    }
-    
-    
-
-    @Override
     public int getDropData(int i) {
-        return i;
+      return i;
     }
-    
 }
