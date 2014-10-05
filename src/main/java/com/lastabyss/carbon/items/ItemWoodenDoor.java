@@ -92,8 +92,7 @@ public class ItemWoodenDoor extends ItemDoor {
     return true;
   }
   
-  public static void place(World paramWorld, int paramInt1, int paramInt2, int paramInt3, int paramInt4, Block paramBlock)
-  {
+  public static void place(World paramWorld, int paramInt1, int paramInt2, int paramInt3, int paramInt4, Block paramBlock) {
     int i = 0;
     int j = 0;
     if (paramInt4 == 0) {
@@ -122,7 +121,6 @@ public class ItemWoodenDoor extends ItemDoor {
     }
     paramWorld.setTypeAndData(paramInt1, paramInt2, paramInt3, paramBlock, paramInt4, 2);
     paramWorld.setTypeAndData(paramInt1, paramInt2 + 1, paramInt3, paramBlock, 0x8 | (i2 != 0 ? 1 : 0), 2);
-    paramWorld.applyPhysics(paramInt1, paramInt2, paramInt3, paramBlock);
-    paramWorld.applyPhysics(paramInt1, paramInt2 + 1, paramInt3, paramBlock);
   }
+
 }
