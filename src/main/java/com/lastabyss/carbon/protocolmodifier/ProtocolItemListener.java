@@ -1,5 +1,11 @@
 package com.lastabyss.carbon.protocolmodifier;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -13,7 +19,10 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 
 import net.minecraft.server.v1_7_R4.Item;
+import net.minecraft.server.v1_7_R4.PacketDataSerializer;
 import net.minecraft.server.v1_7_R4.WatchableObject;
+import net.minecraft.util.io.netty.buffer.ByteBuf;
+import net.minecraft.util.io.netty.buffer.Unpooled;
 
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.utils.Utilities;
@@ -87,6 +96,27 @@ public class ProtocolItemListener {
 		replacements[416] = 1;
 	}
 
+	@SuppressWarnings("deprecation")
+	private void replaceItemStack(ItemStack itemStack) {
+		if (itemStack == null) {
+			return;
+		}
+		int itemid = itemStack.getTypeId();
+		if (replacements[itemid] != -1) {
+			itemStack.setTypeId(replacements[itemid]);
+		}
+	}
+
+	private void replaceItemStack(net.minecraft.server.v1_7_R4.ItemStack itemStack) {
+		if (itemStack == null) {
+			return;
+		}
+		int itemid = Item.getId(itemStack.getItem());
+		if (replacements[itemid] != -1) {
+			itemStack.setItem(Item.getById(replacements[itemid]));
+		}
+	}
+
 	public void init() {
 		ProtocolLibrary.getProtocolManager().addPacketListener(
 			new PacketAdapter(
@@ -94,7 +124,6 @@ public class ProtocolItemListener {
 				.params(plugin, PacketType.Play.Server.WINDOW_ITEMS)
 				.listenerPriority(ListenerPriority.HIGHEST)
 			) {
-				@SuppressWarnings("deprecation")
 				@Override
 				public void onPacketSending(PacketEvent event) {
 					if (Utilities.getProtocolVersion(event.getPlayer()) == Utilities.CLIENT_1_8_PROTOCOL_VERSION) {
@@ -103,13 +132,7 @@ public class ProtocolItemListener {
 					//replace all items with valid ones
 					ItemStack[] items = event.getPacket().getItemArrayModifier().read(0);
 					for (int i = 0; i < items.length; i++) {
-						if (items[i] == null) {
-							continue;
-						}
-						int itemid = items[i].getTypeId();
-						if (replacements[itemid] != -1) {
-							items[i].setTypeId(replacements[itemid]);
-						}
+						replaceItemStack(items[i]);
 					}
 				}
 			}
@@ -121,7 +144,6 @@ public class ProtocolItemListener {
 				.params(plugin, PacketType.Play.Server.SET_SLOT)
 				.listenerPriority(ListenerPriority.HIGHEST)
 			) {
-				@SuppressWarnings("deprecation")
 				@Override
 				public void onPacketSending(PacketEvent event) {
 					if (Utilities.getProtocolVersion(event.getPlayer()) == Utilities.CLIENT_1_8_PROTOCOL_VERSION) {
@@ -129,13 +151,7 @@ public class ProtocolItemListener {
 					}
 					//replace item with valid one
 					ItemStack item = event.getPacket().getItemModifier().read(0);
-					if (item == null) {
-						return;
-					}
-					int itemid = item.getTypeId();
-					if (replacements[itemid] != -1) {
-						item.setTypeId(replacements[itemid]);
-					}
+					replaceItemStack(item);
 				}
 			}
 		);
@@ -146,7 +162,6 @@ public class ProtocolItemListener {
 				.params(plugin, PacketType.Play.Server.ENTITY_EQUIPMENT)
 				.listenerPriority(ListenerPriority.HIGHEST)
 			) {
-				@SuppressWarnings("deprecation")
 				@Override
 				public void onPacketSending(PacketEvent event) {
 					if (Utilities.getProtocolVersion(event.getPlayer()) == Utilities.CLIENT_1_8_PROTOCOL_VERSION) {
@@ -154,13 +169,7 @@ public class ProtocolItemListener {
 					}
 					//replace item valid one
 					ItemStack item = event.getPacket().getItemModifier().read(0);
-					if (item == null) {
-						return;
-					}
-					int itemid = item.getTypeId();
-					if (replacements[itemid] != -1) {
-						item.setTypeId(replacements[itemid]);
-					}
+					replaceItemStack(item);
 				}
 			}
 		);
@@ -184,10 +193,7 @@ public class ProtocolItemListener {
 						WatchableObject wobject = (WatchableObject) object;
 						if (wobject.b() instanceof net.minecraft.server.v1_7_R4.ItemStack) {
 							net.minecraft.server.v1_7_R4.ItemStack itemStack = (net.minecraft.server.v1_7_R4.ItemStack) wobject.b();
-							int itemid = Item.getId(itemStack.getItem());
-							if (replacements[itemid] != -1) {
-								itemStack.setItem(Item.getById(replacements[itemid]));
-							}
+							replaceItemStack(itemStack);
 						}
 					}
 					try {
@@ -197,6 +203,81 @@ public class ProtocolItemListener {
 				}
 			}
 		);
+
+		ProtocolLibrary.getProtocolManager().addPacketListener(			
+			new PacketAdapter(
+				PacketAdapter
+				.params(plugin, PacketType.Play.Server.CUSTOM_PAYLOAD)
+				.listenerPriority(ListenerPriority.HIGHEST)
+			) {
+				@Override
+				public void onPacketSending(PacketEvent event) {
+					//server sends some sort of payload packet on player join so this check should be first
+					if (!event.getPacket().getStrings().read(0).equals("MC|TrList")) {
+						return;
+					}
+					if (Utilities.getProtocolVersion(event.getPlayer()) == Utilities.CLIENT_1_8_PROTOCOL_VERSION) {
+						return;
+					}
+					//repack trade list packet with valid items
+					byte[] data = event.getPacket().getByteArrays().read(0);
+					PacketDataSerializer dataserializer = new PacketDataSerializer(Unpooled.wrappedBuffer(data));
+					PacketDataSerializer newdataserializer = new PacketDataSerializer(Unpooled.buffer(data.length));
+					try {
+						newdataserializer.writeInt(dataserializer.readInt());
+						int count = dataserializer.readByte() & 0xFF;
+						newdataserializer.writeByte(count);
+						for (int i = 0; i < count; i++) {
+							net.minecraft.server.v1_7_R4.ItemStack buyItem1 = dataserializer.c();
+							replaceItemStack(buyItem1);
+							newdataserializer.a(buyItem1);
+
+							net.minecraft.server.v1_7_R4.ItemStack buyItem3 = dataserializer.c();
+							replaceItemStack(buyItem3);
+							newdataserializer.a(buyItem3);
+
+							boolean hasItem = dataserializer.readBoolean();
+							newdataserializer.writeBoolean(hasItem);
+							if (hasItem) {
+								net.minecraft.server.v1_7_R4.ItemStack buyItem2 = dataserializer.c();
+								replaceItemStack(buyItem2);
+								newdataserializer.a(buyItem2);
+							}
+
+							newdataserializer.writeBoolean(dataserializer.readBoolean());
+						}
+						event.getPacket().getByteArrays().write(0, newdataserializer.array());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		);
+
+
+		  /*public void a(PacketDataSerializer packetdataserializer)
+		  {
+		    packetdataserializer.writeByte((byte)(size() & 0xFF));
+		    for (int i = 0; i < size(); i++)
+		    {
+		      MerchantRecipe merchantrecipe = (MerchantRecipe)get(i);
+		      
+		      packetdataserializer.a(merchantrecipe.getBuyItem1());
+		      packetdataserializer.a(merchantrecipe.getBuyItem3());
+		      ItemStack itemstack = merchantrecipe.getBuyItem2();
+		      
+		      packetdataserializer.writeBoolean(itemstack != null);
+		      if (itemstack != null) {
+		        packetdataserializer.a(itemstack);
+		      }
+		      packetdataserializer.writeBoolean(merchantrecipe.g());
+		      if (packetdataserializer.version >= 28)
+		      {
+		        packetdataserializer.writeInt(merchantrecipe.uses);
+		        packetdataserializer.writeInt(merchantrecipe.maxUses);
+		      }
+		    }
+		  }*/
 	}
 
 }
