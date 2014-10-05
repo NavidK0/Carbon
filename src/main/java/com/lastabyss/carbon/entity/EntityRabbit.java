@@ -1,6 +1,7 @@
 package com.lastabyss.carbon.entity;
 
 import com.lastabyss.carbon.Carbon;
+
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.EntityAgeable;
 import net.minecraft.server.v1_7_R4.EntityAnimal;
@@ -9,7 +10,6 @@ import net.minecraft.server.v1_7_R4.GenericAttributes;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.ItemStack;
 import net.minecraft.server.v1_7_R4.Items;
-import net.minecraft.server.v1_7_R4.NBTTagCompound;
 import net.minecraft.server.v1_7_R4.PathfinderGoalBreed;
 import net.minecraft.server.v1_7_R4.PathfinderGoalFloat;
 import net.minecraft.server.v1_7_R4.PathfinderGoalFollowParent;
@@ -97,10 +97,6 @@ public class EntityRabbit extends EntityAnimal {
         this.getAttributeInstance(GenericAttributes.d).setValue(0.25D);
     }
 
-    protected void bn() {
-        super.bn();
-    }
-
     public boolean bE() {
         ItemStack itemstack = ((EntityHuman) this.passenger).be();
 
@@ -110,18 +106,6 @@ public class EntityRabbit extends EntityAnimal {
     protected void c() {
         super.c();
         this.datawatcher.a(16, Byte.valueOf((byte) 0));
-    }
-    
-    //readEntityfromNBT
-    public void a(NBTTagCompound nbttagcompound) {
-        super.a(nbttagcompound);
-
-    }
-
-    //writeEntityFromBNT
-    public void b(NBTTagCompound nbttagcompound) {
-        super.b(nbttagcompound);
-
     }
 
     protected String t() {
