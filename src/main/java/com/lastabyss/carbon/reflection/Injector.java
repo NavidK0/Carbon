@@ -78,6 +78,7 @@ public class Injector {
   public Block stoneButtonBlock = new BlockStoneButton();
   public Block woodButtonBlock = new BlockWoodButton();
   public Block standingBannerBlock = new BlockBanner();
+  public Block wallBannerBlock = new BlockBanner();
   
   //Bukkit materials
   public Material slimeMat = Utilities.addMaterial("SLIME", 165);
@@ -241,6 +242,7 @@ public class Injector {
     registerBlock(168, "prismarine", prismarineBlock, prismarineItem);
     registerBlock(169, "sea_lantern", seaLanternBlock, seaLanternItem);
     registerBlock(176, "standing_banner", standingBannerBlock);
+    registerBlock(177, "wall_banner", wallBannerBlock);
     registerBlock(179, "red_sandstone", redSandstoneBlock, redSandstoneItem);
     registerBlock(180, "red_sandstone_stairs", redSandstoneStairsBlock, redSandstoneStairsItem);
     registerBlock(181, "double_stone_slab2", redSandstoneDoubleSlabBlock, redSandstoneDoubleSlabItem);

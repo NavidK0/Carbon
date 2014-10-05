@@ -46,7 +46,7 @@ public class ItemBanner extends ItemBlock {
 			int data = MathHelper.floor(((paramEntityHuman.yaw + 180.0F) * 16.0F / 360.0F) + 0.5D) & 15;
 			paramWorld.setTypeAndData(x, y, z, Carbon.injector().standingBannerBlock, data, 2);
 		} else {
-			//paramWorld.setBlockAt(x, y, z, Carbon.injector().wallBannerBlock, 0, 2);
+			paramWorld.setTypeAndData(x, y, z, Carbon.injector().wallBannerBlock, blockFace, 2);
 		}
 
 		--paramItemStack.count;
