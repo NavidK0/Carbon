@@ -254,30 +254,6 @@ public class ProtocolItemListener {
 			}
 		);
 
-
-		  /*public void a(PacketDataSerializer packetdataserializer)
-		  {
-		    packetdataserializer.writeByte((byte)(size() & 0xFF));
-		    for (int i = 0; i < size(); i++)
-		    {
-		      MerchantRecipe merchantrecipe = (MerchantRecipe)get(i);
-		      
-		      packetdataserializer.a(merchantrecipe.getBuyItem1());
-		      packetdataserializer.a(merchantrecipe.getBuyItem3());
-		      ItemStack itemstack = merchantrecipe.getBuyItem2();
-		      
-		      packetdataserializer.writeBoolean(itemstack != null);
-		      if (itemstack != null) {
-		        packetdataserializer.a(itemstack);
-		      }
-		      packetdataserializer.writeBoolean(merchantrecipe.g());
-		      if (packetdataserializer.version >= 28)
-		      {
-		        packetdataserializer.writeInt(merchantrecipe.uses);
-		        packetdataserializer.writeInt(merchantrecipe.maxUses);
-		      }
-		    }
-		  }*/
 	}
 
 }
