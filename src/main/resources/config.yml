@@ -7,4 +7,4 @@ options:
     worlds: [world]
     
     
-donottouch.configVersion: 0.1
+donottouch.configVersion: 0.2

@@ -1,6 +1,7 @@
 
 package com.lastabyss.carbon;
 
+import com.lastabyss.carbon.external.support.NoCheatPlusSupporter;
 import java.util.logging.Logger;
 
 import com.lastabyss.carbon.generator.CarbonWorldGenerator;
@@ -81,6 +82,17 @@ public class Carbon extends JavaPlugin {
         } else {
             log.info("[Carbon] ProtocolLib not found, not hooking. 1.7 clients not supported.");
         }
+        
+        if (getServer().getPluginManager().getPlugin("NoCheatPlus") != null) {
+	        try {
+	            new NoCheatPlusSupporter(this).hook();
+	        } catch (Throwable t) {
+	        	t.printStackTrace();
+	        }
+        } else {
+            log.info("[Carbon] NoCheatPlus not found, not hooking.");
+        }
+        
         log.info("[Carbon] Carbon is enabled.");
     }
 

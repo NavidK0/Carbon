@@ -15,7 +15,6 @@ import java.util.logging.Logger;
 
 import net.minecraft.server.v1_7_R4.EntityPlayer;
 import net.minecraft.server.v1_7_R4.Packet;
-import net.minecraft.server.v1_7_R4.TileEntity;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -256,4 +255,17 @@ public class Utilities {
     	nmsPlayer.playerConnection.sendPacket(packet);
     }
 
+    /**
+     * Returns the squared distance to the entity.
+     * @param entity
+     * @param target
+     * @return 
+     */
+    public static double getDistanceSqToEntity(net.minecraft.server.v1_7_R4.Entity entity, net.minecraft.server.v1_7_R4.Entity target) {
+        double var2 = entity.locX - target.locX;
+        double var4 = entity.locY - target.locY;
+        double var6 = entity.locZ - target.locZ;
+        return var2 * var2 + var4 * var4 + var6 * var6;
+    }
+    
 }

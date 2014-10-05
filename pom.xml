@@ -80,5 +80,10 @@
             <artifactId>ProtocolLib</artifactId>
             <version>3.6.0</version>
         </dependency>
+        <dependency>
+            <groupId>nocheatplus</groupId>
+            <artifactId>nocheatplus</artifactId>
+            <version>3.11</version>
+        </dependency>
     </dependencies>
 </project>

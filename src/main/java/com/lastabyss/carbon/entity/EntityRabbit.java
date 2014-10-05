@@ -1,13 +1,10 @@
 package com.lastabyss.carbon.entity;
 
-import net.minecraft.server.v1_7_R4.AchievementList;
+import com.lastabyss.carbon.Carbon;
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.EntityAgeable;
 import net.minecraft.server.v1_7_R4.EntityAnimal;
 import net.minecraft.server.v1_7_R4.EntityHuman;
-import net.minecraft.server.v1_7_R4.EntityLightning;
-import net.minecraft.server.v1_7_R4.EntityPig;
-import net.minecraft.server.v1_7_R4.EntityPigZombie;
 import net.minecraft.server.v1_7_R4.GenericAttributes;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.ItemStack;
@@ -22,7 +19,6 @@ import net.minecraft.server.v1_7_R4.PathfinderGoalPassengerCarrotStick;
 import net.minecraft.server.v1_7_R4.PathfinderGoalRandomLookaround;
 import net.minecraft.server.v1_7_R4.PathfinderGoalRandomStroll;
 import net.minecraft.server.v1_7_R4.PathfinderGoalTempt;
-import net.minecraft.server.v1_7_R4.Statistic;
 import net.minecraft.server.v1_7_R4.World;
 
 /**
@@ -32,6 +28,46 @@ import net.minecraft.server.v1_7_R4.World;
 public class EntityRabbit extends EntityAnimal {
 
     private final PathfinderGoalPassengerCarrotStick bp;
+            
+    static enum EnumMoveType {
+        NONE("NONE", 0, 0.0F, 0.0F, 30, 1),
+        HOP("HOP", 1, 0.8F, 0.2F, 20, 10),
+        STEP("STEP", 2, 1.0F, 0.45F, 14, 14),
+        SPRINT("SPRINT", 3, 1.75F, 0.4F, 1, 8),
+        ATTACK("ATTACK", 4, 2.0F, 0.7F, 7, 8);
+        private final float f;
+        private final float g;
+        private final int h;
+        private final int i;
+
+        private EnumMoveType(String str, int i, float p3, float p4, int p5, int p6)
+        {
+            this.f = p3;
+            this.g = p4;
+            this.h = p5;
+            this.i = p6;
+        }
+
+        public float a()
+        {
+            return this.f;
+        }
+
+        public float b()
+        {
+            return this.g;
+        }
+
+        public int c()
+        {
+            return this.h;
+        }
+
+        public int d()
+        {
+            return this.i;
+        }
+    }
 
     public EntityRabbit(World world) {
         super(world);
@@ -40,13 +76,15 @@ public class EntityRabbit extends EntityAnimal {
         this.goalSelector.a(0, new PathfinderGoalFloat(this));
         this.goalSelector.a(1, new PathfinderGoalPanic(this, 1.25D));
         this.goalSelector.a(2, this.bp = new PathfinderGoalPassengerCarrotStick(this, 0.3F));
-        this.goalSelector.a(3, new PathfinderGoalBreed(this, 1.0D));
+        this.goalSelector.a(3, new PathfinderGoalBreed(this, 0.8D));
         this.goalSelector.a(4, new PathfinderGoalTempt(this, 1.2D, Items.CARROT_STICK, false));
         this.goalSelector.a(4, new PathfinderGoalTempt(this, 1.2D, Items.CARROT, false));
         this.goalSelector.a(5, new PathfinderGoalFollowParent(this, 1.1D));
         this.goalSelector.a(6, new PathfinderGoalRandomStroll(this, 1.0D));
         this.goalSelector.a(7, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 6.0F));
         this.goalSelector.a(8, new PathfinderGoalRandomLookaround(this));
+        
+        
     }
 
     public boolean bk() {
@@ -73,96 +111,81 @@ public class EntityRabbit extends EntityAnimal {
         super.c();
         this.datawatcher.a(16, Byte.valueOf((byte) 0));
     }
-
-    public void b(NBTTagCompound nbttagcompound) {
-        super.b(nbttagcompound);
-        nbttagcompound.setBoolean("Saddle", this.hasSaddle());
-    }
-
+    
+    //readEntityfromNBT
     public void a(NBTTagCompound nbttagcompound) {
         super.a(nbttagcompound);
-        this.setSaddle(nbttagcompound.getBoolean("Saddle"));
+
+    }
+
+    //writeEntityFromBNT
+    public void b(NBTTagCompound nbttagcompound) {
+        super.b(nbttagcompound);
+
     }
 
     protected String t() {
-        return "mob.pig.say";
+        return "mob.rabbit.idle";
     }
 
     protected String aT() {
-        return "mob.pig.say";
+        return "mob.rabbit.hurt";
     }
 
     protected String aU() {
-        return "mob.pig.death";
+        return "mob.rabbit.death";
     }
 
     protected void a(int i, int j, int k, Block block) {
-        this.makeSound("mob.pig.step", 0.15F, 1.0F);
+        this.makeSound("mob.rabbit.hop", 0.15F, 1.0F);
     }
 
     public boolean a(EntityHuman entityhuman) {
         if (super.a(entityhuman)) {
-            return true;
-        } else if (this.hasSaddle() && !this.world.isStatic && (this.passenger == null || this.passenger == entityhuman)) {
-            entityhuman.mount(this);
             return true;
         } else {
             return false;
         }
     }
 
+    @Override
     protected Item getLoot() {
         return this.isBurning() ? Items.GRILLED_PORK : Items.PORK;
     }
 
+    @Override
+    protected void getRareDrop(int i) {
+        this.a(Carbon.injector().rabbitFootItem, 1);
+    }
+    
+    
+    @Override
     protected void dropDeathLoot(boolean flag, int i) {
-        int j = this.random.nextInt(3) + 1 + this.random.nextInt(1 + i);
+        int var3 = this.random.nextInt(2) + this.random.nextInt(1 + i);
+        int var4;
 
-        for (int k = 0; k < j; ++k) {
-            if (this.isBurning()) {
-                this.a(Items.GRILLED_PORK, 1);
-            } else {
-                this.a(Items.PORK, 1);
+        for (var4 = 0; var4 < var3; ++var4)
+        {
+            this.a(Carbon.injector().rabbitHideItem, 1);
+        }
+
+        var3 = this.random.nextInt(2);
+
+        for (var4 = 0; var4 < var3; ++var4)
+        {
+            if (this.isBurning())
+            {
+                this.a(Carbon.injector().cookedRabbitItem, 1);
+            }
+            else
+            {
+                this.a(Carbon.injector().rabbitItem, 1);
             }
         }
-
-        if (this.hasSaddle()) {
-            this.a(Items.SADDLE, 1);
-        }
     }
-
-    public boolean hasSaddle() {
-        return (this.datawatcher.getByte(16) & 1) != 0;
-    }
-
-    public void setSaddle(boolean flag) {
-        if (flag) {
-            this.datawatcher.watch(16, Byte.valueOf((byte) 1));
-        } else {
-            this.datawatcher.watch(16, Byte.valueOf((byte) 0));
-        }
-    }
-
-    public void a(EntityLightning entitylightning) {
-        if (!this.world.isStatic) {
-            EntityPigZombie entitypigzombie = new EntityPigZombie(this.world);
-
-            entitypigzombie.setEquipment(0, new ItemStack(Items.GOLD_SWORD));
-            entitypigzombie.setPositionRotation(this.locX, this.locY, this.locZ, this.yaw, this.pitch);
-            this.world.addEntity(entitypigzombie);
-            this.die();
-        }
-    }
-
-    protected void b(float f) {
-        super.b(f);
-        if (f > 5.0F && this.passenger instanceof EntityHuman) {
-            ((EntityHuman) this.passenger).a((Statistic) AchievementList.u);
-        }
-    }
-
-    public EntityPig b(EntityAgeable entityageable) {
-        return new EntityPig(this.world);
+    
+    public EntityRabbit b(EntityAgeable entityageable) {
+        return new EntityRabbit(this.world);
     }
 
     public boolean c(ItemStack itemstack) {

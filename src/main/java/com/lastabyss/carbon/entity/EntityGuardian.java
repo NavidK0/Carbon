@@ -6,7 +6,10 @@
 
 package com.lastabyss.carbon.entity;
 
+import com.lastabyss.carbon.ai.PathfinderWrapper;
+import com.lastabyss.carbon.utils.Utilities;
 import net.minecraft.server.v1_7_R4.Entity;
+import net.minecraft.server.v1_7_R4.EntityLiving;
 import net.minecraft.server.v1_7_R4.EntityMonster;
 import net.minecraft.server.v1_7_R4.GenericAttributes;
 import net.minecraft.server.v1_7_R4.Item;
@@ -15,6 +18,7 @@ import net.minecraft.server.v1_7_R4.Items;
 import net.minecraft.server.v1_7_R4.Material;
 import net.minecraft.server.v1_7_R4.MathHelper;
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
+import net.minecraft.server.v1_7_R4.PathfinderGoal;
 import net.minecraft.server.v1_7_R4.World;
 
 /**
@@ -50,18 +54,47 @@ public class EntityGuardian extends EntityMonster {
         
     }
 
+    //entityInit
+    @Override
+    protected void c() {
+        super.c();
+        this.datawatcher.a(16, 0);
+        this.datawatcher.a(17, 0);
+    }
+    
+    protected void addElderData(int var1, boolean var2) {
+        int var3 = this.datawatcher.getInt(16);
+        if (var2) {
+            this.datawatcher.watch(16, var3 | var1);
+        } else {
+           this.datawatcher.watch(16, var3 & ~var1);
+        }
+    }
+
     //applyEntityAttributes()
     @Override
     protected void aD() {
         super.aD();
-        //Attack damage
-        this.getAttributeInstance(GenericAttributes.e).setValue(6.0D);
-        //Movement Speed
-        this.getAttributeInstance(GenericAttributes.d).setValue(0.5D);
-        //Follow range
-        this.getAttributeInstance(GenericAttributes.b).setValue(16.0D);
-        //Max health, obviously
-        this.getAttributeInstance(GenericAttributes.maxHealth).setValue(30.0D);
+        if (!isElder()) {
+            //Attack damage
+            this.getAttributeInstance(GenericAttributes.e).setValue(6.0D);
+            //Movement Speed
+            this.getAttributeInstance(GenericAttributes.d).setValue(0.5D);
+            //Follow range
+            this.getAttributeInstance(GenericAttributes.b).setValue(16.0D);
+            //Max health, obviously
+            this.getAttributeInstance(GenericAttributes.maxHealth).setValue(30.0D);
+        } else {
+            //Attack damage
+            this.getAttributeInstance(GenericAttributes.e).setValue(8.0D);
+            //Movement Speed
+            this.getAttributeInstance(GenericAttributes.d).setValue(0.30000001192092896D);
+            //Max health, obviously
+            this.getAttributeInstance(GenericAttributes.maxHealth).setValue(80.0D);
+            
+            this.a(1.9975F, 1.9975F);
+            this.ak = true;
+        }
     }
 
     //getLivingSound
@@ -226,15 +259,14 @@ public class EntityGuardian extends EntityMonster {
     }
 
     //We can make a guess as to which one of these is write, and which one of these is read...
-    
-    //I call this one as readEntityFromNBT
+    //readEntityFromNBT
     @Override
     public void a(NBTTagCompound tagCompound) {
         super.a(tagCompound);
         this.setElder(tagCompound.getBoolean("Elder"));
     }
     
-    //This one can be writeEntityFromNBT
+    //writeEntityFromNBT
     @Override
     public void b(NBTTagCompound tagCompound) {
         super.b(tagCompound);
@@ -250,22 +282,40 @@ public class EntityGuardian extends EntityMonster {
     }
     
     public void setElder(boolean elder) {
-       this.elder = elder;
-
-        if (elder) {
-            //Attack damage
-            this.getAttributeInstance(GenericAttributes.e).setValue(8.0D);
-            //Movement Speed
-            this.getAttributeInstance(GenericAttributes.d).setValue(0.30000001192092896D);
-            //Max health, obviously
-            this.getAttributeInstance(GenericAttributes.maxHealth).setValue(80.0D);
-            this.a(1.9975F, 1.9975F);
-            this.ak = true;
-        }
+        this.elder = elder;
+        addElderData(4, elder);
     }
 
     @Override
     public boolean canSpawn() {
         return this.locY > 45.0D && this.locY < 63.0D && super.canSpawn();
+    }
+    
+    
+    class AIGuardianAttack extends PathfinderWrapper {
+
+        private EntityGuardian guardian = EntityGuardian.this;
+        
+        public AIGuardianAttack() {
+            setMutexBits(3);
+        }
+
+        
+        @Override
+        public boolean canExecute() {
+            EntityLiving var1 = this.guardian.getGoalTarget();
+            return var1 != null && var1.isAlive();
+        }
+
+        @Override
+        public boolean canContinue() {
+            return super.canContinue() && (this.guardian.isElder() || Utilities.getDistanceSqToEntity(this.guardian, this.guardian.getGoalTarget()) > 9.0D);
+        }
+
+        @Override
+        public void finish() {
+            super.finish();
+        }
+        
     }
 }
