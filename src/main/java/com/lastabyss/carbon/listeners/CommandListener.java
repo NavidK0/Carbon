@@ -24,6 +24,7 @@ public class CommandListener implements Listener {
       } else {
         // Call to server shutdown on disable.
         // Won't hurt if server already disables itself, but will prevent plugin unload/reload.
+        Bukkit.getLogger().severe("Stopping server due to reload command!");
         Bukkit.shutdown();
       }
     }
@@ -39,9 +40,9 @@ public class CommandListener implements Listener {
         Bukkit.getLogger().severe("Restarting server due to reload command!");
         event.setCommand("restart");
       } else {
-
         // Call to server shutdown on disable.
         // Won't hurt if server already disables itself, but will prevent plugin unload/reload.
+        Bukkit.getLogger().severe("Stopping server due to reload command!");
         Bukkit.shutdown();
       }
     }
