@@ -39,7 +39,7 @@
                     <relocations>
                         <relocation>
                             <pattern>org.mcstats</pattern>
-                            <shadedPattern>net.o2gaming</shadedPattern>
+                            <shadedPattern>com.lastabyss.ext.plugins</shadedPattern>
                         </relocation>
                     </relocations>
                     <finalName>Carbon</finalName>
