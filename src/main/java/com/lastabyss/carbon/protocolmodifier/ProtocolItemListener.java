@@ -33,8 +33,8 @@ public class ProtocolItemListener {
 		}
 		//slime -> emerald block
 		replacements[165] = 133;
-		//barrier -> ? (this is totally needed here to avoid client crash, the question is should we use glass or bedrock) (stone as of now)
-		replacements[166] = 1;
+		//barrier -> bedrock
+		replacements[166] = 7;
 		//iron trapdoor -> trapdoor
 		replacements[167] = 96;
 		//prismarine -> mossy cobblestone
@@ -77,6 +77,8 @@ public class ProtocolItemListener {
 		replacements[423] = 365;
 		//cooked mutton -> chicken cooked meat
 		replacements[424] = 1;
+		//banner -> sign
+		replacements[425] = 323;
 		//everything else -> stone
 		replacements[409] = 1;
 		replacements[410] = 1;

@@ -34,6 +34,10 @@ public class ProtocolBlockListener {
 		replacements[168] = 48;
 		//sea lantern -> glowstone
 		replacements[169] = 89;
+		//standing banner -> standing sign
+		replacements[176] = 63;
+		//wall banner -> wall sign
+		replacements[177] = 68;
 		//red sandstone -> sandstone
 		replacements[179] = 24;
 		//red sandstone stairs -> sandstone stairs
