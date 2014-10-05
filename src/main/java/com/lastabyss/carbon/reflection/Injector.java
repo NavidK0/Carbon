@@ -481,38 +481,16 @@ public class Injector {
       
       ShapedRecipe leather = new ShapedRecipe(new ItemStack(Material.LEATHER)).shape(new String[] { "ll", "ll" }).setIngredient('l', this.rabbitHideItemMat);
       addRecipe(leather);
+      
+      //Add temporary banners
+      
+      for (int c = 0; c < 16; c++) {
+          ShapedRecipe defaultBanners = new ShapedRecipe(new ItemStack(bannerItemMat)).shape(new String[] { "www", "www", " s "}).setIngredient('w', Material.WOOL, c).setIngredient('s', Material.STICK);
+          addRecipe(defaultBanners);
+      }
+      
+      
   }
-  
-  /**
-  private void worldBorderListeners() {
-      p_72364_1_[0].getWorldBorder().addListener(new IBorderListener()
-        {
-            private static final String __OBFID = "CL_00002267";
-            public void onSizeChanged(WorldBorder border, double newSize)
-            {
-                ServerConfigurationManager.this.sendPacketToAllPlayers(new S44PacketWorldBorder(border, S44PacketWorldBorder.Action.SET_SIZE));
-            }
-            public void func_177692_a(WorldBorder border, double p_177692_2_, double p_177692_4_, long p_177692_6_)
-            {
-                ServerConfigurationManager.this.sendPacketToAllPlayers(new S44PacketWorldBorder(border, S44PacketWorldBorder.Action.LERP_SIZE));
-            }
-            public void onCenterChanged(WorldBorder border, double x, double z)
-            {
-                ServerConfigurationManager.this.sendPacketToAllPlayers(new S44PacketWorldBorder(border, S44PacketWorldBorder.Action.SET_CENTER));
-            }
-            public void onWarningTimeChanged(WorldBorder border, int p_177691_2_)
-            {
-                ServerConfigurationManager.this.sendPacketToAllPlayers(new S44PacketWorldBorder(border, S44PacketWorldBorder.Action.SET_WARNING_TIME));
-            }
-            public void onWarningDistanceChanged(WorldBorder border, int p_177690_2_)
-            {
-                ServerConfigurationManager.this.sendPacketToAllPlayers(new S44PacketWorldBorder(border, S44PacketWorldBorder.Action.SET_WARNING_BLOCKS));
-            }
-            public void func_177696_b(WorldBorder border, double p_177696_2_) {}
-            public void func_177695_c(WorldBorder border, double p_177695_2_) {}
-        });
-  }
-  * **/
 
   public void addRecipe(Recipe recipe) {
     Bukkit.getServer().addRecipe(recipe);

@@ -26,8 +26,6 @@ import net.minecraft.server.v1_7_R4.World;
  * @author Navid
  */
 public class EntityRabbit extends EntityAnimal {
-
-    private final PathfinderGoalPassengerCarrotStick bp;
             
     static enum EnumMoveType {
         NONE("NONE", 0, 0.0F, 0.0F, 30, 1),
@@ -75,16 +73,13 @@ public class EntityRabbit extends EntityAnimal {
         this.getNavigation().a(true);
         this.goalSelector.a(0, new PathfinderGoalFloat(this));
         this.goalSelector.a(1, new PathfinderGoalPanic(this, 1.25D));
-        this.goalSelector.a(2, this.bp = new PathfinderGoalPassengerCarrotStick(this, 0.3F));
-        this.goalSelector.a(3, new PathfinderGoalBreed(this, 0.8D));
-        this.goalSelector.a(4, new PathfinderGoalTempt(this, 1.2D, Items.CARROT_STICK, false));
+        this.goalSelector.a(2, new PathfinderGoalBreed(this, 0.8D));
+        this.goalSelector.a(3, new PathfinderGoalTempt(this, 1.2D, Items.CARROT_STICK, false));
         this.goalSelector.a(4, new PathfinderGoalTempt(this, 1.2D, Items.CARROT, false));
         this.goalSelector.a(5, new PathfinderGoalFollowParent(this, 1.1D));
         this.goalSelector.a(6, new PathfinderGoalRandomStroll(this, 1.0D));
         this.goalSelector.a(7, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 6.0F));
         this.goalSelector.a(8, new PathfinderGoalRandomLookaround(this));
-        
-        
     }
 
     public boolean bk() {
@@ -190,10 +185,6 @@ public class EntityRabbit extends EntityAnimal {
 
     public boolean c(ItemStack itemstack) {
         return itemstack != null && itemstack.getItem() == Items.CARROT;
-    }
-
-    public PathfinderGoalPassengerCarrotStick ca() {
-        return this.bp;
     }
 
     public EntityAgeable createChild(EntityAgeable entityageable) {
