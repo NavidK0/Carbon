@@ -50,11 +50,13 @@ public class ItemWoodenDoor extends ItemDoor {
   
   //Places the correct door type
   @Override
-  public boolean interactWith(ItemStack paramItemStack, EntityHuman paramEntityHuman, World paramWorld, int paramInt1, int paramInt2, int paramInt3, int paramInt4, float paramFloat1, float paramFloat2, float paramFloat3) {
-    if (paramInt4 != 1) {
+  public boolean interactWith(ItemStack paramItemStack, EntityHuman paramEntityHuman, World paramWorld, int x, int y, int z, int blockFace, float paramFloat1, float paramFloat2, float paramFloat3) {
+    if (blockFace != 1) {
       return false;
     }
-    paramInt2++;
+    if (!paramWorld.getType(x, y, z).getMaterial().isReplaceable()) {
+      y++;
+    }
     Block localBlock;
     
     switch(type) {
@@ -76,15 +78,15 @@ public class ItemWoodenDoor extends ItemDoor {
         default:
             localBlock = Blocks.WOODEN_DOOR;
     }
-    if ((!paramEntityHuman.a(paramInt1, paramInt2, paramInt3, paramInt4, paramItemStack)) || (!paramEntityHuman.a(paramInt1, paramInt2 + 1, paramInt3, paramInt4, paramItemStack))) {
+    if ((!paramEntityHuman.a(x, y, z, blockFace, paramItemStack)) || (!paramEntityHuman.a(x, y + 1, z, blockFace, paramItemStack))) {
       return false;
     }
-    if (!localBlock.canPlace(paramWorld, paramInt1, paramInt2, paramInt3)) {
+    if (!localBlock.canPlace(paramWorld, x, y, z)) {
       return false;
     }
     int integer = MathHelper.floor((paramEntityHuman.yaw + 180.0F) * 4.0F / 360.0F - 0.5D) & 0x3;
     
-    place(paramWorld, paramInt1, paramInt2, paramInt3, integer, localBlock);
+    place(paramWorld, x, y, z, integer, localBlock);
     
     paramItemStack.count -= 1;
     return true;
