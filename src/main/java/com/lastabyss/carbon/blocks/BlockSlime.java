@@ -12,8 +12,7 @@ public class BlockSlime extends BlockHalfTransparent {
         super("slime", Material.CLAY, false);
         a(CreativeModeTab.c);
         this.frictionFactor = 0.8F;
-        this.stepSound = new StepSound("slime", 1.0F, 1.0F);
-        
+        a(new StepSound("slime", 1.0F, 1.0F));
         //Sets hardness of block
         c(0);
         H();

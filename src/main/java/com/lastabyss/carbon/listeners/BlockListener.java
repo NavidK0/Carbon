@@ -29,19 +29,6 @@ import org.bukkit.inventory.ItemStack;
 public class BlockListener implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onSlimeBlockPlace(BlockPlaceEvent evt) {
-		if (evt.getBlock().getType().equals(Carbon.injector().slimeMat)) {
-			Location location = evt.getBlock().getLocation();
-			Random rand = new Random();
-			boolean bool = rand.nextBoolean();
-			if (bool)
-				evt.getPlayer().getWorld().playSound(location, Sound.SLIME_WALK, 1.0F, 10.0F);
-			else
-				evt.getPlayer().getWorld().playSound(location, Sound.SLIME_WALK2, 0.5F, 10.0F);
-		}
-	}
-
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onCoarseDirtBreak(BlockBreakEvent event) {
 		if (event.getPlayer().getGameMode() == GameMode.CREATIVE)
 			return;

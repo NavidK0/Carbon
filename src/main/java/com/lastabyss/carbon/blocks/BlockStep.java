@@ -16,6 +16,7 @@ import net.minecraft.server.v1_7_R4.Material;
 public class BlockStep extends BlockStepAbstract {
     public static final String[] b = {"redSandStone"};
     private boolean redSand;
+    
     public BlockStep(boolean doubled, boolean redSand) {
         super(doubled, Material.STONE);
         a(CreativeModeTab.b);

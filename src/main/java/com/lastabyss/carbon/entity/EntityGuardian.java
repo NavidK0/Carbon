@@ -8,7 +8,7 @@ package com.lastabyss.carbon.entity;
 
 import com.lastabyss.carbon.ai.PathfinderWrapper;
 import com.lastabyss.carbon.utils.Utilities;
-
+import net.minecraft.server.v1_7_R4.DamageSource;
 import net.minecraft.server.v1_7_R4.EntityHuman;
 import net.minecraft.server.v1_7_R4.EntityLiving;
 import net.minecraft.server.v1_7_R4.EntityMonster;
@@ -17,8 +17,13 @@ import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.Material;
 import net.minecraft.server.v1_7_R4.MathHelper;
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
+import net.minecraft.server.v1_7_R4.PathfinderGoalArrowAttack;
+import net.minecraft.server.v1_7_R4.PathfinderGoalFloat;
 import net.minecraft.server.v1_7_R4.PathfinderGoalHurtByTarget;
+import net.minecraft.server.v1_7_R4.PathfinderGoalLookAtPlayer;
 import net.minecraft.server.v1_7_R4.PathfinderGoalNearestAttackableTarget;
+import net.minecraft.server.v1_7_R4.PathfinderGoalRandomLookaround;
+import net.minecraft.server.v1_7_R4.PathfinderGoalRandomStroll;
 import net.minecraft.server.v1_7_R4.World;
 
 /**
@@ -42,18 +47,21 @@ public class EntityGuardian extends EntityMonster {
     private float bC;
     
     private boolean elder = false;
-    private boolean inWater;
     private int fire;
 
     public EntityGuardian(World world) {
         super(world);
-        this.a(0.95F, 0.95F);
+        this.a(0.85F, 0.85F);
         this.by = 1.0F / (this.random.nextFloat() + 1.0F) * 0.2F;
+        this.expToDrop = 10;
         //Add pathfinding goals
         //this.goalSelector.a();
-        
-        this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, false));
-        this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget(this, EntityHuman.class, 0, true));
+        this.goalSelector.a(1, new PathfinderGoalFloat(this));
+        this.goalSelector.a(2, new PathfinderGoalRandomStroll(this, 1.0D));
+        this.goalSelector.a(3, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 8.0F));
+        this.goalSelector.a(3, new PathfinderGoalRandomLookaround(this));
+        this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, true));
+        this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget(this, EntityHuman.class, 10, true));
     }
 
     //entityInit
@@ -63,6 +71,25 @@ public class EntityGuardian extends EntityMonster {
         this.datawatcher.a(16, 0);
         this.datawatcher.a(17, 0);
     }
+
+    @Override
+    public void C() {
+        int i = this.getAirTicks();
+        super.C();
+        if (this.isAlive() && !this.M()) {
+            --i;
+            this.setAirTicks(i);
+            if (this.getAirTicks() == -20) {
+                this.setAirTicks(0);
+                this.damageEntity(DamageSource.DROWN, 2.0F);
+            }
+        } else {
+            this.setAirTicks(300);
+        }
+
+    }
+    
+    
     
     protected void addElderData(int var1, boolean var2) {
         int var3 = this.datawatcher.getInt(16);
@@ -139,6 +166,8 @@ public class EntityGuardian extends EntityMonster {
     public boolean M() {
         return this.world.a(this.boundingBox.grow(0.0D, -0.6000000238418579D, 0.0D), Material.WATER, this);
     }
+    
+    
 
     /** 
      onLivingUpdate()

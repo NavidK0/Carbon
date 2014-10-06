@@ -21,6 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Carbon extends JavaPlugin {
@@ -45,9 +46,7 @@ public class Carbon extends JavaPlugin {
   public void onLoad() {
     //call to server shutdown if worlds are already loaded, prevents various errors when loading plugin on the fly
     if (!Bukkit.getWorlds().isEmpty()) {
-      log.severe("World loaded before" + pluginDescriptionFile.getName() + " "
-                 + pluginDescriptionFile.getVersion() + "! (Was " + pluginDescriptionFile.getName()
-                 + " loaded on the fly?)");
+      log.log(Level.SEVERE, "World loaded before{0} {1}! (Was {2} loaded on the fly?)", new Object[]{pluginDescriptionFile.getName(), pluginDescriptionFile.getVersion(), pluginDescriptionFile.getName()});
       if (spigot.getBoolean("settings.restart-on-crash")) {
         getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart");
       }

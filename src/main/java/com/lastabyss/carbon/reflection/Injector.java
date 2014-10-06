@@ -3,7 +3,10 @@ package com.lastabyss.carbon.reflection;
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.blocks.BlockBanner;
 import com.lastabyss.carbon.blocks.BlockBarrier;
+import com.lastabyss.carbon.blocks.BlockGoldPressurePlate;
+import com.lastabyss.carbon.blocks.BlockIronPressurePlate;
 import com.lastabyss.carbon.blocks.BlockIronTrapdoor;
+import com.lastabyss.carbon.blocks.BlockPressurePlateBinary;
 import com.lastabyss.carbon.blocks.BlockPrismarine;
 import com.lastabyss.carbon.blocks.BlockRedSandstone;
 import com.lastabyss.carbon.blocks.BlockRedSandstoneStairs;
@@ -15,8 +18,10 @@ import com.lastabyss.carbon.blocks.BlockSponge;
 import com.lastabyss.carbon.blocks.BlockStep;
 import com.lastabyss.carbon.blocks.BlockStone;
 import com.lastabyss.carbon.blocks.BlockStoneButton;
+import com.lastabyss.carbon.blocks.BlockStonePressurePlate;
 import com.lastabyss.carbon.blocks.BlockTorch;
 import com.lastabyss.carbon.blocks.BlockWoodButton;
+import com.lastabyss.carbon.blocks.BlockWoodPressurePlate;
 import com.lastabyss.carbon.blocks.BlockWoodenDoor;
 import com.lastabyss.carbon.blocks.BlockWoodenFence;
 import com.lastabyss.carbon.blocks.BlockWoodenFenceGate;
@@ -42,11 +47,18 @@ import com.lastabyss.carbon.items.ItemWoodenDoor;
 import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
 import com.lastabyss.carbon.utils.Utilities;
 import com.lastabyss.carbon.worldborder.WorldBorder;
-
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.EntityTypes;
+import net.minecraft.server.v1_7_R4.EnumMobType;
 import net.minecraft.server.v1_7_R4.EnumProtocol;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.ItemBlock;
@@ -54,7 +66,6 @@ import net.minecraft.server.v1_7_R4.ItemMultiTexture;
 import net.minecraft.server.v1_7_R4.Packet;
 import net.minecraft.server.v1_7_R4.TileEntity;
 import net.minecraft.server.v1_7_R4.World;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -63,14 +74,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 public class Injector {
   //Blocks
@@ -107,6 +110,10 @@ public class Injector {
   public Block woodButtonBlock = new BlockWoodButton();
   public Block standingBannerBlock = new BlockBanner();
   public Block wallBannerBlock = new BlockBanner();
+  public Block stonePlateBlock = new BlockStonePressurePlate();
+  public Block woodPlateBlock = new BlockWoodPressurePlate();
+  public Block goldPlateBlock = new BlockGoldPressurePlate();
+  public Block ironPlateBlock = new BlockIronPressurePlate();
   
   //Bukkit materials
   public Material slimeMat = Utilities.addMaterial("SLIME", 165);
@@ -185,6 +192,10 @@ public class Injector {
   public Item stoneButtonItem = new ItemBlock(stoneButtonBlock);
   public Item woodButtonItem = new ItemBlock(woodButtonBlock);
   public Item standingBannerItem = new ItemBanner(standingBannerBlock);
+  public Item stonePlateItem = new ItemBlock(stonePlateBlock);
+  public Item woodPlateItem = new ItemBlock(woodPlateBlock);
+  public Item goldPlateItem = new ItemBlock(goldPlateBlock);
+  public Item ironPlateItem = new ItemBlock(ironPlateBlock);
 
   public Item rabbitItem = new ItemRabbit();
   public Item cookedRabbitItem = new ItemCookedRabbit();
@@ -262,9 +273,13 @@ public class Injector {
     registerBlock(19, "sponge", spongeBlock, spongeItem);
     registerBlock(77, "stone_button", stoneButtonBlock,stoneButtonItem);
     registerBlock(50, "torch", torchBlock, torchItem);
+    registerBlock(70, "stone_pressure_plate", stonePlateBlock);
+    registerBlock(72, "wooden_pressure_plate", woodPlateBlock);
     registerBlock(75, "unlit_redstone_torch", redstoneTorchBlockOff, redstoneTorchItemOff);
     registerBlock(76, "redstone_torch", redstoneTorchBlockOn, redstoneTorchItemOn);
     registerBlock(143, "wooden_button", woodButtonBlock, woodButtonItem);
+    registerBlock(147, "light_weighted_pressure_plate", ironPlateBlock);
+    registerBlock(148, "heavy_weighted_pressure_plate", goldPlateBlock);
     registerBlock(165, "slime", slimeBlock, slimeItem);
     registerBlock(166, "barrier", barrierBlock, barrierItem);
     registerBlock(167, "iron_trapdoor", ironTrapDoorBlock, ironTrapDoorItem);
@@ -323,7 +338,8 @@ public class Injector {
     //Register additional packets
     registerPacket(EnumProtocol.PLAY, PacketPlayOutWorldBorder.class, 68, true);
 
-    //inject our new stone, sponge, torch and redstone torches to blocks class
+    //inject our modified blocks
+    //inject our items too
     try {
         Class<Blocks> blocksClass = Blocks.class;
         setStaticFinalField(blocksClass, "STONE", Carbon.injector().stoneBlock);
@@ -333,6 +349,11 @@ public class Injector {
         setStaticFinalField(blocksClass, "REDSTONE_TORCH_OFF", Carbon.injector().redstoneTorchBlockOff);
         setStaticFinalField(blocksClass, "STONE_BUTTON", Carbon.injector().stoneButtonBlock);
         setStaticFinalField(blocksClass, "WOOD_BUTTON", Carbon.injector().woodButtonBlock);
+        setStaticFinalField(blocksClass, "STONE_PLATE", Carbon.injector().stonePlateBlock);
+        setStaticFinalField(blocksClass, "WOOD_PLATE", Carbon.injector().woodPlateBlock);
+        setStaticFinalField(blocksClass, "IRON_PLATE", Carbon.injector().ironPlateBlock);
+        setStaticFinalField(blocksClass, "GOLD_PLATE", Carbon.injector().goldPlateBlock);
+        
      } catch (Throwable t) {
          t.printStackTrace();
          Bukkit.shutdown();
