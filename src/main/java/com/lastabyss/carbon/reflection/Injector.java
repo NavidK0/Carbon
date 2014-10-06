@@ -6,7 +6,6 @@ import com.lastabyss.carbon.blocks.BlockBarrier;
 import com.lastabyss.carbon.blocks.BlockGoldPressurePlate;
 import com.lastabyss.carbon.blocks.BlockIronPressurePlate;
 import com.lastabyss.carbon.blocks.BlockIronTrapdoor;
-import com.lastabyss.carbon.blocks.BlockPressurePlateBinary;
 import com.lastabyss.carbon.blocks.BlockPrismarine;
 import com.lastabyss.carbon.blocks.BlockRedSandstone;
 import com.lastabyss.carbon.blocks.BlockRedSandstoneStairs;
@@ -58,7 +57,6 @@ import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.EntityTypes;
-import net.minecraft.server.v1_7_R4.EnumMobType;
 import net.minecraft.server.v1_7_R4.EnumProtocol;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.ItemBlock;
@@ -273,13 +271,13 @@ public class Injector {
     registerBlock(19, "sponge", spongeBlock, spongeItem);
     registerBlock(77, "stone_button", stoneButtonBlock,stoneButtonItem);
     registerBlock(50, "torch", torchBlock, torchItem);
-    registerBlock(70, "stone_pressure_plate", stonePlateBlock);
-    registerBlock(72, "wooden_pressure_plate", woodPlateBlock);
+    registerBlock(70, "stone_pressure_plate", stonePlateBlock, stonePlateItem);
+    registerBlock(72, "wooden_pressure_plate", woodPlateBlock, woodPlateItem);
     registerBlock(75, "unlit_redstone_torch", redstoneTorchBlockOff, redstoneTorchItemOff);
     registerBlock(76, "redstone_torch", redstoneTorchBlockOn, redstoneTorchItemOn);
     registerBlock(143, "wooden_button", woodButtonBlock, woodButtonItem);
-    registerBlock(147, "light_weighted_pressure_plate", ironPlateBlock);
-    registerBlock(148, "heavy_weighted_pressure_plate", goldPlateBlock);
+    registerBlock(147, "light_weighted_pressure_plate", ironPlateBlock, ironPlateItem);
+    registerBlock(148, "heavy_weighted_pressure_plate", goldPlateBlock, goldPlateItem);
     registerBlock(165, "slime", slimeBlock, slimeItem);
     registerBlock(166, "barrier", barrierBlock, barrierItem);
     registerBlock(167, "iron_trapdoor", ironTrapDoorBlock, ironTrapDoorItem);
@@ -538,8 +536,6 @@ public class Injector {
           ShapedRecipe defaultBanners = new ShapedRecipe(new ItemStack(bannerItemMat, 1, (short) (15 - c))).shape(new String[] { "www", "www", " s "}).setIngredient('w', Material.WOOL, c).setIngredient('s', Material.STICK);
           addRecipe(defaultBanners);
       }
-      
-      
   }
 
   public void addRecipe(Recipe recipe) {
