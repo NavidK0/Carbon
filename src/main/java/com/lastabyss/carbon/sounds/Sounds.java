@@ -20,4 +20,18 @@ public class Sounds {
     public static final StepSound SNOW = Block.n;
     public static final StepSound LADDER = Block.o;
     public static final StepSound ANVIL = Block.p;
+    public static final StepSound SLIME = new StepSound("slime", 1.0f, 1.0f) {
+        @Override
+        public String getBreakSound() {
+            return "mob.slime.big";
+        }
+        @Override
+        public String getPlaceSound() {
+            return "mob.slime.big";
+        }
+        @Override
+        public String getStepSound() {
+            return "mob.slime.small";
+        }
+    };
 }
