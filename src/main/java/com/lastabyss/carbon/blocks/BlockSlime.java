@@ -1,5 +1,6 @@
 package com.lastabyss.carbon.blocks;
 
+import com.lastabyss.carbon.sounds.Sounds;
 import net.minecraft.server.v1_7_R4.BlockHalfTransparent;
 import net.minecraft.server.v1_7_R4.CreativeModeTab;
 import net.minecraft.server.v1_7_R4.Entity;
@@ -12,7 +13,7 @@ public class BlockSlime extends BlockHalfTransparent {
         super("slime", Material.CLAY, false);
         a(CreativeModeTab.c);
         this.frictionFactor = 0.8F;
-        a(new StepSound("slime", 1.0F, 1.0F));
+        a(Sounds.SLIME);
         //Sets hardness of block
         c(0);
         H();
