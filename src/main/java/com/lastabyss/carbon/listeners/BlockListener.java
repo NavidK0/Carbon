@@ -23,7 +23,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * 
+ *
  * @author Navid, Aust1n46
  */
 public class BlockListener implements Listener {
@@ -44,45 +44,34 @@ public class BlockListener implements Listener {
 	public void onDoorBreak(BlockBreakEvent evt) {
 		if (evt.getPlayer().getGameMode() == GameMode.CREATIVE)
 			return;
-		switch (evt.getBlock().getType().toString()) {
-			case "spruce_door":
+        String value = evt.getBlock().getType().toString();
+			if (value.equalsIgnoreCase("spruce_door"))
 				evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().spruceDoorMat, 1));
-				break;
-			case "birch_door":
+        else if (value.equalsIgnoreCase("birch_door"))
 				evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().birchDoorMat, 1));
-				break;
-			case "jungle_door":
+            else if (value.equalsIgnoreCase("jungle_door"))
 				evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().jungleDoorMat, 1));
-				break;
-			case "acacia_door":
+            else if (value.equalsIgnoreCase("acacia_door"))
 				evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().acaciaDoorMat, 1));
-				break;
-			case "dark_oak_door":
+            else if (value.equalsIgnoreCase("dark_oak_door"))
 				evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().darkOakDoorMat, 1));
-		}
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onIndirectDoorBreak(BlockBreakEvent event) {
 		if (event.getBlock().getType().toString().contains("door"))
 			return;
-		switch (event.getBlock().getRelative(BlockFace.UP).getType().toString()) {
-			case "spruce_door":
+		String value = event.getBlock().getRelative(BlockFace.UP).getType().toString();
+        if (value.equalsIgnoreCase("spruce_door"))
 				event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().spruceDoorMat, 1));
-				break;
-			case "birch_door":
+        else if (value.equalsIgnoreCase("birch_door"))
 				event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().birchDoorMat, 1));
-				break;
-			case "jungle_door":
+        else if (value.equalsIgnoreCase("jungle_door"))
 				event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().jungleDoorMat, 1));
-				break;
-			case "acacia_door":
+        else if (value.equalsIgnoreCase("acacia_door"))
 				event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().acaciaDoorMat, 1));
-				break;
-			case "dark_oak_door":
+        else if (value.equalsIgnoreCase("dark_oak_door"))
 				event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().darkOakDoorMat, 1));
-				break;
-		}
 	}
 
 	@SuppressWarnings("deprecation")
