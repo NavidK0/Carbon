@@ -2,12 +2,9 @@ package com.lastabyss.carbon.listeners;
 
 import com.lastabyss.carbon.Carbon;
 
-import java.util.Random;
 
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
