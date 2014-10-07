@@ -78,7 +78,7 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.7.9-R0.2</version>
+            <version>1.7.10-R0.1-20140817.175650-8</version>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
