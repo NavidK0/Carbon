@@ -16,7 +16,7 @@ import org.bukkit.generator.ChunkGenerator;
 import com.lastabyss.carbon.entity.EntityRabbit;
 
 //Entity Gen's
-public class CarbonEntityGenerator extends ChunkGenerator {
+public class CarbonEntityGenerator {
 	 
     BiomeForest biomeforest;
  
