@@ -33,6 +33,7 @@ import net.minecraft.server.v1_7_R4.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_7_R4.PathfinderGoalRandomLookaround;
 import net.minecraft.server.v1_7_R4.PathfinderGoalRandomStroll;
 import net.minecraft.server.v1_7_R4.World;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftMonster;
 
 /**
  *
@@ -345,11 +346,11 @@ public class EntityGuardian extends EntityMonster {
         return this.locY > 45.0D && this.locY < 63.0D && super.canSpawn();
     }
 
-    private Guardian bukkitEntity;
+    private CraftMonster bukkitEntity;
     @Override
     public CraftEntity getBukkitEntity() {
     	if (bukkitEntity == null) {
-    		bukkitEntity = new Guardian(MinecraftServer.getServer().server, this); 
+    		bukkitEntity = new CraftMonster(MinecraftServer.getServer().server, this); 
     	}
     	return bukkitEntity;
     }

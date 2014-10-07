@@ -244,6 +244,7 @@ public class Utilities {
     private static int getProtocolVersion(EntityPlayer nmsPlayer) {
     	return nmsPlayer.playerConnection.networkManager.getVersion();
     }
+    
     /**
      * Sends packet to a player
      * @param player

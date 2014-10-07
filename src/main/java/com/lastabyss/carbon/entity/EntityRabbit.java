@@ -28,6 +28,8 @@ import net.minecraft.server.v1_7_R4.PathfinderGoalRandomLookaround;
 import net.minecraft.server.v1_7_R4.PathfinderGoalRandomStroll;
 import net.minecraft.server.v1_7_R4.PathfinderGoalTempt;
 import net.minecraft.server.v1_7_R4.World;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftAnimals;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftMonster;
 
 /**
  *
@@ -235,11 +237,12 @@ public class EntityRabbit extends EntityAnimal {
         return this.b(entityageable);
     }
 
-    private Rabbit bukkitEntity;
+    private CraftAnimals bukkitEntity;
     @Override
     public CraftEntity getBukkitEntity() {
     	if (bukkitEntity == null) {
-    		bukkitEntity = new Rabbit(MinecraftServer.getServer().server, this); 
+    		bukkitEntity = new CraftAnimals(MinecraftServer.getServer().server, this); {
+                }
     	}
     	return bukkitEntity;
     }
