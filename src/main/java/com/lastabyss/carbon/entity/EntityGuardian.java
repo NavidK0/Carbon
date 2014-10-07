@@ -81,18 +81,8 @@ public class EntityGuardian extends EntityMonster {
 
     @Override
     public void C() {
-        int i = this.getAirTicks();
         super.C();
-        if (this.isAlive()) {
-            --i;
-            this.setAirTicks(i);
-            if (this.getAirTicks() == -20) {
-                this.setAirTicks(0);
-                this.damageEntity(DamageSource.DROWN, 2.0F);
-            }
-        } else {
-            this.setAirTicks(300);
-        }
+        this.setAirTicks(300);
 
     }
     
