@@ -61,8 +61,7 @@ public class Carbon extends JavaPlugin {
     try {
       DynamicEnumType.loadReflection();
     }
-    catch (NoSuchMethodException | SecurityException | ClassNotFoundException
-        | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+    catch (Exception e) {
       e.printStackTrace();
     }
 
