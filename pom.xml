@@ -14,18 +14,18 @@
             <id>Plugin Metrics</id>
             <url>http://repo.mcstats.org/content/repositories/public</url>
         </repository>
-        <repository>
-                <id>ProtocolLib</id>
-                <url>http://assets.comphenix.net/plugin/repository/everything</url>
-        </repository>
-        <repository>
-                <id>NCP</id>
-                <url>http://mvn.yawk.at</url>
-        </repository>
-        <repository>
-            <id>SpigotMC</id>
-            <url>http://maven.elmakers.com/repository/</url>
-        </repository>
+		<repository>
+			<id>ProtocolLib</id>
+			<url>http://assets.comphenix.net/plugin/repository/everything</url>
+		</repository>
+		<repository>
+			<id>NCP</id>
+			<url>http://mvn.yawk.at</url>
+		</repository>
+		<repository>
+			<id>Spigot</id>
+			<url>http://maven.elmakers.com/repository/</url>
+		</repository>
     </repositories>
     <build>
         <plugins>
@@ -69,6 +69,12 @@
         </plugins>
     </build>
     <dependencies>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.7.10-R0.1-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
         <dependency>
             <groupId>org.mcstats.bukkit</groupId>
             <artifactId>metrics</artifactId>
