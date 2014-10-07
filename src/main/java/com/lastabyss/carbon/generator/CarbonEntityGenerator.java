@@ -113,7 +113,7 @@ public class CarbonEntityGenerator extends ChunkGenerator {
                 e.printStackTrace();
             }
         } catch (Exception e) {
-            e.printStackTrace(); // Again, try to handle your errors better
+            e.printStackTrace();
         }
     }
 }
