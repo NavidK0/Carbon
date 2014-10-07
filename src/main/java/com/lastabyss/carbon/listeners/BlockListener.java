@@ -72,7 +72,7 @@ public class BlockListener implements Listener {
 	}
 
 	@SuppressWarnings("deprecation")
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onSpongePlace(BlockPlaceEvent event) {
 		if(event.getBlockPlaced().getState().getData().toString().equals("SPONGE(0)") && (isTouching(event.getBlockPlaced(), Material.WATER) || isTouching(event.getBlockPlaced(), Material.STATIONARY_WATER))) {
 			int x = event.getBlockPlaced().getX() - 5;
