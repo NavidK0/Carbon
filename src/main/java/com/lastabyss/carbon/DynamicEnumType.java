@@ -131,7 +131,7 @@ public class DynamicEnumType {
 		try
 		{
 			T[] previousValues = (T[]) valuesField.get(enumType);
-			List<T> values = new ArrayList<>(Arrays.asList(previousValues));
+			List<T> values = new ArrayList<T>(Arrays.asList(previousValues));
 
 			T newValue = (T) makeEnum(enumType, enumName, values.size(),
 					paramTypes, paramValues);

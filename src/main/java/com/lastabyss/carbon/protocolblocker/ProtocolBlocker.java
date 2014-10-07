@@ -30,8 +30,12 @@ public class ProtocolBlocker implements Listener {
 		if (!configFile.exists()) {
 			try {
 				configFile.createNewFile();
-                            try (Writer writer = new FileWriter(configFile)) {
+                Writer writer = new FileWriter(configFile);
+                            try {
                                 writer.write("#protocolversion: kickmessage (multiple lines allowed)");
+                            }
+                            finally {
+                                writer.close();
                             }
                                 config = YamlConfiguration.loadConfiguration(configFile);
                                 config.set("4", "You cannot log on this server with version 1.7.9! Please upgrade to 1.8!");
@@ -53,7 +57,7 @@ public class ProtocolBlocker implements Listener {
 		}
 	}
 
-	private HashMap<Integer, String> restrictedProtocols = new HashMap<>();
+	private HashMap<Integer, String> restrictedProtocols = new HashMap<Integer, String>();
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerJoin(PlayerJoinEvent event) {
