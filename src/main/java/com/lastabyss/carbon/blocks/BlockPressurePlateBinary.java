@@ -2,7 +2,6 @@ package com.lastabyss.carbon.blocks;
 
 import java.util.Iterator;
 import java.util.List;
-import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.EntityHuman;
 import net.minecraft.server.v1_7_R4.EntityLiving;
