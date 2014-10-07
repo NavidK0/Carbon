@@ -19,7 +19,6 @@ import net.minecraft.server.v1_7_R4.MathHelper;
 import net.minecraft.server.v1_7_R4.MinecraftServer;
 import net.minecraft.server.v1_7_R4.World;
 import net.minecraft.util.org.apache.commons.lang3.tuple.ImmutablePair;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftMonster;
 
 /**
  * These things are god awful.
@@ -182,11 +181,11 @@ public class EntityEndermite extends EntityMonster {
         return EnumMonsterType.ARTHROPOD;
     }
 
-    private CraftMonster bukkitEntity;
+    private Endermite bukkitEntity;
     @Override
     public CraftEntity getBukkitEntity() {
     	if (bukkitEntity == null) {
-    		bukkitEntity = new CraftMonster(MinecraftServer.getServer().server, this); 
+    		bukkitEntity = new Endermite(MinecraftServer.getServer().server, this); 
     	}
     	return bukkitEntity;
     }
