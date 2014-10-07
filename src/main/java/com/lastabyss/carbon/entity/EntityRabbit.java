@@ -1,6 +1,10 @@
 package com.lastabyss.carbon.entity;
 
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
+
 import com.lastabyss.carbon.Carbon;
+import com.lastabyss.carbon.entity.bukkit.Rabbit;
+
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.EntityAgeable;
 import net.minecraft.server.v1_7_R4.EntityAnimal;
@@ -11,6 +15,7 @@ import net.minecraft.server.v1_7_R4.GenericAttributes;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.ItemStack;
 import net.minecraft.server.v1_7_R4.Items;
+import net.minecraft.server.v1_7_R4.MinecraftServer;
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
 import net.minecraft.server.v1_7_R4.PathfinderGoalBreed;
 import net.minecraft.server.v1_7_R4.PathfinderGoalFloat;
@@ -29,8 +34,9 @@ import net.minecraft.server.v1_7_R4.World;
  * @author Navid
  */
 public class EntityRabbit extends EntityAnimal {
-            
+
     private MoveType moveType;
+            
     static enum MoveType {
         NONE("NONE", 0, 0.0F, 0.0F, 30, 1),
         HOP("HOP", 1, 0.8F, 0.2F, 20, 10),
@@ -123,9 +129,9 @@ public class EntityRabbit extends EntityAnimal {
     @Override
     protected void c() {
         super.c();
-        this.datawatcher.a(18, (byte)0);
+        this.datawatcher.a(18, (byte) 0);
     }
-    
+
     public void setRabbitType(int rabbitType) {
         if (rabbitType == 99) {
             this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, false));
@@ -150,7 +156,7 @@ public class EntityRabbit extends EntityAnimal {
     public void e() {
         super.e();
     }
-    
+
     @Override
     protected String t() {
         return "mob.rabbit.idle";
@@ -171,7 +177,6 @@ public class EntityRabbit extends EntityAnimal {
         this.makeSound("mob.rabbit.hop", 0.15F, 1.0F);
     }
 
-    @Override
     public boolean a(EntityHuman entityhuman) {
         return super.a(entityhuman);
     }
@@ -211,6 +216,14 @@ public class EntityRabbit extends EntityAnimal {
             }
         }
     }
+    
+    public EntityRabbit b(EntityAgeable entityageable) {
+        EntityRabbit entity = new EntityRabbit(this.world);
+        if (entity instanceof EntityRabbit) {
+        	entity.setRabbitType(this.random.nextBoolean() ? this.getRabbitType() : ((EntityRabbit)entity).getRabbitType());
+        }
+        return entity;
+    }
 
     @Override
     public boolean c(ItemStack itemstack) {
@@ -220,14 +233,15 @@ public class EntityRabbit extends EntityAnimal {
     @Override
     public EntityAgeable createChild(EntityAgeable entityageable) {
         return this.b(entityageable);
-    }   
-    
-    public EntityRabbit b(EntityAgeable entity) {
-        EntityRabbit var2 = new EntityRabbit(this.world);
-        if (entity instanceof EntityRabbit) {
-            var2.setRabbitType(this.random.nextBoolean() ? this.getRabbitType() : ((EntityRabbit)entity).getRabbitType());
-        }
-        return var2;
     }
-    
+
+    private Rabbit bukkitEntity;
+    @Override
+    public CraftEntity getBukkitEntity() {
+    	if (bukkitEntity == null) {
+    		bukkitEntity = new Rabbit(MinecraftServer.getServer().server, this); 
+    	}
+    	return bukkitEntity;
+    }
+
 }

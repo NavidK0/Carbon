@@ -47,7 +47,6 @@ import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
 import com.lastabyss.carbon.utils.Utilities;
 import com.lastabyss.carbon.worldborder.WorldBorder;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
@@ -239,8 +238,7 @@ public class Injector {
   public static void registerEntity(Class<? extends Entity> entityClass, String name, int id, int monsterEgg, int monsterEggData2) {
       try {
           Class<EntityTypes> clazz = EntityTypes.class;
-          Method register = clazz.getDeclaredMethod("a", Class.class, String.class, Integer.TYPE, Integer.TYPE,
-                                                    Integer.TYPE);
+          Method register = clazz.getDeclaredMethod("a", Class.class, String.class, Integer.TYPE, Integer.TYPE, Integer.TYPE);
           register.setAccessible(true);
           register.invoke(null, entityClass, name, id, monsterEgg, monsterEggData2);
       } catch (Exception e) {
