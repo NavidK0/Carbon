@@ -1,6 +1,9 @@
 package com.lastabyss.carbon.entity;
 
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
+
 import com.lastabyss.carbon.Carbon;
+import com.lastabyss.carbon.entity.bukkit.Rabbit;
 
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.EntityAgeable;
@@ -10,6 +13,7 @@ import net.minecraft.server.v1_7_R4.GenericAttributes;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.ItemStack;
 import net.minecraft.server.v1_7_R4.Items;
+import net.minecraft.server.v1_7_R4.MinecraftServer;
 import net.minecraft.server.v1_7_R4.PathfinderGoalBreed;
 import net.minecraft.server.v1_7_R4.PathfinderGoalFloat;
 import net.minecraft.server.v1_7_R4.PathfinderGoalFollowParent;
@@ -173,4 +177,14 @@ public class EntityRabbit extends EntityAnimal {
     public EntityAgeable createChild(EntityAgeable entityageable) {
         return this.b(entityageable);
     }
+
+    private Rabbit bukkitEntity;
+    @Override
+    public CraftEntity getBukkitEntity() {
+    	if (bukkitEntity == null) {
+    		bukkitEntity = new Rabbit(MinecraftServer.getServer().server, this); 
+    	}
+    	return bukkitEntity;
+    }
+
 }

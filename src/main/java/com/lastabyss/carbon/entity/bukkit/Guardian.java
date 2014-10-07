@@ -6,10 +6,19 @@
 
 package com.lastabyss.carbon.entity.bukkit;
 
-import org.bukkit.entity.Monster;
+import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftMonster;
+
+import com.lastabyss.carbon.entity.EntityGuardian;
 
 /**
  *
  * @author Navid
  */
-public interface Guardian extends Monster {}
+public class Guardian extends CraftMonster {
+
+	public Guardian(CraftServer server, EntityGuardian entity) {
+		super(server, entity);
+	}
+
+}

@@ -6,8 +6,12 @@
 
 package com.lastabyss.carbon.entity;
 
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
+
 import com.lastabyss.carbon.ai.PathfinderWrapper;
+import com.lastabyss.carbon.entity.bukkit.Guardian;
 import com.lastabyss.carbon.utils.Utilities;
+
 import net.minecraft.server.v1_7_R4.DamageSource;
 import net.minecraft.server.v1_7_R4.EntityHuman;
 import net.minecraft.server.v1_7_R4.EntityLiving;
@@ -16,8 +20,8 @@ import net.minecraft.server.v1_7_R4.GenericAttributes;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.Material;
 import net.minecraft.server.v1_7_R4.MathHelper;
+import net.minecraft.server.v1_7_R4.MinecraftServer;
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
-import net.minecraft.server.v1_7_R4.PathfinderGoalArrowAttack;
 import net.minecraft.server.v1_7_R4.PathfinderGoalFloat;
 import net.minecraft.server.v1_7_R4.PathfinderGoalHurtByTarget;
 import net.minecraft.server.v1_7_R4.PathfinderGoalLookAtPlayer;
@@ -315,8 +319,16 @@ public class EntityGuardian extends EntityMonster {
     public boolean canSpawn() {
         return this.locY > 45.0D && this.locY < 63.0D && super.canSpawn();
     }
-    
-    
+
+    private Guardian bukkitEntity;
+    @Override
+    public CraftEntity getBukkitEntity() {
+    	if (bukkitEntity == null) {
+    		bukkitEntity = new Guardian(MinecraftServer.getServer().server, this); 
+    	}
+    	return bukkitEntity;
+    }
+
     class AIGuardianAttack extends PathfinderWrapper {
 
         private EntityGuardian guardian = EntityGuardian.this;

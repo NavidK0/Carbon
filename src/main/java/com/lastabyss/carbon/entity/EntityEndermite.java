@@ -1,5 +1,9 @@
 package com.lastabyss.carbon.entity;
 
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
+
+import com.lastabyss.carbon.entity.bukkit.Endermite;
+
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.BlockMonsterEggs;
 import net.minecraft.server.v1_7_R4.Blocks;
@@ -12,6 +16,7 @@ import net.minecraft.server.v1_7_R4.EnumMonsterType;
 import net.minecraft.server.v1_7_R4.GenericAttributes;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.MathHelper;
+import net.minecraft.server.v1_7_R4.MinecraftServer;
 import net.minecraft.server.v1_7_R4.World;
 import net.minecraft.util.org.apache.commons.lang3.tuple.ImmutablePair;
 
@@ -175,5 +180,14 @@ public class EntityEndermite extends EntityMonster {
     public EnumMonsterType getMonsterType() {
         return EnumMonsterType.ARTHROPOD;
     }
-    
+
+    private Endermite bukkitEntity;
+    @Override
+    public CraftEntity getBukkitEntity() {
+    	if (bukkitEntity == null) {
+    		bukkitEntity = new Endermite(MinecraftServer.getServer().server, this); 
+    	}
+    	return bukkitEntity;
+    }
+
 }

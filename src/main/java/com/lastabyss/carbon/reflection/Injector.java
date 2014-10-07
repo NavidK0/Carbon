@@ -239,8 +239,7 @@ public class Injector {
   public static void registerEntity(Class<? extends Entity> entityClass, String name, int id, int monsterEgg, int monsterEggData2) {
       try {
           Class<EntityTypes> clazz = EntityTypes.class;
-          Method register = clazz.getDeclaredMethod("a", Class.class, String.class, Integer.TYPE, Integer.TYPE,
-                                                    Integer.TYPE);
+          Method register = clazz.getDeclaredMethod("a", Class.class, String.class, Integer.TYPE, Integer.TYPE, Integer.TYPE);
           register.setAccessible(true);
           register.invoke(null, entityClass, name, id, monsterEgg, monsterEggData2);
       } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {

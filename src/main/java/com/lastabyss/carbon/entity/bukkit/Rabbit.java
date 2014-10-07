@@ -6,10 +6,19 @@
 
 package com.lastabyss.carbon.entity.bukkit;
 
-import org.bukkit.entity.Animals;
+import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftAnimals;
+
+import com.lastabyss.carbon.entity.EntityRabbit;
 
 /**
  *
  * @author Navid
  */
-public interface Rabbit extends Animals {}
+public class Rabbit extends CraftAnimals {
+
+	public Rabbit(CraftServer server, EntityRabbit entity) {
+		super(server, entity);
+	}
+
+}
