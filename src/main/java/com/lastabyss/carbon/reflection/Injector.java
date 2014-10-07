@@ -47,7 +47,6 @@ import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
 import com.lastabyss.carbon.utils.Utilities;
 import com.lastabyss.carbon.worldborder.WorldBorder;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
