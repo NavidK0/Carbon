@@ -12,17 +12,17 @@ import com.lastabyss.carbon.protocolmodifier.ProtocolItemListener;
 import com.lastabyss.carbon.reflection.Injector;
 import com.lastabyss.carbon.utils.Utilities;
 import com.lastabyss.carbon.worldborder.WorldBorder;
-
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.mcstats.Metrics;
 
 public class Carbon extends JavaPlugin {
 
@@ -79,7 +79,6 @@ public class Carbon extends JavaPlugin {
       this.getDataFolder().mkdirs();
     }
     reloadConfig();
-    worldGenerator.populate();
     getServer().getPluginManager().registerEvents(blockListener, this);
     getServer().getPluginManager().registerEvents(commandListener, this);
     getServer().getPluginManager().registerEvents(itemListener, this);
@@ -104,6 +103,10 @@ public class Carbon extends JavaPlugin {
     } else {
       log.info("ProtocolLib not found, not hooking. 1.7 clients not supported.");
     }
+    try {
+        Metrics metrics = new Metrics(this);
+        metrics.start();
+    } catch (IOException e) {}
     log.info("Carbon is enabled.");
   }
 
