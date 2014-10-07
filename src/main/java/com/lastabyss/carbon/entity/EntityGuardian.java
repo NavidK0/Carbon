@@ -8,16 +8,20 @@ package com.lastabyss.carbon.entity;
 
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
 
+import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.ai.PathfinderWrapper;
 import com.lastabyss.carbon.entity.bukkit.Guardian;
 import com.lastabyss.carbon.utils.Utilities;
 
+import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.DamageSource;
 import net.minecraft.server.v1_7_R4.EntityHuman;
 import net.minecraft.server.v1_7_R4.EntityLiving;
 import net.minecraft.server.v1_7_R4.EntityMonster;
 import net.minecraft.server.v1_7_R4.GenericAttributes;
 import net.minecraft.server.v1_7_R4.Item;
+import net.minecraft.server.v1_7_R4.ItemStack;
+import net.minecraft.server.v1_7_R4.Items;
 import net.minecraft.server.v1_7_R4.Material;
 import net.minecraft.server.v1_7_R4.MathHelper;
 import net.minecraft.server.v1_7_R4.MinecraftServer;
@@ -59,7 +63,6 @@ public class EntityGuardian extends EntityMonster {
         this.by = 1.0F / (this.random.nextFloat() + 1.0F) * 0.2F;
         this.expToDrop = 10;
         //Add pathfinding goals
-        //this.goalSelector.a();
         this.goalSelector.a(1, new PathfinderGoalFloat(this));
         this.goalSelector.a(2, new PathfinderGoalRandomStroll(this, 1.0D));
         this.goalSelector.a(3, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 8.0F));
@@ -80,7 +83,7 @@ public class EntityGuardian extends EntityMonster {
     public void C() {
         int i = this.getAirTicks();
         super.C();
-        if (this.isAlive() && !this.M()) {
+        if (this.isAlive()) {
             --i;
             this.setAirTicks(i);
             if (this.getAirTicks() == -20) {
@@ -150,7 +153,7 @@ public class EntityGuardian extends EntityMonster {
 
     @Override
     protected Item getLoot() {
-        return Item.getById(0);
+        return this.isBurning() ? Items.COOKED_FISH : Items.RAW_FISH;
     }
 
     //canTriggerWalking
@@ -161,8 +164,30 @@ public class EntityGuardian extends EntityMonster {
 
     @Override
     protected void dropDeathLoot(boolean flag, int i) {
-        //Drops nothing currently
-        //Change to prismarine shards etc. later
+        int var3 = this.random.nextInt(3) + this.random.nextInt(i + 1);
+
+        if (var3 > 0)
+        { 
+            this.a(new ItemStack(Carbon.injector().prismarineShardItem, var3, 0), 1.0F);
+        }
+
+        if (this.random.nextInt(3 + i) > 1)
+        {
+            if (!this.isBurning()) {
+                this.a(new ItemStack(Items.RAW_FISH, 1, 0), 1.0F);
+            } else {
+               this.a(new ItemStack(Items.RAW_FISH, 1, 0), 1.0F); 
+            }
+        }
+        else if (this.random.nextInt(3 + i) > 1)
+        {
+            this.a(new ItemStack(Carbon.injector().prismarineCrystalItem, 1, 0), 1.0F);
+        }
+
+        if (flag && this.isElder())
+        {
+            this.a(new ItemStack(Blocks.SPONGE, 1, 1), 1.0F);
+        }
     }
 
     //isInWater

@@ -1,10 +1,8 @@
-#Put the world name in which you want ore generation to occur in worlds:[]. It is CASE-SENSITIVE, so take caution.
+#All options are straightforward.
 options:
     sheep:
         dropMutton: true
     creeper:
         dropMobHead: true
-    worlds: [world]
-    
     
 donottouch.configVersion: 0.2

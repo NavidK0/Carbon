@@ -12,7 +12,7 @@ public class BlockStonePressurePlate extends BlockPressurePlateBinary {
 
     public BlockStonePressurePlate() {
         super("stone", Material.STONE, EnumMobType.MOBS);
-        a(Sounds.PISTON);
+        a(Sounds.STONE);
         c(0.5f);
         c("pressurePlate");
     }

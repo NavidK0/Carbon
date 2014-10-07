@@ -237,6 +237,7 @@ public class Utilities {
     	EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
     	return getProtocolVersion(nmsPlayer);
     }
+    
     private static int getProtocolVersion(EntityPlayer nmsPlayer) {
     	return nmsPlayer.playerConnection.networkManager.getVersion();
     }

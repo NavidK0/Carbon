@@ -60,14 +60,14 @@ public abstract class BlockPressurePlateAbstract extends Block {
 
     @Override
     public boolean canPlace(World world, int i, int j, int k) {
-        return World.a((IBlockAccess) world, i, j - 1, k) || BlockWoodenFence.a(world.getType(i, j - 1, k)) || BlockFence.a(world.getType(i, j - 1, k));
+        return World.a((IBlockAccess) world, i, j - 1, k) || BlockWoodenFence.a(world.getType(i, j - 1, k));
     }
 
     @Override
     public void doPhysics(World world, int i, int j, int k, Block block) {
         boolean flag = false;
 
-        if (!World.a((IBlockAccess) world, i, j - 1, k) && !BlockFence.a(world.getType(i, j - 1, k)) && !BlockWoodenFence.a(world.getType(i, j - 1, k))) {
+        if (!World.a((IBlockAccess) world, i, j - 1, k) && !BlockWoodenFence.a(world.getType(i, j - 1, k))) {
             flag = true;
         }
 
