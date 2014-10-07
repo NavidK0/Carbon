@@ -1,8 +1,9 @@
-#All options are straightforward.
+#All options are straightforward. Put the names of your worlds (CASE-SENSITIVE) in which you want 1.8 terrain to generate in.
 options:
     sheep:
         dropMutton: true
     creeper:
         dropMobHead: true
+    worlds: [world]
     
-donottouch.configVersion: 0.2
+donottouch.configVersion: 0.3

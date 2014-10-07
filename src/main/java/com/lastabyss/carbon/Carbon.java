@@ -42,7 +42,7 @@ public class Carbon extends JavaPlugin {
   public static final Logger log = Bukkit.getLogger();
 
   private static Injector injector;
-  private double localConfigVersion = 0.1;
+  private double localConfigVersion = 0.3;
 
   @Override
   public void onLoad() {
@@ -68,7 +68,7 @@ public class Carbon extends JavaPlugin {
     injector = new Injector();
     injector.registerAll();
     injector.registerRecipes();
-
+    worldGenerator.populate();
     log.info("Carbon has finished injecting all 1.8 functionalities.");
   }
 

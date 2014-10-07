@@ -3,12 +3,8 @@ package com.lastabyss.carbon.generator;
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.generator.populator.StoneVariantPopulator;
 import java.util.logging.Level;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.Material;
-import org.bukkit.WorldType;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -28,15 +24,16 @@ public class CarbonWorldGenerator implements Listener {
     this.plugin = plugin;
     }
     
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onWorldLoad(final WorldLoadEvent evt) {
+    @EventHandler()
+    public void onWorldLoad(WorldLoadEvent evt) {
         //Run populator tasks on world load.
         BukkitRunnable run = new BukkitRunnable() {
             @Override
             public void run() {
-                    org.bukkit.World world = evt.getWorld();
+                for(String s : plugin.getConfig().getStringList("options.worlds")) {
+                    org.bukkit.World world = plugin.getServer().getWorld(s);
                     if (world != null) {
-                    if ((!world.getPopulators().contains(dioritePopulator)
+                    if (world.getName().equals(s) && (!world.getPopulators().contains(dioritePopulator)
                             && !world.getPopulators().contains(andesitePopulator)
                             && !world.getPopulators().contains(granitePopulator))) {
                     Carbon.log.log(Level.INFO, "[Carbon] Editing world: {0}", world.getName());
@@ -47,6 +44,28 @@ public class CarbonWorldGenerator implements Listener {
                     Carbon.log.log(Level.INFO, "[Carbon] Done editing world: {0}", world.getName());
                 }
                     }
+                }
+            }
+        };
+        run.runTask(plugin);
+    }
+
+    public void populate() {
+        //Run populator tasks after server starts.
+        BukkitRunnable run = new BukkitRunnable() {
+            @Override
+            public void run() {
+                for(String s : plugin.getConfig().getStringList("options.worlds")) {
+                    org.bukkit.World world = plugin.getServer().getWorld(s);
+                if (world != null) {
+                    Carbon.log.log(Level.INFO, "[Carbon] Editing world: {0}", world.getName());
+                    Carbon.log.log(Level.INFO, "[Carbon] Adding populator for world: {0}", world.getName());
+                    world.getPopulators().add(dioritePopulator);
+                    world.getPopulators().add(andesitePopulator);
+                    world.getPopulators().add(granitePopulator);
+                    Carbon.log.log(Level.INFO, "[Carbon] Done editing world: {0}", world.getName());
+                }
+                }
             }
         };
         run.runTask(plugin);
