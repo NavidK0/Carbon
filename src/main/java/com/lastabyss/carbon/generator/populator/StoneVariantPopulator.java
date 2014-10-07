@@ -32,7 +32,7 @@ public class StoneVariantPopulator extends BlockPopulator {
         for (i = 0; i < pockets; i++) {
             x = worldChunkX + random.nextInt(16);
             z = worldChunkZ + random.nextInt(16);
-            y = random.nextInt(128);
+            y = random.nextInt(257);
             this.createVein(world, max, x, y, z);
         }
     }

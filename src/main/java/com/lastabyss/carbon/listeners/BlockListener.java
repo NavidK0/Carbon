@@ -3,6 +3,7 @@ package com.lastabyss.carbon.listeners;
 import com.lastabyss.carbon.Carbon;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -112,6 +113,7 @@ public class BlockListener implements Listener {
 		Block adjacent = block.getRelative(event.getBlockFace());
 		if (adjacent.getType() == Carbon.injector().redSandstoneSlabMat) {
 			setDoubleSlab(event.getPlayer(), adjacent);
+                        event.getPlayer().getWorld().playSound(event.getPlayer().getLocation(), Sound.DIG_STONE, 1, 1);
 			event.setCancelled(true);
 		}
 	}

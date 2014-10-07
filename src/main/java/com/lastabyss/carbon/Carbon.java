@@ -20,6 +20,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -56,7 +59,7 @@ public class Carbon extends JavaPlugin {
       return;
     }
 
-    //inject new blocks
+    //Prepare for injection of enumerators... a necessary evil
     try {
       DynamicEnumType.loadReflection();
     }
@@ -110,6 +113,38 @@ public class Carbon extends JavaPlugin {
     log.info("Carbon is enabled.");
   }
 
+  //We don't want to rely on Vault for this plugin, so the command shall be OP only for now.
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (command.getName().equalsIgnoreCase("carbon")) {
+            if (sender.isOp()) {
+                if (args.length == 0) {
+                    printHelpMenu(sender);
+                    return true;
+                }
+                if (args.length == 1) {
+                    String arg = args[0];
+                    if (arg.equalsIgnoreCase("reload")) {
+                        reloadConfig();
+                        sender.sendMessage(ChatColor.GREEN + "[Carbon] The config has been reloaded.");
+                        log.log(Level.INFO, "{0}[Carbon] The config has been reloaded.", ChatColor.GREEN);
+                        worldGenerator.reset();
+                        sender.sendMessage(ChatColor.GREEN + "[Carbon] The world generator has been reset for all worlds.");
+                        log.log(Level.INFO, "{0}[Carbon] The world generator has been reset for all worlds.", ChatColor.GREEN);
+                        worldGenerator.populate();
+                    } else {
+                        sender.sendMessage(ChatColor.RED + "[Carbon] Invalid argument!");
+                    }
+                } else {
+                    sender.sendMessage(ChatColor.RED + "[Carbon] Invalid argument length!");
+                }
+            } else {
+                sender.sendMessage(ChatColor.RED + "[Carbon] You must be opped in order to use this command!");
+            }
+        }
+        return true;
+    }
+
   @Override
   public void onDisable() {
     WorldBorder.save();
@@ -119,6 +154,15 @@ public class Carbon extends JavaPlugin {
 
   public static Injector injector() {
     return injector;
+  }
+  
+  private void printHelpMenu(CommandSender sender) {
+      sender.sendMessage(ChatColor.DARK_GRAY + "==~~~~~" + ChatColor.DARK_RED + "Carbon~~~~~==");
+      sender.sendMessage(ChatColor.DARK_GRAY + "Authors:" + ChatColor.DARK_RED + " NavidK0, shevchik_, Aust1n46");
+      sender.sendMessage(ChatColor.DARK_GRAY + "IRC:" + ChatColor.DARK_RED + " irc.esper.net");
+      sender.sendMessage(ChatColor.DARK_GRAY + "Channel:" + ChatColor.DARK_RED + " #Carbon");
+      sender.sendMessage(ChatColor.DARK_GRAY + "Page:" + ChatColor.DARK_RED + " http://www.spigotmc.org/resources/carbon.1258/");
+      sender.sendMessage(ChatColor.DARK_GRAY + "Use /carbon reload to reload the configuration from disk.");
   }
 
 }

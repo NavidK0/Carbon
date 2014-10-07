@@ -5,3 +5,8 @@ softdepend: [ProtocolLib]
 startup: STARTUP
 version: 1.6
 authors: [Navid K., Shevchik, Aust1n46]
+
+commands:
+  carbon:
+    description: Carbon mod command.
+    usage: /<command> [argument]

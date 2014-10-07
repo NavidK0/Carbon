@@ -70,5 +70,25 @@ public class CarbonWorldGenerator implements Listener {
         };
         run.runTask(plugin);
     }
+    
+    public void reset() {
+        //Reset populators
+        BukkitRunnable run = new BukkitRunnable() {
+            @Override
+            public void run() {
+                for(String s : plugin.getConfig().getStringList("options.worlds")) {
+                    org.bukkit.World world = plugin.getServer().getWorld(s);
+                if (world != null) {
+                    Carbon.log.log(Level.INFO, "[Carbon] Resetting populator for world: {0}", world.getName());
+                    world.getPopulators().remove(dioritePopulator);
+                    world.getPopulators().remove(andesitePopulator);
+                    world.getPopulators().remove(granitePopulator);
+                    Carbon.log.log(Level.INFO, "[Carbon] Done resetting populators for world: {0}", world.getName());
+                }
+                }
+            }
+        };
+        run.runTask(plugin);
+    }
 
 }
