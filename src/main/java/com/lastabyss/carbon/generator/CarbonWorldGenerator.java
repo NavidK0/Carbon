@@ -20,9 +20,9 @@ import org.bukkit.scheduler.BukkitRunnable;
  */
 public class CarbonWorldGenerator implements Listener {
     Carbon plugin;
-    public final static StoneVariantPopulator dioritePopulator = new StoneVariantPopulator(Material.STONE, (byte) 1, 33, 4);
-    public final static StoneVariantPopulator andesitePopulator = new StoneVariantPopulator(Material.STONE, (byte) 3, 33, 4);
-    public final static StoneVariantPopulator granitePopulator = new StoneVariantPopulator(Material.STONE, (byte) 5, 33, 4);
+    public final static StoneVariantPopulator dioritePopulator = new StoneVariantPopulator(Material.STONE, (byte) 1, 33, 10);
+    public final static StoneVariantPopulator andesitePopulator = new StoneVariantPopulator(Material.STONE, (byte) 3, 33, 10);
+    public final static StoneVariantPopulator granitePopulator = new StoneVariantPopulator(Material.STONE, (byte) 5, 33, 10);
 
     public CarbonWorldGenerator(Carbon plugin) {
     this.plugin = plugin;
