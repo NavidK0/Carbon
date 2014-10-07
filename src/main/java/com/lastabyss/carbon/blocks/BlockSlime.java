@@ -5,7 +5,6 @@ import net.minecraft.server.v1_7_R4.BlockHalfTransparent;
 import net.minecraft.server.v1_7_R4.CreativeModeTab;
 import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.Material;
-import net.minecraft.server.v1_7_R4.StepSound;
 import net.minecraft.server.v1_7_R4.World;
 
 public class BlockSlime extends BlockHalfTransparent {
