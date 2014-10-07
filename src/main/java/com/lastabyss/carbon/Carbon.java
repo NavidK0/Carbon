@@ -1,5 +1,6 @@
 package com.lastabyss.carbon;
 
+import com.lastabyss.carbon.generator.CarbonEntityGenerator;
 import com.lastabyss.carbon.generator.CarbonWorldGenerator;
 import com.lastabyss.carbon.listeners.BlockListener;
 import com.lastabyss.carbon.listeners.CommandListener;
@@ -37,6 +38,7 @@ public class Carbon extends JavaPlugin {
 
   private ProtocolBlocker protocolBlocker = new ProtocolBlocker(this);
   private CarbonWorldGenerator worldGenerator = new CarbonWorldGenerator(this);
+  private CarbonEntityGenerator entityGenerator = new CarbonEntityGenerator();
 
   private PluginDescriptionFile pluginDescriptionFile = this.getDescription();
   private FileConfiguration spigot = YamlConfiguration.loadConfiguration(new File(getServer().getWorldContainer(), "spigot.yml"));
@@ -70,6 +72,7 @@ public class Carbon extends JavaPlugin {
     injector = new Injector();
     injector.registerAll();
     injector.registerRecipes();
+    entityGenerator.injectRabbitSpawner();
     log.info("Carbon has finished injecting all 1.8 functionalities.");
   }
 
@@ -125,12 +128,13 @@ public class Carbon extends JavaPlugin {
                 if (args.length == 1) {
                     String arg = args[0];
                     if (arg.equalsIgnoreCase("reload")) {
-                        reloadConfig();
-                        sender.sendMessage(ChatColor.GREEN + "[Carbon] The config has been reloaded.");
-                        log.log(Level.INFO, "{0}[Carbon] The config has been reloaded.", ChatColor.GREEN);
                         worldGenerator.reset();
                         sender.sendMessage(ChatColor.GREEN + "[Carbon] The world generator has been reset for all worlds.");
                         log.log(Level.INFO, "{0}[Carbon] The world generator has been reset for all worlds.", ChatColor.GREEN);
+                        reloadConfig();
+                        protocolBlocker.loadConfig();
+                        sender.sendMessage(ChatColor.GREEN + "[Carbon] The config has been reloaded.");
+                        log.log(Level.INFO, "{0}[Carbon] The config has been reloaded.", ChatColor.GREEN);
                         worldGenerator.populate();
                     } else {
                         sender.sendMessage(ChatColor.RED + "[Carbon] Invalid argument!");

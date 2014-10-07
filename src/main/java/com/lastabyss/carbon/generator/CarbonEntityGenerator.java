@@ -11,15 +11,12 @@ import net.minecraft.server.v1_7_R4.BiomeMushrooms;
 import net.minecraft.server.v1_7_R4.BiomePlains;
 import net.minecraft.server.v1_7_R4.BiomeTaiga;
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.generator.ChunkGenerator;
 
 import com.lastabyss.carbon.entity.EntityRabbit;
 
 //Entity Gen's
-public class CarbonEntityGenartor extends ChunkGenerator implements Listener {
-
+public class CarbonEntityGenerator extends ChunkGenerator {
 	 
     BiomeForest biomeforest;
  
@@ -34,9 +31,7 @@ public class CarbonEntityGenartor extends ChunkGenerator implements Listener {
     BiomeTaiga taiga;
     Constructor<BiomeTaiga> taigaConstructor;
     
-   
-    @EventHandler()
-    public void addSpawnRabbit() {
+    public void injectRabbitSpawner() {
     	//adds rabbits to spawn 
         try {
             Field as = net.minecraft.server.v1_7_R4.BiomeBase.class
@@ -61,8 +56,6 @@ public class CarbonEntityGenartor extends ChunkGenerator implements Listener {
                 jungleConstructor = BiomeJungle.class.getDeclaredConstructor(int.class, boolean.class);
                 jungleConstructor.setAccessible(true);
                 jungle = jungleConstructor.newInstance(21, false);
-  
-                
                 
                 /* BiomeMeta(Class arg0, int arg1, int arg2, int arg3)
                 * int arg1: Spawn Probablility, int arg2: minSpawn, int arg3: maxSpawn
@@ -115,9 +108,6 @@ public class CarbonEntityGenartor extends ChunkGenerator implements Listener {
                 au.set(plains, listau);
                 av.set(plains, listav);
                 at.set(plains, listat);
- 
- 
-
  
             }catch(Exception e){
                 e.printStackTrace();
