@@ -67,7 +67,6 @@ public class Carbon extends JavaPlugin {
     injector = new Injector();
     injector.registerAll();
     injector.registerRecipes();
-    worldGenerator.populate();
     log.info("Carbon has finished injecting all 1.8 functionalities.");
   }
 
@@ -86,7 +85,8 @@ public class Carbon extends JavaPlugin {
     getServer().getPluginManager().registerEvents(worldBorderListener, this);
     protocolBlocker.loadConfig();
     getServer().getPluginManager().registerEvents(protocolBlocker, this);
-
+    worldGenerator.populate();
+    
     if (getConfig().getDouble("donottouch.configVersion", 0.0f) < localConfigVersion) {
       log.warning(
           "Please delete your Carbon config and let it regenerate! Yours is outdated and may cause issues with the mod!");
