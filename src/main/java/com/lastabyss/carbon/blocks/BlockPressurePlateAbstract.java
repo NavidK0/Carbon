@@ -1,10 +1,8 @@
 package com.lastabyss.carbon.blocks;
 
-import com.lastabyss.carbon.Carbon;
 import java.util.Random;
 import net.minecraft.server.v1_7_R4.AxisAlignedBB;
 import net.minecraft.server.v1_7_R4.Block;
-import net.minecraft.server.v1_7_R4.BlockFence;
 import net.minecraft.server.v1_7_R4.CreativeModeTab;
 import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.IBlockAccess;
