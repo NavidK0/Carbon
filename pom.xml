@@ -22,6 +22,10 @@
 			<id>NCP</id>
 			<url>http://mvn.yawk.at</url>
 		</repository>
+		<repository>
+			<id>Spigot</id>
+			<url>http://maven.elmakers.com/repository/</url>
+		</repository>
     </repositories>
     <build>
         <plugins>
@@ -66,9 +70,9 @@
     </build>
     <dependencies>
         <dependency>
-            <groupId>spigot</groupId>
+            <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1479</version>
+            <version>1.7.10-R0.1-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
         <dependency>
