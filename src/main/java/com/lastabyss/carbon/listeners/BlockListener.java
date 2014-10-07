@@ -1,8 +1,6 @@
 package com.lastabyss.carbon.listeners;
 
 import com.lastabyss.carbon.Carbon;
-
-
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -31,9 +29,7 @@ public class BlockListener implements Listener {
 			return;
 		if (event.getBlock().getState().getData().toString().equals("DIRT(1)")) {
 			event.getBlock().setType(Material.AIR);
-			ItemStack item = new ItemStack(Material.DIRT, 1);
-			item.setDurability((short) 1);
-			event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), item);
+			event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), new ItemStack(Material.DIRT, 1, (short) 1));
 		}
 	}
 
@@ -74,16 +70,22 @@ public class BlockListener implements Listener {
 	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onSpongePlace(BlockPlaceEvent event) {
-		if(event.getBlockPlaced().getState().getData().toString().equals("SPONGE(0)") && (isTouching(event.getBlockPlaced(), Material.WATER) || isTouching(event.getBlockPlaced(), Material.STATIONARY_WATER))) {
-			int x = event.getBlockPlaced().getX() - 5;
-			int y = event.getBlockPlaced().getY() - 5;
-			int z = event.getBlockPlaced().getZ() - 5;
-			for(int a = x; a <= x + 10; a++)
-				for(int b = y; b <= y + 10; b++)
-					for(int c = z; c <= z + 10; c++)
-						if(event.getBlockPlaced().getWorld().getBlockAt(a, b, c).getType().equals(Material.WATER) || (event.getBlockPlaced().getWorld().getBlockAt(a, b, c).getType().equals(Material.STATIONARY_WATER))) {
-							event.getBlockPlaced().getWorld().getBlockAt(a, b, c).setType(Material.AIR);
-							event.getBlockPlaced().setData((byte) 1);
+		if(event.getBlock().getState().getData().toString().equals("SPONGE(0)") && (isTouching(event.getBlock(), Material.WATER) || isTouching(event.getBlock(), Material.STATIONARY_WATER))) {
+			int count = 0;
+			for(int i = 1; i < 8; i++)
+				for(int x = -i; x <= i; x++)
+					for(int y = -i; y <= i; y++)
+						for(int z = -i; z <= i; z++) {
+							int a = event.getBlock().getX() + x;
+							int b = event.getBlock().getY() + y;
+							int c = event.getBlock().getZ() + z;
+							if(event.getBlock().getWorld().getBlockAt(a, b, c).getType().equals(Material.WATER) || (event.getBlock().getWorld().getBlockAt(a, b, c).getType().equals(Material.STATIONARY_WATER))) {
+								event.getBlock().getWorld().getBlockAt(a, b, c).setTypeId(0, false);//Ignores physics
+								event.getBlock().setData((byte) 1);
+								count++;
+								if(count >= 65)
+									return;
+							}
 						}
 		}
 	}

@@ -46,12 +46,14 @@ import com.lastabyss.carbon.items.ItemWoodenDoor;
 import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
 import com.lastabyss.carbon.utils.Utilities;
 import com.lastabyss.carbon.worldborder.WorldBorder;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.Entity;
@@ -63,6 +65,7 @@ import net.minecraft.server.v1_7_R4.ItemMultiTexture;
 import net.minecraft.server.v1_7_R4.Packet;
 import net.minecraft.server.v1_7_R4.TileEntity;
 import net.minecraft.server.v1_7_R4.World;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -71,6 +74,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.material.MaterialData;
 
 public class Injector {
   //Blocks
@@ -155,6 +159,18 @@ public class Injector {
   public Material jungleDoorMat = Utilities.addMaterial("JUNGLE_DOOR", 429);
   public Material acaciaDoorMat = Utilities.addMaterial("ACACIA_DOOR", 430);
   public Material darkOakDoorMat = Utilities.addMaterial("DARK_OAK_DOOR", 431);
+  
+  public MaterialData graniteMat = new MaterialData(Material.STONE, (byte)1);
+  public MaterialData dioriteMat = new MaterialData(Material.STONE, (byte)3);
+  public MaterialData andesiteMat = new MaterialData(Material.STONE, (byte)5);
+  public MaterialData redSandMat = new MaterialData(Material.SAND, (byte)1);
+  public MaterialData oakWoodMat = new MaterialData(Material.WOOD, (byte)0);
+  public MaterialData spruceWoodMat = new MaterialData(Material.WOOD, (byte)1);
+  public MaterialData birchWoodMat = new MaterialData(Material.WOOD, (byte)2);
+  public MaterialData jungleWoodMat = new MaterialData(Material.WOOD, (byte)3);
+  public MaterialData acaciaWoodMat = new MaterialData(Material.WOOD, (byte)4);
+  public MaterialData darkOakWoodMat = new MaterialData(Material.WOOD, (byte)5);
+  public MaterialData wetSpongeMat = new MaterialData(Material.SPONGE, (byte)1);
 
   //Items
   public Item stoneItem = new ItemMultiTexture(this.stoneBlock, this.stoneBlock, BlockStone.names).b("stone");
@@ -205,9 +221,9 @@ public class Injector {
   public Item prismarineCrystalItem = new ItemPrismarineCrystal();
 
   //Entities
-  public EntityType endermiteEntity = Utilities.addEntity("Endermite", 67, Endermite.class);
-  public EntityType guardianEntity = Utilities.addEntity("Guardian", 68, Guardian.class);
-  public EntityType rabbitEntity = Utilities.addEntity("Rabbit", 101, Rabbit.class);
+  public EntityType endermiteEntity = Utilities.addEntity("ENDERMITE", 67, Endermite.class);
+  public EntityType guardianEntity = Utilities.addEntity("GUARDIAN", 68, Guardian.class);
+  public EntityType rabbitEntity = Utilities.addEntity("RABBIT", 101, Rabbit.class);
 
   public Map<World, WorldBorder> worldBorders = new HashMap<World, WorldBorder>();
 
@@ -384,19 +400,19 @@ public class Injector {
       ShapedRecipe diorite = new ShapedRecipe(new ItemStack(Material.STONE, 2, (short)3)).shape(new String[] { "cq", "qc" }).setIngredient('c', Material.COBBLESTONE).setIngredient('q', Material.QUARTZ);
       addRecipe(diorite);
 
-      ShapelessRecipe andesite = new ShapelessRecipe(new ItemStack(Material.STONE, 2, (short)5)).addIngredient(Material.STONE, 3).addIngredient(Material.COBBLESTONE);
+      ShapelessRecipe andesite = new ShapelessRecipe(new ItemStack(Material.STONE, 2, (short)5)).addIngredient(dioriteMat).addIngredient(Material.COBBLESTONE);
       addRecipe(andesite);
 
-      ShapelessRecipe granite = new ShapelessRecipe(new ItemStack(Material.STONE, 1, (short)1)).addIngredient(Material.STONE, 3).addIngredient(Material.QUARTZ);
+      ShapelessRecipe granite = new ShapelessRecipe(new ItemStack(Material.STONE, 1, (short)1)).addIngredient(dioriteMat).addIngredient(Material.QUARTZ);
       addRecipe(granite);
 
-      ShapedRecipe polishedDiorite = new ShapedRecipe(new ItemStack(Material.STONE, 4, (short)4)).shape(new String[] { "ss", "ss" }).setIngredient('s', Material.STONE, 3);
+      ShapedRecipe polishedDiorite = new ShapedRecipe(new ItemStack(Material.STONE, 4, (short)4)).shape(new String[] { "ss", "ss" }).setIngredient('s', dioriteMat);
       addRecipe(polishedDiorite);
 
-      ShapedRecipe polishedAndesite = new ShapedRecipe(new ItemStack(Material.STONE, 4, (short)6)).shape(new String[] { "ss", "ss" }).setIngredient('s', Material.STONE, 5);
+      ShapedRecipe polishedAndesite = new ShapedRecipe(new ItemStack(Material.STONE, 4, (short)6)).shape(new String[] { "ss", "ss" }).setIngredient('s', andesiteMat);
       addRecipe(polishedAndesite);
 
-      ShapedRecipe polishedGranite = new ShapedRecipe(new ItemStack(Material.STONE, 4, (short)2)).shape(new String[] { "ss", "ss" }).setIngredient('s', Material.STONE, 1);
+      ShapedRecipe polishedGranite = new ShapedRecipe(new ItemStack(Material.STONE, 4, (short)2)).shape(new String[] { "ss", "ss" }).setIngredient('s', graniteMat);
       addRecipe(polishedGranite);
 
       ShapedRecipe slimeRec = new ShapedRecipe(new ItemStack(this.slimeMat)).shape(new String[] { "sss", "sss", "sss" }).setIngredient('s', Material.SLIME_BALL);
@@ -405,7 +421,7 @@ public class Injector {
       ShapelessRecipe slimeBalls = new ShapelessRecipe(new ItemStack(Material.SLIME_BALL, 9)).addIngredient(this.slimeMat);
       addRecipe(slimeBalls);
 
-      ShapedRecipe redSandstone = new ShapedRecipe(new ItemStack(this.redSandstoneMat, 4, (short)0)).shape(new String[] { "ss", "ss" }).setIngredient('s', Material.SAND, 1);
+      ShapedRecipe redSandstone = new ShapedRecipe(new ItemStack(this.redSandstoneMat, 4, (short)0)).shape(new String[] { "ss", "ss" }).setIngredient('s', redSandMat);
       addRecipe(redSandstone);
 
       ShapedRecipe smoothRedSandstone = new ShapedRecipe(new ItemStack(this.redSandstoneMat, 4, (short)2)).shape(new String[] { "ss", "ss" }).setIngredient('s', this.redSandstoneMat);
@@ -432,67 +448,67 @@ public class Injector {
       ShapedRecipe prismarineDarkRecipe = new ShapedRecipe(new ItemStack(this.prismarineBlockMat, 1, (short)2)).shape(new String[] { "***", "*x*", "***" }).setIngredient('*', this.prismarineShardMat).setIngredient('x', Material.INK_SACK, 0);
       addRecipe(prismarineDarkRecipe);
 
-      ShapedRecipe oakFence = new ShapedRecipe(new ItemStack(Material.FENCE, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', Material.WOOD, 0).setIngredient('x', Material.STICK);
+      ShapedRecipe oakFence = new ShapedRecipe(new ItemStack(Material.FENCE, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', oakWoodMat).setIngredient('x', Material.STICK);
       addRecipe(oakFence);
 
-      ShapedRecipe spruceFence = new ShapedRecipe(new ItemStack(this.spruceFenceMat, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', Material.WOOD, 1).setIngredient('x', Material.STICK);
+      ShapedRecipe spruceFence = new ShapedRecipe(new ItemStack(this.spruceFenceMat, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', spruceWoodMat).setIngredient('x', Material.STICK);
       addRecipe(spruceFence);
 
-      ShapedRecipe birchFence = new ShapedRecipe(new ItemStack(this.birchFenceMat, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', Material.WOOD, 2).setIngredient('x', Material.STICK);
+      ShapedRecipe birchFence = new ShapedRecipe(new ItemStack(this.birchFenceMat, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', birchWoodMat).setIngredient('x', Material.STICK);
       addRecipe(birchFence);
 
-      ShapedRecipe jungleFence = new ShapedRecipe(new ItemStack(this.jungleFenceMat, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', Material.WOOD, 3).setIngredient('x', Material.STICK);
+      ShapedRecipe jungleFence = new ShapedRecipe(new ItemStack(this.jungleFenceMat, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', jungleWoodMat).setIngredient('x', Material.STICK);
       addRecipe(jungleFence);
 
-      ShapedRecipe darkOakFence = new ShapedRecipe(new ItemStack(this.darkOakFenceMat, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', Material.WOOD, 5).setIngredient('x', Material.STICK);
+      ShapedRecipe acaciaFence = new ShapedRecipe(new ItemStack(this.acaciaFenceMat, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', acaciaWoodMat).setIngredient('x', Material.STICK);
+      addRecipe(acaciaFence);
+      
+      ShapedRecipe darkOakFence = new ShapedRecipe(new ItemStack(this.darkOakFenceMat, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', darkOakWoodMat).setIngredient('x', Material.STICK);
       addRecipe(darkOakFence);
 
-      ShapedRecipe acaciaFence = new ShapedRecipe(new ItemStack(this.acaciaFenceMat, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', Material.WOOD, 4).setIngredient('x', Material.STICK);
-      addRecipe(acaciaFence);
-
-      ShapedRecipe oakGate = new ShapedRecipe(new ItemStack(Material.FENCE_GATE)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', Material.WOOD, 0).setIngredient('*', Material.STICK);
+      ShapedRecipe oakGate = new ShapedRecipe(new ItemStack(Material.FENCE_GATE)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', oakWoodMat).setIngredient('*', Material.STICK);
       addRecipe(oakGate);
 
-      ShapedRecipe spruceGate = new ShapedRecipe(new ItemStack(this.spruceFenceGateMat)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', Material.WOOD, 1).setIngredient('*', Material.STICK);
+      ShapedRecipe spruceGate = new ShapedRecipe(new ItemStack(this.spruceFenceGateMat)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', spruceWoodMat).setIngredient('*', Material.STICK);
       addRecipe(spruceGate);
 
-      ShapedRecipe birchGate = new ShapedRecipe(new ItemStack(this.birchFenceGateMat)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', Material.WOOD, 2).setIngredient('*', Material.STICK);
+      ShapedRecipe birchGate = new ShapedRecipe(new ItemStack(this.birchFenceGateMat)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', birchWoodMat).setIngredient('*', Material.STICK);
       addRecipe(birchGate);
 
-      ShapedRecipe jungleGate = new ShapedRecipe(new ItemStack(this.jungleFenceGateMat)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', Material.WOOD, 3).setIngredient('*', Material.STICK);
+      ShapedRecipe jungleGate = new ShapedRecipe(new ItemStack(this.jungleFenceGateMat)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', jungleWoodMat).setIngredient('*', Material.STICK);
       addRecipe(jungleGate);
 
-      ShapedRecipe darkOakGate = new ShapedRecipe(new ItemStack(this.darkOakFenceGateMat)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', Material.WOOD, 5).setIngredient('*', Material.STICK);
-      addRecipe(darkOakGate);
-
-      ShapedRecipe acaciaGate = new ShapedRecipe(new ItemStack(this.acaciaFenceGateMat)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', Material.WOOD, 4).setIngredient('*', Material.STICK);
+      ShapedRecipe acaciaGate = new ShapedRecipe(new ItemStack(this.acaciaFenceGateMat)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', acaciaWoodMat).setIngredient('*', Material.STICK);
       addRecipe(acaciaGate);
 
-      ShapedRecipe oakDoor = new ShapedRecipe(new ItemStack(Material.WOOD_DOOR, 3)).shape(new String[] { "xx", "xx", "xx" }).setIngredient('x', Material.WOOD, 0);
+      ShapedRecipe darkOakGate = new ShapedRecipe(new ItemStack(this.darkOakFenceGateMat)).shape(new String[] { "*x*", "*x*" }).setIngredient('x', darkOakWoodMat).setIngredient('*', Material.STICK);
+      addRecipe(darkOakGate);
+
+      ShapedRecipe oakDoor = new ShapedRecipe(new ItemStack(Material.WOOD_DOOR, 3)).shape(new String[] { "xx", "xx", "xx" }).setIngredient('x', oakWoodMat);
       addRecipe(oakDoor);
 
       ShapedRecipe ironDoor = new ShapedRecipe(new ItemStack(Material.IRON_DOOR, 3)).shape(new String[] { "xx", "xx", "xx" }).setIngredient('x', Material.IRON_INGOT);
       addRecipe(ironDoor);
 
-      ShapedRecipe spruceDoor = new ShapedRecipe(new ItemStack(this.spruceDoorMat, 3)).shape(new String[] { "xx", "xx", "xx" }).setIngredient('x', Material.WOOD, 1);
+      ShapedRecipe spruceDoor = new ShapedRecipe(new ItemStack(this.spruceDoorMat, 3)).shape(new String[] { "xx", "xx", "xx" }).setIngredient('x', spruceWoodMat);
       addRecipe(spruceDoor);
 
-      ShapedRecipe birchDoor = new ShapedRecipe(new ItemStack(this.birchDoorMat, 3)).shape(new String[] { "xx", "xx", "xx" }).setIngredient('x', Material.WOOD, 2);
+      ShapedRecipe birchDoor = new ShapedRecipe(new ItemStack(this.birchDoorMat, 3)).shape(new String[] { "xx", "xx", "xx" }).setIngredient('x', birchWoodMat);
       addRecipe(birchDoor);
 
-      ShapedRecipe jungleDoor = new ShapedRecipe(new ItemStack(this.jungleDoorMat, 3)).shape(new String[] { "xx", "xx", "xx" }).setIngredient('x', Material.WOOD, 3);
+      ShapedRecipe jungleDoor = new ShapedRecipe(new ItemStack(this.jungleDoorMat, 3)).shape(new String[] { "xx", "xx", "xx" }).setIngredient('x', jungleWoodMat);
       addRecipe(jungleDoor);
 
-      ShapedRecipe darkOakDoor = new ShapedRecipe(new ItemStack(this.darkOakDoorMat, 3)).shape(new String[] { "xx", "xx", "xx" }).setIngredient('x', Material.WOOD, 5);
-      addRecipe(darkOakDoor);
-
-      ShapedRecipe acaciaDoor = new ShapedRecipe(new ItemStack(this.acaciaDoorMat, 3)).shape(new String[] { "xx", "xx", "xx" }).setIngredient('x', Material.WOOD, 4);
+      ShapedRecipe acaciaDoor = new ShapedRecipe(new ItemStack(this.acaciaDoorMat, 3)).shape(new String[] { "xx", "xx", "xx" }).setIngredient('x', acaciaWoodMat);
       addRecipe(acaciaDoor);
+
+      ShapedRecipe darkOakDoor = new ShapedRecipe(new ItemStack(this.darkOakDoorMat, 3)).shape(new String[] { "xx", "xx", "xx" }).setIngredient('x', darkOakWoodMat);
+      addRecipe(darkOakDoor);
 
       ShapedRecipe ironTrapDoor = new ShapedRecipe(new ItemStack(this.ironTrapdoorMat)).shape(new String[] { "xx", "xx" }).setIngredient('x', Material.IRON_INGOT);
       addRecipe(ironTrapDoor);
 
-      FurnaceRecipe wetSpongeFurnace = new FurnaceRecipe(new ItemStack(Material.SPONGE, 1, (short)0), Material.SPONGE).setInput(Material.SPONGE, 1);
+      FurnaceRecipe wetSpongeFurnace = new FurnaceRecipe(new ItemStack(Material.SPONGE, 1, (short)0), Material.SPONGE).setInput(wetSpongeMat);
       addRecipe(wetSpongeFurnace);
 
       FurnaceRecipe cobbleFurnace = new FurnaceRecipe(new ItemStack(Material.STONE, 1, (short)0), Material.STONE).setInput(Material.COBBLESTONE);
