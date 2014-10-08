@@ -38,7 +38,7 @@ public class Carbon extends JavaPlugin {
 
   private ProtocolBlocker protocolBlocker = new ProtocolBlocker(this);
   private CarbonWorldGenerator worldGenerator = new CarbonWorldGenerator(this);
-  private CarbonEntityGenerator entityGenerator = new CarbonEntityGenerator();
+  private CarbonEntityGenerator entityGenerator = new CarbonEntityGenerator(this);
 
   private PluginDescriptionFile pluginDescriptionFile = this.getDescription();
   private FileConfiguration spigot = YamlConfiguration.loadConfiguration(new File(getServer().getWorldContainer(), "spigot.yml"));
@@ -73,7 +73,7 @@ public class Carbon extends JavaPlugin {
     injector.registerAll();
     injector.registerRecipes();
     
-    //entityGenerator.injectRabbitSpawner();
+    entityGenerator.injectNewCreatures();
     log.info("Carbon has finished injecting all 1.8 functionalities.");
   }
 
