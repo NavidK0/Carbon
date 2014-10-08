@@ -56,7 +56,7 @@ public class CarbonEntityGenerator {
                 *
                 */
 
-                listas.add(new BiomeMeta(EntityRabbit.class, 10, 3, 3));
+                listas.add(new BiomeMeta(EntityRabbit.class, 1, 3, 3));
               
  
                 as.set(jungle, listas);
@@ -68,7 +68,7 @@ public class CarbonEntityGenerator {
                 biomeforest = new BiomeForest(8,8);
                
              
-                listat.add(new BiomeMeta(EntityRabbit.class, 10, 3, 3));
+                listat.add(new BiomeMeta(EntityRabbit.class, 1, 3, 3));
  
                 as.set(biomeforest, listas);
                 au.set(biomeforest, listau);
@@ -81,7 +81,7 @@ public class CarbonEntityGenerator {
  
                 taiga = taigaConstructor.newInstance(21, 8);
  
-                listas.add(new BiomeMeta(EntityRabbit.class, 10, 3, 3));
+                listas.add(new BiomeMeta(EntityRabbit.class, 1, 3, 3));
             
  
                 as.set(taiga, listas);
@@ -95,7 +95,7 @@ public class CarbonEntityGenerator {
  
                 plains = plainsConstructor.newInstance(21);
  
-                listas.add(new BiomeMeta(EntityRabbit.class, 10, 3, 3));
+                listas.add(new BiomeMeta(EntityRabbit.class, 1, 3, 3));
                 
  
                 as.set(plains, listas);
