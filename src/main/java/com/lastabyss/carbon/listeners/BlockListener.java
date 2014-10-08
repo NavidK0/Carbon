@@ -109,11 +109,9 @@ public class BlockListener implements Listener {
 				event.setCancelled(true);
 				return;
 			}
-		Block block = event.getClickedBlock();
-		Block adjacent = block.getRelative(event.getBlockFace());
+		Block adjacent = clickedBlock.getRelative(event.getBlockFace());
 		if (adjacent.getType() == Carbon.injector().redSandstoneSlabMat) {
 			setDoubleSlab(event.getPlayer(), adjacent);
-                        event.getPlayer().getWorld().playSound(event.getPlayer().getLocation(), Sound.DIG_STONE, 1, 1);
 			event.setCancelled(true);
 		}
 	}
@@ -122,6 +120,7 @@ public class BlockListener implements Listener {
 	private void setDoubleSlab(Player player, Block block) {
 		block.setType(Carbon.injector().redSandstoneDoubleSlabMat);
 		block.setData((byte) 0);
+		block.getWorld().playSound(block.getLocation(), Sound.DIG_STONE, 1, 1);
 		if (player.getGameMode() != GameMode.CREATIVE) {
 			if (player.getItemInHand().getAmount() > 1)
 				player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
