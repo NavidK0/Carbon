@@ -126,7 +126,9 @@ public class CommandParticle extends Command {
 					}
 				}
 			}
+		}else{
+			return false;
 		}
-  }
+	}
 
 }
