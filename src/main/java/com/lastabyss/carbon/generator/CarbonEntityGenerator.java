@@ -36,7 +36,7 @@ public class CarbonEntityGenerator {
                                 list.setAccessible(true);
                                 @SuppressWarnings("unchecked")
                                 List<BiomeMeta> metaList = (List<BiomeMeta>) list.get(f.get(null));
-                                metaList.add(new BiomeMeta(EntityGuardian.class, 10, 3, 3));
+                                metaList.add(new BiomeMeta(EntityGuardian.class, 1, 2, 4));
                              }
             } catch (Exception e) {
                 e.printStackTrace();
