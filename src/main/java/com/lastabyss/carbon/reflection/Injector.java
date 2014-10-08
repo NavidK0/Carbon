@@ -24,6 +24,7 @@ import com.lastabyss.carbon.blocks.BlockWoodPressurePlate;
 import com.lastabyss.carbon.blocks.BlockWoodenDoor;
 import com.lastabyss.carbon.blocks.BlockWoodenFence;
 import com.lastabyss.carbon.blocks.BlockWoodenFenceGate;
+import com.lastabyss.carbon.commands.CommandParticle;
 import com.lastabyss.carbon.commands.CommandWorldBorder;
 import com.lastabyss.carbon.entity.EntityEndermite;
 import com.lastabyss.carbon.entity.EntityGuardian;
@@ -346,6 +347,7 @@ public class Injector {
 
     //Register commands from 1.8
     Utilities.registerBukkitCommand("minecraft", new CommandWorldBorder());
+    Utilities.registerBukkitCommand("minecraft", new CommandParticle());
 
     //Register additional packets
     registerPacket(EnumProtocol.PLAY, PacketPlayOutWorldBorder.class, 68, true);

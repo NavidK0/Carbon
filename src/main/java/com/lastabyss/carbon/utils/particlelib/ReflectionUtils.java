@@ -1,4 +1,4 @@
-package com.lastabyss.carbon.utils;
+package com.lastabyss.carbon.utils.particlelib;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

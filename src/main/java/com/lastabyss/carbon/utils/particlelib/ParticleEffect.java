@@ -1,4 +1,5 @@
-package com.lastabyss.carbon.utils;
+package com.lastabyss.carbon.utils.particlelib;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -12,8 +13,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import com.EmprixNetwork.Core.Libraries.silkey.ReflectionUtils.PackageType;
-import com.EmprixNetwork.Core.Libraries.silkey.ReflectionUtils.PacketType;
+import com.lastabyss.carbon.utils.particlelib.ReflectionUtils.PackageType;
+import com.lastabyss.carbon.utils.particlelib.ReflectionUtils.PacketType;
 
 /**
  * <b>ParticleEffect Library</b>
