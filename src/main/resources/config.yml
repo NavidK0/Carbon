@@ -4,7 +4,6 @@ options:
         dropMutton: true
     creeper:
         dropMobHead: true
-    barrierTranslateID: 20
     worlds: [world]
 
 protocollib:
