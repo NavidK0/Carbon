@@ -11,8 +11,6 @@ import net.minecraft.server.v1_7_R4.BiomeMushrooms;
 import net.minecraft.server.v1_7_R4.BiomePlains;
 import net.minecraft.server.v1_7_R4.BiomeTaiga;
 
-import org.bukkit.generator.ChunkGenerator;
-
 import com.lastabyss.carbon.entity.EntityRabbit;
 
 //Entity Gen's
@@ -34,14 +32,10 @@ public class CarbonEntityGenerator {
     public void injectRabbitSpawner() {
     	//adds rabbits to spawn 
         try {
-            Field as = net.minecraft.server.v1_7_R4.BiomeBase.class
-                    .getDeclaredField("as");
-            Field au = net.minecraft.server.v1_7_R4.BiomeBase.class
-                    .getDeclaredField("au");
-            Field av = net.minecraft.server.v1_7_R4.BiomeBase.class
-                    .getDeclaredField("av");
-            Field at = net.minecraft.server.v1_7_R4.BiomeBase.class
-                    .getDeclaredField("at");
+            Field as = net.minecraft.server.v1_7_R4.BiomeBase.class.getDeclaredField("as");
+            Field au = net.minecraft.server.v1_7_R4.BiomeBase.class.getDeclaredField("au");
+            Field av = net.minecraft.server.v1_7_R4.BiomeBase.class.getDeclaredField("av");
+            Field at = net.minecraft.server.v1_7_R4.BiomeBase.class.getDeclaredField("at");
  
             as.setAccessible(true);
             au.setAccessible(true);
@@ -101,7 +95,7 @@ public class CarbonEntityGenerator {
  
                 plains = plainsConstructor.newInstance(21);
  
-                llistas.add(new BiomeMeta(EntityRabbit.class, 1, 4, 9))
+                listas.add(new BiomeMeta(EntityRabbit.class, 1, 4, 9));
                 
  
                 as.set(plains, listas);
