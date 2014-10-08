@@ -1,7 +1,6 @@
 package com.lastabyss.carbon.listeners;
 
 import com.lastabyss.carbon.Carbon;
-
 import java.util.Random;
 
 import org.bukkit.Material;
@@ -19,6 +18,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
@@ -33,6 +34,16 @@ public class ItemListener implements Listener {
 
     public ItemListener(Carbon plugin) {
         this.plugin = plugin;
+    }
+    
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onTeleport(PlayerTeleportEvent e) {
+        if(e.getCause().equals(TeleportCause.ENDER_PEARL) && plugin.getConfig().getBoolean("mobSpawning.endermites", true)) {
+            Random rand = new Random();
+            if(rand.nextInt(100) <= 5) {//5% probability of spawning
+                //spawn endermite 
+            }
+        }
     }
     
     @EventHandler(priority = EventPriority.LOWEST)
