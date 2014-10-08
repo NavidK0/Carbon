@@ -37,7 +37,7 @@ public class ItemListener implements Listener {
     
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityKilled(EntityDeathEvent e) {
-        if (plugin.getConfig().getBoolean("options.sheep.dropMutton")) {
+        if (plugin.getConfig().getBoolean("options.sheep.dropMutton", true)) {
             if(e.getEntityType().equals(EntityType.SHEEP)) {
                 if(e.getEntity() instanceof Ageable) {
                     Ageable entity = (Ageable) e.getEntity();
@@ -73,7 +73,7 @@ public class ItemListener implements Listener {
     @EventHandler
     public void onCreeperDeath(EntityDeathEvent e) {
         LivingEntity entity = e.getEntity();
-        if (plugin.getConfig().getBoolean("options.creeper.dropMobHead"))
+        if (plugin.getConfig().getBoolean("options.creeper.dropMobHead", true))
             if (entity.getLastDamageCause().getCause().equals(DamageCause.ENTITY_EXPLOSION) &&
                     entity.getLastDamageCause() instanceof EntityDamageByEntityEvent &&
                     ((EntityDamageByEntityEvent) entity.getLastDamageCause()).getDamager() != null &&
