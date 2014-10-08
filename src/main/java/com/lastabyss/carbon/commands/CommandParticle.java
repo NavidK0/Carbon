@@ -58,7 +58,7 @@ public class CommandParticle extends Command {
 		return val;
 	}
 	
-	// Not provided by any errors occuring while executing this method
+	// No support for any errors occuring while executing this method
 	private Location getLocation(CommandSender sender, boolean color, Location location, String x, String y, String z){
 		boolean xRelative = x.startsWith("~");
 		boolean yRelative = y.startsWith("~");
