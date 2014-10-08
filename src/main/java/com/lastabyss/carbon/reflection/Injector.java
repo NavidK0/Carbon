@@ -76,6 +76,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.material.MaterialData;
+import org.spigotmc.SpigotDebreakifier;
 
 public class Injector {
   //Blocks
@@ -280,6 +281,17 @@ public class Injector {
       }
   }
 
+  public static void registerSpigotDebreakifierAddition(Block block, Block replacement) {
+      Method method;
+      try {
+          method = SpigotDebreakifier.class.getDeclaredMethod("replace", Block.class, Block.class);
+          method.setAccessible(true);
+          method.invoke(null, block, replacement);
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
+  }
+
   public void registerAll() {
     //Register blocks
     registerBlock(1, "stone", stoneBlock, stoneItem);
@@ -351,6 +363,9 @@ public class Injector {
 
     //Register additional packets
     registerPacket(EnumProtocol.PLAY, PacketPlayOutWorldBorder.class, 68, true);
+
+    // Register additional 1.8 client replacement to prevent crashes
+    registerSpigotDebreakifierAddition(redSandstoneDoubleSlabBlock, redSandstoneSlabBlock);
 
     //inject our modified blocks
     //inject our items too
