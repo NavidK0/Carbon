@@ -22,11 +22,11 @@ public class ProtocolEntityListener {
 			replacements[i] = -1;
 		}
 		//endermite -> silverfish
-		replacements[67] = 60;
+		replacements[67] = plugin.getConfig().getInt("protocollib.entities.silverfish");
 		//guardian -> sqiud
-		replacements[68] = 94;
+		replacements[68] = plugin.getConfig().getInt("protocollib.entities.endermites");
 		//rabbit -> chicken
-		replacements[101] = 93;
+		replacements[101] = plugin.getConfig().getInt("protocollib.entities.rabbits");
 	}
 
 	public void init() {
