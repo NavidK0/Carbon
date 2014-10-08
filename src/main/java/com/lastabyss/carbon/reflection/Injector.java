@@ -290,8 +290,8 @@ public class Injector {
     registerBlock(75, "unlit_redstone_torch", redstoneTorchBlockOff, redstoneTorchItemOff);
     registerBlock(76, "redstone_torch", redstoneTorchBlockOn, redstoneTorchItemOn);
     registerBlock(143, "wooden_button", woodButtonBlock, woodButtonItem);
-    registerBlock(147, "light_weighted_pressure_plate", ironPlateBlock, ironPlateItem);
-    registerBlock(148, "heavy_weighted_pressure_plate", goldPlateBlock, goldPlateItem);
+    registerBlock(147, "light_weighted_pressure_plate", goldPlateBlock, goldPlateItem);
+    registerBlock(148, "heavy_weighted_pressure_plate", ironPlateBlock, ironPlateItem);
     registerBlock(165, "slime", slimeBlock, slimeItem);
     registerBlock(166, "barrier", barrierBlock, barrierItem);
     registerBlock(167, "iron_trapdoor", ironTrapDoorBlock, ironTrapDoorItem);
