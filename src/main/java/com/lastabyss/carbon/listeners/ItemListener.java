@@ -41,7 +41,7 @@ public class ItemListener implements Listener {
         if(e.getCause().equals(TeleportCause.ENDER_PEARL) && plugin.getConfig().getBoolean("mobSpawning.endermites", true)) {
             Random rand = new Random();
             if(rand.nextInt(100) <= 5) {//5% probability of spawning
-                //spawn endermite 
+                //spawn endermite at e.getFrom()
             }
         }
     }
