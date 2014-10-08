@@ -2,12 +2,12 @@ package com.lastabyss.carbon.protocolmodifier;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.events.ListenerPriority;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.utils.Utilities;
+import com.comphenix.protocol.events.ListenerPriority;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketContainer;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -18,10 +18,10 @@ public class ProtocolBlockListener {
 	public ProtocolBlockListener(Carbon plugin) {
 		this.plugin = plugin;
 	}
-
 	private int[] replacements = new int[4096];
-	{
-		for (int i = 0; i < replacements.length; i++) {
+        
+        public ProtocolBlockListener remap() {
+            for (int i = 0; i < replacements.length; i++) {
 			replacements[i] = -1;
 		}
 		//slime -> emerald block
@@ -64,7 +64,8 @@ public class ProtocolBlockListener {
 		replacements[195] = plugin.getConfig().getInt("protocollib.blocks.doors");
 		replacements[196] = plugin.getConfig().getInt("protocollib.blocks.doors");
 		replacements[197] = plugin.getConfig().getInt("protocollib.blocks.doors");
-	}
+                return this;
+        }
 
 	public void init() {
 		ProtocolLibrary.getProtocolManager().addPacketListener(

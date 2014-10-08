@@ -28,8 +28,9 @@ public class ProtocolItemListener {
 	}
 
 	private int[] replacements = new int[4096];
-	{
-		for (int i = 0; i < replacements.length; i++) {
+	
+        public ProtocolItemListener remap() {
+            for (int i = 0; i < replacements.length; i++) {
 			replacements[i] = -1;
 		}
 		//slime -> emerald block
@@ -86,7 +87,8 @@ public class ProtocolItemListener {
 		replacements[414] = plugin.getConfig().getInt("protocollib.items.rabbit_foot");
 		replacements[415] = plugin.getConfig().getInt("protocollib.items.rabbit_hide");
 		replacements[416] = plugin.getConfig().getInt("protocollib.items.armor_stand");
-	}
+                return this;
+        }
 
 	@SuppressWarnings("deprecation")
 	private void replaceItemStack(ItemStack itemStack) {

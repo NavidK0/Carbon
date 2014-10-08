@@ -46,7 +46,7 @@ public class Carbon extends JavaPlugin {
   public static final Logger log = Bukkit.getLogger();
 
   private static Injector injector;
-  private double localConfigVersion = 0.3;
+  private double localConfigVersion = 0.4;
 
   @Override
   public void onLoad() {
@@ -100,9 +100,9 @@ public class Carbon extends JavaPlugin {
 
     if (getServer().getPluginManager().getPlugin("ProtocolLib") != null) {
       try {
-        new ProtocolBlockListener(this).init();
-        new ProtocolItemListener(this).init();
-        new ProtocolEntityListener(this).init();
+        new ProtocolBlockListener(this).remap().init();
+        new ProtocolItemListener(this).remap().init();
+        new ProtocolEntityListener(this).remap().init();
       } catch (Throwable t) {
         t.printStackTrace();
       }
@@ -161,12 +161,12 @@ public class Carbon extends JavaPlugin {
   }
   
   private void printHelpMenu(CommandSender sender) {
-      sender.sendMessage(ChatColor.DARK_GRAY + "==~~~~~" + ChatColor.DARK_RED + "Carbon~~~~~==");
+      sender.sendMessage(ChatColor.DARK_GRAY + "--=======" + ChatColor.DARK_RED + "Carbon" + ChatColor.DARK_GRAY + "=======--");
       sender.sendMessage(ChatColor.DARK_GRAY + "Authors:" + ChatColor.DARK_RED + " NavidK0, shevchik_, Aust1n46");
       sender.sendMessage(ChatColor.DARK_GRAY + "IRC:" + ChatColor.DARK_RED + " irc.esper.net");
       sender.sendMessage(ChatColor.DARK_GRAY + "Channel:" + ChatColor.DARK_RED + " #Carbon");
       sender.sendMessage(ChatColor.DARK_GRAY + "Page:" + ChatColor.DARK_RED + " http://www.spigotmc.org/resources/carbon.1258/");
-      sender.sendMessage(ChatColor.DARK_GRAY + "Use /carbon reload to reload the configuration from disk.");
+      sender.sendMessage(ChatColor.DARK_GRAY + "Use /carbon" + ChatColor.DARK_RED + " reload " + ChatColor.DARK_GRAY + "to reload the configuration from disk.");
   }
 
 }

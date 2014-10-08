@@ -17,17 +17,19 @@ public class ProtocolEntityListener {
 	}
 
 	private int replacements[] = new int[256];
-	{
-		for (int i = 0; i < replacements.length; i++) {
-			replacements[i] = -1;
-		}
-		//endermite -> silverfish
-		replacements[67] = plugin.getConfig().getInt("protocollib.entities.silverfish");
-		//guardian -> sqiud
-		replacements[68] = plugin.getConfig().getInt("protocollib.entities.endermites");
-		//rabbit -> chicken
-		replacements[101] = plugin.getConfig().getInt("protocollib.entities.rabbits");
-	}
+	
+        public ProtocolEntityListener remap() {
+            for (int i = 0; i < replacements.length; i++) {
+                    replacements[i] = -1;
+            }
+            //endermite -> silverfish
+            replacements[67] = plugin.getConfig().getInt("protocollib.entities.silverfish");
+            //guardian -> sqiud
+            replacements[68] = plugin.getConfig().getInt("protocollib.entities.endermites");
+            //rabbit -> chicken
+            replacements[101] = plugin.getConfig().getInt("protocollib.entities.rabbits");
+            return this;
+        }
 
 	public void init() {
 		ProtocolLibrary.getProtocolManager().addPacketListener(
