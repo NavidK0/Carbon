@@ -25,45 +25,45 @@ public class ProtocolBlockListener {
 			replacements[i] = -1;
 		}
 		//slime -> emerald block
-		replacements[165] = plugin.getConfig().getInt("protocollib.blocks.slime");
+		replacements[165] = plugin.getConfig().getInt("protocollib.blocks.slime", 133);
 		//barrier -> ? (probably not needed) (or maybe glass?)
-		replacements[166] = plugin.getConfig().getInt("protocollib.blocks.barrier");
+		replacements[166] = plugin.getConfig().getInt("protocollib.blocks.barrier", 20);
 		//iron trapdoor -> trapdoor
-		replacements[167] = plugin.getConfig().getInt("protocollib.blocks.iron_trapdoor");
+		replacements[167] = plugin.getConfig().getInt("protocollib.blocks.iron_trapdoor", 96);
 		//prismarine -> mossy cobblestone
-		replacements[168] = plugin.getConfig().getInt("protocollib.blocks.prismarine");
+		replacements[168] = plugin.getConfig().getInt("protocollib.blocks.prismarine", 48);
 		//sea lantern -> glowstone
-		replacements[169] = plugin.getConfig().getInt("protocollib.blocks.sea_lantern");
+		replacements[169] = plugin.getConfig().getInt("protocollib.blocks.sea_lantern", 89);
 		//standing banner -> standing sign
-		replacements[176] = plugin.getConfig().getInt("protocollib.blocks.standing_banner");
+		replacements[176] = plugin.getConfig().getInt("protocollib.blocks.standing_banner", 63);
 		//wall banner -> wall sign
-		replacements[177] = plugin.getConfig().getInt("protocollib.blocks.wall_banner");
+		replacements[177] = plugin.getConfig().getInt("protocollib.blocks.wall_banner", 68);
 		//red sandstone -> sandstone
-		replacements[179] = plugin.getConfig().getInt("protocollib.blocks.red_sandstone");
+		replacements[179] = plugin.getConfig().getInt("protocollib.blocks.red_sandstone", 24);
 		//red sandstone stairs -> sandstone stairs
-		replacements[180] = plugin.getConfig().getInt("protocollib.blocks.red_sandstone_stairs");
+		replacements[180] = plugin.getConfig().getInt("protocollib.blocks.red_sandstone_stairs", 128);
 		//red sandstone doubleslab -> double step
-		replacements[181] = plugin.getConfig().getInt("protocollib.blocks.red_sandstone_doubleslab");
+		replacements[181] = plugin.getConfig().getInt("protocollib.blocks.red_sandstone_doubleslab", 43);
 		//red sandstone slab -> step
-		replacements[182] = plugin.getConfig().getInt("protocollib.blocks.red_sandstone_slab");
+		replacements[182] = plugin.getConfig().getInt("protocollib.blocks.red_sandstone_slab", 44);
 		//all fence gates -> fence gate
-		replacements[183] = plugin.getConfig().getInt("protocollib.blocks.fence_gates");
-		replacements[184] = plugin.getConfig().getInt("protocollib.blocks.fence_gates");
-		replacements[185] = plugin.getConfig().getInt("protocollib.blocks.fence_gates");
-		replacements[186] = plugin.getConfig().getInt("protocollib.blocks.fence_gates");
-		replacements[187] = plugin.getConfig().getInt("protocollib.blocks.fence_gates");
+		replacements[183] = plugin.getConfig().getInt("protocollib.blocks.fence_gates", 107);
+		replacements[184] = plugin.getConfig().getInt("protocollib.blocks.fence_gates", 107);
+		replacements[185] = plugin.getConfig().getInt("protocollib.blocks.fence_gates", 107);
+		replacements[186] = plugin.getConfig().getInt("protocollib.blocks.fence_gates", 107);
+		replacements[187] = plugin.getConfig().getInt("protocollib.blocks.fence_gates", 107);
 		//all fences -> fence
-		replacements[188] = plugin.getConfig().getInt("protocollib.blocks.fences");
-		replacements[189] = plugin.getConfig().getInt("protocollib.blocks.fences");
-		replacements[190] = plugin.getConfig().getInt("protocollib.blocks.fences");
-		replacements[191] = plugin.getConfig().getInt("protocollib.blocks.fences");
-		replacements[192] = plugin.getConfig().getInt("protocollib.blocks.fences");
+		replacements[188] = plugin.getConfig().getInt("protocollib.blocks.fences", 85);
+		replacements[189] = plugin.getConfig().getInt("protocollib.blocks.fences", 85);
+		replacements[190] = plugin.getConfig().getInt("protocollib.blocks.fences", 85);
+		replacements[191] = plugin.getConfig().getInt("protocollib.blocks.fences", 85);
+		replacements[192] = plugin.getConfig().getInt("protocollib.blocks.fences", 85);
 		//all doors -> door
-		replacements[193] = plugin.getConfig().getInt("protocollib.blocks.doors");
-		replacements[194] = plugin.getConfig().getInt("protocollib.blocks.doors");
-		replacements[195] = plugin.getConfig().getInt("protocollib.blocks.doors");
-		replacements[196] = plugin.getConfig().getInt("protocollib.blocks.doors");
-		replacements[197] = plugin.getConfig().getInt("protocollib.blocks.doors");
+		replacements[193] = plugin.getConfig().getInt("protocollib.blocks.doors", 64);
+		replacements[194] = plugin.getConfig().getInt("protocollib.blocks.doors", 64);
+		replacements[195] = plugin.getConfig().getInt("protocollib.blocks.doors", 64);
+		replacements[196] = plugin.getConfig().getInt("protocollib.blocks.doors", 64);
+		replacements[197] = plugin.getConfig().getInt("protocollib.blocks.doors", 64);
                 return this;
         }
 
