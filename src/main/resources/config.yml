@@ -46,7 +46,11 @@ protocollib:
         mutton: 365
         cooked_mutton: 366
         banner: 323
-        everything_else: 1
+        prismarine_shard: 1
+        prismarine_crystal: 1
+        rabbit_foot: 1
+        rabbit_hide: 1
+        armor_stand: 1
         
         
 donottouch.configVersion: 0.3

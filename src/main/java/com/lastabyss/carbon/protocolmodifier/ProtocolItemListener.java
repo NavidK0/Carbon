@@ -81,11 +81,11 @@ public class ProtocolItemListener {
 		//banner -> sign
 		replacements[425] = plugin.getConfig().getInt("protocollib.items.banner");
 		//everything else -> stone
-		replacements[409] = plugin.getConfig().getInt("protocollib.items.everything_else");
-		replacements[410] = plugin.getConfig().getInt("protocollib.items.everything_else");
-		replacements[414] = plugin.getConfig().getInt("protocollib.items.everything_else");
-		replacements[415] = plugin.getConfig().getInt("protocollib.items.everything_else");
-		replacements[416] = plugin.getConfig().getInt("protocollib.items.everything_else");
+		replacements[409] = plugin.getConfig().getInt("protocollib.items.prismarine_shard");
+		replacements[410] = plugin.getConfig().getInt("protocollib.items.prismarine_crystals");
+		replacements[414] = plugin.getConfig().getInt("protocollib.items.rabbit_foot");
+		replacements[415] = plugin.getConfig().getInt("protocollib.items.rabbit_hide");
+		replacements[416] = plugin.getConfig().getInt("protocollib.items.armor_stand");
 	}
 
 	@SuppressWarnings("deprecation")
