@@ -28,8 +28,25 @@ public class Rabbit extends CraftAnimals {
 		return Carbon.injector().rabbitEntity;
 	}
         
-        public void setType(int type) {
+        public void setRabbitType(int type) {
             ((EntityRabbit)entity).setRabbitType(type);
+        }
+        
+        public int getRabbitType() {
+           return ((EntityRabbit)entity).getRabbitType();
+        }
+        
+        public Rabbit getParent() {
+            if (hasParent()) {
+                return (Rabbit)((EntityRabbit)entity).getParent().getBukkitEntity();
+            } else {
+                return null;
+            }
+            
+        }
+        
+        public boolean hasParent() {
+            return ((EntityRabbit)entity).hasParent();
         }
 
 }

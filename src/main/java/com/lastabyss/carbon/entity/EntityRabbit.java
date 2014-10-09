@@ -35,6 +35,8 @@ import net.minecraft.server.v1_7_R4.World;
  */
 public class EntityRabbit extends EntityAnimal {
     
+    public EntityRabbit parent = null;
+    
     public final static int TYPE_BROWN = 0;
     public final static int TYPE_WHITE = 1;
     public final static int TYPE_BLACK = 2;
@@ -225,10 +227,11 @@ public class EntityRabbit extends EntityAnimal {
         }
     }
     
-    public EntityRabbit b(EntityAgeable entityageable) {
+    public EntityRabbit createRabbitChild(EntityAgeable entityageable) {
         EntityRabbit entity = new EntityRabbit(this.world);
+        entity.setParent((EntityRabbit)entityageable);
         if (entity instanceof EntityRabbit) {
-        	entity.setRabbitType(this.random.nextBoolean() ? this.getRabbitType() : ((EntityRabbit)entity).getRabbitType());
+        	entity.setRabbitType(getRabbitType());
         }
         return entity;
     }
@@ -238,9 +241,21 @@ public class EntityRabbit extends EntityAnimal {
         return itemstack != null && itemstack.getItem() == Items.CARROT;
     }
 
+    public void setParent(EntityRabbit parent) {
+        this.parent = parent;
+    }
+
+    public EntityRabbit getParent() {
+        return parent;
+    }
+    
+    public boolean hasParent() {
+        return parent != null;
+    }
+
     @Override
     public EntityAgeable createChild(EntityAgeable entityageable) {
-        return this.b(entityageable);
+        return this.createRabbitChild(entityageable);
     }
 
     private Rabbit bukkitEntity;

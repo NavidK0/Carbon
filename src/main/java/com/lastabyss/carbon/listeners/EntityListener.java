@@ -14,6 +14,10 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
  */
 public class EntityListener implements Listener {
 
+    /**
+     * Change rabbit's color and age depending on chance.
+     * @param evt 
+     */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onRabbitSpawned(CreatureSpawnEvent evt) {
         if (evt.getEntityType() == Carbon.injector().rabbitEntity)
@@ -23,13 +27,25 @@ public class EntityListener implements Listener {
                 evt.getSpawnReason() == CreatureSpawnEvent.SpawnReason.BREEDING || 
                 evt.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SPAWNER) {
                 Rabbit rabbit = (Rabbit)evt.getEntity();
+                if (evt.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SPAWNER_EGG && rabbit.hasParent()) {
+                    rabbit.setRabbitType(rabbit.getParent().getRabbitType());
+                    return;
+                }
                 int type = Utilities.random.nextInt(6);
-                int isKiller = Utilities.random.nextInt(1000);
-                
-                if (isKiller == 999) {
-                    rabbit.setType(EntityRabbit.TYPE_KILLER);
+                boolean isKiller = Utilities.random.nextInt(1000) == 999;
+                if (evt.getSpawnReason() != CreatureSpawnEvent.SpawnReason.DISPENSE_EGG &&
+                    evt.getSpawnReason() != CreatureSpawnEvent.SpawnReason.SPAWNER_EGG &&
+                    evt.getSpawnReason() != CreatureSpawnEvent.SpawnReason.BREEDING &&
+                    evt.getSpawnReason() != CreatureSpawnEvent.SpawnReason.SPAWNER) {
+                    boolean isBaby = Utilities.random.nextInt(4) == 3;
+                    if (isBaby) {
+                        rabbit.setBaby();
+                    }
+                }
+                if (isKiller) {
+                    rabbit.setRabbitType(EntityRabbit.TYPE_KILLER);
                 } else {
-                    rabbit.setType(type);
+                    rabbit.setRabbitType(type);
                 }
             }
     }
