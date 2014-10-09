@@ -3,8 +3,11 @@ Carbon
 
 Carbon is a plugin which adds 1.8 blocks and features into a spigot protocol hacked server.
 
-Download the final plugin here: http://www.spigotmc.org/resources/.1258/ , it should be mostly bug-free. If not, post an issue containing the version number you are using!
-To reduce the amount of bugs or use a bigger amount of functions, use the latest version of ProtocolLib (http://assets.comphenix.net/job/ProtocolLib/)
+More stable releases are available [on Spigot](http://www.spigotmc.org/resources/.1258/).  
+If you find a bug, post an issue containing the version you are using!  
+The latest builds are available from [Jenkins](http://ci.citizensnpcs.co/job/Carbon/). Download Carbon.jar, not Carbon-1.jar!  
+Jenkins builds are not guaranteed to be stable.  
+To prevent 1.7 clients from crashing, please install [ProtocolLib](http://assets.comphenix.net/job/ProtocolLib%20-%20Spigot%20Compatible%201.8/).
 
 .
 
