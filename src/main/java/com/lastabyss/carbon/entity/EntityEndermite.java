@@ -1,5 +1,7 @@
 package com.lastabyss.carbon.entity;
 
+import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
 
 import com.lastabyss.carbon.entity.bukkit.Endermite;
@@ -31,6 +33,11 @@ public class EntityEndermite extends EntityMonster {
     public EntityEndermite(World world) {
         super(world);
         a(0.3F, 0.7F);
+    }
+    
+    public void spawn(Location l) {
+    	((CraftWorld) l.getWorld()).getHandle().addEntity(this);
+        this.setLocation(l.getX(), l.getY(), l.getZ(), l.getPitch(), l.getYaw());
     }
 
     @Override

@@ -1,9 +1,10 @@
 package com.lastabyss.carbon.listeners;
 
 import com.lastabyss.carbon.Carbon;
+import com.lastabyss.carbon.entity.EntityEndermite;
 import java.util.Random;
-
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Arrow;
@@ -41,7 +42,8 @@ public class ItemListener implements Listener {
         if(e.getCause().equals(TeleportCause.ENDER_PEARL) && plugin.getConfig().getBoolean("mobSpawning.endermites", true)) {
             Random rand = new Random();
             if(rand.nextInt(100) <= 5) {//5% probability of spawning
-                //spawn endermite 
+            	EntityEndermite ender = new EntityEndermite(((CraftWorld) e.getFrom().getWorld()).getHandle());
+                ender.spawn(e.getFrom());
             }
         }
     }
