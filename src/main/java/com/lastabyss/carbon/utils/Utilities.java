@@ -21,6 +21,7 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -36,6 +37,7 @@ import java.util.logging.Logger;
 public class Utilities {
 
     private static Carbon plugin = null;
+    public final static SecureRandom random = new SecureRandom();
 
     private Utilities() {
         throw new UnsupportedOperationException("No, bad!");

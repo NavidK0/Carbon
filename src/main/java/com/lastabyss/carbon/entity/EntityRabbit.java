@@ -34,6 +34,14 @@ import net.minecraft.server.v1_7_R4.World;
  * @author Navid
  */
 public class EntityRabbit extends EntityAnimal {
+    
+    public final static int TYPE_BROWN = 0;
+    public final static int TYPE_WHITE = 1;
+    public final static int TYPE_BLACK = 2;
+    public final static int TYPE_BLACK_AND_WHITE = 3;
+    public final static int TYPE_GOLD = 4;
+    public final static int TYPE_SALT_AND_PEPPER = 5;
+    public final static int TYPE_KILLER = 99;
 
     private MoveType moveType;
             
@@ -133,7 +141,7 @@ public class EntityRabbit extends EntityAnimal {
     }
 
     public void setRabbitType(int rabbitType) {
-        if (rabbitType == 99) {
+        if (rabbitType == TYPE_KILLER) {
             this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, false));
             this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget(this, EntityPlayer.class, 1, true));
             this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget(this, EntityWolf.class, 1, true));

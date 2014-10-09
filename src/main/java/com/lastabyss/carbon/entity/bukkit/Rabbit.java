@@ -27,5 +27,9 @@ public class Rabbit extends CraftAnimals {
 	public EntityType getType() {
 		return Carbon.injector().rabbitEntity;
 	}
+        
+        public void setType(int type) {
+            ((EntityRabbit)entity).setRabbitType(type);
+        }
 
 }

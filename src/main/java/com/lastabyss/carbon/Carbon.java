@@ -4,6 +4,7 @@ import com.lastabyss.carbon.generator.CarbonEntityGenerator;
 import com.lastabyss.carbon.generator.CarbonWorldGenerator;
 import com.lastabyss.carbon.listeners.BlockListener;
 import com.lastabyss.carbon.listeners.CommandListener;
+import com.lastabyss.carbon.listeners.EntityListener;
 import com.lastabyss.carbon.listeners.ItemListener;
 import com.lastabyss.carbon.listeners.WorldBorderListener;
 import com.lastabyss.carbon.protocolblocker.ProtocolBlocker;
@@ -35,25 +36,26 @@ public class Carbon extends JavaPlugin {
   private CommandListener commandListener = new CommandListener();
   private ItemListener itemListener = new ItemListener(this);
   private WorldBorderListener worldBorderListener = new WorldBorderListener();
+  private EntityListener entityListener = new EntityListener();
 
   private ProtocolBlocker protocolBlocker = new ProtocolBlocker(this);
   private CarbonWorldGenerator worldGenerator = new CarbonWorldGenerator(this);
   private CarbonEntityGenerator entityGenerator = new CarbonEntityGenerator(this);
 
   private PluginDescriptionFile pluginDescriptionFile = this.getDescription();
-  private FileConfiguration spigot = YamlConfiguration.loadConfiguration(new File(getServer().getWorldContainer(), "spigot.yml"));
+  private FileConfiguration spigotConfig = YamlConfiguration.loadConfiguration(new File(getServer().getWorldContainer(), "spigot.yml"));
 
   public static final Logger log = Bukkit.getLogger();
 
   private static Injector injector;
-  private double localConfigVersion = 0.4;
+  private double localConfigVersion = 0.5;
 
   @Override
   public void onLoad() {
     //call to server shutdown if worlds are already loaded, prevents various errors when loading plugin on the fly
     if (!Bukkit.getWorlds().isEmpty()) {
       log.log(Level.SEVERE, "World loaded before{0} {1}! (Was {2} loaded on the fly?)", new Object[]{pluginDescriptionFile.getName(), pluginDescriptionFile.getVersion(), pluginDescriptionFile.getName()});
-      if (spigot.getBoolean("settings.restart-on-crash")) {
+      if (spigotConfig.getBoolean("settings.restart-on-crash")) {
         getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart");
       }
 
@@ -89,6 +91,7 @@ public class Carbon extends JavaPlugin {
     getServer().getPluginManager().registerEvents(commandListener, this);
     getServer().getPluginManager().registerEvents(itemListener, this);
     getServer().getPluginManager().registerEvents(worldGenerator, this);
+    getServer().getPluginManager().registerEvents(entityListener, this);
     getServer().getPluginManager().registerEvents(worldBorderListener, this);
     protocolBlocker.loadConfig();
     getServer().getPluginManager().registerEvents(protocolBlocker, this);
@@ -160,7 +163,43 @@ public class Carbon extends JavaPlugin {
   public static Injector injector() {
     return injector;
   }
-  
+
+    public BlockListener getBlockListener() {
+        return blockListener;
+    }
+
+    public WorldBorderListener getWorldBorderListener() {
+        return worldBorderListener;
+    }
+
+    public CarbonWorldGenerator getWorldGenerator() {
+        return worldGenerator;
+    }
+
+    public CommandListener getCommandListener() {
+        return commandListener;
+    }
+
+    public CarbonEntityGenerator getEntityGenerator() {
+        return entityGenerator;
+    }
+
+    public EntityListener getEntityListener() {
+        return entityListener;
+    }
+
+    public ItemListener getItemListener() {
+        return itemListener;
+    }
+
+    public double getLocalConfigVersion() {
+        return localConfigVersion;
+    }
+
+    public ProtocolBlocker getProtocolBlocker() {
+        return protocolBlocker;
+    }
+
   private void printHelpMenu(CommandSender sender) {
       sender.sendMessage(ChatColor.DARK_GRAY + "--=======" + ChatColor.DARK_RED + "Carbon" + ChatColor.DARK_GRAY + "=======--");
       sender.sendMessage(ChatColor.DARK_GRAY + "Version:" + ChatColor.DARK_RED + this.getDescription().getVersion()); // Reads out the version of the plugin.yml
