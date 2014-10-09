@@ -16,7 +16,7 @@ public class CommandListener implements Listener {
   public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
     FileConfiguration spigot = YamlConfiguration.loadConfiguration(new File(Bukkit.getServer().getWorldContainer(), "spigot.yml"));
 
-    if (event.getMessage().equalsIgnoreCase("/reload")) {
+    if (event.getMessage().equalsIgnoreCase("/reload") && event.getPlayer().hasPermissions("bukkit.command.reload") {
       // Restarts server if server is set up for it.
       if (spigot.getBoolean("settings.restart-on-crash")) {
         Bukkit.getLogger().severe("Restarting server due to reload command!");
