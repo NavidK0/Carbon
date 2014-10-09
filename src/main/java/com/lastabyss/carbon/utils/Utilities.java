@@ -19,6 +19,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -271,6 +272,17 @@ public class Utilities {
         double var4 = entity.locY - target.locY;
         double var6 = entity.locZ - target.locZ;
         return var2 * var2 + var4 * var4 + var6 * var6;
+    }
+
+    /**
+     * Sets accessibleobject accessible state an returns this object
+     * @param object
+     * @param accessible
+     * @return
+     */
+    public static <T extends AccessibleObject> T setAccessible(Class<T> objectType, AccessibleObject object, boolean accessible) {
+    	object.setAccessible(accessible);
+    	return (T) object;
     }
 
 }

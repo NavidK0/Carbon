@@ -1,6 +1,7 @@
 package com.lastabyss.carbon.reflection;
 
 import com.lastabyss.carbon.Carbon;
+import com.lastabyss.carbon.blocks.BlockAnvil;
 import com.lastabyss.carbon.blocks.BlockBanner;
 import com.lastabyss.carbon.blocks.BlockBarrier;
 import com.lastabyss.carbon.blocks.BlockGoldPressurePlate;
@@ -61,6 +62,7 @@ import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.EntityTypes;
 import net.minecraft.server.v1_7_R4.EnumProtocol;
 import net.minecraft.server.v1_7_R4.Item;
+import net.minecraft.server.v1_7_R4.ItemAnvil;
 import net.minecraft.server.v1_7_R4.ItemBlock;
 import net.minecraft.server.v1_7_R4.ItemMultiTexture;
 import net.minecraft.server.v1_7_R4.Packet;
@@ -117,6 +119,7 @@ public class Injector {
   public Block woodPlateBlock = new BlockWoodPressurePlate();
   public Block goldPlateBlock = new BlockGoldPressurePlate();
   public Block ironPlateBlock = new BlockIronPressurePlate();
+  public Block anvilBlock = new BlockAnvil();
 
   //Bukkit materials
   public Material slimeMat = Utilities.addMaterial("SLIME", 165);
@@ -211,6 +214,7 @@ public class Injector {
   public Item woodPlateItem = new ItemBlock(woodPlateBlock);
   public Item goldPlateItem = new ItemBlock(goldPlateBlock);
   public Item ironPlateItem = new ItemBlock(ironPlateBlock);
+  public Item anvilItem = new ItemAnvil(anvilBlock);
 
   public Item rabbitItem = new ItemRabbit();
   public Item cookedRabbitItem = new ItemCookedRabbit();
@@ -336,6 +340,7 @@ public class Injector {
     registerItem(430, "acacia_door", acaciaDoorItem);
     registerBlock(197, "dark_oak_door", darkOakDoorBlock);
     registerItem(431, "dark_oak_door", darkOakDoorItem);
+    registerBlock(145, "anvil", anvilBlock, anvilItem);
 
     //Register items
     registerItem(409, "prismarine_shard", prismarineShardItem);
@@ -382,7 +387,7 @@ public class Injector {
         setStaticFinalField(blocksClass, "WOOD_PLATE", Carbon.injector().woodPlateBlock);
         setStaticFinalField(blocksClass, "IRON_PLATE", Carbon.injector().ironPlateBlock);
         setStaticFinalField(blocksClass, "GOLD_PLATE", Carbon.injector().goldPlateBlock);
-
+        setStaticFinalField(blocksClass, "ANVIL", Carbon.injector().anvilBlock);
      } catch (Throwable t) {
          t.printStackTrace();
          Bukkit.shutdown();
