@@ -15,6 +15,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class ProtocolBlocker implements Listener {
 
@@ -59,13 +60,20 @@ public class ProtocolBlocker implements Listener {
 
 	private HashMap<Integer, String> restrictedProtocols = new HashMap<Integer, String>();
 
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void onPlayerJoin(PlayerJoinEvent event) {
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPlayerJoin(final PlayerJoinEvent event) {
             if (config == null) return;
-		int version = Utilities.getProtocolVersion(event.getPlayer());
-		if (restrictedProtocols.containsKey(version)) {
-			event.getPlayer().kickPlayer(restrictedProtocols.get(version));
-		}
+            BukkitRunnable task = new BukkitRunnable() {
+
+                @Override
+                public void run() {
+                    int version = Utilities.getProtocolVersion(event.getPlayer());
+                    if (restrictedProtocols.containsKey(version)) {
+                            event.getPlayer().kickPlayer(restrictedProtocols.get(version));
+                    }  
+                }
+            };
+            task.runTask(plugin);
 	}
 
 }

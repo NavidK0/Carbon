@@ -277,7 +277,7 @@ public class EntityGuardian extends EntityMonster {
     }
     **/
 
-    //moveEntityWithHeading
+    //moveEntityWithHeading/
     @Override
     public void e(float f, float f1) {
         this.move(this.motX, this.motY, this.motZ);

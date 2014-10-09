@@ -16,6 +16,7 @@ import net.minecraft.server.v1_7_R4.BiomeTaiga;
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.entity.EntityGuardian;
 import com.lastabyss.carbon.entity.EntityRabbit;
+import net.minecraft.server.v1_7_R4.EnumCreatureType;
 
 public class CarbonEntityGenerator {
     Carbon plugin;
@@ -44,9 +45,12 @@ public class CarbonEntityGenerator {
                                 List<BiomeMeta> metaList = (List<BiomeMeta>) list.get(f.get(null));
                                 metaList.add(new BiomeMeta(EntityGuardian.class, 1, 2, 4));
                              }
-            } catch (Exception e) {
+            } catch (SecurityException e) {
+            } catch (IllegalArgumentException e) {
                 e.printStackTrace();
-            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
     
     @SuppressWarnings("unchecked")
