@@ -2,7 +2,6 @@ package com.lastabyss.carbon.blocks;
 
 import java.util.List;
 import java.util.Random;
-
 import net.minecraft.server.v1_7_R4.AxisAlignedBB;
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.CreativeModeTab;
@@ -12,6 +11,8 @@ import net.minecraft.server.v1_7_R4.EntityHuman;
 import net.minecraft.server.v1_7_R4.IBlockAccess;
 import net.minecraft.server.v1_7_R4.Material;
 import net.minecraft.server.v1_7_R4.World;
+import org.bukkit.event.block.BlockRedstoneEvent;
+import org.bukkit.event.entity.EntityInteractEvent;
 
 public abstract class BlockButtonAbstract extends Block {
 
@@ -171,17 +172,27 @@ public abstract class BlockButtonAbstract extends Block {
 		int j1 = i1 & 7;
 		int k1 = 8 - (i1 & 8);
 
-		// System.out.println(i+" "+j+" "+k+" "+l);
 		if(k1 == 0) {
 			return true;
-		}
-		else {
-			world.setData(i, j, k, j1 + k1, 3);
-			world.c(i, j, k, i, j, k);
-			world.makeSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.click", 0.3F, 0.6F);
-			this.a(world, i, j, k, j1);
-			world.a(i, j, k, this, this.a(world));
-			return true;
+		} else {
+                    // CraftBukkit start
+                    org.bukkit.block.Block block = world.getWorld().getBlockAt(i, j, k);
+                    int old = (k1 != 8) ? 15 : 0;
+                    int current = (k1 == 8) ? 15 : 0;
+
+                    BlockRedstoneEvent eventRedstone = new BlockRedstoneEvent(block, old, current);
+                    world.getServer().getPluginManager().callEvent(eventRedstone);
+
+                    if ((eventRedstone.getNewCurrent() > 0) != (k1 == 8)) {
+                    return true;
+                    }
+                    // CraftBukkit end
+                    world.setData(i, j, k, j1 + k1, 3);
+                    world.c(i, j, k, i, j, k);
+                    world.makeSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.click", 0.3F, 0.6F);
+                    this.a(world, i, j, k, j1);
+                    world.a(i, j, k, this, this.a(world));
+                    return true;
 		}
 	}
 
@@ -227,14 +238,23 @@ public abstract class BlockButtonAbstract extends Block {
 			if((l & 8) != 0) {
 				if(this.a) {
 					this.n(world, i, j, k);
-				}
-				else {
-					world.setData(i, j, k, l & 7, 3);
-					int i1 = l & 7;
+				} else {
+                                    // CraftBukkit start
+                                    org.bukkit.block.Block block = world.getWorld().getBlockAt(i, j, k);
 
-					this.a(world, i, j, k, i1);
-					world.makeSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.click", 0.3F, 0.5F);
-					world.c(i, j, k, i, j, k);
+                                    BlockRedstoneEvent eventRedstone = new BlockRedstoneEvent(block, 15, 0);
+                                    world.getServer().getPluginManager().callEvent(eventRedstone);
+
+                                    if (eventRedstone.getNewCurrent() > 0) {
+                                        return;
+                                    }
+                                    // CraftBukkit end
+                                    world.setData(i, j, k, l & 7, 3);
+                                    int i1 = l & 7;
+
+                                    this.a(world, i, j, k, i1);
+                                    world.makeSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.click", 0.3F, 0.5F);
+                                    world.c(i, j, k, i, j, k);
 				}
 			}
 		}
@@ -270,7 +290,40 @@ public abstract class BlockButtonAbstract extends Block {
 		List list = world.a(EntityArrow.class, AxisAlignedBB.a((double) i + this.minX, (double) j + this.minY, (double) k + this.minZ, (double) i + this.maxX, (double) j + this.maxY, (double) k + this.maxZ));
 		boolean flag1 = !list.isEmpty();
 
+                 // CraftBukkit start - Call interact event when arrows turn on wooden buttons
+                if (flag != flag1 && flag1) {
+                    org.bukkit.block.Block block = world.getWorld().getBlockAt(i, j, k);
+                    boolean allowed = false;
+
+                    // If all of the events are cancelled block the button press, else allow
+                    for (Object object : list) {
+                        if (object != null) {
+                            EntityInteractEvent event = new EntityInteractEvent(((Entity) object).getBukkitEntity(), block);
+                            world.getServer().getPluginManager().callEvent(event);
+
+                            if (!event.isCancelled()) {
+                                allowed = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!allowed) {
+                        return;
+                    }
+                }
+                // CraftBukkit end
 		if(flag1 && !flag) {
+                        // CraftBukkit start
+                        org.bukkit.block.Block block = world.getWorld().getBlockAt(i, j, k);
+
+                        BlockRedstoneEvent eventRedstone = new BlockRedstoneEvent(block, 0, 15);
+                        world.getServer().getPluginManager().callEvent(eventRedstone);
+
+                        if (eventRedstone.getNewCurrent() <= 0) {
+                            return;
+                        }
+                        // CraftBukkit end
 			world.setData(i, j, k, i1 | 8, 3);
 			this.a(world, i, j, k, i1);
 			world.c(i, j, k, i, j, k);
@@ -278,6 +331,16 @@ public abstract class BlockButtonAbstract extends Block {
 		}
 
 		if(!flag1 && flag) {
+                         // CraftBukkit start
+                        org.bukkit.block.Block block = world.getWorld().getBlockAt(i, j, k);
+
+                        BlockRedstoneEvent eventRedstone = new BlockRedstoneEvent(block, 15, 0);
+                        world.getServer().getPluginManager().callEvent(eventRedstone);
+
+                        if (eventRedstone.getNewCurrent() > 0) {
+                            return;
+                        }
+                        // CraftBukkit end
 			world.setData(i, j, k, i1, 3);
 			this.a(world, i, j, k, i1);
 			world.c(i, j, k, i, j, k);

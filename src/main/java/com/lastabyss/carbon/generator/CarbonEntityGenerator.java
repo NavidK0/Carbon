@@ -17,7 +17,6 @@ import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.entity.EntityGuardian;
 import com.lastabyss.carbon.entity.EntityRabbit;
 
-//Entity Gen's
 public class CarbonEntityGenerator {
     Carbon plugin;
     
