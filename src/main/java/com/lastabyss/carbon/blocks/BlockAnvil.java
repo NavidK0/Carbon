@@ -25,7 +25,6 @@ public class BlockAnvil extends net.minecraft.server.v1_7_R4.BlockAnvil {
 		try {
 			EntityPlayer player = (EntityPlayer) entityhuman;
 			Container container = CraftEventFactory.callInventoryOpenEvent(player, new AnvilContainer(entityhuman.inventory, world, x, y, z, entityhuman));
-			System.out.println("Calling event");
 			if (container == null) {
 				return true;
 			}
