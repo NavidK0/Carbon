@@ -3,7 +3,7 @@ Carbon
 
 Carbon is a plugin which adds 1.8 blocks and features into a spigot protocol hacked server.
 
-Download the final plugin here: http://www.spigotmc.org/resources/.1258/ , it should be mostly bug-free. If not, post an Issue containing the Version number you are using!
+Download the final plugin here: http://www.spigotmc.org/resources/.1258/ , it should be mostly bug-free. If not, post an issue containing the version number you are using!
 
 .
 
