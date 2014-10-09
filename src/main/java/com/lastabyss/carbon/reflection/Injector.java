@@ -24,6 +24,7 @@ import com.lastabyss.carbon.blocks.BlockWoodPressurePlate;
 import com.lastabyss.carbon.blocks.BlockWoodenDoor;
 import com.lastabyss.carbon.blocks.BlockWoodenFence;
 import com.lastabyss.carbon.blocks.BlockWoodenFenceGate;
+import com.lastabyss.carbon.commands.CommandParticle;
 import com.lastabyss.carbon.commands.CommandWorldBorder;
 import com.lastabyss.carbon.entity.EntityEndermite;
 import com.lastabyss.carbon.entity.EntityGuardian;
@@ -75,6 +76,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.material.MaterialData;
+import org.spigotmc.SpigotDebreakifier;
 
 public class Injector {
   //Blocks
@@ -279,6 +281,17 @@ public class Injector {
       }
   }
 
+  public static void registerSpigotDebreakifierAddition(Block block, Block replacement) {
+      Method method;
+      try {
+          method = SpigotDebreakifier.class.getDeclaredMethod("replace", Block.class, Block.class);
+          method.setAccessible(true);
+          method.invoke(null, block, replacement);
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
+  }
+
   public void registerAll() {
     //Register blocks
     registerBlock(1, "stone", stoneBlock, stoneItem);
@@ -290,8 +303,8 @@ public class Injector {
     registerBlock(75, "unlit_redstone_torch", redstoneTorchBlockOff, redstoneTorchItemOff);
     registerBlock(76, "redstone_torch", redstoneTorchBlockOn, redstoneTorchItemOn);
     registerBlock(143, "wooden_button", woodButtonBlock, woodButtonItem);
-    registerBlock(147, "light_weighted_pressure_plate", ironPlateBlock, ironPlateItem);
-    registerBlock(148, "heavy_weighted_pressure_plate", goldPlateBlock, goldPlateItem);
+    registerBlock(147, "light_weighted_pressure_plate", goldPlateBlock, goldPlateItem);
+    registerBlock(148, "heavy_weighted_pressure_plate", ironPlateBlock, ironPlateItem);
     registerBlock(165, "slime", slimeBlock, slimeItem);
     registerBlock(166, "barrier", barrierBlock, barrierItem);
     registerBlock(167, "iron_trapdoor", ironTrapDoorBlock, ironTrapDoorItem);
@@ -346,9 +359,13 @@ public class Injector {
 
     //Register commands from 1.8
     Utilities.registerBukkitCommand("minecraft", new CommandWorldBorder());
+    Utilities.registerBukkitCommand("minecraft", new CommandParticle());
 
     //Register additional packets
     registerPacket(EnumProtocol.PLAY, PacketPlayOutWorldBorder.class, 68, true);
+
+    // Register additional 1.8 client replacement to prevent crashes
+    registerSpigotDebreakifierAddition(redSandstoneDoubleSlabBlock, redSandstoneSlabBlock);
 
     //inject our modified blocks
     //inject our items too
