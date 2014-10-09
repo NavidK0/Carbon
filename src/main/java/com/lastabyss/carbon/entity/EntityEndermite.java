@@ -1,5 +1,11 @@
 package com.lastabyss.carbon.entity;
 
+import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
+
+import com.lastabyss.carbon.entity.bukkit.Endermite;
+
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.BlockMonsterEggs;
 import net.minecraft.server.v1_7_R4.Blocks;
@@ -12,6 +18,7 @@ import net.minecraft.server.v1_7_R4.EnumMonsterType;
 import net.minecraft.server.v1_7_R4.GenericAttributes;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.MathHelper;
+import net.minecraft.server.v1_7_R4.MinecraftServer;
 import net.minecraft.server.v1_7_R4.World;
 import net.minecraft.util.org.apache.commons.lang3.tuple.ImmutablePair;
 
@@ -26,6 +33,11 @@ public class EntityEndermite extends EntityMonster {
     public EntityEndermite(World world) {
         super(world);
         a(0.3F, 0.7F);
+    }
+    
+    public void spawn(Location l) {
+    	((CraftWorld) l.getWorld()).getHandle().addEntity(this);
+        this.setLocation(l.getX(), l.getY(), l.getZ(), l.getPitch(), l.getYaw());
     }
 
     @Override
@@ -125,7 +137,8 @@ public class EntityEndermite extends EntityMonster {
                                         int k1 = this.world.getData(i + l, j + i1, k + j1);
                                         ImmutablePair immutablepair = BlockMonsterEggs.b(k1);
 
-                                        this.world.setTypeAndData(i + l, j + i1, k + j1, (Block) immutablepair.getLeft(), ((Integer) immutablepair.getRight()).intValue(), 3);
+                                        this.world.setTypeAndData(i + l, j + i1, k + j1, (Block) immutablepair.getLeft(),
+                                                                  (Integer) immutablepair.getRight(), 3);
                                     } else {
                                         this.world.setAir(i + l, j + i1, k + j1, false);
                                     }
@@ -174,5 +187,14 @@ public class EntityEndermite extends EntityMonster {
     public EnumMonsterType getMonsterType() {
         return EnumMonsterType.ARTHROPOD;
     }
-    
+
+    private Endermite bukkitEntity;
+    @Override
+    public CraftEntity getBukkitEntity() {
+    	if (bukkitEntity == null) {
+    		bukkitEntity = new Endermite(MinecraftServer.getServer().server, this); 
+    	}
+    	return bukkitEntity;
+    }
+
 }

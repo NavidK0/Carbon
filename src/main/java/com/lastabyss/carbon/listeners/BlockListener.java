@@ -1,11 +1,7 @@
 package com.lastabyss.carbon.listeners;
 
 import com.lastabyss.carbon.Carbon;
-
-import java.util.Random;
-
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -23,23 +19,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * 
+ *
  * @author Navid, Aust1n46
  */
 public class BlockListener implements Listener {
-
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onSlimeBlockPlace(BlockPlaceEvent evt) {
-		if (evt.getBlock().getType().equals(Carbon.injector().slimeMat)) {
-			Location location = evt.getBlock().getLocation();
-			Random rand = new Random();
-			boolean bool = rand.nextBoolean();
-			if (bool)
-				evt.getPlayer().getWorld().playSound(location, Sound.SLIME_WALK, 1.0F, 10.0F);
-			else
-				evt.getPlayer().getWorld().playSound(location, Sound.SLIME_WALK2, 0.5F, 10.0F);
-		}
-	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onCoarseDirtBreak(BlockBreakEvent event) {
@@ -47,9 +30,7 @@ public class BlockListener implements Listener {
 			return;
 		if (event.getBlock().getState().getData().toString().equals("DIRT(1)")) {
 			event.getBlock().setType(Material.AIR);
-			ItemStack item = new ItemStack(Material.DIRT, 1);
-			item.setDurability((short) 1);
-			event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), item);
+			event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), new ItemStack(Material.DIRT, 1, (short) 1));
 		}
 	}
 
@@ -57,60 +38,55 @@ public class BlockListener implements Listener {
 	public void onDoorBreak(BlockBreakEvent evt) {
 		if (evt.getPlayer().getGameMode() == GameMode.CREATIVE)
 			return;
-		switch (evt.getBlock().getType().toString()) {
-			case "spruce_door":
+        String value = evt.getBlock().getType().toString();
+			if (value.equalsIgnoreCase("spruce_door"))
 				evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().spruceDoorMat, 1));
-				break;
-			case "birch_door":
+        else if (value.equalsIgnoreCase("birch_door"))
 				evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().birchDoorMat, 1));
-				break;
-			case "jungle_door":
+            else if (value.equalsIgnoreCase("jungle_door"))
 				evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().jungleDoorMat, 1));
-				break;
-			case "acacia_door":
+            else if (value.equalsIgnoreCase("acacia_door"))
 				evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().acaciaDoorMat, 1));
-				break;
-			case "dark_oak_door":
+            else if (value.equalsIgnoreCase("dark_oak_door"))
 				evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().darkOakDoorMat, 1));
-		}
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onIndirectDoorBreak(BlockBreakEvent event) {
 		if (event.getBlock().getType().toString().contains("door"))
 			return;
-		switch (event.getBlock().getRelative(BlockFace.UP).getType().toString()) {
-			case "spruce_door":
+		String value = event.getBlock().getRelative(BlockFace.UP).getType().toString();
+        if (value.equalsIgnoreCase("spruce_door"))
 				event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().spruceDoorMat, 1));
-				break;
-			case "birch_door":
+        else if (value.equalsIgnoreCase("birch_door"))
 				event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().birchDoorMat, 1));
-				break;
-			case "jungle_door":
+        else if (value.equalsIgnoreCase("jungle_door"))
 				event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().jungleDoorMat, 1));
-				break;
-			case "acacia_door":
+        else if (value.equalsIgnoreCase("acacia_door"))
 				event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().acaciaDoorMat, 1));
-				break;
-			case "dark_oak_door":
+        else if (value.equalsIgnoreCase("dark_oak_door"))
 				event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().darkOakDoorMat, 1));
-				break;
-		}
 	}
 
 	@SuppressWarnings("deprecation")
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onSpongePlace(BlockPlaceEvent event) {
-		if(event.getBlockPlaced().getState().getData().toString().equals("SPONGE(0)") && (isTouching(event.getBlockPlaced(), Material.WATER) || isTouching(event.getBlockPlaced(), Material.STATIONARY_WATER))) {
-			int x = event.getBlockPlaced().getX() - 5;
-			int y = event.getBlockPlaced().getY() - 5;
-			int z = event.getBlockPlaced().getZ() - 5;
-			for(int a = x; a <= x + 10; a++)
-				for(int b = y; b <= y + 10; b++)
-					for(int c = z; c <= z + 10; c++)
-						if(event.getBlockPlaced().getWorld().getBlockAt(a, b, c).getType().equals(Material.WATER) || (event.getBlockPlaced().getWorld().getBlockAt(a, b, c).getType().equals(Material.STATIONARY_WATER))) {
-							event.getBlockPlaced().getWorld().getBlockAt(a, b, c).setType(Material.AIR);
-							event.getBlockPlaced().setData((byte) 1);
+		if(event.getBlock().getState().getData().toString().equals("SPONGE(0)") && (isTouching(event.getBlock(), Material.WATER) || isTouching(event.getBlock(), Material.STATIONARY_WATER))) {
+			int count = 0;
+			for(int i = 1; i < 8; i++)
+				for(int x = -i; x <= i; x++)
+					for(int y = -i; y <= i; y++)
+						for(int z = -i; z <= i; z++) {
+							int a = event.getBlock().getX() + x;
+							int b = event.getBlock().getY() + y;
+							int c = event.getBlock().getZ() + z;
+							if(event.getBlock().getWorld().getBlockAt(a, b, c).getType().equals(Material.WATER) || (event.getBlock().getWorld().getBlockAt(a, b, c).getType().equals(Material.STATIONARY_WATER))) {
+								event.getBlock().getWorld().getBlockAt(a, b, c).setTypeId(0, false);//Ignores physics
+								event.getBlock().setData((byte) 1);
+								count++;
+								if(count >= 65)
+									return;
+							}
 						}
 		}
 	}
@@ -133,8 +109,7 @@ public class BlockListener implements Listener {
 				event.setCancelled(true);
 				return;
 			}
-		Block block = event.getClickedBlock();
-		Block adjacent = block.getRelative(event.getBlockFace());
+		Block adjacent = clickedBlock.getRelative(event.getBlockFace());
 		if (adjacent.getType() == Carbon.injector().redSandstoneSlabMat) {
 			setDoubleSlab(event.getPlayer(), adjacent);
 			event.setCancelled(true);
@@ -145,6 +120,7 @@ public class BlockListener implements Listener {
 	private void setDoubleSlab(Player player, Block block) {
 		block.setType(Carbon.injector().redSandstoneDoubleSlabMat);
 		block.setData((byte) 0);
+		block.getWorld().playSound(block.getLocation(), Sound.DIG_STONE, 1, 1);
 		if (player.getGameMode() != GameMode.CREATIVE) {
 			if (player.getItemInHand().getAmount() > 1)
 				player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);

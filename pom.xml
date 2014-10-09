@@ -11,8 +11,16 @@
             <url>http://repo.bukkit.org/content/groups/public</url>
         </repository>
         <repository>
-            <id>Plugin Metrics</id>
-            <url>http://repo.mcstats.org/content/repositories/public</url>
+                <id>ProtocolLib</id>
+                <url>http://assets.comphenix.net/plugin/repository/everything</url>
+        </repository>
+        <repository>
+                <id>NCP</id>
+                <url>http://mvn.yawk.at</url>
+        </repository>
+        <repository>
+                <id>Spigot</id>
+                <url>http://maven.elmakers.com/repository/</url>
         </repository>
     </repositories>
     <build>
@@ -22,8 +30,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.0.2</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.6</source>
+                    <target>1.6</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -39,7 +47,7 @@
                     <relocations>
                         <relocation>
                             <pattern>org.mcstats</pattern>
-                            <shadedPattern>net.o2gaming</shadedPattern>
+                            <shadedPattern>com.lastabyss.ext.plugins</shadedPattern>
                         </relocation>
                     </relocations>
                     <finalName>Carbon</finalName>
@@ -52,33 +60,30 @@
                         </goals>
                     </execution>
                 </executions>
-                
+
             </plugin>
         </plugins>
     </build>
     <dependencies>
         <dependency>
-            <groupId>spigot</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1479</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.mcstats.bukkit</groupId>
-            <artifactId>metrics</artifactId>
-            <version>R7</version>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>bukkit</artifactId>
-                    <groupId>org.bukkit</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
-            <version>3.6.0</version>
+            <version>3.5.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>fr.neatmonster</groupId>
+            <artifactId>nocheatplus</artifactId>
+            <version>3.10.11</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>1.7.10-R0.1-20140817.175650-8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.7.10-R0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

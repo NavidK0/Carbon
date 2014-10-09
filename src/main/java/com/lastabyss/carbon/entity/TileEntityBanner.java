@@ -1,7 +1,5 @@
 package com.lastabyss.carbon.entity;
 
-import java.util.List;
-
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.Items;
 import net.minecraft.server.v1_7_R4.ItemStack;
@@ -36,6 +34,7 @@ public class TileEntityBanner extends TileEntity {
 		}
 	}
 
+        //Read
 	@Override
 	public void a(NBTTagCompound compound) {
 		super.a(compound);
@@ -43,6 +42,7 @@ public class TileEntityBanner extends TileEntity {
 		this.patterns = compound.getList("Patterns", 10);
 	}
 
+        //Write
 	@Override
 	public void b(NBTTagCompound compound) {
 		super.b(compound);

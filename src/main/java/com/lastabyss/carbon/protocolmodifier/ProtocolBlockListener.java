@@ -1,15 +1,15 @@
 package com.lastabyss.carbon.protocolmodifier;
 
-import java.lang.reflect.InvocationTargetException;
-
-import com.lastabyss.carbon.Carbon;
-import com.lastabyss.carbon.utils.Utilities;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.PacketEvent;
+import com.lastabyss.carbon.Carbon;
+import com.lastabyss.carbon.utils.Utilities;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.events.PacketEvent;
+
+import java.lang.reflect.InvocationTargetException;
 
 public class ProtocolBlockListener {
 
@@ -18,53 +18,54 @@ public class ProtocolBlockListener {
 	public ProtocolBlockListener(Carbon plugin) {
 		this.plugin = plugin;
 	}
-
 	private int[] replacements = new int[4096];
-	{
-		for (int i = 0; i < replacements.length; i++) {
+        
+        public ProtocolBlockListener remap() {
+            for (int i = 0; i < replacements.length; i++) {
 			replacements[i] = -1;
 		}
 		//slime -> emerald block
-		replacements[165] = 133;
+		replacements[165] = plugin.getConfig().getInt("protocollib.blocks.slime", 133);
 		//barrier -> ? (probably not needed) (or maybe glass?)
-		replacements[166] = 20;
+		replacements[166] = plugin.getConfig().getInt("protocollib.blocks.barrier", 20);
 		//iron trapdoor -> trapdoor
-		replacements[167] = 96;
+		replacements[167] = plugin.getConfig().getInt("protocollib.blocks.iron_trapdoor", 96);
 		//prismarine -> mossy cobblestone
-		replacements[168] = 48;
+		replacements[168] = plugin.getConfig().getInt("protocollib.blocks.prismarine", 48);
 		//sea lantern -> glowstone
-		replacements[169] = 89;
+		replacements[169] = plugin.getConfig().getInt("protocollib.blocks.sea_lantern", 89);
 		//standing banner -> standing sign
-		replacements[176] = 63;
+		replacements[176] = plugin.getConfig().getInt("protocollib.blocks.standing_banner", 63);
 		//wall banner -> wall sign
-		replacements[177] = 68;
+		replacements[177] = plugin.getConfig().getInt("protocollib.blocks.wall_banner", 68);
 		//red sandstone -> sandstone
-		replacements[179] = 24;
+		replacements[179] = plugin.getConfig().getInt("protocollib.blocks.red_sandstone", 24);
 		//red sandstone stairs -> sandstone stairs
-		replacements[180] = 128;
+		replacements[180] = plugin.getConfig().getInt("protocollib.blocks.red_sandstone_stairs", 128);
 		//red sandstone doubleslab -> double step
-		replacements[181] = 43;
+		replacements[181] = plugin.getConfig().getInt("protocollib.blocks.red_sandstone_doubleslab", 43);
 		//red sandstone slab -> step
-		replacements[182] = 44;
+		replacements[182] = plugin.getConfig().getInt("protocollib.blocks.red_sandstone_slab", 44);
 		//all fence gates -> fence gate
-		replacements[183] = 107;
-		replacements[184] = 107;
-		replacements[185] = 107;
-		replacements[186] = 107;
-		replacements[187] = 107;
+		replacements[183] = plugin.getConfig().getInt("protocollib.blocks.fence_gates", 107);
+		replacements[184] = plugin.getConfig().getInt("protocollib.blocks.fence_gates", 107);
+		replacements[185] = plugin.getConfig().getInt("protocollib.blocks.fence_gates", 107);
+		replacements[186] = plugin.getConfig().getInt("protocollib.blocks.fence_gates", 107);
+		replacements[187] = plugin.getConfig().getInt("protocollib.blocks.fence_gates", 107);
 		//all fences -> fence
-		replacements[188] = 85;
-		replacements[189] = 85;
-		replacements[190] = 85;
-		replacements[191] = 85;
-		replacements[192] = 85;
+		replacements[188] = plugin.getConfig().getInt("protocollib.blocks.fences", 85);
+		replacements[189] = plugin.getConfig().getInt("protocollib.blocks.fences", 85);
+		replacements[190] = plugin.getConfig().getInt("protocollib.blocks.fences", 85);
+		replacements[191] = plugin.getConfig().getInt("protocollib.blocks.fences", 85);
+		replacements[192] = plugin.getConfig().getInt("protocollib.blocks.fences", 85);
 		//all doors -> door
-		replacements[193] = 64;
-		replacements[194] = 64;
-		replacements[195] = 64;
-		replacements[196] = 64;
-		replacements[197] = 64;
-	}
+		replacements[193] = plugin.getConfig().getInt("protocollib.blocks.doors", 64);
+		replacements[194] = plugin.getConfig().getInt("protocollib.blocks.doors", 64);
+		replacements[195] = plugin.getConfig().getInt("protocollib.blocks.doors", 64);
+		replacements[196] = plugin.getConfig().getInt("protocollib.blocks.doors", 64);
+		replacements[197] = plugin.getConfig().getInt("protocollib.blocks.doors", 64);
+                return this;
+        }
 
 	public void init() {
 		ProtocolLibrary.getProtocolManager().addPacketListener(
@@ -145,6 +146,7 @@ public class ProtocolBlockListener {
 						try {
 							ProtocolLibrary.getProtocolManager().sendServerPacket(event.getPlayer(), newpacket, false);
 						} catch (InvocationTargetException e) {
+                                                  e.printStackTrace();
 						}
 					}
 				}

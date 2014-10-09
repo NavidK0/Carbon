@@ -1,7 +1,5 @@
 package com.lastabyss.carbon.worldborder;
 
-import java.util.List;
-
 import net.minecraft.server.v1_7_R4.ChatMessage;
 import net.minecraft.server.v1_7_R4.ChunkCoordinates;
 import net.minecraft.server.v1_7_R4.CommandAbstract;
@@ -10,6 +8,8 @@ import net.minecraft.server.v1_7_R4.ExceptionUsage;
 import net.minecraft.server.v1_7_R4.ICommandListener;
 import net.minecraft.server.v1_7_R4.Position;
 import net.minecraft.util.com.google.common.primitives.Doubles;
+
+import java.util.List;
 
 public class WorldBorderCommand extends CommandAbstract {
 
@@ -25,12 +25,9 @@ public class WorldBorderCommand extends CommandAbstract {
 		return "commands.worldborder.usage";
 	}
 
-	public void execute(ICommandListener var1, String[] var2)
-			throws ExceptionUsage, CommandException {
+	public void execute(ICommandListener var1, String[] var2) throws CommandException {
 		if (var2.length < 1) {
-                    
-			throw new ExceptionUsage("commands.worldborder.usage",
-					new Object[0]);
+			throw new ExceptionUsage("commands.worldborder.usage");
 		} else {
 			WorldBorder var3 = WorldBorder.getInstance(var1.getWorld().getWorld());
 			double var4;
@@ -38,8 +35,7 @@ public class WorldBorderCommand extends CommandAbstract {
 			long var8;
 			if (var2[0].equals("set")) {
 				if (var2.length != 2 && var2.length != 3) {
-					throw new ExceptionUsage("commands.worldborder.set.usage",
-							new Object[0]);
+					throw new ExceptionUsage("commands.worldborder.set.usage");
 				}
 				var4 = var3.getCurrentRadius();
 				var6 = a(var2[1], 1.0D, 6.0E7D);
@@ -51,44 +47,29 @@ public class WorldBorderCommand extends CommandAbstract {
 						a(var1,
 								this,
 								"commands.worldborder.setSlowly.shrink.success",
-								new Object[] {
-										String.format("%.1f",
-												new Object[] { Double
-														.valueOf(var6) }),
-										String.format("%.1f",
-												new Object[] { Double
-														.valueOf(var4) }),
-										Long.toString(var8 / 1000L) });
+                                                                String.format("%.1f", var6),
+                                                                String.format("%.1f", var4),
+                                                                Long.toString(var8 / 1000L));
 					} else {
 						a(var1,
 								this,
 								"commands.worldborder.setSlowly.grow.success",
-								new Object[] {
-										String.format("%.1f",
-												new Object[] { Double
-														.valueOf(var6) }),
-										String.format("%.1f",
-												new Object[] { Double
-														.valueOf(var4) }),
-										Long.toString(var8 / 1000L) });
+                                                                String.format("%.1f", var6),
+                                                                String.format("%.1f", var4),
+                                                                Long.toString(var8 / 1000L));
 					}
 				} else {
 					var3.setSize(var6);
 					a(var1,
 							this,
 							"commands.worldborder.set.success",
-							new Object[] {
-									String.format(
-											"%.1f",
-											new Object[] { Double.valueOf(var6) }),
-									String.format(
-											"%.1f",
-											new Object[] { Double.valueOf(var4) }) });
+                                                        String.format("%.1f", var6),
+                                                        String.format("%.1f", var4));
 				}
 			} else if (var2[0].equals("add")) {
 				if (var2.length != 2 && var2.length != 3) {
-					throw new ExceptionUsage("commands.worldborder.add.usage",
-							new Object[0]);
+					throw new ExceptionUsage("commands.worldborder.add.usage"
+                                        );
 				}
 				var4 = var3.getOldRadius();
 				var6 = var4 + a(var2[1], -var4, 6.0E7D - var4);
@@ -101,44 +82,33 @@ public class WorldBorderCommand extends CommandAbstract {
 						a(var1,
 								this,
 								"commands.worldborder.setSlowly.shrink.success",
-								new Object[] {
-										String.format("%.1f",
-												new Object[] { Double
-														.valueOf(var6) }),
-										String.format("%.1f",
-												new Object[] { Double
-														.valueOf(var4) }),
-										Long.toString(var8 / 1000L) });
+                                                                String.format("%.1f", var6),
+                                                                String.format("%.1f", var4),
+                                                                Long.toString(var8 / 1000L));
 					} else {
 						a(var1,
 								this,
 								"commands.worldborder.setSlowly.grow.success",
-								new Object[] {
-										String.format("%.1f",
-												new Object[] { Double
-														.valueOf(var6) }),
-										String.format("%.1f",
-												new Object[] { Double
-														.valueOf(var4) }),
-										Long.toString(var8 / 1000L) });
+                                                                String.format("%.1f", var6),
+                                                                String.format("%.1f", var4),
+                                                                Long.toString(var8 / 1000L));
 					}
 				} else {
 					var3.setSize(var6);
 					a(var1,
 							this,
 							"commands.worldborder.set.success",
-							new Object[] {
-									String.format(
-											"%.1f",
-											new Object[] { Double.valueOf(var6) }),
-									String.format(
-											"%.1f",
-											new Object[] { Double.valueOf(var4) }) });
+                                                        String.format(
+                                                                        "%.1f",
+                                                                        var6),
+                                                        String.format(
+                                                                        "%.1f",
+                                                                        var4));
 				}
 			} else if (var2[0].equals("center")) {
 				if (var2.length != 3) {
 					throw new ExceptionUsage(
-							"commands.worldborder.center.usage", new Object[0]);
+							"commands.worldborder.center.usage");
 				}
 				ChunkCoordinates var10 = var1.getChunkCoordinates();
 				double var5 = b((double) var10.x + 0.5D, var2[1], true);
@@ -147,18 +117,18 @@ public class WorldBorderCommand extends CommandAbstract {
 				a(var1,
 						this,
 						"commands.worldborder.center.success",
-						new Object[] { Double.valueOf(var5),
-								Double.valueOf(var7) });
+                                                var5,
+                                                var7);
 			} else if (var2[0].equals("damage")) {
 				if (var2.length < 2) {
 					throw new ExceptionUsage(
-							"commands.worldborder.damage.usage", new Object[0]);
+							"commands.worldborder.damage.usage");
 				}
 				if (var2[1].equals("buffer")) {
 					if (var2.length != 3) {
 						throw new ExceptionUsage(
-								"commands.worldborder.damage.buffer.usage",
-								new Object[0]);
+								"commands.worldborder.damage.buffer.usage"
+                                                );
 					}
 					var4 = a(var2[2], 0.0D);
 					var6 = var3.getDamageBuffer();
@@ -166,18 +136,17 @@ public class WorldBorderCommand extends CommandAbstract {
 					a(var1,
 							this,
 							"commands.worldborder.damage.buffer.success",
-							new Object[] {
-									String.format(
-											"%.1f",
-											new Object[] { Double.valueOf(var4) }),
-									String.format(
-											"%.1f",
-											new Object[] { Double.valueOf(var6) }) });
+                                                        String.format(
+                                                                        "%.1f",
+                                                                        var4),
+                                                        String.format(
+                                                                        "%.1f",
+                                                                        var6));
 				} else if (var2[1].equals("amount")) {
 					if (var2.length != 3) {
 						throw new ExceptionUsage(
-								"commands.worldborder.damage.amount.usage",
-								new Object[0]);
+								"commands.worldborder.damage.amount.usage"
+                                                );
 					}
 					var4 = a(var2[2], 0.0D);
 					var6 = var3.getDamageAmount();
@@ -185,66 +154,63 @@ public class WorldBorderCommand extends CommandAbstract {
 					a(var1,
 							this,
 							"commands.worldborder.damage.amount.success",
-							new Object[] {
-									String.format(
-											"%.2f",
-											new Object[] { Double.valueOf(var4) }),
-									String.format(
-											"%.2f",
-											new Object[] { Double.valueOf(var6) }) });
+                                                        String.format(
+                                                                        "%.2f",
+                                                                        var4),
+                                                        String.format(
+                                                                        "%.2f",
+                                                                        var6));
 				}
 			} else if (var2[0].equals("warning")) {
 				if (var2.length < 2) {
 					throw new ExceptionUsage(
-							"commands.worldborder.warning.usage", new Object[0]);
+							"commands.worldborder.warning.usage");
 				}
 				int var11 = a(var2[2], 0);
 				int var12;
 				if (var2[1].equals("time")) {
 					if (var2.length != 3) {
 						throw new ExceptionUsage(
-								"commands.worldborder.warning.time.usage",
-								new Object[0]);
+								"commands.worldborder.warning.time.usage"
+                                                );
 					}
 					var12 = var3.getWarningTime();
 					var3.setWarningTime(var11);
 					a(var1,
 							this,
 							"commands.worldborder.warning.time.success",
-							new Object[] { Integer.valueOf(var11),
-									Integer.valueOf(var12) });
+                                                        var11,
+                                                        var12);
 				} else if (var2[1].equals("distance")) {
 					if (var2.length != 3) {
 						throw new ExceptionUsage(
-								"commands.worldborder.warning.distance.usage",
-								new Object[0]);
+								"commands.worldborder.warning.distance.usage"
+                                                );
 					}
 					var12 = var3.getWarningBlocks();
 					var3.setWarningBlocks(var11);
 					a(var1,
 							this,
 							"commands.worldborder.warning.distance.success",
-							new Object[] { Integer.valueOf(var11),
-									Integer.valueOf(var12) });
+                                                        var11,
+                                                        var12);
 				}
 			} else if (var2[0].equals("get")) {
 				var4 = var3.getOldRadius();
 				// var1.a(this., MathHelper.f(var4 + 0.5D));
 				var1.sendMessage(new ChatMessage(
 						"commands.worldborder.get.success",
-						new Object[] { String.format("%.0f",
-								new Object[] { Double.valueOf(var4) }) }));
+                                                String.format("%.0f", var4)));
 			}
 		}
 	}
 
 	public static int a(String var0) throws CommandException {
-		try {
-			return Integer.parseInt(var0);
-		} catch (NumberFormatException var2) {
-			throw new CommandException("commands.generic.num.invalid",
-					new Object[] { var0 });
-		}
+          try {
+	    return Integer.parseInt(var0);
+	  } catch (NumberFormatException var2) {
+	    throw new CommandException("commands.generic.num.invalid", var0);
+	  }
 	}
 
 	public static int a(String var0, int var1) throws CommandException {
@@ -257,11 +223,11 @@ public class WorldBorderCommand extends CommandAbstract {
 		if (var3 < var1) {
 			throw new CommandException(
 					"commands.generic.num.tooSmall",
-					new Object[] { Integer.valueOf(var3), Integer.valueOf(var1) });
+                                        var3, var1);
 		} else if (var3 > var2) {
 			throw new CommandException(
 					"commands.generic.num.tooBig",
-					new Object[] { Integer.valueOf(var3), Integer.valueOf(var2) });
+                                        var3, var2);
 		} else {
 			return var3;
 		}
@@ -276,10 +242,10 @@ public class WorldBorderCommand extends CommandAbstract {
 		double var5 = c(var0);
 		if (var5 < var1) {
 			throw new CommandException("commands.generic.double.tooSmall",
-					new Object[] { Double.valueOf(var5), Double.valueOf(var1) });
+                                                   var5, var1);
 		} else if (var5 > var3) {
 			throw new CommandException("commands.generic.double.tooBig",
-					new Object[] { Double.valueOf(var5), Double.valueOf(var3) });
+                                                   var5, var3);
 		} else {
 			return var5;
 		}
@@ -290,13 +256,13 @@ public class WorldBorderCommand extends CommandAbstract {
 			double var1 = Double.parseDouble(var0);
 			if (!Doubles.isFinite(var1)) {
 				throw new CommandException("commands.generic.num.invalid",
-						new Object[] { var0 });
+                                                           var0);
 			} else {
 				return var1;
 			}
 		} catch (NumberFormatException var3) {
 			throw new CommandException("commands.generic.num.invalid",
-					new Object[] { var0 });
+                                                   var0);
 		}
 	}
 
@@ -310,7 +276,7 @@ public class WorldBorderCommand extends CommandAbstract {
 		boolean var6 = var2.startsWith("~");
 		if (var6 && Double.isNaN(var0)) {
 			throw new CommandException("commands.generic.num.invalid",
-					new Object[] { Double.valueOf(var0) });
+                                                   var0);
 		} else {
 			double var7 = var6 ? var0 : 0.0D;
 			if (!var6 || var2.length() > 1) {
@@ -327,14 +293,14 @@ public class WorldBorderCommand extends CommandAbstract {
 				if (var7 < (double) var3) {
 					throw new CommandException(
 							"commands.generic.double.tooSmall",
-							new Object[] { Double.valueOf(var7),
-									Integer.valueOf(var3) });
+                                                        var7,
+                                                        var3);
 				}
 				if (var7 > (double) var4) {
 					throw new CommandException(
 							"commands.generic.double.tooBig",
-							new Object[] { Double.valueOf(var7),
-									Integer.valueOf(var4) });
+                                                        var7,
+                                                        var4);
 				}
 			}
 			return var7;
@@ -345,7 +311,7 @@ public class WorldBorderCommand extends CommandAbstract {
 		try {
 			return Long.parseLong(var0);
 		} catch (NumberFormatException var2) {
-			throw new CommandException("commands.generic.num.invalid", new Object[] { var0 });
+			throw new CommandException("commands.generic.num.invalid", var0);
 		}
 	}
 
@@ -354,10 +320,10 @@ public class WorldBorderCommand extends CommandAbstract {
 		long var5 = b(var0);
 		if (var5 < var1) {
 			throw new CommandException("commands.generic.num.tooSmall",
-					new Object[] { Long.valueOf(var5), Long.valueOf(var1) });
+                                                   var5, var1);
 		} else if (var5 > var3) {
 			throw new CommandException("commands.generic.num.tooBig",
-					new Object[] { Long.valueOf(var5), Long.valueOf(var3) });
+                                                   var5, var3);
 		} else {
 			return var5;
 		}
@@ -365,12 +331,12 @@ public class WorldBorderCommand extends CommandAbstract {
 
 	public List getTabCompleteList(ICommandListener var1, String[] var2,
 			Position var3) {
-		return var2.length == 1 ? a(var2, new String[] { "set", "center",
-				"damage", "warning", "add", "get" }) : (var2.length == 2
-				&& var2[0].equals("damage") ? a(var2, new String[] { "buffer",
-				"amount" })
+		return var2.length == 1 ? a(var2, "set", "center",
+                                            "damage", "warning", "add", "get") : (var2.length == 2
+				&& var2[0].equals("damage") ? a(var2, "buffer",
+                                                                "amount")
 				: (var2.length == 2 && var2[0].equals("warning") ? a(var2,
-						new String[] { "time", "distance" }) : null));
+                                                                                     "time", "distance") : null));
 	}
 
 	@Override

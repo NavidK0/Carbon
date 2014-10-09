@@ -1,0 +1,15 @@
+/.classpath
+/.project
+/eclipse
+/.idea
+/*.iml
+/*.ipr
+/*.iws
+
+/bin
+/build
+/target
+/out
+
+/dependency-reduced-pom.xml
+*-private.sh

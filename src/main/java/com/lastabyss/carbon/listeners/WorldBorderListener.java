@@ -1,5 +1,10 @@
 package com.lastabyss.carbon.listeners;
 
+import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
+import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder.WorldBorderAction;
+import com.lastabyss.carbon.utils.Utilities;
+import com.lastabyss.carbon.worldborder.WorldBorder;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -9,15 +14,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
-import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder.WorldBorderAction;
-import com.lastabyss.carbon.utils.Utilities;
-import com.lastabyss.carbon.worldborder.WorldBorder;
-
 public class WorldBorderListener implements Listener {
 
 	@EventHandler
-	public void onPayerJoin(PlayerJoinEvent event) {
+	public void onPlayerJoin(PlayerJoinEvent event) {
 		PacketPlayOutWorldBorder packet = new PacketPlayOutWorldBorder(WorldBorder.getInstance(event.getPlayer().getWorld()), WorldBorderAction.INITIALIZE);
 		Utilities.sendPacket(event.getPlayer(), packet);
 	}

@@ -6,7 +6,16 @@
 
 package com.lastabyss.carbon.entity;
 
-import net.minecraft.server.v1_7_R4.Entity;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
+
+import com.lastabyss.carbon.Carbon;
+import com.lastabyss.carbon.ai.PathfinderWrapper;
+import com.lastabyss.carbon.entity.bukkit.Guardian;
+import com.lastabyss.carbon.utils.Utilities;
+
+import net.minecraft.server.v1_7_R4.Blocks;
+import net.minecraft.server.v1_7_R4.EntityHuman;
+import net.minecraft.server.v1_7_R4.EntityLiving;
 import net.minecraft.server.v1_7_R4.EntityMonster;
 import net.minecraft.server.v1_7_R4.GenericAttributes;
 import net.minecraft.server.v1_7_R4.Item;
@@ -14,7 +23,14 @@ import net.minecraft.server.v1_7_R4.ItemStack;
 import net.minecraft.server.v1_7_R4.Items;
 import net.minecraft.server.v1_7_R4.Material;
 import net.minecraft.server.v1_7_R4.MathHelper;
+import net.minecraft.server.v1_7_R4.MinecraftServer;
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
+import net.minecraft.server.v1_7_R4.PathfinderGoalFloat;
+import net.minecraft.server.v1_7_R4.PathfinderGoalHurtByTarget;
+import net.minecraft.server.v1_7_R4.PathfinderGoalLookAtPlayer;
+import net.minecraft.server.v1_7_R4.PathfinderGoalNearestAttackableTarget;
+import net.minecraft.server.v1_7_R4.PathfinderGoalRandomLookaround;
+import net.minecraft.server.v1_7_R4.PathfinderGoalRandomStroll;
 import net.minecraft.server.v1_7_R4.World;
 
 /**
@@ -38,30 +54,71 @@ public class EntityGuardian extends EntityMonster {
     private float bC;
     
     private boolean elder = false;
-    private boolean inWater;
     private int fire;
 
     public EntityGuardian(World world) {
         super(world);
-        this.a(0.95F, 0.95F);
+        this.a(0.85F, 0.85F);
         this.by = 1.0F / (this.random.nextFloat() + 1.0F) * 0.2F;
-        //Add pathfinding goal, or something
-        this.goalSelector.a();
-        
+        this.expToDrop = 10;
+        //Add pathfinding goals
+        this.goalSelector.a(1, new PathfinderGoalFloat(this));
+        this.goalSelector.a(2, new PathfinderGoalRandomStroll(this, 1.0D));
+        this.goalSelector.a(3, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 8.0F));
+        this.goalSelector.a(3, new PathfinderGoalRandomLookaround(this));
+        this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, true));
+        this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget(this, EntityHuman.class, 10, true));
+    }
+
+    //entityInit
+    @Override
+    protected void c() {
+        super.c();
+        this.datawatcher.a(16, 0);
+        this.datawatcher.a(17, 0);
+    }
+
+    @Override
+    public void C() {
+        super.C();
+        this.setAirTicks(300);
+    }
+    
+    
+    
+    protected void addElderData(int var1, boolean var2) {
+        int var3 = this.datawatcher.getInt(16);
+        if (var2) {
+            this.datawatcher.watch(16, var3 | var1);
+        } else {
+           this.datawatcher.watch(16, var3 & ~var1);
+        }
     }
 
     //applyEntityAttributes()
     @Override
     protected void aD() {
         super.aD();
-        //Attack damage
-        this.getAttributeInstance(GenericAttributes.e).setValue(6.0D);
-        //Movement Speed
-        this.getAttributeInstance(GenericAttributes.d).setValue(0.5D);
-        //Follow range
-        this.getAttributeInstance(GenericAttributes.b).setValue(16.0D);
-        //Max health, obviously
-        this.getAttributeInstance(GenericAttributes.maxHealth).setValue(30.0D);
+        if (!isElder()) {
+            //Attack damage
+            this.getAttributeInstance(GenericAttributes.e).setValue(6.0D);
+            //Movement Speed
+            this.getAttributeInstance(GenericAttributes.d).setValue(0.5D);
+            //Follow range
+            this.getAttributeInstance(GenericAttributes.b).setValue(16.0D);
+            //Max health, obviously
+            this.getAttributeInstance(GenericAttributes.maxHealth).setValue(30.0D);
+        } else {
+            //Attack damage
+            this.getAttributeInstance(GenericAttributes.e).setValue(8.0D);
+            //Movement Speed
+            this.getAttributeInstance(GenericAttributes.d).setValue(0.30000001192092896D);
+            //Max health, obviously
+            this.getAttributeInstance(GenericAttributes.maxHealth).setValue(80.0D);
+            
+            this.a(1.9975F, 1.9975F);
+            this.ak = true;
+        }
     }
 
     //getLivingSound
@@ -82,15 +139,9 @@ public class EntityGuardian extends EntityMonster {
         return !this.isInWater() ? "mob.guardian.land.death" : (this.isElder() ? "mob.guardian.elder.death" : "mob.guardian.death");
     }
 
-    //getSoundVolume
-    @Override
-    protected float bf() {
-        return super.bf();
-    }
-
     @Override
     protected Item getLoot() {
-        return Item.getById(0);
+        return this.isBurning() ? Items.COOKED_FISH : Items.RAW_FISH;
     }
 
     //canTriggerWalking
@@ -101,15 +152,39 @@ public class EntityGuardian extends EntityMonster {
 
     @Override
     protected void dropDeathLoot(boolean flag, int i) {
-        //Drops nothing currently
-        //Change to prismarine shards etc. later
+        int var3 = this.random.nextInt(3) + this.random.nextInt(i + 1);
+
+        if (var3 > 0)
+        { 
+            this.a(new ItemStack(Carbon.injector().prismarineShardItem, var3, 0), 1.0F);
+        }
+
+        if (this.random.nextInt(3 + i) > 1)
+        {
+            if (!this.isBurning()) {
+                this.a(new ItemStack(Items.RAW_FISH, 1, 0), 1.0F);
+            } else {
+               this.a(new ItemStack(Items.RAW_FISH, 1, 0), 1.0F); 
+            }
+        }
+        else if (this.random.nextInt(3 + i) > 1)
+        {
+            this.a(new ItemStack(Carbon.injector().prismarineCrystalItem, 1, 0), 1.0F);
+        }
+
+        if (flag && this.isElder())
+        {
+            this.a(new ItemStack(Blocks.SPONGE, 1, 1), 1.0F);
+        }
     }
 
     //isInWater
     @Override
     public boolean M() {
-        return this.world.a(this.boundingBox.grow(0.0D, -0.6000000238418579D, 0.0D), Material.WATER, (Entity) this);
+        return this.world.a(this.boundingBox.grow(0.0D, -0.6000000238418579D, 0.0D), Material.WATER, this);
     }
+    
+    
 
     /** 
      onLivingUpdate()
@@ -226,15 +301,14 @@ public class EntityGuardian extends EntityMonster {
     }
 
     //We can make a guess as to which one of these is write, and which one of these is read...
-    
-    //I call this one as readEntityFromNBT
+    //readEntityFromNBT
     @Override
     public void a(NBTTagCompound tagCompound) {
         super.a(tagCompound);
         this.setElder(tagCompound.getBoolean("Elder"));
     }
     
-    //This one can be writeEntityFromNBT
+    //writeEntityFromNBT
     @Override
     public void b(NBTTagCompound tagCompound) {
         super.b(tagCompound);
@@ -250,22 +324,48 @@ public class EntityGuardian extends EntityMonster {
     }
     
     public void setElder(boolean elder) {
-       this.elder = elder;
-
-        if (elder) {
-            //Attack damage
-            this.getAttributeInstance(GenericAttributes.e).setValue(8.0D);
-            //Movement Speed
-            this.getAttributeInstance(GenericAttributes.d).setValue(0.30000001192092896D);
-            //Max health, obviously
-            this.getAttributeInstance(GenericAttributes.maxHealth).setValue(80.0D);
-            this.a(1.9975F, 1.9975F);
-            this.ak = true;
-        }
+        this.elder = elder;
+        addElderData(4, elder);
     }
 
     @Override
     public boolean canSpawn() {
         return this.locY > 45.0D && this.locY < 63.0D && super.canSpawn();
+    }
+
+    private Guardian bukkitEntity;
+    @Override
+    public CraftEntity getBukkitEntity() {
+    	if (bukkitEntity == null) {
+    		bukkitEntity = new Guardian(MinecraftServer.getServer().server, this); 
+    	}
+    	return bukkitEntity;
+    }
+
+    class AIGuardianAttack extends PathfinderWrapper {
+
+        private EntityGuardian guardian = EntityGuardian.this;
+        
+        public AIGuardianAttack() {
+            setMutexBits(3);
+        }
+
+        
+        @Override
+        public boolean canExecute() {
+            EntityLiving var1 = this.guardian.getGoalTarget();
+            return var1 != null && var1.isAlive();
+        }
+
+        @Override
+        public boolean canContinue() {
+            return super.canContinue() && (this.guardian.isElder() || Utilities.getDistanceSqToEntity(this.guardian, this.guardian.getGoalTarget()) > 9.0D);
+        }
+
+        @Override
+        public void finish() {
+            super.finish();
+        }
+        
     }
 }

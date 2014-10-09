@@ -1,10 +1,58 @@
-#Put the world name in which you want ore generation to occur in worlds:[]. It is CASE-SENSITIVE, so take caution.
+#All options are straightforward. Put the names of your worlds (CASE-SENSITIVE) in which you want 1.8 terrain to generate in.
 options:
     sheep:
         dropMutton: true
     creeper:
         dropMobHead: true
     worlds: [world]
-    
-    
-donottouch.configVersion: 0.1
+mobSpawning:
+    rabbits: true
+    endermites: true
+    guardians: true
+protocollib:
+    blocks:
+        slime: 133
+        barrier: 20
+        iron_trapdoor: 96
+        prismarine: 48
+        sea_lantern: 89
+        standing_banner: 63
+        wall_banner: 68
+        red_sandstone: 24
+        red_sandstone_stairs: 128
+        red_sandstone_doubleslab: 43
+        red_sandstone_slab: 44
+        fence_gates: 107
+        fences: 85
+        doors: 64
+    entities:
+        silverfish: 60
+        endermites: 94
+        rabbits: 93
+    items:
+        slime: 133
+        barrier: 7
+        iron_trapdoor: 96
+        prismarine: 48
+        sea_lantern: 89
+        red_sandstone: 24
+        red_sandstone_stairs: 128
+        red_sandstone_doubleslab: 43
+        red_sandstone_slab: 44
+        fence_gates: 107
+        fences: 85
+        doors: 324
+        rabbit_meat: 365
+        rabbit_cooked_meat: 366
+        rabbit_stew: 282
+        mutton: 365
+        cooked_mutton: 366
+        banner: 323
+        prismarine_shard: 1
+        prismarine_crystal: 1
+        rabbit_foot: 1
+        rabbit_hide: 1
+        armor_stand: 1
+        
+        
+donottouch.configVersion: 0.4

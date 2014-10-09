@@ -1,10 +1,10 @@
 package com.lastabyss.carbon.listeners;
 
 import com.lastabyss.carbon.Carbon;
-
+import com.lastabyss.carbon.entity.EntityEndermite;
 import java.util.Random;
-
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Arrow;
@@ -19,6 +19,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
@@ -36,8 +38,19 @@ public class ItemListener implements Listener {
     }
     
     @EventHandler(priority = EventPriority.LOWEST)
+    public void onTeleport(PlayerTeleportEvent e) {
+        if(e.getCause().equals(TeleportCause.ENDER_PEARL) && plugin.getConfig().getBoolean("mobSpawning.endermites", true)) {
+            Random rand = new Random();
+            if(rand.nextInt(100) < 5) {//5% probability of spawning
+            	EntityEndermite ender = new EntityEndermite(((CraftWorld) e.getFrom().getWorld()).getHandle());
+                ender.spawn(e.getFrom());
+            }
+        }
+    }
+    
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityKilled(EntityDeathEvent e) {
-        if (plugin.getConfig().getBoolean("options.sheep.dropMutton")) {
+        if (plugin.getConfig().getBoolean("options.sheep.dropMutton", true)) {
             if(e.getEntityType().equals(EntityType.SHEEP)) {
                 if(e.getEntity() instanceof Ageable) {
                     Ageable entity = (Ageable) e.getEntity();
@@ -73,7 +86,7 @@ public class ItemListener implements Listener {
     @EventHandler
     public void onCreeperDeath(EntityDeathEvent e) {
         LivingEntity entity = e.getEntity();
-        if (plugin.getConfig().getBoolean("options.creeper.dropMobHead"))
+        if (plugin.getConfig().getBoolean("options.creeper.dropMobHead", true))
             if (entity.getLastDamageCause().getCause().equals(DamageCause.ENTITY_EXPLOSION) &&
                     entity.getLastDamageCause() instanceof EntityDamageByEntityEvent &&
                     ((EntityDamageByEntityEvent) entity.getLastDamageCause()).getDamager() != null &&

@@ -1,31 +1,23 @@
 package com.lastabyss.carbon.protocolmodifier;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-
-import org.bukkit.inventory.ItemStack;
-
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
+import com.lastabyss.carbon.Carbon;
+import com.lastabyss.carbon.utils.Utilities;
 
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.PacketDataSerializer;
 import net.minecraft.server.v1_7_R4.WatchableObject;
-import net.minecraft.util.io.netty.buffer.ByteBuf;
 import net.minecraft.util.io.netty.buffer.Unpooled;
 
-import com.lastabyss.carbon.Carbon;
-import com.lastabyss.carbon.utils.Utilities;
+import org.bukkit.inventory.ItemStack;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 public class ProtocolItemListener {
 
@@ -36,65 +28,67 @@ public class ProtocolItemListener {
 	}
 
 	private int[] replacements = new int[4096];
-	{
-		for (int i = 0; i < replacements.length; i++) {
+	
+        public ProtocolItemListener remap() {
+            for (int i = 0; i < replacements.length; i++) {
 			replacements[i] = -1;
 		}
 		//slime -> emerald block
-		replacements[165] = 133;
+		replacements[165] = plugin.getConfig().getInt("protocollib.items.slime", 133);
 		//barrier -> bedrock
-		replacements[166] = 7;
+		replacements[166] = plugin.getConfig().getInt("protocollib.items.barrier", 7);
 		//iron trapdoor -> trapdoor
-		replacements[167] = 96;
+		replacements[167] = plugin.getConfig().getInt("protocollib.items.iron_trapdoor", 96);
 		//prismarine -> mossy cobblestone
-		replacements[168] = 48;
+		replacements[168] = plugin.getConfig().getInt("protocollib.items.prismarine", 48);
 		//sea lantern -> glowstone
-		replacements[169] = 89;
+		replacements[169] = plugin.getConfig().getInt("protocollib.items.sea_lantern", 89);
 		//red sandstone -> sandstone
-		replacements[179] = 24;
+		replacements[179] = plugin.getConfig().getInt("protocollib.items.red_sandstone", 24);
 		//red sandstone stairs -> sandstone stairs
-		replacements[180] = 128;
+		replacements[180] = plugin.getConfig().getInt("protocollib.items.red_sandstone_stairs", 128);
 		//red sandstone doubleslab -> double step
-		replacements[181] = 43;
+		replacements[181] = plugin.getConfig().getInt("protocollib.items.red_sandstone_doubleslab", 43);
 		//red sandstone slab -> step
-		replacements[182] = 44;
+		replacements[182] = plugin.getConfig().getInt("protocollib.items.red_sandstone_slab", 44);
 		//all fence gates -> fence gate
-		replacements[183] = 107;
-		replacements[184] = 107;
-		replacements[185] = 107;
-		replacements[186] = 107;
-		replacements[187] = 107;
+		replacements[183] = plugin.getConfig().getInt("protocollib.items.fence_gates", 107);
+		replacements[184] = plugin.getConfig().getInt("protocollib.items.fence_gates", 107);
+		replacements[185] = plugin.getConfig().getInt("protocollib.items.fence_gates", 107);
+		replacements[186] = plugin.getConfig().getInt("protocollib.items.fence_gates", 107);
+		replacements[187] = plugin.getConfig().getInt("protocollib.items.fence_gates", 107);
 		//all fences -> fence
-		replacements[188] = 85;
-		replacements[189] = 85;
-		replacements[190] = 85;
-		replacements[191] = 85;
-		replacements[192] = 85;
+		replacements[188] = plugin.getConfig().getInt("protocollib.items.fences", 85);
+		replacements[189] = plugin.getConfig().getInt("protocollib.items.fences", 85);
+		replacements[190] = plugin.getConfig().getInt("protocollib.items.fences", 85);
+		replacements[191] = plugin.getConfig().getInt("protocollib.items.fences", 85);
+		replacements[192] = plugin.getConfig().getInt("protocollib.items.fences", 85);
 		//all doors -> door
-		replacements[427] = 324;
-		replacements[428] = 324;
-		replacements[429] = 324;
-		replacements[430] = 324;
-		replacements[431] = 324;
+		replacements[427] = plugin.getConfig().getInt("protocollib.items.doors", 324);
+		replacements[428] = plugin.getConfig().getInt("protocollib.items.doors", 324);
+		replacements[429] = plugin.getConfig().getInt("protocollib.items.doors", 324);
+		replacements[430] = plugin.getConfig().getInt("protocollib.items.doors", 324);
+		replacements[431] = plugin.getConfig().getInt("protocollib.items.doors", 324);
 		//rabbit raw meat -> chicken raw meat
-		replacements[411] = 365;
+		replacements[411] = plugin.getConfig().getInt("protocollib.items.rabbit_meat", 365);
 		//rabbit cooked meat -> chicken cooked meat
-		replacements[412] = 366;
+		replacements[412] = plugin.getConfig().getInt("protocollib.items.rabbit_cooked_meat", 366);
 		//rabbit stew -> mushroom stew
-		replacements[413] = 282;
+		replacements[413] = plugin.getConfig().getInt("protocollib.items.rabbit_stew", 282);
 		//raw mutton -> chicken raw meat
-		replacements[423] = 365;
+		replacements[423] = plugin.getConfig().getInt("protocollib.items.mutton", 365);
 		//cooked mutton -> chicken cooked meat
-		replacements[424] = 1;
+		replacements[424] = plugin.getConfig().getInt("protocollib.items.cooked_mutton", 366);
 		//banner -> sign
-		replacements[425] = 323;
+		replacements[425] = plugin.getConfig().getInt("protocollib.items.banner", 323);
 		//everything else -> stone
-		replacements[409] = 1;
-		replacements[410] = 1;
-		replacements[414] = 1;
-		replacements[415] = 1;
-		replacements[416] = 1;
-	}
+		replacements[409] = plugin.getConfig().getInt("protocollib.items.prismarine_shard", 1);
+		replacements[410] = plugin.getConfig().getInt("protocollib.items.prismarine_crystals", 1);
+		replacements[414] = plugin.getConfig().getInt("protocollib.items.rabbit_foot", 1);
+		replacements[415] = plugin.getConfig().getInt("protocollib.items.rabbit_hide", 1);
+		replacements[416] = plugin.getConfig().getInt("protocollib.items.armor_stand", 1);
+                return this;
+        }
 
 	@SuppressWarnings("deprecation")
 	private void replaceItemStack(ItemStack itemStack) {
@@ -199,6 +193,7 @@ public class ProtocolItemListener {
 					try {
 						ProtocolLibrary.getProtocolManager().sendServerPacket(event.getPlayer(), newpacket, false);
 					} catch (InvocationTargetException e) {
+                                          e.printStackTrace();
 					}
 				}
 			}
