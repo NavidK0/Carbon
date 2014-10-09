@@ -64,7 +64,6 @@ public class ProtocolBlocker implements Listener {
 	public void onPlayerJoin(final PlayerJoinEvent event) {
             if (config == null) return;
             BukkitRunnable task = new BukkitRunnable() {
-
                 @Override
                 public void run() {
                     int version = Utilities.getProtocolVersion(event.getPlayer());
