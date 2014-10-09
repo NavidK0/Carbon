@@ -5,7 +5,10 @@ options:
     creeper:
         dropMobHead: true
     worlds: [world]
-
+mobSpawning:
+    rabbits: true
+    endermites: true
+    guardians: true
 protocollib:
     blocks:
         slime: 133
