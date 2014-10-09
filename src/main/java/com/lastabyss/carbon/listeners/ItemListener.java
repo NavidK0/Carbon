@@ -41,7 +41,7 @@ public class ItemListener implements Listener {
     public void onTeleport(PlayerTeleportEvent e) {
         if(e.getCause().equals(TeleportCause.ENDER_PEARL) && plugin.getConfig().getBoolean("mobSpawning.endermites", true)) {
             Random rand = new Random();
-            if(rand.nextInt(100) <= 5) {//5% probability of spawning
+            if(rand.nextInt(100) < 5) {//5% probability of spawning
             	EntityEndermite ender = new EntityEndermite(((CraftWorld) e.getFrom().getWorld()).getHandle());
                 ender.spawn(e.getFrom());
             }

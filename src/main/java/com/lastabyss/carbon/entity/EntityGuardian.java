@@ -14,7 +14,6 @@ import com.lastabyss.carbon.entity.bukkit.Guardian;
 import com.lastabyss.carbon.utils.Utilities;
 
 import net.minecraft.server.v1_7_R4.Blocks;
-import net.minecraft.server.v1_7_R4.DamageSource;
 import net.minecraft.server.v1_7_R4.EntityHuman;
 import net.minecraft.server.v1_7_R4.EntityLiving;
 import net.minecraft.server.v1_7_R4.EntityMonster;
