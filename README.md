@@ -7,6 +7,7 @@ Download the final plugin here:
 http://www.spigotmc.org/resources/.1258/
 
 
+
 Some things to note before downloading and compiling the repository:
 
 - Make sure you always use the latest version and you have all of the dependencies installed locally.
