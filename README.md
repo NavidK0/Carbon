@@ -4,15 +4,15 @@ Carbon
 Carbon is a plugin which adds 1.8 blocks and features into a spigot protocol hacked server.
 
 Download the final plugin here: http://www.spigotmc.org/resources/.1258/ , it should be mostly bug-free. If not, post an issue containing the version number you are using!
+To reduce the amount of bugs or use a bigger amount of functions, use the latest version of ProtocolLib (http://assets.comphenix.net/job/ProtocolLib/)
 
 .
 
 Some things to note before downloading and compiling the repository:
 
 - Make sure you always use the latest version and you have all of the dependencies installed locally.
-- If any ingame error (not compiling and other, but ingame error) occures make sure to immediately post an Issue!
+- If any errors occur while using this plugin in game, be sure to post an issue with your spigot version, Carbon version, and any steps to reproduce the issue.
 
-.
 
 Some things to note before submitting a pull request:
 
