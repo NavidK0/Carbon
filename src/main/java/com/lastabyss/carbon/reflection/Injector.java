@@ -4,6 +4,7 @@ import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.blocks.BlockAnvil;
 import com.lastabyss.carbon.blocks.BlockBanner;
 import com.lastabyss.carbon.blocks.BlockBarrier;
+import com.lastabyss.carbon.blocks.BlockEnchantTable;
 import com.lastabyss.carbon.blocks.BlockGoldPressurePlate;
 import com.lastabyss.carbon.blocks.BlockIronPressurePlate;
 import com.lastabyss.carbon.blocks.BlockIronTrapdoor;
@@ -120,6 +121,7 @@ public class Injector {
   public Block goldPlateBlock = new BlockGoldPressurePlate();
   public Block ironPlateBlock = new BlockIronPressurePlate();
   public Block anvilBlock = new BlockAnvil();
+  public Block enchantTableBlock = new BlockEnchantTable();
 
   //Bukkit materials
   public Material slimeMat = Utilities.addMaterial("SLIME", 165);
@@ -215,6 +217,7 @@ public class Injector {
   public Item goldPlateItem = new ItemBlock(goldPlateBlock);
   public Item ironPlateItem = new ItemBlock(ironPlateBlock);
   public Item anvilItem = new ItemAnvil(anvilBlock);
+  public Item enchantTableItem = new ItemBlock(enchantTableBlock);
 
   public Item rabbitItem = new ItemRabbit();
   public Item cookedRabbitItem = new ItemCookedRabbit();
@@ -341,6 +344,7 @@ public class Injector {
     registerBlock(197, "dark_oak_door", darkOakDoorBlock);
     registerItem(431, "dark_oak_door", darkOakDoorItem);
     registerBlock(145, "anvil", anvilBlock, anvilItem);
+    registerBlock(116, "enchanting_table", enchantTableBlock, enchantTableItem);
 
     //Register items
     registerItem(409, "prismarine_shard", prismarineShardItem);
@@ -388,6 +392,7 @@ public class Injector {
         setStaticFinalField(blocksClass, "IRON_PLATE", Carbon.injector().ironPlateBlock);
         setStaticFinalField(blocksClass, "GOLD_PLATE", Carbon.injector().goldPlateBlock);
         setStaticFinalField(blocksClass, "ANVIL", Carbon.injector().anvilBlock);
+        setStaticFinalField(blocksClass, "ENCHANTMENT_TABLE", Carbon.injector().enchantTableBlock);
      } catch (Throwable t) {
          t.printStackTrace();
          Bukkit.shutdown();
