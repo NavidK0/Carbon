@@ -6,14 +6,14 @@ Carbon is a plugin which adds 1.8 blocks and features into a spigot protocol hac
 Download the final plugin here:
 http://www.spigotmc.org/resources/.1258/
 
-
+.
 
 Some things to note before downloading and compiling the repository:
 
 - Make sure you always use the latest version and you have all of the dependencies installed locally.
 - If any ingame error (not compiling and other, but ingame error) occures make sure to immediately post an Issue!
 
-
+.
 
 Some things to note before submitting a pull request:
 
