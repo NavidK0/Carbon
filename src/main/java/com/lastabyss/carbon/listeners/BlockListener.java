@@ -81,7 +81,7 @@ public class BlockListener implements Listener {
 							int b = event.getBlock().getY() + y;
 							int c = event.getBlock().getZ() + z;
 							if(event.getBlock().getWorld().getBlockAt(a, b, c).getType().equals(Material.WATER) || (event.getBlock().getWorld().getBlockAt(a, b, c).getType().equals(Material.STATIONARY_WATER))) {
-								event.getBlock().getWorld().getBlockAt(a, b, c).setTypeId(0, false);//Ignores physics
+								event.getBlock().getWorld().getBlockAt(a, b, c).setType(Material.AIR);
 								event.getBlock().setData((byte) 1);
 								count++;
 								if(count >= 65)
