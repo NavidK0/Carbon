@@ -1,6 +1,7 @@
 package com.lastabyss.carbon.listeners;
 
 import com.lastabyss.carbon.Carbon;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -36,37 +37,39 @@ public class BlockListener implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onDoorBreak(BlockBreakEvent evt) {
-		if (evt.getPlayer().getGameMode() == GameMode.CREATIVE)
-			return;
-        String value = evt.getBlock().getType().toString();
-			if (value.equalsIgnoreCase("spruce_door"))
-				evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().spruceDoorMat, 1));
-        else if (value.equalsIgnoreCase("birch_door"))
-				evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().birchDoorMat, 1));
-            else if (value.equalsIgnoreCase("jungle_door"))
-				evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().jungleDoorMat, 1));
-            else if (value.equalsIgnoreCase("acacia_door"))
-				evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().acaciaDoorMat, 1));
-            else if (value.equalsIgnoreCase("dark_oak_door"))
-				evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().darkOakDoorMat, 1));
+            Bukkit.broadcastMessage("BLOCK BROKEN: " + evt.getBlock().getType().toString());
+            if (evt.getPlayer().getGameMode() == GameMode.CREATIVE)
+                    return;
+            Material mat = evt.getBlock().getType();
+            if (mat == Carbon.injector().spruceDoorBlockMat) {
+                Bukkit.broadcastMessage("SPRUCE DOOR BROKEN, SUMMONING");
+                evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().spruceDoorMat, 1));
+            } else if (mat == Carbon.injector().birchDoorBlockMat)
+                evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().birchDoorMat, 1));
+            else if (mat == Carbon.injector().jungleDoorBlockMat)
+                evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().jungleDoorMat, 1));
+            else if (mat == Carbon.injector().acaciaDoorBlockMat)
+                evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().acaciaDoorMat, 1));
+            else if (mat == Carbon.injector().darkOakDoorBlockMat)
+                evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().darkOakDoorMat, 1));
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onIndirectDoorBreak(BlockBreakEvent event) {
-		if (event.getBlock().getType().toString().contains("door"))
-			return;
-		String value = event.getBlock().getRelative(BlockFace.UP).getType().toString();
-        if (value.equalsIgnoreCase("spruce_door"))
-				event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().spruceDoorMat, 1));
-        else if (value.equalsIgnoreCase("birch_door"))
-				event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().birchDoorMat, 1));
-        else if (value.equalsIgnoreCase("jungle_door"))
-				event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().jungleDoorMat, 1));
-        else if (value.equalsIgnoreCase("acacia_door"))
-				event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().acaciaDoorMat, 1));
-        else if (value.equalsIgnoreCase("dark_oak_door"))
-				event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().darkOakDoorMat, 1));
-	}
+            if (event.getBlock().getType().toString().contains("door"))
+                    return;
+            Material mat = event.getBlock().getRelative(BlockFace.UP).getType();
+            if (mat == Carbon.injector().spruceDoorBlockMat)
+                event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().spruceDoorMat, 1));
+            else if (mat == Carbon.injector().birchDoorBlockMat)
+                event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().birchDoorMat, 1));
+            else if (mat == Carbon.injector().jungleDoorBlockMat)
+                event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().jungleDoorMat, 1));
+            else if (mat == Carbon.injector().acaciaDoorBlockMat)
+                event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().acaciaDoorMat, 1));
+            else if (mat == Carbon.injector().darkOakDoorBlockMat)
+                event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().darkOakDoorMat, 1));
+            }
 
 	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

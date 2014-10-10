@@ -1,5 +1,6 @@
 package com.lastabyss.carbon.blocks;
 
+import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.items.ItemWoodenDoor.DoorType;
 
 import java.util.Random;
