@@ -43,6 +43,7 @@ public class EnchantingContainer extends net.minecraft.server.v1_7_R4.ContainerE
 		this.y = y;
 		this.z = z;
 		this.player = (EntityPlayer) playerInventory.player;
+		this.f = ((AdditionalNBTDataPlayerAbilities) player.abilities).getEnchantSeed();
 	}
 
 	@Override
@@ -81,7 +82,6 @@ public class EnchantingContainer extends net.minecraft.server.v1_7_R4.ContainerE
 		if (iinventory == this.enchantSlots) {
 			ItemStack itemstack = iinventory.getItem(0);
 			if (itemstack != null) {
-				this.f = this.random.nextLong();
 				int bookShelfs = 0;
 				for (int addZ = -1; addZ <= 1; addZ++) {
 					for (int addX = -1; addX <= 1; addX++) {
@@ -109,6 +109,9 @@ public class EnchantingContainer extends net.minecraft.server.v1_7_R4.ContainerE
 						}
 					}
 				}
+
+				this.random.setSeed(this.f);
+
 				for (int i = 0; i < 3; i++) {
 					this.costs[i] = EnchantmentManager.a(random, i, bookShelfs, itemstack);
 					this.nonRandomEnchants[i] = -1;
@@ -193,7 +196,7 @@ public class EnchantingContainer extends net.minecraft.server.v1_7_R4.ContainerE
 						}
 					}
 					entityhuman.levelDown(-level);
-
+					this.f = ((AdditionalNBTDataPlayerAbilities) player.abilities).nextEnchantSeed();
 					a(this.enchantSlots);
 				}
 			}

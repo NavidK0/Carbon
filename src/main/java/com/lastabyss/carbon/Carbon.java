@@ -6,6 +6,7 @@ import com.lastabyss.carbon.listeners.BlockListener;
 import com.lastabyss.carbon.listeners.CommandListener;
 import com.lastabyss.carbon.listeners.EntityListener;
 import com.lastabyss.carbon.listeners.ItemListener;
+import com.lastabyss.carbon.listeners.PlayerListener;
 import com.lastabyss.carbon.listeners.WorldBorderListener;
 import com.lastabyss.carbon.protocolblocker.ProtocolBlocker;
 import com.lastabyss.carbon.protocolmodifier.ProtocolBlockListener;
@@ -37,6 +38,7 @@ public class Carbon extends JavaPlugin {
   private ItemListener itemListener = new ItemListener(this);
   private WorldBorderListener worldBorderListener = new WorldBorderListener();
   private EntityListener entityListener = new EntityListener();
+  private PlayerListener playerListener = new PlayerListener();
 
   private ProtocolBlocker protocolBlocker = new ProtocolBlocker(this);
   private CarbonWorldGenerator worldGenerator = new CarbonWorldGenerator(this);
@@ -93,6 +95,7 @@ public class Carbon extends JavaPlugin {
     getServer().getPluginManager().registerEvents(worldGenerator, this);
     getServer().getPluginManager().registerEvents(entityListener, this);
     getServer().getPluginManager().registerEvents(worldBorderListener, this);
+    getServer().getPluginManager().registerEvents(playerListener, this);
     protocolBlocker.loadConfig();
     getServer().getPluginManager().registerEvents(protocolBlocker, this);
     
