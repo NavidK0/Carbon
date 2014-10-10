@@ -37,14 +37,12 @@ public class BlockListener implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onDoorBreak(BlockBreakEvent evt) {
-            Bukkit.broadcastMessage("BLOCK BROKEN: " + evt.getBlock().getType().toString());
             if (evt.getPlayer().getGameMode() == GameMode.CREATIVE)
                     return;
             Material mat = evt.getBlock().getType();
-            if (mat == Carbon.injector().spruceDoorBlockMat) {
-                Bukkit.broadcastMessage("SPRUCE DOOR BROKEN, SUMMONING");
+            if (mat == Carbon.injector().spruceDoorBlockMat)
                 evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().spruceDoorMat, 1));
-            } else if (mat == Carbon.injector().birchDoorBlockMat)
+            else if (mat == Carbon.injector().birchDoorBlockMat)
                 evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().birchDoorMat, 1));
             else if (mat == Carbon.injector().jungleDoorBlockMat)
                 evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().jungleDoorMat, 1));
