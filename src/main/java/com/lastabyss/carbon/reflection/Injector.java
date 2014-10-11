@@ -47,6 +47,7 @@ import com.lastabyss.carbon.items.ItemRabbitHide;
 import com.lastabyss.carbon.items.ItemRabbitStew;
 import com.lastabyss.carbon.items.ItemWoodenDoor;
 import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
+import com.lastabyss.carbon.recipes.RecipesBanners;
 import com.lastabyss.carbon.utils.Utilities;
 import com.lastabyss.carbon.worldborder.WorldBorder;
 
@@ -571,12 +572,7 @@ public class Injector {
       ShapedRecipe leather = new ShapedRecipe(new ItemStack(Material.LEATHER)).shape(new String[] { "ll", "ll" }).setIngredient('l', this.rabbitHideItemMat);
       addRecipe(leather);
 
-      //Add temporary banners
-
-      for (int c = 0; c < 16; c++) {
-          ShapedRecipe defaultBanners = new ShapedRecipe(new ItemStack(bannerItemMat, 1, (short) (15 - c))).shape(new String[] { "www", "www", " s "}).setIngredient('w', Material.WOOL, c).setIngredient('s', Material.STICK);
-          addRecipe(defaultBanners);
-      }
+      new RecipesBanners().register();
   }
 
   public void addRecipe(Recipe recipe) {
