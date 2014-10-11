@@ -8,7 +8,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerLoginEvent.Result;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -61,18 +62,25 @@ public class ProtocolBlocker implements Listener {
 	private HashMap<Integer, String> restrictedProtocols = new HashMap<Integer, String>();
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onPlayerJoin(final PlayerJoinEvent event) {
+	public void onPlayerLogin(final PlayerLoginEvent event) { // Changed to PlayerLoginEvent, will get executed earlier!
             if (config == null) return;
-            BukkitRunnable task = new BukkitRunnable() {
-                @Override
-                public void run() {
-                    int version = Utilities.getProtocolVersion(event.getPlayer());
-                    if (restrictedProtocols.containsKey(version)) {
-                            event.getPlayer().kickPlayer(restrictedProtocols.get(version));
-                    }  
-                }
-            };
-            task.runTask(plugin);
+            int version = Utilities.getProtocolVersion(event.getPlayer());
+            if (restrictedProtocols.containsKey(version)) {
+                event.disallow(Result.KICK_OTHER, restrictedProtocols.get(version)); // Prevents the player fully from logging in
+            } 
+            /*
+            	Why the hell would someone do this in a runnable? Doesn't make sense when it's not even an asynchronous task.
+            */
+//            BukkitRunnable task = new BukkitRunnable() {
+//                @Override
+//                public void run() {
+//                    int version = Utilities.getProtocolVersion(event.getPlayer());
+//                    if (restrictedProtocols.containsKey(version)) {
+//                            event.getPlayer().kickPlayer(restrictedProtocols.get(version));
+//                    }  
+//                }
+//            };
+//            task.runTask(plugin);
 	}
 
 }
