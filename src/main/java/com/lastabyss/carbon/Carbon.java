@@ -109,11 +109,12 @@ public class Carbon extends JavaPlugin {
         new ProtocolBlockListener(this).remap().init();
         new ProtocolItemListener(this).remap().init();
         new ProtocolEntityListener(this).remap().init();
+        protocolBlocker.initProtocolLibListener();
       } catch (Throwable t) {
         t.printStackTrace();
       }
     } else {
-      log.info("ProtocolLib not found, not hooking. 1.7 clients not supported.");
+      log.info("ProtocolLib not found, not hooking. 1.7 clients not supported. ProtocolBlocker will kick clients only after full join");
     }
     try {
         Metrics metrics = new Metrics(this);
