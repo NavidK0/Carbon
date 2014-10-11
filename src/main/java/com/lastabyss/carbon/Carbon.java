@@ -106,9 +106,9 @@ public class Carbon extends JavaPlugin {
 
     if (getServer().getPluginManager().getPlugin("ProtocolLib") != null) {
       try {
-        new ProtocolBlockListener(this).remap().init();
-        new ProtocolItemListener(this).remap().init();
-        new ProtocolEntityListener(this).remap().init();
+        new ProtocolBlockListener(this).loadRemapList().init();
+        new ProtocolItemListener(this).loadRemapList().init();
+        new ProtocolEntityListener(this).loadRemapList().init();
         protocolBlocker.initProtocolLibListener();
       } catch (Throwable t) {
         t.printStackTrace();
