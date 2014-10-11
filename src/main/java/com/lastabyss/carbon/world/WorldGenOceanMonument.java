@@ -1,1 +1,1 @@
-Main class for the ocean monuments
+//Main class for the ocean monuments
