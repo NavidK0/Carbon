@@ -6,14 +6,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.bukkit.DyeColor;
+import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftInventoryView;
 import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 
+import com.lastabyss.carbon.inventory.bukkit.CraftInventoryEnchanting;
 import com.lastabyss.carbon.utils.Utilities;
 
 import net.minecraft.server.v1_7_R4.Blocks;
+import net.minecraft.server.v1_7_R4.Container;
 import net.minecraft.server.v1_7_R4.Enchantment;
 import net.minecraft.server.v1_7_R4.EnchantmentInstance;
 import net.minecraft.server.v1_7_R4.EnchantmentManager;
@@ -24,26 +28,42 @@ import net.minecraft.server.v1_7_R4.IInventory;
 import net.minecraft.server.v1_7_R4.ItemStack;
 import net.minecraft.server.v1_7_R4.Items;
 import net.minecraft.server.v1_7_R4.PlayerInventory;
+import net.minecraft.server.v1_7_R4.Slot;
 import net.minecraft.server.v1_7_R4.World;
 
-public class EnchantingContainer extends net.minecraft.server.v1_7_R4.ContainerEnchantTable {
+public class EnchantingContainer extends Container {
 
+	private EnchantingContainerInventory enchantSlots = new EnchantingContainerInventory(this, "Enchant", true, 2);
 	private EntityPlayer player;
 	private Random random = new Random();
 	private World world;
 	private int x;
 	private int y;
 	private int z;
+	private int[] costs = new int[3];
 	private int[] nonRandomEnchants = new int[] { -1, -1, -1 };
+	private int enchantSeed;
+	private Player bukkitPlayer;
 
 	public EnchantingContainer(PlayerInventory playerInventory, World world, int x, int y, int z) {
-		super(playerInventory, world, x, y, z);
 		this.world = world;
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		this.bukkitPlayer = ((Player) playerInventory.player.getBukkitEntity());
+		this.enchantSlots.player = this.bukkitPlayer;
 		this.player = (EntityPlayer) playerInventory.player;
-		this.f = ((AdditionalNBTDataPlayerAbilities) player.abilities).getEnchantSeed();
+		this.enchantSeed = ((AdditionalNBTDataPlayerAbilities) player.abilities).getEnchantSeed();
+		a(new SlotEnchant(this, this.enchantSlots, 0, 15, 47));
+		a(new SlotLapis(this.enchantSlots, 1, 35, 47));
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 9; j++) {
+				a(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+			}
+		}
+		for (int i = 0; i < 9; i++) {
+			a(new Slot(playerInventory, i, 8 + i * 18, 142));
+		}
 	}
 
 	@Override
@@ -53,7 +73,7 @@ public class EnchantingContainer extends net.minecraft.server.v1_7_R4.ContainerE
 		icrafting.setContainerData(this, 1, this.costs[1]);
 		icrafting.setContainerData(this, 2, this.costs[2]);
 		if (Utilities.getProtocolVersion(player.getBukkitEntity()) == Utilities.CLIENT_1_8_PROTOCOL_VERSION) {
-			icrafting.setContainerData(this, 3, (int) (this.f & -16));
+			icrafting.setContainerData(this, 3, (int) (this.enchantSeed & -16));
 			icrafting.setContainerData(this, 4, this.nonRandomEnchants[0]);
 			icrafting.setContainerData(this, 5, this.nonRandomEnchants[1]);
 			icrafting.setContainerData(this, 6, this.nonRandomEnchants[2]);
@@ -69,7 +89,7 @@ public class EnchantingContainer extends net.minecraft.server.v1_7_R4.ContainerE
 			icrafting.setContainerData(this, 1, this.costs[1]);
 			icrafting.setContainerData(this, 2, this.costs[2]);
 			if (Utilities.getProtocolVersion(player.getBukkitEntity()) == Utilities.CLIENT_1_8_PROTOCOL_VERSION) {
-				icrafting.setContainerData(this, 3, (int) (this.f & -16));
+				icrafting.setContainerData(this, 3, (int) (this.enchantSeed & -16));
 				icrafting.setContainerData(this, 4, this.nonRandomEnchants[0]);
 				icrafting.setContainerData(this, 5, this.nonRandomEnchants[1]);
 				icrafting.setContainerData(this, 6, this.nonRandomEnchants[2]);
@@ -110,7 +130,7 @@ public class EnchantingContainer extends net.minecraft.server.v1_7_R4.ContainerE
 					}
 				}
 
-				this.random.setSeed(this.f);
+				this.random.setSeed(this.enchantSeed);
 
 				for (int i = 0; i < 3; i++) {
 					this.costs[i] = EnchantmentManager.a(random, i, bookShelfs, itemstack);
@@ -155,6 +175,7 @@ public class EnchantingContainer extends net.minecraft.server.v1_7_R4.ContainerE
 	@Override
 	public boolean a(EntityHuman entityhuman, int i) {
 		ItemStack itemstack = this.enchantSlots.getItem(0);
+		ItemStack lapisItem = this.enchantSlots.getItem(1);
 		if ((this.costs[i] > 0) && (itemstack != null) && ((entityhuman.expLevel >= this.costs[i]) || (entityhuman.abilities.canInstantlyBuild))) {
 			if (!this.world.isStatic) {
 				List<?> list = getEnchantsToAdd(itemstack, i, this.costs[i]);
@@ -174,7 +195,17 @@ public class EnchantingContainer extends net.minecraft.server.v1_7_R4.ContainerE
 					this.world.getServer().getPluginManager().callEvent(event);
 
 					int level = event.getExpLevelCost();
-					if ((event.isCancelled()) || ((level > entityhuman.expLevel) && (!entityhuman.abilities.canInstantlyBuild)) || (event.getEnchantsToAdd().isEmpty())) {
+					boolean hasEnoughLapis = false;
+					if (level == 0) {
+						hasEnoughLapis = true;
+					}
+					if (lapisItem != null && level <= lapisItem.count) {
+						hasEnoughLapis = true;
+					}
+					if (((EntityPlayer) entityhuman).playerConnection.networkManager.getVersion() != Utilities.CLIENT_1_8_PROTOCOL_VERSION) {
+						hasEnoughLapis = true;
+					}
+					if ((event.isCancelled()) || ((!hasEnoughLapis || level > entityhuman.expLevel) && (!entityhuman.abilities.canInstantlyBuild)) || (event.getEnchantsToAdd().isEmpty())) {
 						return false;
 					}
 					if (isBook) {
@@ -196,7 +227,15 @@ public class EnchantingContainer extends net.minecraft.server.v1_7_R4.ContainerE
 						}
 					}
 					entityhuman.levelDown(-level);
-					this.f = ((AdditionalNBTDataPlayerAbilities) player.abilities).nextEnchantSeed();
+					if (!entityhuman.abilities.canInstantlyBuild) {
+						if (lapisItem != null) {
+							lapisItem.count -= level;
+							if (lapisItem.count <= 0) {
+								this.enchantSlots.setItem(1, (ItemStack) null);
+							}
+						}
+					}
+					this.enchantSeed = ((AdditionalNBTDataPlayerAbilities) player.abilities).nextEnchantSeed();
 					a(this.enchantSlots);
 				}
 			}
@@ -206,13 +245,86 @@ public class EnchantingContainer extends net.minecraft.server.v1_7_R4.ContainerE
 	}
 
 	private List<EnchantmentInstance> getEnchantsToAdd(ItemStack itemstack, int i, int cost) {
-		random.setSeed(this.f + i);
+		random.setSeed(this.enchantSeed + i);
 		@SuppressWarnings("unchecked")
 		List<EnchantmentInstance> list = EnchantmentManager.b(random, itemstack, costs[i]);
 		if (itemstack.getItem() == Items.BOOK && list != null && list.size() > 1) {
 			list.remove(this.random.nextInt(list.size()));
 		}
 		return list;
+	}
+
+	@Override
+	public void b(EntityHuman entityhuman) {
+		super.b(entityhuman);
+		ItemStack itemstack = this.enchantSlots.splitWithoutUpdate(0);
+		if (itemstack != null) {
+			entityhuman.drop(itemstack, false);
+		}
+		ItemStack itemlapis = this.enchantSlots.splitWithoutUpdate(1);
+		if (itemlapis != null) {
+			entityhuman.drop(itemlapis, false);
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public ItemStack b(EntityHuman entityhuman, int i) {
+		ItemStack itemstack = null;
+		Slot slot = (Slot) this.c.get(i);
+		if ((slot != null) && (slot.hasItem())) {
+			ItemStack itemstack1 = slot.getItem();
+			itemstack = itemstack1.cloneItemStack();
+			if (i == 0) {
+				if (!a(itemstack1, 2, 38, true)) {
+					return null;
+				}
+			} else if (i == 1) {
+				if (!this.a(itemstack1, 2, 38, true)) {
+					return null;
+				}
+			} else if (itemstack1.getItem() == Items.INK_SACK && DyeColor.getByData((byte) itemstack1.getData()) == DyeColor.BLUE) {
+				if (!this.a(itemstack1, 1, 2, true)) {
+					return null;
+				}
+			} else {
+				if ((((Slot) this.c.get(0)).hasItem()) || (!((Slot) this.c.get(0)).isAllowed(itemstack1))) {
+					return null;
+				}
+				if ((itemstack1.hasTag()) && (itemstack1.count == 1)) {
+					((Slot) this.c.get(0)).set(itemstack1.cloneItemStack());
+					itemstack1.count = 0;
+				} else if (itemstack1.count >= 1) {
+					((Slot) this.c.get(0)).set(new ItemStack(itemstack1.getItem(), 1, itemstack.getData()));
+					itemstack1.count -= 1;
+				}
+			}
+			if (itemstack1.count == 0) {
+				slot.set((ItemStack) null);
+			} else {
+				slot.f();
+			}
+			if (itemstack1.count == itemstack.count) {
+				return null;
+			}
+			slot.a(entityhuman, itemstack1);
+		}
+		return itemstack;
+	}
+
+	@Override
+	public boolean a(EntityHuman human) {
+	    return this.world.getType(this.x, this.y, this.z) == Blocks.ENCHANTMENT_TABLE;
+	}
+
+	private CraftInventoryView bukkitView;
+	public CraftInventoryView getBukkitView() {
+		if (this.bukkitView != null) {
+			return this.bukkitView;
+		}
+		CraftInventoryEnchanting inventory = new CraftInventoryEnchanting(this.enchantSlots);
+		this.bukkitView = new CraftInventoryView(this.bukkitPlayer, inventory, this);
+		return this.bukkitView;
 	}
 
 }
