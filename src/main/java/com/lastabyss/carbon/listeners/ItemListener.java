@@ -2,7 +2,11 @@ package com.lastabyss.carbon.listeners;
 
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.entity.EntityEndermite;
+
+import java.util.HashSet;
 import java.util.Random;
+import java.util.UUID;
+
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.enchantments.Enchantment;
@@ -23,6 +27,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  *
@@ -32,11 +37,12 @@ public class ItemListener implements Listener {
 
     Carbon plugin;
     Random random = new Random();
+    HashSet<UUID> recentCreepers = new HashSet<UUID>();
 
     public ItemListener(Carbon plugin) {
         this.plugin = plugin;
     }
-    
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onTeleport(PlayerTeleportEvent e) {
         if(e.getCause().equals(TeleportCause.ENDER_PEARL) && plugin.getConfig().getBoolean("mobSpawning.endermites", true)) {
@@ -47,7 +53,7 @@ public class ItemListener implements Listener {
             }
         }
     }
-    
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityKilled(EntityDeathEvent e) {
         if (plugin.getConfig().getBoolean("options.sheep.dropMutton", true)) {
@@ -82,37 +88,46 @@ public class ItemListener implements Listener {
             }
         }
     }
-    
+
     @EventHandler
     public void onCreeperDeath(EntityDeathEvent e) {
         LivingEntity entity = e.getEntity();
-        if (entity.getLastDamageCause() == null || entity.getLastDamageCause().getCause() == null) return;
-        if (plugin.getConfig().getBoolean("options.creeper.dropMobHead", true))
-            if (entity.getLastDamageCause().getCause() == DamageCause.ENTITY_EXPLOSION &&
-                    entity.getLastDamageCause() instanceof EntityDamageByEntityEvent &&
-                    ((EntityDamageByEntityEvent) entity.getLastDamageCause()).getDamager() != null &&
-                    ((EntityDamageByEntityEvent) entity.getLastDamageCause()).getDamager() instanceof Creeper &&
-                    ((Creeper)((EntityDamageByEntityEvent) entity.getLastDamageCause()).getDamager()).isPowered()){
-                ItemStack skullItem = null;
-                if (entity.getType().equals(EntityType.SKELETON)) {
-                    Skeleton skeleton = (Skeleton) e.getEntity();
-                    if (skeleton.getSkeletonType() == Skeleton.SkeletonType.NORMAL)
-                        skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)0);  
-                    else if (skeleton.getSkeletonType() == Skeleton.SkeletonType.WITHER)
-                        skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)1);
-                } else if (entity.getType().equals(EntityType.ZOMBIE))
-                    skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)2); 
-                else if (entity.getType().equals(EntityType.PLAYER)) {
-                    Player p = (Player) entity;
-                    skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)3);
-                    SkullMeta meta = (SkullMeta) skullItem.getItemMeta();
-                    meta.setOwner(p.getName());
-                    meta.setDisplayName(p.getName() + "'s Head");
-                    skullItem.setItemMeta(meta);
-                } else if (entity.getType() == EntityType.CREEPER)
-                    skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)4); 
-                if (skullItem != null)
-                    entity.getWorld().dropItemNaturally(entity.getLocation(), skullItem);
-            }
+        if (entity.getLastDamageCause() == null || entity.getLastDamageCause().getCause() == null
+                || !plugin.getConfig().getBoolean("options.creeper.dropMobHead", true)
+                || entity.getLastDamageCause().getCause() != DamageCause.ENTITY_EXPLOSION
+                || !(entity.getLastDamageCause() instanceof EntityDamageByEntityEvent)) return;
+        EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent) entity.getLastDamageCause();
+        if (damageEvent.getDamager() == null || damageEvent.getDamager().getType() != EntityType.CREEPER
+                || !((Creeper) damageEvent.getDamager()).isPowered()
+                || recentCreepers.contains(damageEvent.getDamager().getUniqueId())) return;
+        ItemStack skullItem = null;
+        if (entity.getType() == EntityType.SKELETON) {
+            Skeleton skeleton = (Skeleton) e.getEntity();
+            if (skeleton.getSkeletonType() == Skeleton.SkeletonType.NORMAL)
+                skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)0);  
+            else if (skeleton.getSkeletonType() == Skeleton.SkeletonType.WITHER)
+                skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)1);
+        } else if (entity.getType() == EntityType.ZOMBIE)
+            skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)2); 
+        else if (entity.getType() == EntityType.PLAYER) {
+            Player p = (Player) entity;
+            skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)3);
+            SkullMeta meta = (SkullMeta) skullItem.getItemMeta();
+            meta.setOwner(p.getName());
+            meta.setDisplayName(p.getName() + "'s Head");
+            skullItem.setItemMeta(meta);
+        } else if (entity.getType() == EntityType.CREEPER)
+            skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)4); 
+        if (skullItem != null) {
+            final UUID uuid = damageEvent.getDamager().getUniqueId();
+            recentCreepers.add(uuid); // Temporarily track UUID to prevent another head drop
+            new BukkitRunnable() { // Remove UUID next tick
+                @Override
+                public void run() {
+                    recentCreepers.remove(uuid);
+                }
+            }.runTaskLater(plugin, 1L);
+            entity.getWorld().dropItemNaturally(entity.getLocation(), skullItem);
+        }
     }
 }
