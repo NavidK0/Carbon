@@ -92,10 +92,10 @@ public class ItemListener implements Listener {
     @EventHandler
     public void onCreeperDeath(EntityDeathEvent e) {
         LivingEntity entity = e.getEntity();
-        if (entity.getLastDamageCause().getCause() != DamageCause.ENTITY_EXPLOSION
+        if (entity.getLastDamageCause() == null || entity.getLastDamageCause().getCause() == null
+                || entity.getLastDamageCause().getCause() != DamageCause.ENTITY_EXPLOSION
                 || !plugin.getConfig().getBoolean("options.creeper.dropMobHead", true)
                 || !entity.getWorld().isGameRule("doMobLoot")
-                || entity.getLastDamageCause() == null || entity.getLastDamageCause().getCause() == null
                 || !(entity.getLastDamageCause() instanceof EntityDamageByEntityEvent)) return;
         EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent) entity.getLastDamageCause();
         if (damageEvent.getDamager() == null || damageEvent.getDamager().getType() != EntityType.CREEPER
