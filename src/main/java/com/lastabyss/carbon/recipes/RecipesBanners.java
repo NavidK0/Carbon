@@ -26,6 +26,9 @@ public class RecipesBanners {
 
 		//patterns recipe
 		CraftingManager.getInstance().getRecipes().add(new RecipesBannerPatterns());
+
+		//copy recipe
+		//CraftingManager.getInstance().getRecipes().add(new RecipesBannerCopy());
 	}
 
 }

@@ -1,12 +1,18 @@
 package com.lastabyss.carbon.listeners;
 
 import com.lastabyss.carbon.Carbon;
-import org.bukkit.Bukkit;
+import com.lastabyss.carbon.entity.TileEntityBanner;
+
+import net.minecraft.server.v1_7_R4.NBTTagCompound;
+import net.minecraft.server.v1_7_R4.TileEntity;
+
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -26,12 +32,44 @@ import org.bukkit.inventory.ItemStack;
 public class BlockListener implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onCoarseDirtBreak(BlockBreakEvent event) {
-		if (event.getPlayer().getGameMode() == GameMode.CREATIVE)
+	public void onDirtBreakBreak(BlockBreakEvent event) {
+		if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
 			return;
+		}
 		if (event.getBlock().getState().getData().toString().equals("DIRT(1)")) {
-			event.getBlock().setType(Material.AIR);
 			event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), new ItemStack(Material.DIRT, 1, (short) 1));
+			event.getBlock().setType(Material.AIR);
+			event.setCancelled(true);
+			return;
+		}
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void onBannerBreak(BlockBreakEvent event) {
+		if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
+			return;
+		}
+		if (event.getBlock().getType() == Carbon.injector().freeStandingBannerMat) {
+			net.minecraft.server.v1_7_R4.ItemStack itemStack = null;
+			net.minecraft.server.v1_7_R4.World nmsWolrd = ((CraftWorld) event.getBlock().getWorld()).getHandle();
+			TileEntity tileEntity = nmsWolrd.getTileEntity(event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ());
+			if (tileEntity instanceof TileEntityBanner) {
+				itemStack = new net.minecraft.server.v1_7_R4.ItemStack(Carbon.injector().standingBannerItem, 1, ((TileEntityBanner) tileEntity).getBaseColor());
+				NBTTagCompound compound = new NBTTagCompound();
+				tileEntity.b(compound);
+				compound.remove("x");
+				compound.remove("y");
+				compound.remove("z");
+				compound.remove("id");
+				itemStack.setTag(new NBTTagCompound());
+				itemStack.getTag().set("BlockEntityTag", compound);
+			}
+			if (itemStack != null) {
+				event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), CraftItemStack.asCraftMirror(itemStack));
+			}
+			event.getBlock().setType(Material.AIR);
+			event.setCancelled(true);
+			return;
 		}
 	}
 
