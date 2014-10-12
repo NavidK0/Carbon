@@ -3,7 +3,7 @@ Carbon
 
 Carbon is a plugin which adds 1.8 blocks and features into a spigot protocol hacked server.
 
-NEW: WHEN SUBMITTING A PULL REQUEST, PLEASE USE PROPER LABELS!!!
+<h1><b>NEW: WHEN SUBMITTING A PULL REQUEST, PLEASE USE PROPER LABELS!!!</b></h1>
 
 More stable releases are available [on Spigot](http://www.spigotmc.org/resources/.1258/).  
 If you find a bug, post an issue containing the version you are using!  
