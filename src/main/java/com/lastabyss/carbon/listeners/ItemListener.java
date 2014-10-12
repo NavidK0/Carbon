@@ -86,8 +86,9 @@ public class ItemListener implements Listener {
     @EventHandler
     public void onCreeperDeath(EntityDeathEvent e) {
         LivingEntity entity = e.getEntity();
+        if (entity.getLastDamageCause() == null || entity.getLastDamageCause().getCause() == null) return;
         if (plugin.getConfig().getBoolean("options.creeper.dropMobHead", true))
-            if (entity.getLastDamageCause().getCause().equals(DamageCause.ENTITY_EXPLOSION) &&
+            if (entity.getLastDamageCause().getCause() == DamageCause.ENTITY_EXPLOSION &&
                     entity.getLastDamageCause() instanceof EntityDamageByEntityEvent &&
                     ((EntityDamageByEntityEvent) entity.getLastDamageCause()).getDamager() != null &&
                     ((EntityDamageByEntityEvent) entity.getLastDamageCause()).getDamager() instanceof Creeper &&
@@ -108,7 +109,7 @@ public class ItemListener implements Listener {
                     meta.setOwner(p.getName());
                     meta.setDisplayName(p.getName() + "'s Head");
                     skullItem.setItemMeta(meta);
-                } else if (entity.getType().equals(EntityType.CREEPER))
+                } else if (entity.getType() == EntityType.CREEPER)
                     skullItem = new ItemStack(Material.SKULL_ITEM, 1, (short)4); 
                 if (skullItem != null)
                     entity.getWorld().dropItemNaturally(entity.getLocation(), skullItem);
