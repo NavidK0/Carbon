@@ -9,6 +9,7 @@ import com.lastabyss.carbon.blocks.BlockEnchantTable;
 import com.lastabyss.carbon.blocks.BlockGoldPressurePlate;
 import com.lastabyss.carbon.blocks.BlockIronPressurePlate;
 import com.lastabyss.carbon.blocks.BlockIronTrapdoor;
+import com.lastabyss.carbon.blocks.BlockOptimizedChest;
 import com.lastabyss.carbon.blocks.BlockPrismarine;
 import com.lastabyss.carbon.blocks.BlockRedSandstone;
 import com.lastabyss.carbon.blocks.BlockRedSandstoneStairs;
@@ -33,6 +34,7 @@ import com.lastabyss.carbon.entity.EntityEndermite;
 import com.lastabyss.carbon.entity.EntityGuardian;
 import com.lastabyss.carbon.entity.EntityRabbit;
 import com.lastabyss.carbon.entity.TileEntityBanner;
+import com.lastabyss.carbon.entity.TileEntityOptimizedChest;
 import com.lastabyss.carbon.entity.bukkit.Endermite;
 import com.lastabyss.carbon.entity.bukkit.Guardian;
 import com.lastabyss.carbon.entity.bukkit.Rabbit;
@@ -131,6 +133,8 @@ public class Injector {
   public Block enchantTableBlock = new BlockEnchantTable();
   public Block daylightDetectorBlock = new BlockDaylightDetector(false);
   public Block daylightDetectorInvertedBlock = new BlockDaylightDetector(true);
+  public Block optimizedChestBlock = new BlockOptimizedChest(0);
+  public Block optimizedTrappedChestBlock = new BlockOptimizedChest(1);
 
   //Bukkit materials
   public Material slimeMat = Utilities.addMaterial("SLIME", 165);
@@ -229,6 +233,8 @@ public class Injector {
   public Item anvilItem = new ItemAnvil(anvilBlock);
   public Item enchantTableItem = new ItemBlock(enchantTableBlock);
   public Item daylightDetectorItem = new ItemBlock(daylightDetectorBlock);
+  public Item optimizedChestItem = new ItemBlock(optimizedChestBlock);
+  public Item optimizedTrappedChestItem = new ItemBlock(optimizedTrappedChestBlock);
 
   public Item rabbitItem = new ItemRabbit();
   public Item cookedRabbitItem = new ItemCookedRabbit();
@@ -270,12 +276,11 @@ public class Injector {
         Carbon.log.log(Level.INFO, "[Carbon] Item {0} was registered into Minecraft.", name);
   }
 
+  @SuppressWarnings("unchecked")
   public static void registerTileEntity(Class<? extends TileEntity> entityClass, String name) {
       try {
-          Class<TileEntity> clazz = TileEntity.class;
-          Method register = clazz.getDeclaredMethod("a", Class.class, String.class);
-          register.setAccessible(true);
-          register.invoke(null, entityClass, name);
+    	  ((Map<String, Class<? extends TileEntity>>)Utilities.setAccessible(Field.class, TileEntity.class.getDeclaredField("i"), true).get(null)).put(name, entityClass);
+    	  ((Map<Class<? extends TileEntity>, String>)Utilities.setAccessible(Field.class, TileEntity.class.getDeclaredField("j"), true).get(null)).put(entityClass, name);
           if (plugin.getConfig().getBoolean("debug.verbose", false))
             Carbon.log.log(Level.INFO, "[Carbon] Tile Entity {0} was registered into Minecraft.", entityClass.getCanonicalName());
       } catch (Exception e) {
@@ -376,6 +381,8 @@ public class Injector {
     registerItem(431, "dark_oak_door", darkOakDoorItem);
     registerBlock(145, "anvil", anvilBlock, anvilItem);
     registerBlock(116, "enchanting_table", enchantTableBlock, enchantTableItem);
+    registerBlock(54, "chest", optimizedChestBlock, optimizedChestItem);
+    registerBlock(146, "trapped_chest", optimizedTrappedChestBlock, optimizedTrappedChestItem);
 
     //Register items
     registerItem(409, "prismarine_shard", prismarineShardItem);
@@ -396,6 +403,7 @@ public class Injector {
 
     //Register tile entities
     registerTileEntity(TileEntityBanner.class, "Banner");
+    registerTileEntity(TileEntityOptimizedChest.class, "Chest");
 
     //Register commands from 1.8
     Utilities.registerBukkitCommand("minecraft", new CommandWorldBorder());
@@ -411,19 +419,21 @@ public class Injector {
     //inject our items too
     try {
         Class<Blocks> blocksClass = Blocks.class;
-        setStaticFinalField(blocksClass, "STONE", Carbon.injector().stoneBlock);
-        setStaticFinalField(blocksClass, "SPONGE", Carbon.injector().spongeBlock);
-        setStaticFinalField(blocksClass, "TORCH", Carbon.injector().torchBlock);
-        setStaticFinalField(blocksClass, "REDSTONE_TORCH_ON", Carbon.injector().redstoneTorchBlockOn);
-        setStaticFinalField(blocksClass, "REDSTONE_TORCH_OFF", Carbon.injector().redstoneTorchBlockOff);
-        setStaticFinalField(blocksClass, "STONE_BUTTON", Carbon.injector().stoneButtonBlock);
-        setStaticFinalField(blocksClass, "WOOD_BUTTON", Carbon.injector().woodButtonBlock);
-        setStaticFinalField(blocksClass, "STONE_PLATE", Carbon.injector().stonePlateBlock);
-        setStaticFinalField(blocksClass, "WOOD_PLATE", Carbon.injector().woodPlateBlock);
-        setStaticFinalField(blocksClass, "IRON_PLATE", Carbon.injector().ironPlateBlock);
-        setStaticFinalField(blocksClass, "GOLD_PLATE", Carbon.injector().goldPlateBlock);
-        setStaticFinalField(blocksClass, "ANVIL", Carbon.injector().anvilBlock);
-        setStaticFinalField(blocksClass, "ENCHANTMENT_TABLE", Carbon.injector().enchantTableBlock);
+        setStaticFinalField(blocksClass, "STONE", stoneBlock);
+        setStaticFinalField(blocksClass, "SPONGE", spongeBlock);
+        setStaticFinalField(blocksClass, "TORCH", torchBlock);
+        setStaticFinalField(blocksClass, "REDSTONE_TORCH_ON", redstoneTorchBlockOn);
+        setStaticFinalField(blocksClass, "REDSTONE_TORCH_OFF", redstoneTorchBlockOff);
+        setStaticFinalField(blocksClass, "STONE_BUTTON", stoneButtonBlock);
+        setStaticFinalField(blocksClass, "WOOD_BUTTON", woodButtonBlock);
+        setStaticFinalField(blocksClass, "STONE_PLATE", stonePlateBlock);
+        setStaticFinalField(blocksClass, "WOOD_PLATE", woodPlateBlock);
+        setStaticFinalField(blocksClass, "IRON_PLATE", ironPlateBlock);
+        setStaticFinalField(blocksClass, "GOLD_PLATE", goldPlateBlock);
+        setStaticFinalField(blocksClass, "ANVIL", anvilBlock);
+        setStaticFinalField(blocksClass, "ENCHANTMENT_TABLE", enchantTableBlock);
+        setStaticFinalField(blocksClass, "CHEST", optimizedChestBlock);
+        setStaticFinalField(blocksClass, "TRAPPED_CHEST", optimizedTrappedChestBlock);
     } catch (Throwable t) {
         t.printStackTrace();
         Bukkit.shutdown();
