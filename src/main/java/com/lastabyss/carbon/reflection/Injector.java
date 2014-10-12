@@ -223,6 +223,7 @@ public class Injector {
   public Item anvilItem = new ItemAnvil(anvilBlock);
   public Item enchantTableItem = new ItemBlock(enchantTableBlock);
   public Item daylightDetectorItem = new ItemBlock(daylightDetectorBlock);
+  public Item daylightDetectorInvertedItem = new ItemBlock(daylightDetectorInvertedBlock);
 
   public Item rabbitItem = new ItemRabbit();
   public Item cookedRabbitItem = new ItemCookedRabbit();
@@ -325,7 +326,7 @@ public class Injector {
     registerBlock(169, "sea_lantern", seaLanternBlock, seaLanternItem);
     registerBlock(176, "standing_banner", standingBannerBlock);
     registerBlock(177, "wall_banner", wallBannerBlock);
-    registerBlock(178, "daylight_detector_inverted", daylightDetectorInvertedBlock, daylightDetectorItem);
+    registerBlock(178, "daylight_detector_inverted", daylightDetectorInvertedBlock, daylightDetectorInvertedItem);
     registerBlock(179, "red_sandstone", redSandstoneBlock, redSandstoneItem);
     registerBlock(180, "red_sandstone_stairs", redSandstoneStairsBlock, redSandstoneStairsItem);
     registerBlock(181, "double_stone_slab2", redSandstoneDoubleSlabBlock, redSandstoneDoubleSlabItem);
