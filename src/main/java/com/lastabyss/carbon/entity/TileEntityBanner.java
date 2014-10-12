@@ -64,7 +64,7 @@ public class TileEntityBanner extends TileEntity {
 		return this.baseColor;
 	}
 
-	public static int getData(ItemStack itemStack) {
+	public static int getBaseColor(ItemStack itemStack) {
 		if (itemStack.getTag() == null) {
 			return itemStack.getData();
 		}

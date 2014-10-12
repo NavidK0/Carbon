@@ -30,6 +30,16 @@ public class RecipesBannerPatterns implements IRecipe {
 	}
 
 	@Override
+	public List<ItemStack> getIngredients() {
+		return new ArrayList<ItemStack>();
+	}
+
+	@Override
+	public Recipe toBukkitRecipe() {
+		return new DynamicBannerRecipe();
+	}
+
+	@Override
 	public ItemStack a(InventoryCrafting inventoryCrafting) {
 		ItemStack result = null;
 
@@ -102,16 +112,6 @@ public class RecipesBannerPatterns implements IRecipe {
 		} else {
 			return this.getPattern(inventoryCrafting) != null;
 		}
-	}
-
-	@Override
-	public List<ItemStack> getIngredients() {
-		return new ArrayList<ItemStack>();
-	}
-
-	@Override
-	public Recipe toBukkitRecipe() {
-		return new DynamicBannerRecipe();
 	}
 
 	private EnumBannerPatterns getPattern(InventoryCrafting inventoryCrafting) {
