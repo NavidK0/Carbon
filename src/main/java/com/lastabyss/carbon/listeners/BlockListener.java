@@ -54,7 +54,7 @@ public class BlockListener implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onIndirectDoorBreak(BlockBreakEvent event) {
-            if (event.getBlock().getType().toString().contains("door"))
+            if (event.getBlock().getType().toString().contains("DOOR"))
                     return;
             Material mat = event.getBlock().getRelative(BlockFace.UP).getType();
             if (mat == Carbon.injector().spruceDoorBlockMat)

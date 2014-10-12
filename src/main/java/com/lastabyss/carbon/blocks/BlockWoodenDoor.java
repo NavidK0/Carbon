@@ -31,6 +31,13 @@ public class BlockWoodenDoor extends BlockDoor {
          return null;
     }
 
+    @Override
+    public int getDropCount(int i, Random random) {
+        return 0;
+    }
+    
+    
+
 }
     
 
