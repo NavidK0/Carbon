@@ -47,6 +47,7 @@ import com.lastabyss.carbon.items.ItemRabbitFoot;
 import com.lastabyss.carbon.items.ItemRabbitHide;
 import com.lastabyss.carbon.items.ItemRabbitStew;
 import com.lastabyss.carbon.items.ItemWoodenDoor;
+import com.lastabyss.carbon.nettyinjector.NettyInjector;
 import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
 import com.lastabyss.carbon.recipes.RecipesBanners;
 import com.lastabyss.carbon.utils.Utilities;
@@ -423,10 +424,13 @@ public class Injector {
         setStaticFinalField(blocksClass, "GOLD_PLATE", Carbon.injector().goldPlateBlock);
         setStaticFinalField(blocksClass, "ANVIL", Carbon.injector().anvilBlock);
         setStaticFinalField(blocksClass, "ENCHANTMENT_TABLE", Carbon.injector().enchantTableBlock);
-     } catch (Throwable t) {
-         t.printStackTrace();
-         Bukkit.shutdown();
-     }
+    } catch (Throwable t) {
+        t.printStackTrace();
+        Bukkit.shutdown();
+    }
+
+    //inject custom netty stream serializer
+    NettyInjector.injectStreamSerializer();
   }
 
   private void setStaticFinalField(Class<?> clazz, String fieldname, Object newValue) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
