@@ -114,7 +114,7 @@ public class Carbon extends JavaPlugin {
         t.printStackTrace();
       }
     } else {
-      log.info("ProtocolLib not found, not hooking. 1.7 clients not supported. ProtocolBlocker will kick clients only after full join");
+      log.info("ProtocolLib not found, not hooking. 1.7 clients not supported. ProtocolBlocker will kick clients only after full join.");
     }
     try {
         Metrics metrics = new Metrics(this);
@@ -205,9 +205,9 @@ public class Carbon extends JavaPlugin {
 
   private void printHelpMenu(CommandSender sender) {
       sender.sendMessage(ChatColor.DARK_GRAY + "--=======" + ChatColor.DARK_RED + "Carbon" + ChatColor.DARK_GRAY + "=======--");
-      sender.sendMessage(ChatColor.DARK_GRAY + "Version: " + ChatColor.DARK_RED + this.getDescription().getVersion()); // Reads out the version of the plugin.yml
-      sender.sendMessage(ChatColor.DARK_GRAY + "Main Authors:" + ChatColor.DARK_RED + " NavidK0, _Shevchik_, Aust1n46"); // Sorted like in plugin.yml
-      sender.sendMessage(ChatColor.DARK_GRAY + "Other contributors:" + ChatColor.DARK_RED + " pupnewfster, Stefenatefun, Jikoo, Wombosvideo, mcmonkey4eva, sickray34s"); // Sorted by activity (Names mainly from GitHub)
+      sender.sendMessage(ChatColor.DARK_GRAY + "Version: " + ChatColor.DARK_RED + getDescription().getVersion());
+      sender.sendMessage(ChatColor.DARK_GRAY + "Authors: " + ChatColor.DARK_RED + getDescription().getAuthors().toString().replaceAll("\\[|\\]", ""));
+      sender.sendMessage(ChatColor.DARK_GRAY + "Other contributors:" + ChatColor.DARK_RED + " pupnewfster, Stefenatefun, Jikoo, Wombosvideo, mcmonkey4eva, sickray34s");
       sender.sendMessage(ChatColor.DARK_GRAY + "IRC:" + ChatColor.DARK_RED + " irc.esper.net");
       sender.sendMessage(ChatColor.DARK_GRAY + "Channel:" + ChatColor.DARK_RED + " #Carbon");
       sender.sendMessage(ChatColor.DARK_GRAY + "Page:" + ChatColor.DARK_RED + " http://www.spigotmc.org/resources/carbon.1258/");

@@ -37,7 +37,7 @@ public class ItemWoodenDoor extends ItemDoor {
         }
     }
     
-    //Door stack sizes are now 3
+    //Door stack sizes are now 64
     public ItemWoodenDoor(DoorType type) {
         super(Material.WOOD);
         this.maxStackSize = 1;
@@ -45,7 +45,7 @@ public class ItemWoodenDoor extends ItemDoor {
         a(CreativeModeTab.d);
         c(type.getName());
         f(type.getName());
-        maxStackSize = 3;
+        maxStackSize = 64;
     }
   
   //Places the correct door type

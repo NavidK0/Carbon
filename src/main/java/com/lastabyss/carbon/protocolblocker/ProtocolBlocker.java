@@ -26,7 +26,6 @@ import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class ProtocolBlocker implements Listener {
 
@@ -97,20 +96,14 @@ public class ProtocolBlocker implements Listener {
 		);
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerJoin(final PlayerJoinEvent event) {
 		if (config == null)
 			return;
-		BukkitRunnable task = new BukkitRunnable() {
-			@Override
-			public void run() {
-				int version = Utilities.getProtocolVersion(event.getPlayer());
-				if (restrictedProtocols.containsKey(version)) {
-					event.getPlayer().kickPlayer(restrictedProtocols.get(version));
-				}
-			}
-		};
-		task.runTask(plugin);
+                int version = Utilities.getProtocolVersion(event.getPlayer());
+                if (restrictedProtocols.containsKey(version)) {
+                        event.getPlayer().kickPlayer(restrictedProtocols.get(version));
+                }
 	}
 
 }

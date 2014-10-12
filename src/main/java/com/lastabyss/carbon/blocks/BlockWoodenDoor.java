@@ -1,6 +1,5 @@
 package com.lastabyss.carbon.blocks;
 
-import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.items.ItemWoodenDoor.DoorType;
 
 import java.util.Random;
@@ -24,6 +23,7 @@ public class BlockWoodenDoor extends BlockDoor {
         c(3f);
         b(15f);
         H();
+        
     }
 
     @Override

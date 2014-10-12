@@ -374,7 +374,7 @@ public class Injector {
     //Register additional packets
     registerPacket(EnumProtocol.PLAY, PacketPlayOutWorldBorder.class, 68, true);
 
-    // Register additional 1.8 client replacement to prevent crashes
+    //Register additional 1.8 client replacement to prevent crashes
     registerSpigotDebreakifierAddition(redSandstoneDoubleSlabBlock, redSandstoneSlabBlock);
 
     //inject our modified blocks
