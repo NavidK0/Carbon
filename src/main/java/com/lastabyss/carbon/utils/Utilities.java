@@ -94,6 +94,8 @@ public class Utilities {
                 Object object = field.get(null);
                 Map<String, EntityType> NAME_MAP = (Map<String, EntityType>) object;
                 NAME_MAP.put(name, entityType);
+                if (plugin.getConfig().getBoolean("debug.verbose", false))
+                    Carbon.log.log(Level.INFO, "[Carbon] Entity {0} with ID {1} was injected into CraftBukkit.", new Object[]{name, id});
         } catch (Exception e) {
                 e.printStackTrace();
         }
@@ -118,6 +120,8 @@ public class Utilities {
                 Object object = field.get(null);
                 Map<String, Material> BY_NAME = (Map<String, Material>) object;
                 BY_NAME.put(name, material);
+                if (plugin.getConfig().getBoolean("debug.verbose", false))
+                    Carbon.log.log(Level.INFO, "[Carbon] Material {0} with ID {1} was injected into CraftBukkit.", new Object[]{name, id});
         } catch (Exception e)
         {
                 e.printStackTrace();
@@ -145,6 +149,8 @@ public class Utilities {
                 Object object = field.get(null);
                 Map<String, Material> BY_NAME = (Map<String, Material>) object;
                 BY_NAME.put(name, material);
+                if (plugin.getConfig().getBoolean("debug.verbose", false))
+                    Carbon.log.log(Level.INFO, "[Carbon] Material {0} with ID {1} with data {2} was injected into CraftBukkit.", new Object[]{name, id, data});
         } catch (Exception e)
         {
                 e.printStackTrace();

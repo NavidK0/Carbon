@@ -58,6 +58,7 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
 
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.Blocks;
@@ -84,6 +85,9 @@ import org.bukkit.material.MaterialData;
 import org.spigotmc.SpigotDebreakifier;
 
 public class Injector {
+    
+  private static Carbon plugin;
+  
   //Blocks
   public Block stoneBlock = new BlockStone();
   public Block redstoneTorchBlockOn = new BlockRedstoneTorchOn();
@@ -135,6 +139,7 @@ public class Injector {
   public Material seaLaternMat = Utilities.addMaterial("SEA_LANTERN", 169);
   public Material freeStandingBannerMat = Utilities.addMaterial("STANDING_BANNER", 176);
   public Material wallMountedBannerMat = Utilities.addMaterial("WALL_BANNER", 177);
+  public Material daylightDetectorInvertedMat = Utilities.addMaterial("DAYLIGHT_DETECTOR_INVERTED", 178);
   public Material redSandstoneMat = Utilities.addMaterial("RED_SANDSTONE", 179);
   public Material redSandstoneStairsMat = Utilities.addMaterial("RED_SANDSTONE_STAIRS", 180);
   public Material redSandstoneDoubleSlabMat = Utilities.addMaterial("RED_SANDSTONE_DOUBLESLAB", 181);
@@ -223,7 +228,6 @@ public class Injector {
   public Item anvilItem = new ItemAnvil(anvilBlock);
   public Item enchantTableItem = new ItemBlock(enchantTableBlock);
   public Item daylightDetectorItem = new ItemBlock(daylightDetectorBlock);
-  public Item daylightDetectorInvertedItem = new ItemBlock(daylightDetectorInvertedBlock);
 
   public Item rabbitItem = new ItemRabbit();
   public Item cookedRabbitItem = new ItemCookedRabbit();
@@ -242,17 +246,27 @@ public class Injector {
 
   public Map<World, WorldBorder> worldBorders = new HashMap<World, WorldBorder>();
 
+  public Injector(Carbon plugin) {
+      Injector.plugin = plugin;
+  }
+
   public static void registerBlock(int id, String name, Block block) {
       Block.REGISTRY.a(id, name, block);
+      if (plugin.getConfig().getBoolean("debug.verbose", false))
+        Carbon.log.log(Level.INFO, "[Carbon] Block {0} was registered into Minecraft.", name);
   }
 
   public static void registerBlock(int id, String name, Block block, Item item) {
       Block.REGISTRY.a(id, name, block);
       Item.REGISTRY.a(id, name, item);
+      if (plugin.getConfig().getBoolean("debug.verbose", false))
+        Carbon.log.log(Level.INFO, "[Carbon] Block {0} with item {1} was registered into Minecraft.", new Object[]{name + "(" + block.getName() + ")", item.getName()});
   }
 
   public static void registerItem(int id, String name, Item item) {
       Item.REGISTRY.a(id, name, item);
+      if (plugin.getConfig().getBoolean("debug.verbose", false))
+        Carbon.log.log(Level.INFO, "[Carbon] Item {0} was registered into Minecraft.", name);
   }
 
   public static void registerTileEntity(Class<? extends TileEntity> entityClass, String name) {
@@ -261,6 +275,8 @@ public class Injector {
           Method register = clazz.getDeclaredMethod("a", Class.class, String.class);
           register.setAccessible(true);
           register.invoke(null, entityClass, name);
+          if (plugin.getConfig().getBoolean("debug.verbose", false))
+            Carbon.log.log(Level.INFO, "[Carbon] Tile Entity {0} was registered into Minecraft.", entityClass.getCanonicalName());
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -272,6 +288,8 @@ public class Injector {
           Method register = clazz.getDeclaredMethod("a", Class.class, String.class, Integer.TYPE, Integer.TYPE, Integer.TYPE);
           register.setAccessible(true);
           register.invoke(null, entityClass, name, id, monsterEgg, monsterEggData2);
+          if (plugin.getConfig().getBoolean("debug.verbose", false))
+            Carbon.log.log(Level.INFO, "[Carbon] Entity {0} was registered into Minecraft.", entityClass.getCanonicalName());
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -289,6 +307,8 @@ public class Injector {
          mapField.setAccessible(true);
          Map<Class<? extends Packet>, EnumProtocol> map = (Map<Class<? extends Packet>, EnumProtocol>) mapField.get(null);
          map.put(packetClass, protocol);
+         if (plugin.getConfig().getBoolean("debug.verbose", false))
+            Carbon.log.log(Level.INFO, "[Carbon] Packet {0} was registered into Minecraft with ID: " + packetID, packetClass.getCanonicalName());
       } catch (Exception e) {
          e.printStackTrace();
       }
@@ -300,6 +320,8 @@ public class Injector {
           method = SpigotDebreakifier.class.getDeclaredMethod("replace", Block.class, Block.class);
           method.setAccessible(true);
           method.invoke(null, block, replacement);
+          if (plugin.getConfig().getBoolean("debug.verbose", false))
+            Carbon.log.log(Level.INFO, "[Carbon] SpigotDebreakfier for block {0} with replacement {1} was registered into Minecraft.", new String[] {block.getName(), replacement.getName()});
       } catch (Exception e) {
           e.printStackTrace();
       }
@@ -326,7 +348,7 @@ public class Injector {
     registerBlock(169, "sea_lantern", seaLanternBlock, seaLanternItem);
     registerBlock(176, "standing_banner", standingBannerBlock);
     registerBlock(177, "wall_banner", wallBannerBlock);
-    registerBlock(178, "daylight_detector_inverted", daylightDetectorInvertedBlock, daylightDetectorInvertedItem);
+    registerBlock(178, "daylight_detector_inverted", daylightDetectorInvertedBlock);
     registerBlock(179, "red_sandstone", redSandstoneBlock, redSandstoneItem);
     registerBlock(180, "red_sandstone_stairs", redSandstoneStairsBlock, redSandstoneStairsItem);
     registerBlock(181, "double_stone_slab2", redSandstoneDoubleSlabBlock, redSandstoneDoubleSlabItem);

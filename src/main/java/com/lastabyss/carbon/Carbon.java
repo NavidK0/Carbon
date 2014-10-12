@@ -72,8 +72,9 @@ public class Carbon extends JavaPlugin {
     catch (Exception e) {
       e.printStackTrace();
     }
-
-    injector = new Injector();
+    
+    Utilities.instantiate(this);
+    injector = new Injector(this);
     injector.registerAll();
     injector.registerRecipes();
     
@@ -83,7 +84,6 @@ public class Carbon extends JavaPlugin {
 
   @Override
   public void onEnable() {
-    Utilities.instantiate(this);
     saveDefaultConfig();
     if (!this.getDataFolder().exists()) {
       this.getDataFolder().mkdirs();
