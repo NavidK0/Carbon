@@ -8,7 +8,9 @@ import com.lastabyss.carbon.listeners.EntityListener;
 import com.lastabyss.carbon.listeners.ItemListener;
 import com.lastabyss.carbon.listeners.PlayerListener;
 import com.lastabyss.carbon.listeners.WorldBorderListener;
+import com.lastabyss.carbon.protocolblocker.BukkitProtocolBlocker;
 import com.lastabyss.carbon.protocolblocker.ProtocolBlocker;
+import com.lastabyss.carbon.protocolblocker.ProtocolLibProtocolBlocker;
 import com.lastabyss.carbon.protocolmodifier.ProtocolBlockListener;
 import com.lastabyss.carbon.protocolmodifier.ProtocolEntityListener;
 import com.lastabyss.carbon.protocolmodifier.ProtocolItemListener;
@@ -40,7 +42,7 @@ public class Carbon extends JavaPlugin {
   private EntityListener entityListener = new EntityListener();
   private PlayerListener playerListener = new PlayerListener();
 
-  private ProtocolBlocker protocolBlocker = new ProtocolBlocker(this);
+  private ProtocolBlocker protocolBlocker;
   private CarbonWorldGenerator worldGenerator = new CarbonWorldGenerator(this);
   private CarbonEntityGenerator entityGenerator = new CarbonEntityGenerator(this);
 
@@ -96,8 +98,6 @@ public class Carbon extends JavaPlugin {
     getServer().getPluginManager().registerEvents(entityListener, this);
     getServer().getPluginManager().registerEvents(worldBorderListener, this);
     getServer().getPluginManager().registerEvents(playerListener, this);
-    protocolBlocker.loadConfig();
-    getServer().getPluginManager().registerEvents(protocolBlocker, this);
     
     if (getConfig().getDouble("donottouch.configVersion", 0.0f) < localConfigVersion) {
       log.warning(
@@ -109,13 +109,18 @@ public class Carbon extends JavaPlugin {
         new ProtocolBlockListener(this).loadRemapList().init();
         new ProtocolItemListener(this).loadRemapList().init();
         new ProtocolEntityListener(this).loadRemapList().init();
-        protocolBlocker.initProtocolLibListener();
+        protocolBlocker = new ProtocolLibProtocolBlocker(this).init();
       } catch (Throwable t) {
         t.printStackTrace();
       }
     } else {
       log.info("ProtocolLib not found, not hooking. 1.7 clients not supported. ProtocolBlocker will kick clients only after full join.");
     }
+    if (protocolBlocker == null) {
+    	protocolBlocker = new BukkitProtocolBlocker(this);
+    	getServer().getPluginManager().registerEvents(protocolBlocker, this);
+    }
+    protocolBlocker.loadConfig();
     try {
         Metrics metrics = new Metrics(this);
         metrics.start();
