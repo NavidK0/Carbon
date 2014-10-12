@@ -5,6 +5,7 @@ Carbon is a plugin which adds 1.8 blocks and features into a spigot protocol hac
 
 <h4><b>NEW: Proper issue format is: [issue type] Title of Issue</b></h4>
 <h4><b>NEW: Proper pull request format is: [PR type] Title of Pull Request</b></h4>
+If your issue/pull request is properly created, a label will be given to your issue/pull request.
 
 More stable releases are available [on Spigot](http://www.spigotmc.org/resources/.1258/).  
 If you find a bug, post an issue containing the version you are using!  
