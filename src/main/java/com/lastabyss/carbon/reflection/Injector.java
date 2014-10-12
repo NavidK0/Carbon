@@ -4,6 +4,7 @@ import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.blocks.BlockAnvil;
 import com.lastabyss.carbon.blocks.BlockBanner;
 import com.lastabyss.carbon.blocks.BlockBarrier;
+import com.lastabyss.carbon.blocks.BlockDaylightDetector;
 import com.lastabyss.carbon.blocks.BlockEnchantTable;
 import com.lastabyss.carbon.blocks.BlockGoldPressurePlate;
 import com.lastabyss.carbon.blocks.BlockIronPressurePlate;
@@ -123,6 +124,8 @@ public class Injector {
   public Block ironPlateBlock = new BlockIronPressurePlate();
   public Block anvilBlock = new BlockAnvil();
   public Block enchantTableBlock = new BlockEnchantTable();
+  public Block daylightDetectorBlock = new BlockDaylightDetector(false);
+  public Block daylightDetectorInvertedBlock = new BlockDaylightDetector(true);
 
   //Bukkit materials
   public Material slimeMat = Utilities.addMaterial("SLIME", 165);
@@ -219,6 +222,7 @@ public class Injector {
   public Item ironPlateItem = new ItemBlock(ironPlateBlock);
   public Item anvilItem = new ItemAnvil(anvilBlock);
   public Item enchantTableItem = new ItemBlock(enchantTableBlock);
+  public Item daylightDetectorItem = new ItemBlock(daylightDetectorBlock);
 
   public Item rabbitItem = new ItemRabbit();
   public Item cookedRabbitItem = new ItemCookedRabbit();
@@ -313,6 +317,7 @@ public class Injector {
     registerBlock(143, "wooden_button", woodButtonBlock, woodButtonItem);
     registerBlock(147, "light_weighted_pressure_plate", goldPlateBlock, goldPlateItem);
     registerBlock(148, "heavy_weighted_pressure_plate", ironPlateBlock, ironPlateItem);
+    registerBlock(151, "daylight_detector", daylightDetectorBlock, daylightDetectorItem);
     registerBlock(165, "slime", slimeBlock, slimeItem);
     registerBlock(166, "barrier", barrierBlock, barrierItem);
     registerBlock(167, "iron_trapdoor", ironTrapDoorBlock, ironTrapDoorItem);
@@ -320,6 +325,7 @@ public class Injector {
     registerBlock(169, "sea_lantern", seaLanternBlock, seaLanternItem);
     registerBlock(176, "standing_banner", standingBannerBlock);
     registerBlock(177, "wall_banner", wallBannerBlock);
+    registerBlock(178, "daylight_detector_inverted", daylightDetectorInvertedBlock, daylightDetectorItem);
     registerBlock(179, "red_sandstone", redSandstoneBlock, redSandstoneItem);
     registerBlock(180, "red_sandstone_stairs", redSandstoneStairsBlock, redSandstoneStairsItem);
     registerBlock(181, "double_stone_slab2", redSandstoneDoubleSlabBlock, redSandstoneDoubleSlabItem);
