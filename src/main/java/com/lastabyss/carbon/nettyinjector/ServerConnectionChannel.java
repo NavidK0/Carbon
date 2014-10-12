@@ -6,7 +6,6 @@ import net.minecraft.server.v1_7_R4.HandshakeListener;
 import net.minecraft.server.v1_7_R4.LegacyPingHandler;
 import net.minecraft.server.v1_7_R4.MinecraftServer;
 import net.minecraft.server.v1_7_R4.NetworkManager;
-import net.minecraft.server.v1_7_R4.PacketDecoder;
 import net.minecraft.server.v1_7_R4.PacketPrepender;
 import net.minecraft.server.v1_7_R4.PacketSplitter;
 import net.minecraft.server.v1_7_R4.ServerConnection;

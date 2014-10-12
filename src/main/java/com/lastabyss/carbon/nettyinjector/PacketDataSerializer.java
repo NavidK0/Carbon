@@ -2,6 +2,7 @@ package com.lastabyss.carbon.nettyinjector;
 
 import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_7_R4.util.CraftChatMessage;
+import org.spigotmc.SpigotComponentReverter;
 import org.spigotmc.SpigotDebreakifier;
 
 import com.lastabyss.carbon.Carbon;
@@ -63,6 +64,36 @@ public class PacketDataSerializer extends net.minecraft.server.v1_7_R4.PacketDat
 			}
 			a(nbttagcompound);
 		}
+	}
+
+	@Override
+	public ItemStack c() {
+		ItemStack itemstack = null;
+		short short1 = readShort();
+		if (short1 >= 0) {
+			byte b0 = readByte();
+			short short2 = readShort();
+
+			itemstack = new ItemStack(Item.getById(short1), b0, short2);
+			itemstack.tag = b();
+			if (itemstack.tag != null) {
+				if ((this.version >= 29) && (itemstack.getItem() == Items.WRITTEN_BOOK) && (itemstack.tag.hasKeyOfType("pages", 9))) {
+					NBTTagList nbttaglist = itemstack.tag.getList("pages", 8);
+					NBTTagList newList = new NBTTagList();
+					for (int i = 0; i < nbttaglist.size(); i++) {
+						IChatBaseComponent s = ChatSerializer.a(nbttaglist.getString(i));
+						String newString = SpigotComponentReverter.toLegacy(s);
+						newList.add(new NBTTagString(newString));
+					}
+					itemstack.tag.set("pages", newList);
+				}
+				//TODO: check banners nbt
+				if (itemstack.getItem() != Carbon.injector().standingBannerItem) {
+					CraftItemStack.setItemMeta(itemstack, CraftItemStack.getItemMeta(itemstack));
+				}
+			}
+		}
+		return itemstack;
 	}
 
 }
