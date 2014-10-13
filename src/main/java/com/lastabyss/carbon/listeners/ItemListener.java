@@ -40,7 +40,6 @@ public class ItemListener implements Listener {
 
     public ItemListener(Carbon plugin) {
         this.plugin = plugin;
-        runCreepersResetTak();
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
