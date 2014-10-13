@@ -1,0 +1,11 @@
+Notes file:
+
+Aust1n46:
+From working on the world generator, I've developed a pretty good method for figuring out what to replace and what to keep constant.
+You need to map out the section of code you're working with, and find the "ties" to bukkit and 1.7.  Once you have discovered these ties, you can now edit as much as you want.
+With the world generator, I was able to create an entire custom Chunk generator, and I even think I can create my own world
+object as long as I make sure to keep bukkit compatibility.  As long as you keep bukkit methods in your custom classes where they should be,
+you can pretty much do anything.  I could keep trying to convert Ocean Monuments to 1.7, but I almost feel it would be easier to try and just
+make a custom World object.  The 1.8 world stuff is very obfuscated, so tracing through it all would take a long time anyway.
+
+If anyone has any other helpful tips or ideas, include them in this file.
