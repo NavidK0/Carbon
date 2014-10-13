@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.enchantments.Enchantment;
@@ -27,7 +28,6 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  *
@@ -35,12 +35,12 @@ import org.bukkit.scheduler.BukkitRunnable;
  */
 public class ItemListener implements Listener {
 
-    Carbon plugin;
-    Random random = new Random();
-    HashSet<UUID> recentCreepers = new HashSet<UUID>();
+    private Carbon plugin;
+    private Random random = new Random();
 
     public ItemListener(Carbon plugin) {
         this.plugin = plugin;
+        runCreepersResetTak();
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -89,6 +89,17 @@ public class ItemListener implements Listener {
             e.getDrops().add(new ItemStack(Carbon.injector().muttonItemMat, random.nextInt(2) + 1 + random.nextInt(looting)));
     }
 
+    HashSet<UUID> recentCreepers = new HashSet<UUID>();
+
+    public void runCreepersResetTak() {
+    	Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+    		@Override
+    		public void run() {
+    			recentCreepers.clear();
+    		}
+    	}, 0, 1);
+    }
+
     @EventHandler
     public void onCreeperDeath(EntityDeathEvent e) {
         LivingEntity entity = e.getEntity();
@@ -122,13 +133,8 @@ public class ItemListener implements Listener {
         if (skullItem != null) {
             final UUID uuid = damageEvent.getDamager().getUniqueId();
             recentCreepers.add(uuid); // Temporarily track UUID to prevent another head drop
-            new BukkitRunnable() { // Remove UUID next tick
-                @Override
-                public void run() {
-                    recentCreepers.remove(uuid);
-                }
-            }.runTaskLater(plugin, 1L);
             entity.getWorld().dropItemNaturally(entity.getLocation(), skullItem);
         }
     }
+
 }

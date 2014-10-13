@@ -94,6 +94,7 @@ public class Carbon extends JavaPlugin {
     getServer().getPluginManager().registerEvents(blockListener, this);
     getServer().getPluginManager().registerEvents(commandListener, this);
     getServer().getPluginManager().registerEvents(itemListener, this);
+    itemListener.runCreepersResetTak();
     getServer().getPluginManager().registerEvents(worldGenerator, this);
     getServer().getPluginManager().registerEvents(entityListener, this);
     getServer().getPluginManager().registerEvents(worldBorderListener, this);
