@@ -2,16 +2,21 @@ package com.lastabyss.carbon.blocks;
 
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.entity.TileEntityBanner;
+import com.lastabyss.carbon.recipes.EnumBannerPatterns;
+
 import java.util.Random;
+
 import net.minecraft.server.v1_7_R4.AxisAlignedBB;
-import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.BlockContainer;
 import net.minecraft.server.v1_7_R4.Item;
+import net.minecraft.server.v1_7_R4.ItemStack;
 import net.minecraft.server.v1_7_R4.Material;
+import net.minecraft.server.v1_7_R4.NBTTagCompound;
 import net.minecraft.server.v1_7_R4.TileEntity;
 import net.minecraft.server.v1_7_R4.World;
 
 public class BlockBanner extends BlockContainer {
+
 	public BlockBanner() {
 		super(Material.WOOD);
 		this.isTileEntity = true;
@@ -34,6 +39,11 @@ public class BlockBanner extends BlockContainer {
 	}
 
 	@Override
+	public int b() {
+		return -1;
+	}
+
+	@Override
 	public boolean c() {
 		return false;
 	}
@@ -44,19 +54,24 @@ public class BlockBanner extends BlockContainer {
 	}
 
 	@Override
-	public void remove(World paramWorld, int paramInt1, int paramInt2, int paramInt3, Block paramBlock, int paramInt4) {
-		super.remove(paramWorld, paramInt1, paramInt2, paramInt3, paramBlock, paramInt4);
-		paramWorld.p(paramInt1, paramInt2, paramInt3);
-	}
-
-	@Override
-	public boolean a(World paramWorld, int paramInt1, int paramInt2, int paramInt3, int paramInt4, int paramInt5) {
-		super.a(paramWorld, paramInt1, paramInt2, paramInt3, paramInt4, paramInt5);
-		TileEntity localTileEntity = paramWorld.getTileEntity(paramInt1, paramInt2, paramInt3);
-		if (localTileEntity != null) {
-			return localTileEntity.c(paramInt4, paramInt5);
+	public void dropNaturally(World world, int x, int y, int z, int data, float chance, int idk) {
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
+		if (tileEntity instanceof TileEntityBanner) {
+			ItemStack itemStack = new net.minecraft.server.v1_7_R4.ItemStack(Carbon.injector().standingBannerItem, 1, ((TileEntityBanner) tileEntity).getBaseColor());
+			NBTTagCompound compound = new NBTTagCompound();
+			tileEntity.b(compound);
+			compound.remove("x");
+			compound.remove("y");
+			compound.remove("z");
+			compound.remove("id");
+			itemStack.setTag(new NBTTagCompound());
+			itemStack.getTag().set("BlockEntityTag", compound);
+			//serverside we store banner patterns as lore so we recode nbt to lore so serializer will recode item back properly
+			EnumBannerPatterns.fromNBTToLore(itemStack);
+			a(world, x, y, z, itemStack);
+		} else {
+			super.dropNaturally(world, x, y, z, data, chance, idk);
 		}
-		return false;
 	}
 
 }
