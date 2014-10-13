@@ -23,6 +23,30 @@
                 <url>http://maven.elmakers.com/repository/</url>
         </repository>
     </repositories>
+    <profiles>
+    <profile>
+      <id>windows_profile</id>
+      <activation>
+        <os>
+          <family>Windows</family>
+        </os>
+      </activation>
+      <properties>
+        <toolsjar>${java.home}/../lib/tools.jar</toolsjar>
+      </properties>
+    </profile>
+    <profile>
+      <id>osx_profile</id>
+      <activation>
+        <os>
+          <family>mac</family>
+        </os>
+      </activation>
+      <properties>
+        <toolsjar>${java.home}/../Classes/classes.jar</toolsjar>
+      </properties>
+    </profile>
+  </profiles>
     <build>
         <plugins>
             <plugin>
@@ -33,34 +57,6 @@
                     <source>1.6</source>
                     <target>1.6</target>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.3</version>
-                <configuration>
-                    <artifactSet>
-                        <includes>
-                            <include>org.mcstats.*:*</include>
-                        </includes>
-                    </artifactSet>
-                    <relocations>
-                        <relocation>
-                            <pattern>org.mcstats</pattern>
-                            <shadedPattern>com.lastabyss.ext.plugins</shadedPattern>
-                        </relocation>
-                    </relocations>
-                    <finalName>Carbon</finalName>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-
             </plugin>
         </plugins>
     </build>
@@ -84,6 +80,13 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <version>1.7.10-R0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+          <groupId>com.sun</groupId>
+          <artifactId>tools</artifactId>
+          <version>1.4.2</version>
+          <scope>system</scope>
+          <systemPath>${java.home}/../lib/tools.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

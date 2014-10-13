@@ -2,6 +2,7 @@ package com.lastabyss.carbon;
 
 import com.lastabyss.carbon.generator.CarbonEntityGenerator;
 import com.lastabyss.carbon.generator.CarbonWorldGenerator;
+import com.lastabyss.carbon.instrumentation.Instrumentator;
 import com.lastabyss.carbon.listeners.BlockListener;
 import com.lastabyss.carbon.listeners.CommandListener;
 import com.lastabyss.carbon.listeners.EntityListener;
@@ -52,6 +53,8 @@ public class Carbon extends JavaPlugin {
   public static final Logger log = Bukkit.getLogger();
 
   private static Injector injector;
+  private static Instrumentator instrumentator;
+  
   private double localConfigVersion = 0.5;
 
   @Override
@@ -66,7 +69,17 @@ public class Carbon extends JavaPlugin {
       Bukkit.shutdown();
       return;
     }
-
+    
+    
+    saveResource("libraries/natives/32/linux/libattach.so", true);
+    saveResource("libraries/natives/32/solaris/libattach.so", true);
+    saveResource("libraries/natives/32/windows/attach.dll", true);
+    saveResource("libraries/natives/64/linux/libattach.so", true);
+    saveResource("libraries/natives/64/mac/libattach.dylib", true);
+    saveResource("libraries/natives/64/solaris/libattach.so", true);
+    saveResource("libraries/natives/64/windows/attach.dll", true);
+    
+    
     //Prepare for injection of enumerators... a necessary evil
     try {
       DynamicEnumType.loadReflection();
@@ -74,6 +87,9 @@ public class Carbon extends JavaPlugin {
     catch (Exception e) {
       e.printStackTrace();
     }
+    
+    instrumentator = new Instrumentator(this, getDataFolder());
+    instrumentator.instrumentate();
     
     Utilities.instantiate(this);
     injector = new Injector(this);
