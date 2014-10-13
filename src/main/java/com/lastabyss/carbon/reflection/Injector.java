@@ -74,7 +74,9 @@ import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.ItemAnvil;
 import net.minecraft.server.v1_7_R4.ItemBlock;
 import net.minecraft.server.v1_7_R4.ItemMultiTexture;
+import net.minecraft.server.v1_7_R4.MobEffectList;
 import net.minecraft.server.v1_7_R4.Packet;
+import net.minecraft.server.v1_7_R4.PotionBrewer;
 import net.minecraft.server.v1_7_R4.TileEntity;
 import net.minecraft.server.v1_7_R4.World;
 
@@ -323,13 +325,22 @@ public class Injector {
   }
 
   public static void registerSpigotDebreakifierAddition(Block block, Block replacement) {
-      Method method;
       try {
-          method = SpigotDebreakifier.class.getDeclaredMethod("replace", Block.class, Block.class);
+          Method method = SpigotDebreakifier.class.getDeclaredMethod("replace", Block.class, Block.class);
           method.setAccessible(true);
           method.invoke(null, block, replacement);
           if (plugin.getConfig().getBoolean("debug.verbose", false))
             Carbon.log.log(Level.INFO, "[Carbon] SpigotDebreakfier for block {0} with replacement {1} was registered into Minecraft.", new String[] {block.getName(), replacement.getName()});
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
+  }
+
+  @SuppressWarnings("unchecked")
+  public static void registerPotionEffect(int effectId, String durations, String amplifier) {
+      try {
+          ((Map<Integer, String>)Utilities.setAccessible(Field.class, PotionBrewer.class.getDeclaredField("effectDurations"), true).get(null)).put(effectId, durations);
+          ((Map<Integer, String>)Utilities.setAccessible(Field.class, PotionBrewer.class.getDeclaredField("effectAmplifiers"), true).get(null)).put(effectId, amplifier);
       } catch (Exception e) {
           e.printStackTrace();
       }
@@ -416,6 +427,9 @@ public class Injector {
 
     //Register additional 1.8 client replacement to prevent crashes
     registerSpigotDebreakifierAddition(redSandstoneDoubleSlabBlock, redSandstoneSlabBlock);
+
+    //Register additional potion effects
+    registerPotionEffect(MobEffectList.JUMP.getId(), "0 & 1 & !2 & 3", "5");
 
     //inject our modified blocks
     //inject our items too
