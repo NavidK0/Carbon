@@ -3,6 +3,7 @@ package com.lastabyss.carbon.protocolblocker;
 import java.lang.reflect.InvocationTargetException;
 
 import net.minecraft.server.v1_7_R4.ChatMessage;
+import net.minecraft.server.v1_7_R4.EnumProtocol;
 import net.minecraft.server.v1_7_R4.IChatBaseComponent;
 
 import com.comphenix.protocol.PacketType;
@@ -29,7 +30,7 @@ public class ProtocolLibProtocolBlocker extends ProtocolBlocker {
 				@Override
 				public void onPacketReceiving(PacketEvent event) {
 					int version = event.getPacket().getIntegers().read(0);
-					if (restrictedProtocols.containsKey(version)) {
+					if (restrictedProtocols.containsKey(version) && event.getPacket().getSpecificModifier(EnumProtocol.class).read(0) == EnumProtocol.LOGIN) {
 						event.setCancelled(true);
 						try {
 							PacketContainer kick = new PacketContainer(PacketType.Login.Server.DISCONNECT);
@@ -38,8 +39,8 @@ public class ProtocolLibProtocolBlocker extends ProtocolBlocker {
 							ProtocolLibrary.getProtocolManager().sendServerPacket(event.getPlayer(), kick);
 						} catch (InvocationTargetException e) {
 							e.printStackTrace();
-							event.getPlayer().kickPlayer(restrictedProtocols.get(version));
 						}
+						event.getPlayer().kickPlayer(restrictedProtocols.get(version));
 					}
 				}
 			}
