@@ -1,5 +1,11 @@
 package com.lastabyss.carbon.entity;
 
+import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import com.lastabyss.carbon.Carbon;
+import com.lastabyss.carbon.recipes.EnumBannerPatterns;
+
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.Items;
 import net.minecraft.server.v1_7_R4.ItemStack;
@@ -17,20 +23,23 @@ public class TileEntityBanner extends TileEntity {
 
 	public void setItemValues(ItemStack itemStack) {
 		this.patterns = null;
-		if (itemStack.hasTag() && itemStack.getTag().hasKeyOfType("BlockEntityTag", 10)) {
-			NBTTagCompound compound = itemStack.getTag().getCompound("BlockEntityTag");
+		this.baseColor = itemStack.getData() & 0xF;
+		//serverside we store banner patterns as lore but tile entity uses nbt, so we recode lore to nbt
+		ItemStack clone = itemStack.cloneItemStack();
+		EnumBannerPatterns.fromLoreToNBT(clone);
+		if (clone.hasTag() && clone.getTag().hasKeyOfType("BlockEntityTag", 10)) {
+			NBTTagCompound compound = clone.getTag().getCompound("BlockEntityTag");
 
 			if (compound.hasKey("Patterns")) {
 				this.patterns = (NBTTagList) compound.getList("Patterns", 10).clone();
 			}
 
-			if (compound.hasKeyOfType("Base", 99)) {
+			//no base color nbt support for now
+			/*if (compound.hasKeyOfType("Base", 99)) {
 				this.baseColor = compound.getInt("Base");
 			} else {
 				this.baseColor = itemStack.getData() & 15;
-			}
-		} else {
-			this.baseColor = itemStack.getData() & 15;
+			}*/
 		}
 	}
 
@@ -62,22 +71,6 @@ public class TileEntityBanner extends TileEntity {
 
 	public int getBaseColor() {
 		return this.baseColor;
-	}
-
-	public static int getBaseColor(ItemStack itemStack) {
-		if (itemStack.getTag() == null) {
-			return itemStack.getData();
-		}
-		NBTTagCompound tag = itemStack.getTag().getCompound("BlockEntityTag");
-		return tag != null && tag.hasKey("Base") ? tag.getInt("Base") : itemStack.getData();
-	}
-
-	public static int getPatternsCount(ItemStack itemStack) {
-		if (itemStack.getTag() == null) {
-			return 0;
-		}
-		NBTTagCompound tag = itemStack.getTag().getCompound("BlockEntityTag");
-		return tag != null && tag.hasKey("Patterns") ? tag.getList("Patterns", 10).size() : 0;
 	}
 
 }

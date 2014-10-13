@@ -1,8 +1,18 @@
 package com.lastabyss.carbon.recipes;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.ItemStack;
 import net.minecraft.server.v1_7_R4.Items;
+import net.minecraft.server.v1_7_R4.NBTTagCompound;
+import net.minecraft.server.v1_7_R4.NBTTagList;
+import net.minecraft.server.v1_7_R4.NBTTagString;
 
 public enum EnumBannerPatterns {
 
@@ -85,6 +95,106 @@ public enum EnumBannerPatterns {
 
 	public ItemStack getItem() {
 		return this.item;
+	}
+
+	public static int getPatternsCount(ItemStack itemStack) {
+		if (itemStack.getTag() == null) {
+			return 0;
+		}
+		ItemMeta im = CraftItemStack.getItemMeta(itemStack);
+		int patternsCount = 0;
+		if (im.hasLore()) {
+			for (String string : im.getLore()) {
+				String[] split = string.split("[|]");
+				if (split.length == 3 && split[0].equalsIgnoreCase("carbon")) {
+					patternsCount++;
+				}
+			}
+		}
+		return patternsCount;
+		/*NBTTagCompound tag = itemStack.getTag().getCompound("BlockEntityTag");
+		return tag != null && tag.hasKey("Patterns") ? tag.getList("Patterns", 10).size() : 0;*/
+	}
+
+	private static String BLOCK_ENTITY_TAG_NAME = "BlockEntityTag";
+	private static String DISPLAY_TAG_NAME = "display";
+	private static String LORE_TAG_NAME = "Lore";
+	private static String PATTERNS_TAG_NAME = "Patterns";
+	private static String PATTERN_TAG_NAME = "Pattern";
+	private static String COLOR_TAG_NAME = "Color";
+
+	public static void fromLoreToNBT(ItemStack itemstack) {
+		if (!itemstack.hasTag()) {
+			return;
+		}
+		if (itemstack.getTag().hasKey(DISPLAY_TAG_NAME)) {
+			NBTTagCompound display = itemstack.getTag().getCompound(DISPLAY_TAG_NAME);
+			if (display.hasKeyOfType(LORE_TAG_NAME, 9)) {
+				NBTTagCompound patternsCompound = new NBTTagCompound();
+				NBTTagList patterns = new NBTTagList();
+
+				NBTTagList oldlore = display.getList(LORE_TAG_NAME, 8);
+				NBTTagList newlore = new NBTTagList();
+				for (int i = 0; i < oldlore.size(); i++) {
+					String string = oldlore.getString(i);
+					String[] split = string.split("[|]");
+					if (split.length == 3 && split[0].equals("Carbon")) {
+						NBTTagCompound pattern = new NBTTagCompound();
+						pattern.setString(PATTERN_TAG_NAME, split[1]);
+						pattern.setInt(COLOR_TAG_NAME, Integer.parseInt(split[2]));
+						patterns.add(pattern);
+					} else {
+						newlore.add(new NBTTagString(string));
+					}
+				}
+
+				patternsCompound.set(PATTERNS_TAG_NAME, patterns);
+
+				if (newlore.size() > 0) {
+					display.set(LORE_TAG_NAME, newlore);
+				} else {
+					display.remove(LORE_TAG_NAME);
+					if (!display.hasKey("Name") && !display.hasKey("color")) {
+						itemstack.getTag().remove(DISPLAY_TAG_NAME);
+					}
+				}
+
+				itemstack.getTag().set(BLOCK_ENTITY_TAG_NAME, patternsCompound);
+			}
+		}
+	}
+
+	public static void fromNBTToLore(ItemStack itemstack) {
+		if (!itemstack.hasTag() || !itemstack.getTag().hasKey("BlockEntityTag")) {
+			return;
+		}
+
+		if (!itemstack.getTag().hasKey(DISPLAY_TAG_NAME)) {
+			itemstack.getTag().set(DISPLAY_TAG_NAME, new NBTTagCompound());
+		}
+		NBTTagCompound displayCompound = itemstack.getTag().getCompound(DISPLAY_TAG_NAME);
+
+		NBTTagList newlore = new NBTTagList();
+		if (displayCompound.hasKeyOfType(LORE_TAG_NAME, 9)) {
+			NBTTagList oldlore = displayCompound.getList(LORE_TAG_NAME, 8);
+			for (int i = 0; i < oldlore.size(); i++) {
+				newlore.add(new NBTTagString(oldlore.getString(i)));
+			}
+		}
+
+		NBTTagCompound patternsCompound = itemstack.getTag().getCompound(BLOCK_ENTITY_TAG_NAME);
+		if (patternsCompound.hasKeyOfType(PATTERNS_TAG_NAME, 9)) {
+			NBTTagList patterns = patternsCompound.getList(PATTERNS_TAG_NAME, 10);
+			for (int i = 0; i < patterns.size(); i++) {
+				NBTTagCompound pattern = patterns.get(i);
+				String string = "Carbon|"+pattern.getString(PATTERN_TAG_NAME)+"|"+pattern.getInt(COLOR_TAG_NAME);
+				newlore.add(new NBTTagString(string));
+			}
+		}
+
+		displayCompound.set(LORE_TAG_NAME, newlore);
+
+		itemstack.getTag().remove(BLOCK_ENTITY_TAG_NAME);
 	}
 
 }

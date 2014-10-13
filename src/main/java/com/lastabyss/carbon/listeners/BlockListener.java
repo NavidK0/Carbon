@@ -2,6 +2,7 @@ package com.lastabyss.carbon.listeners;
 
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.entity.TileEntityBanner;
+import com.lastabyss.carbon.recipes.EnumBannerPatterns;
 
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
 import net.minecraft.server.v1_7_R4.TileEntity;
@@ -49,7 +50,7 @@ public class BlockListener implements Listener {
 		if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
 			return;
 		}
-		if (event.getBlock().getType() == Carbon.injector().freeStandingBannerMat) {
+		if (event.getBlock().getType() == Carbon.injector().freeStandingBannerMat || event.getBlock().getType() == Carbon.injector().wallMountedBannerMat) {
 			net.minecraft.server.v1_7_R4.ItemStack itemStack = null;
 			net.minecraft.server.v1_7_R4.World nmsWolrd = ((CraftWorld) event.getBlock().getWorld()).getHandle();
 			TileEntity tileEntity = nmsWolrd.getTileEntity(event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ());
@@ -63,6 +64,8 @@ public class BlockListener implements Listener {
 				compound.remove("id");
 				itemStack.setTag(new NBTTagCompound());
 				itemStack.getTag().set("BlockEntityTag", compound);
+				//serverside we store banner patterns as lore so we recode nbt to lore so serializer will recode item back properly
+				EnumBannerPatterns.fromNBTToLore(itemStack);
 			}
 			if (itemStack != null) {
 				event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), CraftItemStack.asCraftMirror(itemStack));

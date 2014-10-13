@@ -3,7 +3,9 @@ package com.lastabyss.carbon.recipes;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
 import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.entity.TileEntityBanner;
@@ -67,7 +69,19 @@ public class RecipesBannerPatterns implements IRecipe {
 			if (result.getTag() == null) {
 				result.setTag(new NBTTagCompound());
 			}
-			if (!result.getTag().hasKey("BlockEntityTag")) {
+			//bukkit clears unknown nbt tags so we use lore to store patterns
+			CraftItemStack citemStack = CraftItemStack.asCraftMirror(result);
+			ItemMeta im = citemStack.getItemMeta();
+			List<String> lore = null;
+			if (im.hasLore()) {
+				lore = im.getLore();
+			} else {
+				lore = new ArrayList<String>();
+			}
+			lore.add("Carbon|"+enumPattern.getPatternName()+"|"+color);
+			im.setLore(lore);
+			citemStack.setItemMeta(im);
+			/*if (!result.getTag().hasKey("BlockEntityTag")) {
 				NBTTagCompound compund = new NBTTagCompound();
 				result.getTag().set("BlockEntityTag", compund);
 			}
@@ -82,7 +96,7 @@ public class RecipesBannerPatterns implements IRecipe {
 			NBTTagCompound pattern = new NBTTagCompound();
 			pattern.setString("Pattern", enumPattern.getPatternName());
 			pattern.setInt("Color", color);
-			patterns.add(pattern);
+			patterns.add(pattern)*/;
 		}
 
 		return result;
@@ -99,7 +113,7 @@ public class RecipesBannerPatterns implements IRecipe {
 					return false;
 				}
 
-				if (TileEntityBanner.getPatternsCount(itemStack) >= 6) {
+				if (EnumBannerPatterns.getPatternsCount(itemStack) >= 6) {
 					return false;
 				}
 
