@@ -22,6 +22,10 @@
                 <id>Spigot</id>
                 <url>http://maven.elmakers.com/repository/</url>
         </repository>
+        <repository>
+                <id>Sun-Microsystems</id>
+                <url>file://${java.home}/../lib/tools.jar</url>
+        </repository>
     </repositories>
     <profiles>
     <profile>
@@ -59,7 +63,35 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <artifactSet>
+                        <excludes>
+                            <exclude>com.comphenix</exclude>
+                            <exclude>com.comphenix.*:*</exclude>
+                            <exclude>cglib</exclude>
+                            <exclude>fr.neatmonster</exclude>
+                            <exclude>org.bukkit</exclude>
+                            <exclude>org.spigotmc</exclude>
+                        </excludes>
+                    </artifactSet>
+                    <finalName>Carbon</finalName>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+            </plugin>
         </plugins>
+        
     </build>
     <dependencies>
         <dependency>
@@ -83,11 +115,9 @@
             <version>1.7.10-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-          <groupId>com.sun</groupId>
-          <artifactId>tools</artifactId>
-          <version>1.4.2</version>
-          <scope>system</scope>
-          <systemPath>${java.home}/../lib/tools.jar</systemPath>
+            <groupId>com.sun</groupId>
+            <artifactId>tools</artifactId>
+            <version>1.4.2</version>
         </dependency>
     </dependencies>
 </project>
