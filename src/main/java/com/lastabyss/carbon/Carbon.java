@@ -80,23 +80,22 @@ public class Carbon extends JavaPlugin {
     saveResource("libraries/natives/64/windows/attach.dll", true);
     
     
-    //Prepare for injection of enumerators... a necessary evil
+    //Inject 1.8 features. Stop server if something fails
     try {
       DynamicEnumType.loadReflection();
+      instrumentator = new Instrumentator(this, new File(getDataFolder(), "libraries/natives/").getPath());
+      instrumentator.instrumentate();
+      Utilities.instantiate(this);
+      injector = new Injector(this);
+      injector.registerAll();
+      injector.registerRecipes();
+      entityGenerator.injectNewCreatures();
     }
     catch (Exception e) {
       e.printStackTrace();
+      Bukkit.shutdown();
     }
-    
-    instrumentator = new Instrumentator(this, getDataFolder());
-    instrumentator.instrumentate();
-    
-    Utilities.instantiate(this);
-    injector = new Injector(this);
-    injector.registerAll();
-    injector.registerRecipes();
-    
-    entityGenerator.injectNewCreatures();
+
     log.info("Carbon has finished injecting all 1.8 functionalities.");
   }
 

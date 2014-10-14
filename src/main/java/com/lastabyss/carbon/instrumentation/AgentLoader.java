@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.jar.Attributes;
 import java.util.jar.Attributes.Name;
 import java.util.jar.JarEntry;
@@ -25,7 +27,7 @@ public class AgentLoader {
 
     /**
      * Loads an agent into a JVM.
-     *
+     * Always add Tools.class to the resources
      * @param agent     The main agent class.
      * @param resources Array of classes to be included with agent.
      * @param pid       The ID of the target JVM.
@@ -34,11 +36,11 @@ public class AgentLoader {
      * @throws AgentLoadException
      * @throws AgentInitializationException
      */
-    public static void attachAgentToJVM(String pid, Class agent, Class... resources)
-            throws IOException, AttachNotSupportedException, AgentLoadException, AgentInitializationException {
-
+    public static void attachAgentToJVM(String pid, Class<?> agent, Class<?>... resources) throws IOException, AttachNotSupportedException, AgentLoadException, AgentInitializationException {
+    	ArrayList<Class<?>> resourcesList = new ArrayList<Class<?>>(Arrays.asList(resources));
+    	resourcesList.add(Tools.class);
         VirtualMachine vm = VirtualMachine.attach(pid);
-        vm.loadAgent(generateAgentJar(agent, resources).getAbsolutePath());
+        vm.loadAgent(generateAgentJar(agent, resourcesList.toArray(new Class<?>[resourcesList.size()])).getAbsolutePath());
         vm.detach();
     }
 
@@ -51,7 +53,7 @@ public class AgentLoader {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static File generateAgentJar(Class agent, Class... resources) throws IOException {
+    public static File generateAgentJar(Class<?> agent, Class<?>... resources) throws IOException {
         File jarFile = File.createTempFile("agent", ".jar");
         jarFile.deleteOnExit();
 
@@ -70,7 +72,7 @@ public class AgentLoader {
         jos.write(Tools.getBytesFromStream(agent.getClassLoader().getResourceAsStream(unqualify(agent))));
         jos.closeEntry();
 
-        for (Class clazz : resources) {
+        for (Class<?> clazz : resources) {
             String name = unqualify(clazz);
             jos.putNextEntry(new JarEntry(name));
             jos.write(Tools.getBytesFromStream(clazz.getClassLoader().getResourceAsStream(name)));
@@ -81,7 +83,8 @@ public class AgentLoader {
         return jarFile;
     }
 
-    private static String unqualify(Class clazz) {
+    private static String unqualify(Class<?> clazz) {
         return clazz.getName().replace('.', '/') + ".class";
     }
+
 }
