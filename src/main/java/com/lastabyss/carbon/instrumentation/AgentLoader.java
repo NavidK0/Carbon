@@ -9,8 +9,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.jar.Attributes;
 import java.util.jar.Attributes.Name;
 import java.util.jar.JarEntry;
@@ -37,10 +35,8 @@ public class AgentLoader {
      * @throws AgentInitializationException
      */
     public static void attachAgentToJVM(String pid, Class<?> agent, Class<?>... resources) throws IOException, AttachNotSupportedException, AgentLoadException, AgentInitializationException {
-    	ArrayList<Class<?>> resourcesList = new ArrayList<Class<?>>(Arrays.asList(resources));
-    	resourcesList.add(Tools.class);
         VirtualMachine vm = VirtualMachine.attach(pid);
-        vm.loadAgent(generateAgentJar(agent, resourcesList.toArray(new Class<?>[resourcesList.size()])).getAbsolutePath());
+        vm.loadAgent(generateAgentJar(agent, resources).getAbsolutePath());
         vm.detach();
     }
 
