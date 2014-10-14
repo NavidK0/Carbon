@@ -19,6 +19,8 @@ import sun.tools.attach.WindowsAttachProvider;
  */
 public class Instrumentator {
 
+	//All pretransformed class files should be bundled in "pretransformedclasses" dir inside the carbon jar
+
     private String attachLibFolder;
 
     public Instrumentator(Carbon plugin, String attachLibFolder) {
@@ -29,7 +31,9 @@ public class Instrumentator {
     public void instrumentate() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, IOException, AttachNotSupportedException, AgentLoadException, AgentInitializationException {
     	Tools.addToLibPath(getLibraryPath(attachLibFolder));
     	AttachProvider.setAttachProvider(getAttachProvider());
-        AgentLoader.attachAgentToJVM(Tools.getCurrentPID(), CarbonTransformAgent.class);
+        AgentLoader.attachAgentToJVM(Tools.getCurrentPID(), CarbonTransformAgent.class, 
+        	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemStack.class"
+        );
     }
 
     private static String getLibraryPath(String parentDir) {

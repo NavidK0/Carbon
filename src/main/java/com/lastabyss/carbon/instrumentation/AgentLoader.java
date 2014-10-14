@@ -34,7 +34,7 @@ public class AgentLoader {
      * @throws AgentLoadException
      * @throws AgentInitializationException
      */
-    public static void attachAgentToJVM(String pid, Class<?> agent, Class<?>... resources) throws IOException, AttachNotSupportedException, AgentLoadException, AgentInitializationException {
+    public static void attachAgentToJVM(String pid, Class<?> agent, String... resources) throws IOException, AttachNotSupportedException, AgentLoadException, AgentInitializationException {
         VirtualMachine vm = VirtualMachine.attach(pid);
         vm.loadAgent(generateAgentJar(agent, resources).getAbsolutePath());
         vm.detach();
@@ -49,7 +49,7 @@ public class AgentLoader {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static File generateAgentJar(Class<?> agent, Class<?>... resources) throws IOException {
+    public static File generateAgentJar(Class<?> agent, String... resources) throws IOException {
         File jarFile = File.createTempFile("agent", ".jar");
         jarFile.deleteOnExit();
 
@@ -68,10 +68,9 @@ public class AgentLoader {
         jos.write(Tools.getBytesFromStream(agent.getClassLoader().getResourceAsStream(unqualify(agent))));
         jos.closeEntry();
 
-        for (Class<?> clazz : resources) {
-            String name = unqualify(clazz);
+        for (String name : resources) {
             jos.putNextEntry(new JarEntry(name));
-            jos.write(Tools.getBytesFromStream(clazz.getClassLoader().getResourceAsStream(name)));
+            jos.write(Tools.getBytesFromStream(AgentLoader.class.getClassLoader().getResourceAsStream(name)));
             jos.closeEntry();
         }
 
