@@ -1,0 +1,24 @@
+<project name="Carbon" default="build" basedir=".">
+
+    <path id="libs">
+        <fileset dir="libs" includes="**/*.jar" />
+    </path>
+
+	<target name="build">
+        <mkdir dir="build/classes" />
+        <javac source="1.7" target="1.7" encoding="UTF-8" srcdir="src/main/java" destdir="build/classes" classpathref="libs" debug="on" />
+		<move todir="build/classes/pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/">
+			<fileset dir="build/classes/org/bukkit/craftbukkit/v1_7_R4/inventory/">
+				<filename name= "**/*"/>
+			</fileset>
+		</move>
+		<copy todir="build/classes/">
+			<fileset dir="src/main/resources/">
+				<filename name="**/*"/>
+			</fileset>
+		</copy>
+        <jar destfile="target/Carbon.jar" basedir="build/classes" />
+		<delete dir="build" />
+    </target>
+
+</project>
