@@ -111,4 +111,9 @@ public class BannerMeta extends CraftMetaItem {
 		return builder;
 	}
 
+	@Override
+	public BannerMeta clone() {
+		return (BannerMeta) super.clone();
+	}
+
 }
