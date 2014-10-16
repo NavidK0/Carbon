@@ -1,7 +1,5 @@
 package com.lastabyss.carbon.recipes;
 
-import java.util.HashMap;
-
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.ItemStack;
 import net.minecraft.server.v1_7_R4.Items;
@@ -50,18 +48,6 @@ public enum EnumBannerPatterns {
 	SKULL("skull", "sku", new ItemStack(Items.SKULL, 1, 1)), 
 	FLOWER("flower", "flo", new ItemStack(Blocks.RED_ROSE, 1, 8)), 
 	MOJANG("mojang", "moj", new ItemStack(Items.GOLDEN_APPLE, 1, 1));
-
-	private static HashMap<String, EnumBannerPatterns> BY_PATTERN_NAME = new HashMap<String, EnumBannerPatterns>();
-	
-	static {
-		for (EnumBannerPatterns pattern : values()) {
-			BY_PATTERN_NAME.put(pattern.getPatternName(), pattern);
-		}
-	}
-
-	public static EnumBannerPatterns getByName(String name) {
-		return BY_PATTERN_NAME.get(name);
-	}
 
 	private String patternName;
 	private String[] craftingGrid;
