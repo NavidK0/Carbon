@@ -37,6 +37,7 @@ public class Instrumentator {
         	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem$ItemMetaKey.class",
         	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem$ItemMetaKey$Specific.class",
         	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem$ItemMetaKey$Specific$To.class",
+        	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemFactory.class",
         	"org/bukkit/craftbukkit/v1_7_R4/inventory/BannerMeta.class"
         );
     }

@@ -46,6 +46,16 @@ public class BannerMeta extends CraftMetaItem {
 		patternsData = (HashMap<String, Integer>) map.get("Patterns");
 	}
 
+	BannerMeta(CraftMetaItem meta) {
+		super(meta);
+		if (!(meta instanceof BannerMeta)) {
+			return;
+		}
+		BannerMeta that = (BannerMeta) meta;
+		this.patternsData = that.getPatterns();
+		this.baseColor = that.getBaseColor();
+	}
+
 	@Override
 	void applyToItem(NBTTagCompound tag) {
 		super.applyToItem(tag);

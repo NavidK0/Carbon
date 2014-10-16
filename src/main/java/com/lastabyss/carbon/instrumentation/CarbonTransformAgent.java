@@ -57,6 +57,12 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 					getPreTransformedClass("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem")
 				)
 			);
+			instrumentation.redefineClasses(
+				new ClassDefinition(
+					Class.forName("org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemFactory"),
+					getPreTransformedClass("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemFactory")
+				)
+			);
 
 			// inject banner meta into the server
 			ClassLoader cl = ClassLoader.getSystemClassLoader();
@@ -123,16 +129,12 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 
 	@Override
 	public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
-		if (className.equals("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemStack")) {
-			LogManager.getLogger().log(Level.INFO, "[Carbon] Transforming CraftBukkit CraftItemStack");
-			try {
-				return getPreTransformedClass(className);
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("Failed to transform class!");
-			}
-		} else if (className.startsWith("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem")) {
-			LogManager.getLogger().log(Level.INFO, "[Carbon] Transforming CraftBukkit CraftMetaItem");
+		if (
+			className.equals("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemStack") ||
+			className.startsWith("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem") ||
+			className.equals("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemFactory")
+		) {
+			LogManager.getLogger().log(Level.INFO, "[Carbon] Transforming "+className);
 			try {
 				return getPreTransformedClass(className);
 			} catch (Exception e) {
