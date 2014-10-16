@@ -314,6 +314,7 @@ public final class CraftItemStack extends org.bukkit.inventory.ItemStack {
 	}
 
 	public static boolean setItemMeta(net.minecraft.server.v1_7_R4.ItemStack item, ItemMeta itemMeta) {
+		//System.out.println("Setting "+itemMeta+" to "+item);
 		if (item == null) {
 			return false;
 		}

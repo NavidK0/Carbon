@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 
 import net.minecraft.server.v1_7_R4.GenericAttributes;
@@ -71,26 +72,26 @@ class CraftMetaItem implements ItemMeta, Repairable {
 
 	@SerializableAs("ItemMeta")
 	public static class SerializableMeta implements ConfigurationSerializable {
+
+		private SerializableMeta() {
+		}
+
 		static final String TYPE_FIELD = "meta-type";
-		static final ImmutableMap<Class<? extends CraftMetaItem>, String> classMap; 
+		static final ImmutableMap<Class<? extends CraftMetaItem>, String> classMap = ImmutableMap.<Class<? extends CraftMetaItem>, String>builder()
+			.put(CraftMetaSkull.class, "SKULL")
+			.put(CraftMetaLeatherArmor.class, "LEATHER_ARMOR")
+			.put(CraftMetaMap.class, "MAP")
+			.put(CraftMetaPotion.class, "POTION")
+			.put(CraftMetaEnchantedBook.class, "ENCHANTED")
+			.put(CraftMetaFirework.class, "FIREWORK")
+			.put(CraftMetaCharge.class, "FIREWORK_EFFECT")
+			.put(CraftMetaItem.class, "UNSPECIFIC")
+		.build();
 		static final ImmutableMap<String, Constructor<? extends CraftMetaItem>> constructorMap;
 
 		static {
-			ImmutableMap.Builder<Class<? extends CraftMetaItem>, String> classMapBuilder = ImmutableMap.builder();
-			classMap = classMapBuilder
-				.put(CraftMetaBook.class, "BOOK")
-				.put(CraftMetaSkull.class, "SKULL")
-				.put(CraftMetaLeatherArmor.class, "LEATHER_ARMOR")
-				.put(CraftMetaMap.class, "MAP")
-				.put(CraftMetaPotion.class, "POTION")
-				.put(CraftMetaEnchantedBook.class, "ENCHANTED")
-				.put(CraftMetaFirework.class, "FIREWORK")
-				.put(CraftMetaCharge.class, "FIREWORK_EFFECT")
-				.put(CraftMetaItem.class, "UNSPECIFIC")
-				.put(BannerMeta.class, "BANNER")
-			.build();
 			ImmutableMap.Builder<String, Constructor<? extends CraftMetaItem>> classConstructorBuilder = ImmutableMap.builder();
-			for (Map.Entry<Class<? extends CraftMetaItem>, String> mapping : classMap.entrySet()) {
+			for (Entry<Class<? extends CraftMetaItem>, String> mapping : classMap.entrySet()) {
 				try {
 					classConstructorBuilder.put(mapping.getValue(), (mapping.getKey()).getDeclaredConstructor(new Class[] { Map.class }));
 				} catch (NoSuchMethodException e) {
