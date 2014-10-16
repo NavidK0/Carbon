@@ -49,15 +49,11 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 				new ClassDefinition(
 					Class.forName("org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack"),
 					getPreTransformedClass("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemStack")
-				)
-			);
-			instrumentation.redefineClasses(
+				),
 				new ClassDefinition(
 					Class.forName("org.bukkit.craftbukkit.v1_7_R4.inventory.CraftMetaItem"),
 					getPreTransformedClass("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem")
-				)
-			);
-			instrumentation.redefineClasses(
+				),
 				new ClassDefinition(
 					Class.forName("org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemFactory"),
 					getPreTransformedClass("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemFactory")
