@@ -25,7 +25,7 @@ public class AgentLoader {
 
     /**
      * Loads an agent into a JVM.
-     * Always add Tools.class to the resources
+     * Those classes will be moved inside the "pretransformed" folder inside the agent jar 
      * @param agent     The main agent class.
      * @param resources Array of classes to be included with agent.
      * @param pid       The ID of the target JVM.
@@ -37,7 +37,7 @@ public class AgentLoader {
     public static void attachAgentToJVM(String pid, Class<?> agent, String... resources) throws IOException, AttachNotSupportedException, AgentLoadException, AgentInitializationException {
         VirtualMachine vm = VirtualMachine.attach(pid);
         vm.loadAgent(generateAgentJar(agent, resources).getAbsolutePath());
-        vm.detach();
+        //vm.detach();
     }
 
     /**
@@ -50,7 +50,7 @@ public class AgentLoader {
      * @throws IOException
      */
     public static File generateAgentJar(Class<?> agent, String... resources) throws IOException {
-        File jarFile = File.createTempFile("agent", ".jar");
+        File jarFile = File.createTempFile("carbonagent", ".jar");
         jarFile.deleteOnExit();
 
         Manifest manifest = new Manifest();

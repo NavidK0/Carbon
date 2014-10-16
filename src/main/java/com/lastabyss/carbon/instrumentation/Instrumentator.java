@@ -19,8 +19,6 @@ import sun.tools.attach.WindowsAttachProvider;
  */
 public class Instrumentator {
 
-	//All pretransformed class files should be bundled in "pretransformedclasses" dir inside the carbon jar
-
     private String attachLibFolder;
 
     public Instrumentator(Carbon plugin, String attachLibFolder) {
@@ -32,7 +30,14 @@ public class Instrumentator {
     	Tools.addToLibPath(getLibraryPath(attachLibFolder));
     	AttachProvider.setAttachProvider(getAttachProvider());
         AgentLoader.attachAgentToJVM(Tools.getCurrentPID(), CarbonTransformAgent.class, 
-        	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemStack.class"
+        	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemStack.class",
+        	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem.class",
+        	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem$1.class",
+        	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem$SerializableMeta.class",
+        	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem$ItemMetaKey.class",
+        	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem$ItemMetaKey$Specific.class",
+        	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem$ItemMetaKey$Specific$To.class",
+        	"org/bukkit/craftbukkit/v1_7_R4/inventory/BannerMeta.class"
         );
     }
 

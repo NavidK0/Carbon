@@ -3,12 +3,9 @@ package com.lastabyss.carbon.recipes;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
 import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import com.lastabyss.carbon.Carbon;
-import com.lastabyss.carbon.entity.TileEntityBanner;
 import com.lastabyss.carbon.recipes.bukkit.DynamicBannerRecipe;
 
 import net.minecraft.server.v1_7_R4.IRecipe;
@@ -69,34 +66,22 @@ public class RecipesBannerPatterns implements IRecipe {
 			if (result.getTag() == null) {
 				result.setTag(new NBTTagCompound());
 			}
-			//bukkit clears unknown nbt tags so we use lore to store patterns
-			CraftItemStack citemStack = CraftItemStack.asCraftMirror(result);
-			ItemMeta im = citemStack.getItemMeta();
-			List<String> lore = null;
-			if (im.hasLore()) {
-				lore = im.getLore();
-			} else {
-				lore = new ArrayList<String>();
-			}
-			lore.add("Carbon|"+enumPattern.getPatternName()+"|"+color);
-			im.setLore(lore);
-			citemStack.setItemMeta(im);
-			/*if (!result.getTag().hasKey("BlockEntityTag")) {
+			if (!result.getTag().hasKey("BlockEntityTag")) {
 				NBTTagCompound compund = new NBTTagCompound();
 				result.getTag().set("BlockEntityTag", compund);
 			}
-			NBTTagCompound compund = result.getTag().getCompound("BlockEntityTag");
+			NBTTagCompound compound = result.getTag().getCompound("BlockEntityTag");
 			NBTTagList patterns;
-			if (compund.hasKeyOfType("Patterns", 9)) {
-				patterns = compund.getList("Patterns", 10);
+			if (compound.hasKeyOfType("Patterns", 9)) {
+				patterns = compound.getList("Patterns", 10);
 			} else {
 				patterns = new NBTTagList();
-				compund.set("Patterns", patterns);
+				compound.set("Patterns", patterns);
 			}
 			NBTTagCompound pattern = new NBTTagCompound();
 			pattern.setString("Pattern", enumPattern.getPatternName());
 			pattern.setInt("Color", color);
-			patterns.add(pattern)*/;
+			patterns.add(pattern);
 		}
 
 		return result;

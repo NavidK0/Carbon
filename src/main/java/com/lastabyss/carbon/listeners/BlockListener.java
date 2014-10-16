@@ -64,8 +64,6 @@ public class BlockListener implements Listener {
 				compound.remove("id");
 				itemStack.setTag(new NBTTagCompound());
 				itemStack.getTag().set("BlockEntityTag", compound);
-				//serverside we store banner patterns as lore so we recode nbt to lore so serializer will recode item back properly
-				EnumBannerPatterns.fromNBTToLore(itemStack);
 			}
 			if (itemStack != null) {
 				event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), CraftItemStack.asCraftMirror(itemStack));

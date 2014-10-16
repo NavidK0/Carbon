@@ -5,8 +5,6 @@ import org.bukkit.craftbukkit.v1_7_R4.util.CraftChatMessage;
 import org.spigotmc.SpigotComponentReverter;
 import org.spigotmc.SpigotDebreakifier;
 
-import com.lastabyss.carbon.Carbon;
-import com.lastabyss.carbon.recipes.EnumBannerPatterns;
 import net.minecraft.server.v1_7_R4.ChatSerializer;
 import net.minecraft.server.v1_7_R4.IChatBaseComponent;
 import net.minecraft.server.v1_7_R4.Item;
@@ -40,9 +38,9 @@ public class PacketDataSerializer extends net.minecraft.server.v1_7_R4.PacketDat
 				itemstack = itemstack.cloneItemStack();
 				CraftItemStack.setItemMeta(itemstack, CraftItemStack.getItemMeta(itemstack));
 				//serverside we store banner patterns as lore, so we will have to recode from lore to nbt when sending item to client
-				if (itemstack.getItem() == Carbon.injector().standingBannerItem) {
-					EnumBannerPatterns.fromLoreToNBT(itemstack);
-				}
+				//if (itemstack.getItem() == Carbon.injector().standingBannerItem) {
+				//	EnumBannerPatterns.fromLoreToNBT(itemstack);
+				//}
 				nbttagcompound = itemstack.tag;
 			}
 			if ((nbttagcompound != null) && (this.version >= 29)) {
@@ -87,10 +85,6 @@ public class PacketDataSerializer extends net.minecraft.server.v1_7_R4.PacketDat
 						newList.add(new NBTTagString(newString));
 					}
 					itemstack.tag.set("pages", newList);
-				}
-				//serverside we store banner patterns as lore, so we will have to recode from nbt to lore when receivng data from client
-				if (itemstack.getItem() == Carbon.injector().standingBannerItem) {
-					EnumBannerPatterns.fromNBTToLore(itemstack);
 				}
 				CraftItemStack.setItemMeta(itemstack, CraftItemStack.getItemMeta(itemstack));
 			}

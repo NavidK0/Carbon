@@ -6,7 +6,6 @@ import java.util.List;
 import org.bukkit.inventory.Recipe;
 
 import com.lastabyss.carbon.Carbon;
-import com.lastabyss.carbon.entity.TileEntityBanner;
 import com.lastabyss.carbon.recipes.bukkit.DynamicBannerRecipe;
 
 import net.minecraft.server.v1_7_R4.IRecipe;

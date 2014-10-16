@@ -2,7 +2,6 @@ package com.lastabyss.carbon.blocks;
 
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.entity.TileEntityBanner;
-import com.lastabyss.carbon.recipes.EnumBannerPatterns;
 
 import java.util.Random;
 
@@ -66,8 +65,6 @@ public class BlockBanner extends BlockContainer {
 			compound.remove("id");
 			itemStack.setTag(new NBTTagCompound());
 			itemStack.getTag().set("BlockEntityTag", compound);
-			//serverside we store banner patterns as lore so we recode nbt to lore so serializer will recode item back properly
-			EnumBannerPatterns.fromNBTToLore(itemStack);
 			a(world, x, y, z, itemStack);
 		} else {
 			super.dropNaturally(world, x, y, z, data, chance, idk);

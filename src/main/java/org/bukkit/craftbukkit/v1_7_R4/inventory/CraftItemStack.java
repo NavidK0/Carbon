@@ -1,11 +1,14 @@
 package org.bukkit.craftbukkit.v1_7_R4.inventory;
 
 import com.google.common.collect.ImmutableMap;
+
 import java.util.Map;
+
 import net.minecraft.server.v1_7_R4.EnchantmentManager;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
 import net.minecraft.server.v1_7_R4.NBTTagList;
+
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
@@ -294,6 +297,9 @@ public final class CraftItemStack extends org.bukkit.inventory.ItemStack {
 		}
 		if (mat == Material.ENCHANTED_BOOK) {
 			return new CraftMetaEnchantedBook(item.tag);
+		}
+		if (mat.toString().equals("BANNER")) {
+			return new BannerMeta(item.getData(), item.tag);
 		}
 		return new CraftMetaItem(item.tag);
 	}

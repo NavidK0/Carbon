@@ -26,6 +26,7 @@ public class PacketEncoder extends net.minecraft.server.v1_7_R4.PacketEncoder {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void encode(ChannelHandlerContext channelhandlercontext, Object object, ByteBuf bytebuf) throws IOException {
+		try {
 		Packet packet = (Packet) object;
 		Integer packetid = ((BiMap<Integer, Class<? extends Packet>>) channelhandlercontext.channel().attr(NetworkManager.f).get()).inverse().get(packet.getClass());
 		if (logger.isDebugEnabled()) {
@@ -39,6 +40,9 @@ public class PacketEncoder extends net.minecraft.server.v1_7_R4.PacketEncoder {
 		packetdataserializer.b(packetid.intValue());
 		packet.b(packetdataserializer);
 		//don't use packet statistic because it is a waste of resources
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
 	}
 
 }
