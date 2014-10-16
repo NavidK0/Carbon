@@ -42,7 +42,7 @@ public class BannerMeta extends CraftMetaItem {
 	@SuppressWarnings("unchecked")
 	BannerMeta(Map<String, Object> map) {
 		super(map);
-		baseColor = (int) map.get("BaseColor");
+		baseColor = (Integer) map.get("BaseColor");
 		patternsData = (HashMap<String, Integer>) map.get("Patterns");
 	}
 
@@ -108,7 +108,7 @@ public class BannerMeta extends CraftMetaItem {
 	int applyHash() {
 		int original;
 		int hash = original = super.applyHash();
-		hash = 61 * hash + this.baseColor ^ 0b010010110;
+		hash = 61 * hash + this.baseColor ^ 0x4B0;
 		hash = 31 * hash + patternsData.hashCode();
 		return hash != original ? BannerMeta.class.hashCode() ^ hash : hash;
 	}

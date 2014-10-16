@@ -108,10 +108,28 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 			Class<?> smclass = Class.forName("org.bukkit.craftbukkit.v1_7_R4.inventory.CraftMetaItem$SerializableMeta");
 			setStaticFinalField(smclass, "classMap", newClassMap);
 			setStaticFinalField(smclass, "constructorMap", newConstructorMap);
-		} catch (UnmodifiableClassException | ClassNotFoundException | IOException | NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			Bukkit.shutdown();
-		}
+		} catch (IOException e) {
+                    e.printStackTrace();
+                    Bukkit.shutdown();
+                } catch (UnmodifiableClassException e) {
+                    e.printStackTrace();
+			Bukkit.shutdown();
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+			Bukkit.shutdown();
+                } catch (SecurityException e) {
+                    e.printStackTrace();
+			Bukkit.shutdown();
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+			Bukkit.shutdown();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+			Bukkit.shutdown();
+            }
 	}
 
 	private static void setStaticFinalField(Class<?> clazz, String fieldname, Object newValue) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
