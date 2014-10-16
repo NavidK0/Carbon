@@ -39,7 +39,7 @@ public class PacketEncoder extends net.minecraft.server.v1_7_R4.PacketEncoder {
 					fullTime = fullTime | ((24000L * 89400L) - 1L);
 					fullTimeField.set(packet, fullTimeField);
 				}
-				Field dayTimeField = packet.getClass().getDeclaredField("a");
+				Field dayTimeField = packet.getClass().getDeclaredField("b");
 				dayTimeField.setAccessible(true);
 				long dayTime = dayTimeField.getLong(packet);
 				if (dayTime > 24000L) {
