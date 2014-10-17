@@ -7,7 +7,6 @@ import java.lang.instrument.ClassDefinition;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.lang.instrument.Instrumentation;
-import java.lang.instrument.UnmodifiableClassException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -108,28 +107,10 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 			Class<?> smclass = Class.forName("org.bukkit.craftbukkit.v1_7_R4.inventory.CraftMetaItem$SerializableMeta");
 			setStaticFinalField(smclass, "classMap", newClassMap);
 			setStaticFinalField(smclass, "constructorMap", newConstructorMap);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			t.printStackTrace();
 			Bukkit.shutdown();
-		} catch (IOException e) {
-                    e.printStackTrace();
-                    Bukkit.shutdown();
-                } catch (UnmodifiableClassException e) {
-                    e.printStackTrace();
-			Bukkit.shutdown();
-                } catch (NoSuchFieldException e) {
-                    e.printStackTrace();
-			Bukkit.shutdown();
-                } catch (SecurityException e) {
-                    e.printStackTrace();
-			Bukkit.shutdown();
-                } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
-			Bukkit.shutdown();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-			Bukkit.shutdown();
-            }
+		}
 	}
 
 	private static void setStaticFinalField(Class<?> clazz, String fieldname, Object newValue) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
