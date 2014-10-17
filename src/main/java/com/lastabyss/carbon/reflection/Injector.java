@@ -2,7 +2,6 @@ package com.lastabyss.carbon.reflection;
 
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.blocks.BlockAnvil;
-import com.lastabyss.carbon.blocks.BlockBanner;
 import com.lastabyss.carbon.blocks.BlockBarrier;
 import com.lastabyss.carbon.blocks.BlockDaylightDetector;
 import com.lastabyss.carbon.blocks.BlockEnchantTable;
@@ -32,14 +31,18 @@ import com.lastabyss.carbon.blocks.BlockWoodenFence;
 import com.lastabyss.carbon.blocks.BlockWoodenFenceGate;
 import com.lastabyss.carbon.commands.CommandParticle;
 import com.lastabyss.carbon.commands.CommandWorldBorder;
+import com.lastabyss.carbon.entity.ArmorStandPose;
+import com.lastabyss.carbon.entity.EntityArmorStand;
 import com.lastabyss.carbon.entity.EntityEndermite;
 import com.lastabyss.carbon.entity.EntityGuardian;
 import com.lastabyss.carbon.entity.EntityRabbit;
 import com.lastabyss.carbon.entity.TileEntityBanner;
 import com.lastabyss.carbon.entity.TileEntityOptimizedChest;
+import com.lastabyss.carbon.entity.bukkit.ArmorStand;
 import com.lastabyss.carbon.entity.bukkit.Endermite;
 import com.lastabyss.carbon.entity.bukkit.Guardian;
 import com.lastabyss.carbon.entity.bukkit.Rabbit;
+import com.lastabyss.carbon.items.ItemArmorStand;
 import com.lastabyss.carbon.items.ItemBanner;
 import com.lastabyss.carbon.items.ItemCookedMutton;
 import com.lastabyss.carbon.items.ItemCookedRabbit;
@@ -67,6 +70,7 @@ import java.util.logging.Level;
 
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.Blocks;
+import net.minecraft.server.v1_7_R4.DataWatcher;
 import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.EntityTypes;
 import net.minecraft.server.v1_7_R4.EnumProtocol;
@@ -79,6 +83,7 @@ import net.minecraft.server.v1_7_R4.Packet;
 import net.minecraft.server.v1_7_R4.PotionBrewer;
 import net.minecraft.server.v1_7_R4.TileEntity;
 import net.minecraft.server.v1_7_R4.World;
+import net.minecraft.util.gnu.trove.map.TObjectIntMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -239,6 +244,7 @@ public class Injector {
   public Item daylightDetectorItem = new ItemBlock(daylightDetectorBlock);
   public Item optimizedChestItem = new ItemBlock(optimizedChestBlock);
   public Item optimizedTrappedChestItem = new ItemBlock(optimizedTrappedChestBlock);
+  public Item armorStandItem = new ItemArmorStand();
 
   public Item rabbitItem = new ItemRabbit();
   public Item cookedRabbitItem = new ItemCookedRabbit();
@@ -254,6 +260,7 @@ public class Injector {
   public EntityType endermiteEntity = Utilities.addEntity("ENDERMITE", 67, Endermite.class);
   public EntityType guardianEntity = Utilities.addEntity("GUARDIAN", 68, Guardian.class);
   public EntityType rabbitEntity = Utilities.addEntity("RABBIT", 101, Rabbit.class);
+  public EntityType armorStandEntity = Utilities.addEntity("ARMOR_STAND", 30, ArmorStand.class);
 
   public Map<World, WorldBorder> worldBorders = new HashMap<World, WorldBorder>();
 
@@ -287,6 +294,32 @@ public class Injector {
     	  ((Map<Class<? extends TileEntity>, String>)Utilities.setAccessible(Field.class, TileEntity.class.getDeclaredField("j"), true).get(null)).put(entityClass, name);
           if (plugin.getConfig().getBoolean("debug.verbose", false))
             Carbon.log.log(Level.INFO, "[Carbon] Tile Entity {0} was registered into Minecraft.", entityClass.getCanonicalName());
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+  }
+
+  @SuppressWarnings("unchecked")
+  public static void registerDataWatcherType(Class<?> type, int id) {
+      try {
+          Field classToIdField = DataWatcher.class.getDeclaredField("classToId");
+          classToIdField.setAccessible(true);
+          ((TObjectIntMap<Class<?>>) classToIdField.get(null)).put(type, id);
+          if (plugin.getConfig().getBoolean("debug.verbose", false))
+              Carbon.log.log(Level.INFO, "[Carbon] DataWatcher type {0} was registered into Minecraft.", type.getCanonicalName());
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+  }
+
+  public static void registerEntity(Class<? extends Entity> entityClass, String name, int id) {
+      try {
+          Class<EntityTypes> clazz = EntityTypes.class;
+          Method register = clazz.getDeclaredMethod("a", Class.class, String.class, Integer.TYPE);
+          register.setAccessible(true);
+          register.invoke(null, entityClass, name, id);
+          if (plugin.getConfig().getBoolean("debug.verbose", false))
+            Carbon.log.log(Level.INFO, "[Carbon] Entity {0} was registered into Minecraft.", entityClass.getCanonicalName());
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -347,6 +380,9 @@ public class Injector {
   }
 
   public void registerAll() {
+	//Register datawatcher types
+	registerDataWatcherType(ArmorStandPose.class, 7);
+
     //Register blocks
     registerBlock(1, "stone", stoneBlock, stoneItem);
     registerBlock(19, "sponge", spongeBlock, spongeItem);
@@ -408,11 +444,13 @@ public class Injector {
     registerItem(423, "mutton", muttonItem);
     registerItem(424, "cooked_mutton", cookedMuttonItem);
     registerItem(425, "banner", standingBannerItem);
+    registerItem(416, "armor_stand", armorStandItem);
 
     //Register entities (data copied straight from 1.8, from EntityList.java)
     registerEntity(EntityEndermite.class, "Endermite", 67, 1447446, 7237230);
     registerEntity(EntityGuardian.class, "Guardian", 68, 5931634, 15826224);
     registerEntity(EntityRabbit.class, "Rabbit", 101, 10051392, 7555121);
+    registerEntity(EntityArmorStand.class, "ArmorStand", 30);
 
     //Register tile entities
     registerTileEntity(TileEntityBanner.class, "Banner");
