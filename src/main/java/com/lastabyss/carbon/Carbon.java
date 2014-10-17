@@ -79,7 +79,6 @@ public class Carbon extends JavaPlugin {
     saveResource("libraries/natives/64/solaris/libattach.so", true);
     saveResource("libraries/natives/64/windows/attach.dll", true);
     
-    
     //Inject 1.8 features. Stop server if something fails
     try {
       DynamicEnumType.loadReflection();
@@ -93,6 +92,7 @@ public class Carbon extends JavaPlugin {
     }
     catch (Exception e) {
       e.printStackTrace();
+      log.warning("[Carbon] 1.8 injection failed! Something went wrong, server cannot start properly, shutting down...");
       Bukkit.shutdown();
     }
 
