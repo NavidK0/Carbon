@@ -88,7 +88,7 @@ public class Tools {
 
         public static Platform getPlatform() {
             String os = System.getProperty("os.name").toLowerCase();
-            if (os.contains("win")) {
+            if (os.contains("win") && !os.contains("darwin")) {
                 return WINDOWS;
             }
             if ((os.contains("nix")) || (os.contains("nux")) || (os.indexOf("aix") > 0)) {
@@ -97,8 +97,9 @@ public class Tools {
             if (os.contains("mac")) {
                 return MAC;
             }
-            if (os.contains("sunos"))
+            if (os.contains("sunos")) {
                 return SOLARIS;
+            }
             return null;
         }
 

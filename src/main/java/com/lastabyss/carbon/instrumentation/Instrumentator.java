@@ -10,7 +10,9 @@ import com.sun.tools.attach.spi.AttachProvider;
 import java.io.File;
 import java.io.IOException;
 
+import sun.tools.attach.BsdAttachProvider;
 import sun.tools.attach.LinuxAttachProvider;
+import sun.tools.attach.SolarisAttachProvider;
 import sun.tools.attach.WindowsAttachProvider;
 
 /**
@@ -69,6 +71,10 @@ public class Instrumentator {
             	return new LinuxAttachProvider();
             case WINDOWS:
             	return new WindowsAttachProvider();
+            case MAC:
+            	return new BsdAttachProvider();
+            case SOLARIS:
+            	return new SolarisAttachProvider();
 			default:
                 throw new UnsupportedOperationException("unsupported platform");
         }
