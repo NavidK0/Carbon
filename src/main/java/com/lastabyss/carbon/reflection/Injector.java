@@ -55,6 +55,7 @@ import com.lastabyss.carbon.items.ItemRabbitHide;
 import com.lastabyss.carbon.items.ItemRabbitStew;
 import com.lastabyss.carbon.items.ItemWoodenDoor;
 import com.lastabyss.carbon.nettyinjector.NettyInjector;
+import com.lastabyss.carbon.packets.PacketPlayInUseEntity;
 import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
 import com.lastabyss.carbon.recipes.RecipesBanners;
 import com.lastabyss.carbon.utils.Utilities;
@@ -462,6 +463,7 @@ public class Injector {
 
     //Register additional packets
     registerPacket(EnumProtocol.PLAY, PacketPlayOutWorldBorder.class, 68, true);
+    registerPacket(EnumProtocol.PLAY, PacketPlayInUseEntity.class, 2, false);
 
     //Register additional 1.8 client replacement to prevent crashes
     registerSpigotDebreakifierAddition(redSandstoneDoubleSlabBlock, redSandstoneSlabBlock);
