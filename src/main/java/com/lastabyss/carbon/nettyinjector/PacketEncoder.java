@@ -8,6 +8,8 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 
+import com.lastabyss.carbon.utils.Utilities;
+
 import net.minecraft.server.v1_7_R4.NetworkManager;
 import net.minecraft.server.v1_7_R4.NetworkStatistics;
 import net.minecraft.server.v1_7_R4.Packet;
@@ -23,6 +25,13 @@ public class PacketEncoder extends net.minecraft.server.v1_7_R4.PacketEncoder {
 
 	public PacketEncoder(NetworkStatistics networkstatistics) {
 		super(networkstatistics);
+	}
+
+	private boolean[] newpackets = new boolean[256];
+	{
+		for (int i = 0x41; i < 0x49; i++) {
+			newpackets[i] = true;
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -56,7 +65,12 @@ public class PacketEncoder extends net.minecraft.server.v1_7_R4.PacketEncoder {
 		if (packetid == null) {
 			throw new IOException("Can't serialize unregistered packet");
 		}
-		PacketDataSerializer packetdataserializer = new PacketDataSerializer(bytebuf, NetworkManager.getVersion(channelhandlercontext.channel()));
+		//skip new packets for 1.7 client
+		int version = NetworkManager.getVersion(channelhandlercontext.channel());
+		if (version != Utilities.CLIENT_1_8_PROTOCOL_VERSION && newpackets[packetid.intValue()]) {
+			return;
+		}
+		PacketDataSerializer packetdataserializer = new PacketDataSerializer(bytebuf, version);
 
 		packetdataserializer.b(packetid.intValue());
 		packet.b(packetdataserializer);

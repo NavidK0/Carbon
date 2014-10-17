@@ -2,7 +2,6 @@ package com.lastabyss.carbon.utils;
 
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.DynamicEnumType;
-import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
 
 import net.minecraft.server.v1_7_R4.EntityPlayer;
 import net.minecraft.server.v1_7_R4.Packet;
@@ -23,8 +22,6 @@ import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -233,13 +230,6 @@ public class Utilities {
     }
 
     public static int CLIENT_1_8_PROTOCOL_VERSION = 47;
-    private static HashSet<Class<?>> newPackets = new HashSet<Class<?>>(
-    	Arrays.asList(
-    		new Class<?>[] {
-    			PacketPlayOutWorldBorder.class
-    		}
-    	)
-    );
     /**
      * Gets protocol version of a player
      * @param player
@@ -261,11 +251,6 @@ public class Utilities {
      */
     public static void sendPacket(Player player, Packet packet) {
     	EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
-    	if (getProtocolVersion(nmsPlayer) != CLIENT_1_8_PROTOCOL_VERSION) {
-    		if (newPackets.contains(packet.getClass())) {
-    			return;
-    		}
-    	}
     	nmsPlayer.playerConnection.sendPacket(packet);
     }
 
