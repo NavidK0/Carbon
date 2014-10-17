@@ -28,6 +28,7 @@ public class PacketEncoder extends net.minecraft.server.v1_7_R4.PacketEncoder {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void encode(ChannelHandlerContext channelhandlercontext, Object object, ByteBuf bytebuf) throws IOException {
+		try {
 		Packet packet = (Packet) object;
 		//clamp packet play out time to not exceed integer
 		if (packet instanceof PacketPlayOutUpdateTime) {
@@ -64,6 +65,9 @@ public class PacketEncoder extends net.minecraft.server.v1_7_R4.PacketEncoder {
 		packetdataserializer.b(packetid.intValue());
 		packet.b(packetdataserializer);
 		//don't use packet statistic because it is a waste of resources
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
 	}
 
 }

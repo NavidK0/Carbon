@@ -670,22 +670,20 @@ class CraftMetaItem implements ItemMeta, Repairable {
 		return (String) SerializableMeta.classMap.get(getClass()) + "_META:" + serialize();
 	}
 
-	private final ItemMeta.Spigot spigot = new ItemMeta.Spigot();
+	private final ItemMeta.Spigot spigot = new ItemMeta.Spigot() {
+		private boolean unbreakable;
+
+		public void setUnbreakable(boolean setUnbreakable) {
+			this.unbreakable = setUnbreakable;
+		}
+		
+		public boolean isUnbreakable() {
+			return this.unbreakable;
+		}
+	};
 
 	public ItemMeta.Spigot spigot() {
 		return this.spigot;
 	}
-
-    class Spigot {
-        private boolean unbreakable;
-
-        public void setUnbreakable(boolean setUnbreakable) {
-                this.unbreakable = setUnbreakable;
-        }
-
-        public boolean isUnbreakable() {
-                return this.unbreakable;
-        }
-    }
 
 }

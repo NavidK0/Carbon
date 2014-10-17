@@ -126,7 +126,7 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 	public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
 		if (
 			className.equals("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemStack") ||
-			className.startsWith("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem") ||
+			className.equals("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem") ||
 			className.equals("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemFactory")
 		) {
 			LogManager.getLogger().log(Level.INFO, "[Carbon] Transforming "+className);
