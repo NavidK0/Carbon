@@ -9,7 +9,7 @@ If your issue/pull request is properly created, a label will be given to your is
 
 More stable releases are available [on Spigot](http://www.spigotmc.org/resources/.1258/).  
 If you find a bug, post an issue containing the version you are using!  
-The latest builds are available from [Jenkins](http://ci.citizensnpcs.co/job/Carbon/). Download Carbon.jar, not Carbon-1.jar!  
+The latest builds are available from [Jenkins](http://build.true-games.org/job/Carbon/).
 Jenkins builds are not guaranteed to be stable.  
 To prevent 1.7 clients from crashing, please install [ProtocolLib](http://assets.comphenix.net/job/ProtocolLib%20-%20Spigot%20Compatible%201.8/).
 
