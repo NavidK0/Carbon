@@ -7,6 +7,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.lastabyss.carbon.Carbon;
+import com.lastabyss.carbon.entity.ArmorStandPose;
 import com.lastabyss.carbon.inventory.EnchantingContainer;
 import com.lastabyss.carbon.utils.Utilities;
 
@@ -19,6 +20,7 @@ import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Iterator;
 import java.util.List;
 
 public class ProtocolItemListener {
@@ -199,15 +201,18 @@ public class ProtocolItemListener {
 					if (Utilities.getProtocolVersion(event.getPlayer()) == Utilities.CLIENT_1_8_PROTOCOL_VERSION) {
 						return;
 					}
-					// create a new packet with valid items and send it (Had to do this because metadata packets are shared)
+					// create a new packet with valid items and send it, also remove armor stand pose data, because it is unknown  (Had to do this because metadata packets are shared)
 					event.setCancelled(true);
 					PacketContainer newpacket = event.getPacket().deepClone();
 					List<?> list = newpacket.getSpecificModifier(List.class).read(0);
-					for (Object object : list) {
-						WatchableObject wobject = (WatchableObject) object;
+					Iterator<?> iterator = list.iterator();
+					while (iterator.hasNext()) {
+						WatchableObject wobject = (WatchableObject) iterator.next();
 						if (wobject.b() instanceof net.minecraft.server.v1_7_R4.ItemStack) {
 							net.minecraft.server.v1_7_R4.ItemStack itemStack = (net.minecraft.server.v1_7_R4.ItemStack) wobject.b();
 							replaceItemStack(itemStack);
+						} else if (wobject.b() instanceof ArmorStandPose) {
+							iterator.remove();
 						}
 					}
 					try {

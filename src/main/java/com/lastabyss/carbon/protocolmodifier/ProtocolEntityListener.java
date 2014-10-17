@@ -1,11 +1,22 @@
 package com.lastabyss.carbon.protocolmodifier;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Iterator;
+import java.util.List;
+
+import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
+
+import net.minecraft.server.v1_7_R4.WatchableObject;
+
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.lastabyss.carbon.Carbon;
+import com.lastabyss.carbon.entity.ArmorStandPose;
+import com.lastabyss.carbon.entity.EntityArmorStand;
 import com.lastabyss.carbon.utils.Utilities;
 
 public class ProtocolEntityListener {
@@ -16,18 +27,25 @@ public class ProtocolEntityListener {
 		this.plugin = plugin;
 	}
 
-	private int replacements[] = new int[256];
+	private int replacementsLiving[] = new int[256];
+	private int replacementsObjects[] = new int[256];
 
 	public ProtocolEntityListener loadRemapList() {
-		for (int i = 0; i < replacements.length; i++) {
-			replacements[i] = -1;
+		for (int i = 0; i < replacementsLiving.length; i++) {
+			replacementsLiving[i] = -1;
 		}
 		// endermite -> silverfish
-		replacements[67] = plugin.getConfig().getInt("protocollib.entities.silverfish", 60);
+		replacementsLiving[67] = plugin.getConfig().getInt("protocollib.entities.silverfish", 60);
 		// guardian -> sqiud
-		replacements[68] = plugin.getConfig().getInt("protocollib.entities.endermites", 94);
+		replacementsLiving[68] = plugin.getConfig().getInt("protocollib.entities.endermites", 94);
 		// rabbit -> chicken
-		replacements[101] = plugin.getConfig().getInt("protocollib.entities.rabbits", 93);
+		replacementsLiving[101] = plugin.getConfig().getInt("protocollib.entities.rabbits", 93);
+
+		for (int i = 0; i < replacementsObjects.length; i++) {
+			replacementsObjects[i] = -1;
+		}
+		// armor stand -> ender crystal (just because it has the same height)
+		replacementsObjects[78] = plugin.getConfig().getInt("protocollib.entities.armorstand", 51);
 		return this;
 	}
 
@@ -44,12 +62,52 @@ public class ProtocolEntityListener {
 						return;
 					}
 					int type = event.getPacket().getIntegers().read(1);
-					if (replacements[type] != -1) {
-						event.getPacket().getIntegers().write(1, replacements[type]);
+					if (replacementsLiving[type] != -1) {
+						event.getPacket().getIntegers().write(1, replacementsLiving[type]);
 					}
 				}
 			}
 		);
+
+		ProtocolLibrary.getProtocolManager().addPacketListener(
+			new PacketAdapter(
+				PacketAdapter
+				.params(plugin, PacketType.Play.Server.SPAWN_ENTITY)
+				.listenerPriority(ListenerPriority.HIGHEST)
+			) {
+				@Override
+				public void onPacketSending(PacketEvent event) {
+					if (Utilities.getProtocolVersion(event.getPlayer()) == Utilities.CLIENT_1_8_PROTOCOL_VERSION) {
+						return;
+					}
+					int type = event.getPacket().getIntegers().read(9);
+					if (replacementsObjects[type] != -1) {
+						event.getPacket().getIntegers().write(9, replacementsObjects[type]);
+					}
+				}
+			}
+		);
+
+		ProtocolLibrary.getProtocolManager().addPacketListener(
+		new PacketAdapter(
+			PacketAdapter
+			.params(plugin, PacketType.Play.Server.UPDATE_ATTRIBUTES)
+			.listenerPriority(ListenerPriority.HIGHEST)
+		) {
+			@Override
+			public void onPacketSending(PacketEvent event) {
+				if (Utilities.getProtocolVersion(event.getPlayer()) == Utilities.CLIENT_1_8_PROTOCOL_VERSION) {
+					return;
+				}
+				//do not update attributes for armor stand
+				int entityId = event.getPacket().getIntegers().read(0);
+				if (((CraftWorld) event.getPlayer().getWorld()).getHandle().getEntity(entityId) instanceof EntityArmorStand) {
+					event.setCancelled(true);
+				}
+			}
+		}
+	);
+
 	}
 
 }

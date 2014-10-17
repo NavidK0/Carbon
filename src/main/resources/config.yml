@@ -52,9 +52,9 @@ protocollib:
     prismarine_crystal: 1
     rabbit_foot: 1
     rabbit_hide: 1
-    armor_stand: 1
+    armor_stand: 51
 debug:
-  verbose: false
+  verbose: true
         
         
 donottouch.configVersion: 0.6
