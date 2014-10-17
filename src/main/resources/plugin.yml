@@ -3,7 +3,7 @@ main: com.lastabyss.carbon.Carbon
 description: Adds 1.8 blocks and features to the Spigot protocol hack.
 softdepend: [ProtocolLib]
 load: STARTUP
-version: 1.6.4
+version: 1.7
 authors: [Navid K., _Shevchik_, Aust1n46]
 
 commands:
