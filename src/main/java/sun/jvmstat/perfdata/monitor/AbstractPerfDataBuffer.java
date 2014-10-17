@@ -25,10 +25,8 @@
 
 package sun.jvmstat.perfdata.monitor;
 
-import sun.misc.Perf;
 import sun.jvmstat.monitor.*;
 import java.util.*;
-import java.io.*;
 import java.lang.reflect.*;
 import java.nio.ByteBuffer;
 
@@ -142,7 +140,7 @@ public abstract class AbstractPerfDataBuffer {
 
 		try {
 			Class<?> implClass = Class.forName(classname);
-			Constructor cons = implClass.getConstructor(new Class[] { Class.forName("java.nio.ByteBuffer"), Integer.TYPE });
+			Constructor<?> cons = implClass.getConstructor(new Class[] { Class.forName("java.nio.ByteBuffer"), Integer.TYPE });
 
 			impl = (PerfDataBufferImpl) cons.newInstance(new Object[] { bb, new Integer(lvmid) });
 

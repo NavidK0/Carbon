@@ -31,6 +31,7 @@ package sun.jvmstat.monitor;
  * @author Brian Doherty
  * @since 1.5
  */
+@SuppressWarnings("serial")
 public class MonitorException extends Exception {
 
 	/**

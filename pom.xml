@@ -8,7 +8,7 @@
     <repositories>
         <repository>
             <id>bukkit-repo</id>
-            <url>http://repo.bukkit.org/content/groups/public</url>
+            <url>http://maven.elmakers.com/repository/org/spigotmc/spigot-api/1.7.10-R0.1-SNAPSHOT/</url>
         </repository>
         <repository>
                 <id>ProtocolLib</id>
@@ -79,7 +79,7 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.7.10-R0.1-20140817.175650-8</version>
+            <version>1.7.10-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>

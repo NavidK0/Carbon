@@ -26,6 +26,7 @@
 package sun.jvmstat.monitor.event;
 
 import java.util.Set;
+
 import sun.jvmstat.monitor.MonitoredHost;
 
 /**
@@ -34,22 +35,23 @@ import sun.jvmstat.monitor.MonitoredHost;
  * @author Brian Doherty
  * @since 1.5
  */
+@SuppressWarnings("serial")
 public class VmStatusChangeEvent extends HostEvent {
 
 	/**
 	 * The set of currently active Java Virtual Machines for the MonitoredHost. The set contains an Integer object holding the <em>lvmid</em> for each active Java Virtual Machine on the MonitoredHost. This Set will only contain Integer objects.
 	 */
-	protected Set active;
+	protected Set<?> active;
 
 	/**
 	 * The set of Java Virtual Machines started on MonitoredHost since the previous event. The set contains an Integer object holding the <em>lvmid</em> for each Java Virtual Machine started on the MonitoredHost. This Set will only contain Integer objects.
 	 */
-	protected Set started;
+	protected Set<?> started;
 
 	/**
 	 * The set of Java Virtual Machines terminated on MonitoredHost since the previous event. The set contains an Integer object holding the <em>lvmid</em> for each Java Virtual Machine started on the MonitoredHost. This Set will only contain Integer objects.
 	 */
-	protected Set terminated;
+	protected Set<?> terminated;
 
 	/**
 	 * Construct a new VmStatusChangeEvent instance.
@@ -63,7 +65,7 @@ public class VmStatusChangeEvent extends HostEvent {
 	 * @param terminated
 	 *            the set of Java Virtual Machines terminated since the last event.
 	 */
-	public VmStatusChangeEvent(MonitoredHost host, Set active, Set started, Set terminated) {
+	public VmStatusChangeEvent(MonitoredHost host, Set<?> active, Set<?> started, Set<?> terminated) {
 		super(host);
 		this.active = active;
 		this.started = started;
@@ -75,7 +77,7 @@ public class VmStatusChangeEvent extends HostEvent {
 	 *
 	 * @return Set - a set of Integer objects containing the <em>lvmid</em> of each active Java Virtual Machine on the host. If there are no active Java Virtual Machines on the host, an empty Set is returned.
 	 */
-	public Set getActive() {
+	public Set<?> getActive() {
 		return active;
 	}
 
@@ -84,7 +86,7 @@ public class VmStatusChangeEvent extends HostEvent {
 	 *
 	 * @return Set - a set of Integer objects containing the <em>lvmid</em> of each Java Virtual Machine started on the host. If no Java Virtual Machines were recently started on the host, an empty Set is returned.
 	 */
-	public Set getStarted() {
+	public Set<?> getStarted() {
 		return started;
 	}
 
@@ -93,7 +95,7 @@ public class VmStatusChangeEvent extends HostEvent {
 	 *
 	 * @return Set - a set of Integer objects containing the <em>lvmid</em> of each Java Virtual Machine terminated on the host. If no Java Virtual Machines were recently terminated on the host, an empty Set is returned.
 	 */
-	public Set getTerminated() {
+	public Set<?> getTerminated() {
 		return terminated;
 	}
 }

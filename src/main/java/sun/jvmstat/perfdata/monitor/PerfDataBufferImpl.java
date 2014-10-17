@@ -26,6 +26,7 @@
 package sun.jvmstat.perfdata.monitor;
 
 import sun.jvmstat.monitor.*;
+
 import java.util.*;
 import java.nio.*;
 import java.io.*;
@@ -64,7 +65,7 @@ public abstract class PerfDataBufferImpl {
 	/**
 	 * A cache of resolved monitor aliases.
 	 */
-	protected Map aliasCache;
+	protected Map<?, ?> aliasCache;
 
 	/**
 	 * Constructor.
@@ -79,7 +80,7 @@ public abstract class PerfDataBufferImpl {
 		this.lvmid = lvmid;
 		this.monitors = new TreeMap<String, Monitor>();
 		this.aliasMap = new HashMap<String, ArrayList<String>>();
-		this.aliasCache = new HashMap();
+		this.aliasCache = new HashMap<Object, Object>();
 	}
 
 	/**
@@ -142,6 +143,7 @@ public abstract class PerfDataBufferImpl {
 	/**
 	 * Build the alias mapping. Uses the default alias map file unless the sun.jvmstat.perfdata.aliasmap file indicates some other file as the source.
 	 */
+	@SuppressWarnings("deprecation")
 	private void buildAliasMap() {
 		assert Thread.holdsLock(this);
 
@@ -182,9 +184,9 @@ public abstract class PerfDataBufferImpl {
 
 		Monitor m = (Monitor) aliasCache.get(name);
 		if (m == null) {
-			ArrayList al = aliasMap.get(name);
+			ArrayList<?> al = aliasMap.get(name);
 			if (al != null) {
-				for (Iterator i = al.iterator(); i.hasNext() && m == null;) {
+				for (Iterator<?> i = al.iterator(); i.hasNext() && m == null;) {
 					String alias = (String) i.next();
 					m = (Monitor) monitors.get(alias);
 				}
@@ -256,12 +258,12 @@ public abstract class PerfDataBufferImpl {
 		Matcher matcher = pattern.matcher("");
 		List<Monitor> matches = new ArrayList<Monitor>();
 
-		Set monitorSet = monitors.entrySet();
+		Set<?> monitorSet = monitors.entrySet();
 
-		for (Iterator i = monitorSet.iterator(); i.hasNext(); /* empty */) {
+		for (Iterator<?> i = monitorSet.iterator(); i.hasNext(); /* empty */) {
+			@SuppressWarnings("rawtypes")
 			Map.Entry me = (Map.Entry) i.next();
 			String name = (String) me.getKey();
-			Monitor m = (Monitor) me.getValue();
 
 			// apply pattern to monitor item name
 			matcher.reset(name);

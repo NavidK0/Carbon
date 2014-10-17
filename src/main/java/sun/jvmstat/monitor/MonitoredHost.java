@@ -162,7 +162,7 @@ public abstract class MonitoredHost {
 			// run the constructor taking a single String parameter.
 			Class<?> c = Class.forName(classname);
 
-			Constructor cons = c.getConstructor(new Class[] { hostId.getClass() });
+			Constructor<?> cons = c.getConstructor(new Class[] { hostId.getClass() });
 
 			mh = (MonitoredHost) cons.newInstance(new Object[] { hostId });
 

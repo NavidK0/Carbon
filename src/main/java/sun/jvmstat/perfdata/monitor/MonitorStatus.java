@@ -38,12 +38,12 @@ public class MonitorStatus {
 	/**
 	 * The list of Monitors inserted since the last query.
 	 */
-	protected List inserted;
+	protected List<?> inserted;
 
 	/**
 	 * The list of Monitors removed since the last query.
 	 */
-	protected List removed;
+	protected List<?> removed;
 
 	/**
 	 * Create a MonitorStatus instance.
@@ -53,7 +53,7 @@ public class MonitorStatus {
 	 * @param removed
 	 *            the list of Monitors removed
 	 */
-	public MonitorStatus(List inserted, List removed) {
+	public MonitorStatus(List<?> inserted, List<?> removed) {
 		this.inserted = inserted;
 		this.removed = removed;
 	}
@@ -63,7 +63,7 @@ public class MonitorStatus {
 	 *
 	 * @return List - the List of Monitor objects inserted or an empty List.
 	 */
-	public List getInserted() {
+	public List<?> getInserted() {
 		return inserted;
 	}
 
@@ -72,7 +72,7 @@ public class MonitorStatus {
 	 *
 	 * @return List - the List of Monitor objects removed or an empty List.
 	 */
-	public List getRemoved() {
+	public List<?> getRemoved() {
 		return removed;
 	}
 }

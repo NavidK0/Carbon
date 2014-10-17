@@ -1,21 +1,13 @@
 package com.lastabyss.carbon.protocolmodifier;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Iterator;
-import java.util.List;
-
 import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
-
-import net.minecraft.server.v1_7_R4.WatchableObject;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.lastabyss.carbon.Carbon;
-import com.lastabyss.carbon.entity.ArmorStandPose;
 import com.lastabyss.carbon.entity.EntityArmorStand;
 import com.lastabyss.carbon.utils.Utilities;
 
@@ -89,24 +81,24 @@ public class ProtocolEntityListener {
 		);
 
 		ProtocolLibrary.getProtocolManager().addPacketListener(
-		new PacketAdapter(
-			PacketAdapter
-			.params(plugin, PacketType.Play.Server.UPDATE_ATTRIBUTES)
-			.listenerPriority(ListenerPriority.HIGHEST)
-		) {
-			@Override
-			public void onPacketSending(PacketEvent event) {
-				if (Utilities.getProtocolVersion(event.getPlayer()) == Utilities.CLIENT_1_8_PROTOCOL_VERSION) {
-					return;
-				}
-				//do not update attributes for armor stand
-				int entityId = event.getPacket().getIntegers().read(0);
-				if (((CraftWorld) event.getPlayer().getWorld()).getHandle().getEntity(entityId) instanceof EntityArmorStand) {
-					event.setCancelled(true);
+			new PacketAdapter(
+				PacketAdapter
+				.params(plugin, PacketType.Play.Server.UPDATE_ATTRIBUTES)
+				.listenerPriority(ListenerPriority.HIGHEST)
+			) {
+				@Override
+				public void onPacketSending(PacketEvent event) {
+					if (Utilities.getProtocolVersion(event.getPlayer()) == Utilities.CLIENT_1_8_PROTOCOL_VERSION) {
+						return;
+					}
+					//do not update attributes for armor stand
+					int entityId = event.getPacket().getIntegers().read(0);
+					if (((CraftWorld) event.getPlayer().getWorld()).getHandle().getEntity(entityId) instanceof EntityArmorStand) {
+						event.setCancelled(true);
+					}
 				}
 			}
-		}
-	);
+		);
 
 	}
 

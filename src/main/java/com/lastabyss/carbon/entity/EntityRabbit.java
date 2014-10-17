@@ -45,7 +45,8 @@ public class EntityRabbit extends EntityAnimal {
     public final static int TYPE_SALT_AND_PEPPER = 5;
     public final static int TYPE_KILLER = 99;
 
-    private MoveType moveType;
+    @SuppressWarnings("unused")
+	private MoveType moveType;
             
     static enum MoveType {
         NONE("NONE", 0, 0.0F, 0.0F, 30, 1),

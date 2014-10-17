@@ -288,7 +288,8 @@ public class Utilities {
      * @param accessible
      * @return
      */
-    public static <T extends AccessibleObject> T setAccessible(Class<T> objectType, AccessibleObject object, boolean accessible) {
+    @SuppressWarnings("unchecked")
+	public static <T extends AccessibleObject> T setAccessible(Class<T> objectType, AccessibleObject object, boolean accessible) {
     	object.setAccessible(accessible);
     	return (T) object;
     }

@@ -27,8 +27,8 @@ package sun.jvmstat.perfdata.monitor.v1_0;
 
 import sun.jvmstat.monitor.*;
 import sun.jvmstat.perfdata.monitor.*;
+
 import java.util.*;
-import java.util.regex.*;
 import java.nio.*;
 
 /**
@@ -42,25 +42,8 @@ public class PerfDataBuffer extends PerfDataBufferImpl {
 
 	private static final boolean DEBUG = false;
 	private static final int syncWaitMs = Integer.getInteger("sun.jvmstat.perdata.syncWaitMs", 5000);
-	private static final ArrayList EMPTY_LIST = new ArrayList(0);
+	private static final ArrayList<?> EMPTY_LIST = new ArrayList<Object>(0);
 
-	/*
-	 * the following constants must be kept in sync with struct PerfDataEntry in perfMemory.hpp
-	 */
-	private final static int PERFDATA_ENTRYLENGTH_OFFSET = 0;
-	private final static int PERFDATA_ENTRYLENGTH_SIZE = 4; // sizeof(int)
-	private final static int PERFDATA_NAMELENGTH_OFFSET = 4;
-	private final static int PERFDATA_NAMELENGTH_SIZE = 4; // sizeof(int)
-	private final static int PERFDATA_VECTORLENGTH_OFFSET = 8;
-	private final static int PERFDATA_VECTORLENGTH_SIZE = 4; // sizeof(int)
-	private final static int PERFDATA_DATATYPE_OFFSET = 12;
-	private final static int PERFDATA_DATATYPE_SIZE = 1; // sizeof(byte)
-	private final static int PERFDATA_FLAGS_OFFSET = 13;
-	private final static int PERFDATA_FLAGS_SIZE = 1; // sizeof(byte)
-	private final static int PERFDATA_DATAUNITS_OFFSET = 14;
-	private final static int PERFDATA_DATAUNITS_SIZE = 1; // sizeof(byte)
-	private final static int PERFDATA_DATAATTR_OFFSET = 15;
-	private final static int PERFDATA_DATAATTR_SIZE = 1; // sizeof(byte)
 	private final static int PERFDATA_NAME_OFFSET = 16;
 
 	PerfDataBufferPrologue prologue;
@@ -174,8 +157,8 @@ public class PerfDataBuffer extends PerfDataBufferImpl {
 		getNewMonitors(map);
 
 		// current implementation doesn't support deletion or reuse of entries
-		ArrayList removed = EMPTY_LIST;
-		ArrayList inserted = insertedMonitors;
+		ArrayList<?> removed = EMPTY_LIST;
+		ArrayList<Monitor> inserted = insertedMonitors;
 
 		insertedMonitors = new ArrayList<Monitor>();
 		return new MonitorStatus(inserted, removed);
@@ -529,13 +512,13 @@ public class PerfDataBuffer extends PerfDataBufferImpl {
 	/**
 	 * Method to dump debugging information
 	 */
-	private void dumpAll(Map map, int lvmid) {
+	private void dumpAll(Map<String, Monitor> map, int lvmid) {
 		if (DEBUG) {
-			Set keys = map.keySet();
+			Set<String> keys = map.keySet();
 
 			System.err.println("Dump for " + lvmid);
 			int j = 0;
-			for (Iterator i = keys.iterator(); i.hasNext(); j++) {
+			for (Iterator<String> i = keys.iterator(); i.hasNext(); j++) {
 				Monitor monitor = (Monitor) map.get(i.next());
 				System.err.println(j + "\t" + monitor.getName() + "=" + monitor.getValue());
 			}

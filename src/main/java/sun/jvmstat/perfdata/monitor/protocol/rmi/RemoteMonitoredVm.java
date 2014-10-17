@@ -29,9 +29,8 @@ import sun.jvmstat.monitor.*;
 import sun.jvmstat.monitor.event.*;
 import sun.jvmstat.monitor.remote.*;
 import sun.jvmstat.perfdata.monitor.*;
-import java.lang.reflect.*;
+
 import java.util.*;
-import java.io.*;
 import java.nio.ByteBuffer;
 import java.rmi.*;
 
@@ -195,15 +194,16 @@ public class RemoteMonitoredVm extends AbstractMonitoredVm {
 	 * @param removed
 	 *            List of Monitor objects removed.
 	 */
-	void fireMonitorStatusChangedEvents(List inserted, List removed) {
-		ArrayList registered = null;
+	@SuppressWarnings("unchecked")
+	void fireMonitorStatusChangedEvents(List<?> inserted, List<?> removed) {
+		ArrayList<VmListener> registered = null;
 		MonitorStatusChangeEvent ev = null;
 
 		synchronized (listeners) {
-			registered = (ArrayList) listeners.clone();
+			registered = (ArrayList<VmListener>) listeners.clone();
 		}
 
-		for (Iterator i = registered.iterator(); i.hasNext(); /* empty */) {
+		for (Iterator<VmListener> i = registered.iterator(); i.hasNext(); /* empty */) {
 			VmListener l = (VmListener) i.next();
 			if (ev == null) {
 				ev = new MonitorStatusChangeEvent(this, inserted, removed);
@@ -215,15 +215,16 @@ public class RemoteMonitoredVm extends AbstractMonitoredVm {
 	/**
 	 * Fire MonitoredVmStructureChanged events.
 	 */
+	@SuppressWarnings("unchecked")
 	void fireMonitorsUpdatedEvents() {
-		ArrayList registered = null;
+		ArrayList<VmListener> registered = null;
 		VmEvent ev = null;
 
 		synchronized (listeners) {
-			registered = (ArrayList) listeners.clone();
+			registered = (ArrayList<VmListener>) listeners.clone();
 		}
 
-		for (Iterator i = registered.iterator(); i.hasNext(); /* empty */) {
+		for (Iterator<VmListener> i = registered.iterator(); i.hasNext(); /* empty */) {
 			VmListener l = (VmListener) i.next();
 			if (ev == null) {
 				ev = new VmEvent(this);
@@ -245,8 +246,8 @@ public class RemoteMonitoredVm extends AbstractMonitoredVm {
 			try {
 				MonitorStatus status = getMonitorStatus();
 
-				List inserted = status.getInserted();
-				List removed = status.getRemoved();
+				List<?> inserted = status.getInserted();
+				List<?> removed = status.getRemoved();
 
 				if (!inserted.isEmpty() || !removed.isEmpty()) {
 					fireMonitorStatusChangedEvents(inserted, removed);

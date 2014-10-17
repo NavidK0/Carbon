@@ -8,9 +8,9 @@ import net.minecraft.util.com.google.gson.JsonObject;
 import net.minecraft.util.com.google.gson.JsonSerializationContext;
 import net.minecraft.util.com.google.gson.JsonSerializer;
 
-public class ChunkProviderGeneratePropertiesSerializer implements JsonDeserializer, JsonSerializer {
+public class ChunkProviderGeneratePropertiesSerializer implements JsonDeserializer<Object>, JsonSerializer<Object> {
 
-        @Override
+	@Override
 	public ChunkProviderGeneratePropertiesHolder deserialize(JsonElement jsonElement, java.lang.reflect.Type type, JsonDeserializationContext jdc) {
 		JsonObject jsonObject = jsonElement.getAsJsonObject();
 		ChunkProviderGeneratePropertiesHolder properties = new ChunkProviderGeneratePropertiesHolder();
@@ -109,9 +109,9 @@ public class ChunkProviderGeneratePropertiesSerializer implements JsonDeserializ
 		return properties;
 	}
 
-        @Override
+	@Override
 	public JsonElement serialize(Object prop, java.lang.reflect.Type type, JsonSerializationContext jsc) {
-            ChunkProviderGeneratePropertiesHolder properties = (ChunkProviderGeneratePropertiesHolder) prop;
+		ChunkProviderGeneratePropertiesHolder properties = (ChunkProviderGeneratePropertiesHolder) prop;
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("coordinateScale", properties.coordinateScale);
 		jsonObject.addProperty("heightScale", properties.heightScale);

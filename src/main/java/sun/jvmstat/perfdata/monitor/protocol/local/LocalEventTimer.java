@@ -25,11 +25,7 @@
 
 package sun.jvmstat.perfdata.monitor.protocol.local;
 
-import sun.jvmstat.monitor.*;
-import sun.jvmstat.perfdata.monitor.MonitorStatus;
 import java.util.*;
-import java.util.regex.*;
-import java.io.*;
 
 /**
  * Singleton Timer subclass to run polling tasks that generate events for local Java Virtual Machines..

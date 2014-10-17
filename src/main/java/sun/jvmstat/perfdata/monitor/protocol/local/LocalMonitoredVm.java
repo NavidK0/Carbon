@@ -26,8 +26,6 @@
 package sun.jvmstat.perfdata.monitor.protocol.local;
 
 import java.util.*;
-import java.lang.reflect.*;
-import java.io.*;
 
 import sun.jvmstat.monitor.*;
 import sun.jvmstat.monitor.event.*;
@@ -140,15 +138,16 @@ public class LocalMonitoredVm extends AbstractMonitoredVm {
 	 * @param removed
 	 *            List of Monitor objects removed.
 	 */
-	void fireMonitorStatusChangedEvents(List inserted, List removed) {
+	@SuppressWarnings("unchecked")
+	void fireMonitorStatusChangedEvents(List<?> inserted, List<?> removed) {
 		MonitorStatusChangeEvent ev = null;
-		ArrayList registered = null;
+		ArrayList<VmListener> registered = null;
 
 		synchronized (listeners) {
-			registered = (ArrayList) listeners.clone();
+			registered = (ArrayList<VmListener>) listeners.clone();
 		}
 
-		for (Iterator i = registered.iterator(); i.hasNext(); /* empty */) {
+		for (Iterator<VmListener> i = registered.iterator(); i.hasNext(); /* empty */) {
 			VmListener l = (VmListener) i.next();
 			// lazily create the event object;
 			if (ev == null) {
@@ -186,8 +185,8 @@ public class LocalMonitoredVm extends AbstractMonitoredVm {
 			super.run();
 			try {
 				MonitorStatus status = getMonitorStatus();
-				List inserted = status.getInserted();
-				List removed = status.getRemoved();
+				List<?> inserted = status.getInserted();
+				List<?> removed = status.getRemoved();
 
 				if (!inserted.isEmpty() || !removed.isEmpty()) {
 					fireMonitorStatusChangedEvents(inserted, removed);

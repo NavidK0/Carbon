@@ -28,7 +28,6 @@ package sun.jvmstat.monitor.remote;
 import sun.jvmstat.monitor.*;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.io.IOException;
 
 /**
  * Remote Interface for discovering and attaching to remote monitorable Java Virtual Machines.

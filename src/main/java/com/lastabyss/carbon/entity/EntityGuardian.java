@@ -54,7 +54,6 @@ public class EntityGuardian extends EntityMonster {
     private float bC;
     
     private boolean elder = false;
-    private int fire;
 
     public EntityGuardian(World world) {
         super(world);

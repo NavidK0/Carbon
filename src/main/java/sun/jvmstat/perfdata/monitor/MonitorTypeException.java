@@ -33,6 +33,7 @@ import sun.jvmstat.monitor.MonitorException;
  * @author Brian Doherty
  * @since 1.5
  */
+@SuppressWarnings("serial")
 public class MonitorTypeException extends MonitorException {
 
 	/**

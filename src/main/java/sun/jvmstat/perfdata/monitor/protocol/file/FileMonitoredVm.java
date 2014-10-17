@@ -28,9 +28,6 @@ package sun.jvmstat.perfdata.monitor.protocol.file;
 import sun.jvmstat.monitor.*;
 import sun.jvmstat.monitor.event.VmListener;
 import sun.jvmstat.perfdata.monitor.*;
-import java.util.List;
-import java.lang.reflect.*;
-import java.io.*;
 
 /**
  * Concrete implementation of the AbstractMonitoredVm class for the <em>file:</em> protcol for the HotSpot PerfData monitoring implementation.

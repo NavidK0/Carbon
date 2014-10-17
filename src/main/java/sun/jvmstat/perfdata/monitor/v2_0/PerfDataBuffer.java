@@ -27,8 +27,8 @@ package sun.jvmstat.perfdata.monitor.v2_0;
 
 import sun.jvmstat.monitor.*;
 import sun.jvmstat.perfdata.monitor.*;
+
 import java.util.*;
-import java.util.regex.*;
 import java.nio.*;
 
 /**
@@ -60,27 +60,7 @@ public class PerfDataBuffer extends PerfDataBufferImpl {
 
 	private static final boolean DEBUG = false;
 	private static final int syncWaitMs = Integer.getInteger("sun.jvmstat.perdata.syncWaitMs", 5000);
-	private static final ArrayList EMPTY_LIST = new ArrayList(0);
-
-	/*
-	 * These are primarily for documentary purposes and the match up with the PerfDataEntry structure in perfMemory.hpp. They are generally unused in this code, but they are kept consistent with the data structure just in case some unforseen need arrises.
-	 */
-	private final static int PERFDATA_ENTRYLENGTH_OFFSET = 0;
-	private final static int PERFDATA_ENTRYLENGTH_SIZE = 4; // sizeof(int)
-	private final static int PERFDATA_NAMEOFFSET_OFFSET = 4;
-	private final static int PERFDATA_NAMEOFFSET_SIZE = 4; // sizeof(int)
-	private final static int PERFDATA_VECTORLENGTH_OFFSET = 8;
-	private final static int PERFDATA_VECTORLENGTH_SIZE = 4; // sizeof(int)
-	private final static int PERFDATA_DATATYPE_OFFSET = 12;
-	private final static int PERFDATA_DATATYPE_SIZE = 1; // sizeof(byte)
-	private final static int PERFDATA_FLAGS_OFFSET = 13;
-	private final static int PERFDATA_FLAGS_SIZE = 1; // sizeof(byte)
-	private final static int PERFDATA_DATAUNITS_OFFSET = 14;
-	private final static int PERFDATA_DATAUNITS_SIZE = 1; // sizeof(byte)
-	private final static int PERFDATA_DATAVAR_OFFSET = 15;
-	private final static int PERFDATA_DATAVAR_SIZE = 1; // sizeof(byte)
-	private final static int PERFDATA_DATAOFFSET_OFFSET = 16;
-	private final static int PERFDATA_DATAOFFSET_SIZE = 4; // sizeof(int)
+	private static final ArrayList<?> EMPTY_LIST = new ArrayList<Object>(0);
 
 	PerfDataBufferPrologue prologue;
 	int nextEntry;
@@ -181,8 +161,8 @@ public class PerfDataBuffer extends PerfDataBufferImpl {
 		getNewMonitors(map);
 
 		// current implementation doesn't support deletion of reuse of entries
-		ArrayList removed = EMPTY_LIST;
-		ArrayList inserted = insertedMonitors;
+		ArrayList<?> removed = EMPTY_LIST;
+		ArrayList<Monitor> inserted = insertedMonitors;
 
 		insertedMonitors = new ArrayList<Monitor>();
 		return new MonitorStatus(inserted, removed);
@@ -426,25 +406,6 @@ public class PerfDataBuffer extends PerfDataBufferImpl {
 		// setup index to next entry for next iteration of the loop.
 		nextEntry = entryStart + entryLength;
 		return monitor;
-	}
-
-	/**
-	 * Method to dump debugging information
-	 */
-	private void dumpAll(Map<String, Monitor> map, int lvmid) {
-		if (DEBUG) {
-			Set<String> keys = map.keySet();
-
-			System.err.println("Dump for " + lvmid);
-			int j = 0;
-			for (Iterator i = keys.iterator(); i.hasNext(); j++) {
-				Monitor monitor = map.get(i.next());
-				System.err.println(j + "\t" + monitor.getName() + "=" + monitor.getValue());
-			}
-			System.err.println("nextEntry = " + nextEntry);
-			System.err.println("Buffer info:");
-			System.err.println("buffer = " + buffer);
-		}
 	}
 
 	/**

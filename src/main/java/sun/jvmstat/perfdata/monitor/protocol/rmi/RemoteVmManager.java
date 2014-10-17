@@ -26,11 +26,8 @@
 package sun.jvmstat.perfdata.monitor.protocol.rmi;
 
 import java.util.*;
-import java.util.regex.*;
-import java.io.*;
 import java.rmi.RemoteException;
 import sun.jvmstat.monitor.*;
-import sun.jvmstat.monitor.event.*;
 import sun.jvmstat.monitor.remote.*;
 
 /**
@@ -44,8 +41,6 @@ import sun.jvmstat.monitor.remote.*;
 public class RemoteVmManager {
 
 	private RemoteHost remoteHost;
-	private String user;
-
 	/**
 	 * Creates a RemoteVmManager instance for the remote system.
 	 * <p>
@@ -69,7 +64,6 @@ public class RemoteVmManager {
 	 *            the name of the user
 	 */
 	public RemoteVmManager(RemoteHost remoteHost, String user) {
-		this.user = user;
 		this.remoteHost = remoteHost;
 	}
 

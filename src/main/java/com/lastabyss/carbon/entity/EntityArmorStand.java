@@ -255,6 +255,7 @@ public class EntityArmorStand extends EntityLiving {
 
 	@Override
 	protected void bo() {
+		@SuppressWarnings("unchecked")
 		List<Entity> var1 = this.world.getEntities((Entity) this, this.boundingBox);
 		if (var1 != null && !var1.isEmpty()) {
 			for (int var2 = 0; var2 < var1.size(); ++var2) {

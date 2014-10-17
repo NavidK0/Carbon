@@ -50,9 +50,6 @@ import java.nio.*;
  */
 public class PerfDataBufferPrologue extends AbstractPerfDataBufferPrologue {
 
-	private final static int SUPPORTED_MAJOR_VERSION = 2;
-	private final static int SUPPORTED_MINOR_VERSION = 0;
-
 	/*
 	 * the following constants must match the field offsets and sizes in the PerfDataPrologue structure in perfMemory.hpp. offsets are relative to the start of the PerfDataPrologue structure.
 	 * 

@@ -26,6 +26,7 @@
 package sun.jvmstat.monitor.event;
 
 import java.util.List;
+
 import sun.jvmstat.monitor.MonitoredVm;
 
 /**
@@ -34,17 +35,18 @@ import sun.jvmstat.monitor.MonitoredVm;
  * @author Brian Doherty
  * @since 1.5
  */
+@SuppressWarnings("serial")
 public class MonitorStatusChangeEvent extends VmEvent {
 
 	/**
 	 * List of instrumentation objects inserted since the last event. Elements of this list will always be of type Monitor.
 	 */
-	protected List inserted;
+	protected List<?> inserted;
 
 	/**
 	 * List of instrumentation objects removed since the last event. Elements of this list will always be of type Monitor.
 	 */
-	protected List removed;
+	protected List<?> removed;
 
 	/**
 	 * Construct a new MonitorStatusChangeEvent.
@@ -56,7 +58,7 @@ public class MonitorStatusChangeEvent extends VmEvent {
 	 * @param removed
 	 *            the list of instrumentation objects removed since the last event.
 	 */
-	public MonitorStatusChangeEvent(MonitoredVm vm, List inserted, List removed) {
+	public MonitorStatusChangeEvent(MonitoredVm vm, List<?> inserted, List<?> removed) {
 		super(vm);
 		this.inserted = inserted;
 		this.removed = removed;
@@ -67,7 +69,7 @@ public class MonitorStatusChangeEvent extends VmEvent {
 	 *
 	 * @return List - a List of Monitor objects that were inserted into the instrumentation exported by the MonitoredHost. If no new instrumentation was inserted, an emply List is returned.
 	 */
-	public List getInserted() {
+	public List<?> getInserted() {
 		return inserted;
 	}
 
@@ -76,7 +78,7 @@ public class MonitorStatusChangeEvent extends VmEvent {
 	 *
 	 * @return List - a List of Monitor objects that were removed from the instrumentation exported by the MonitoredHost. If no instrumentation was removed, an emply List is returned.
 	 */
-	public List getRemoved() {
+	public List<?> getRemoved() {
 		return removed;
 	}
 }

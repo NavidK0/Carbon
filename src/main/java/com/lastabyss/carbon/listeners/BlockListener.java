@@ -2,7 +2,6 @@ package com.lastabyss.carbon.listeners;
 
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.entity.TileEntityBanner;
-import com.lastabyss.carbon.recipes.EnumBannerPatterns;
 
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
 import net.minecraft.server.v1_7_R4.TileEntity;

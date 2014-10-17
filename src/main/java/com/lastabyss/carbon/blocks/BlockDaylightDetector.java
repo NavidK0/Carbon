@@ -1,23 +1,24 @@
 package com.lastabyss.carbon.blocks;
 
 import java.util.Random;
+
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.BlockContainer;
 import net.minecraft.server.v1_7_R4.CreativeModeTab;
 import net.minecraft.server.v1_7_R4.EnumSkyBlock;
 import net.minecraft.server.v1_7_R4.IBlockAccess;
-import net.minecraft.server.v1_7_R4.IIcon;
 import net.minecraft.server.v1_7_R4.Material;
 import net.minecraft.server.v1_7_R4.MathHelper;
 import net.minecraft.server.v1_7_R4.TileEntity;
 import net.minecraft.server.v1_7_R4.TileEntityLightDetector;
 import net.minecraft.server.v1_7_R4.World;
+
 import org.bukkit.craftbukkit.v1_7_R4.event.CraftEventFactory;
 
 public class BlockDaylightDetector extends BlockContainer {
 
-    private IIcon[] a = new IIcon[2];
-    private final boolean inverted;
+    @SuppressWarnings("unused")
+	private final boolean inverted;
 
     public BlockDaylightDetector(boolean inverted) {
         super(Material.WOOD);

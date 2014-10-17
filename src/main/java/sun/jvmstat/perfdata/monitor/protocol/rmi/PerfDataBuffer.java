@@ -28,7 +28,6 @@ package sun.jvmstat.perfdata.monitor.protocol.rmi;
 import sun.jvmstat.monitor.*;
 import sun.jvmstat.monitor.remote.*;
 import sun.jvmstat.perfdata.monitor.*;
-import java.io.*;
 import java.rmi.RemoteException;
 import java.nio.ByteBuffer;
 

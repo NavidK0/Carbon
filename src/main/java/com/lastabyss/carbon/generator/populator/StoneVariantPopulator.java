@@ -1,6 +1,7 @@
 package com.lastabyss.carbon.generator.populator;
 
 import java.util.Random;
+
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -37,7 +38,8 @@ public class StoneVariantPopulator extends BlockPopulator {
         }
     }
     
-    public void createVein(World world, int size, int x, int y, int z) {
+    @SuppressWarnings("deprecation")
+	public void createVein(World world, int size, int x, int y, int z) {
         Random random = new Random(world.getSeed());
         float f = random.nextFloat() * 3.141593F;
         double d1 = x + 8 + Math.sin(f) * size / 8.0F;
@@ -69,8 +71,7 @@ public class StoneVariantPopulator extends BlockPopulator {
                                 double d15 = (i5 + 0.5D - d9) / (d11 / 2.0D);
                                 if ((d13 * d13 + d14 * d14 + d15 * d15 >= 1.0D) || (world.getBlockAt(i3, i4, i5).getType() != Material.STONE))
                                     continue;
-                                world.getBlockAt(i3, i4, i5).setType(blockType);
-                                world.getBlockAt(i3, i4, i5).setData(data);
+                                world.getBlockAt(i3, i4, i5).setTypeIdAndData(blockType.getId(), data, true);
                             }
                         }
                     }

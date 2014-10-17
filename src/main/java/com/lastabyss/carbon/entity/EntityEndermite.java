@@ -135,7 +135,7 @@ public class EntityEndermite extends EntityMonster {
                                 if (this.world.getType(i + l, j + i1, k + j1) == Blocks.MONSTER_EGGS) {
                                     if (!this.world.getGameRules().getBoolean("mobGriefing")) {
                                         int k1 = this.world.getData(i + l, j + i1, k + j1);
-                                        ImmutablePair immutablepair = BlockMonsterEggs.b(k1);
+                                        ImmutablePair<?, ?> immutablepair = BlockMonsterEggs.b(k1);
 
                                         this.world.setTypeAndData(i + l, j + i1, k + j1, (Block) immutablepair.getLeft(),
                                                                   (Integer) immutablepair.getRight(), 3);

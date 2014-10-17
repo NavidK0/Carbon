@@ -148,8 +148,6 @@ public class MonitoredVmUtil {
 
 	// Index of the sun.rt.jvmCapabilities counter
 	private static int IS_ATTACHABLE = 0;
-	private static int IS_KERNEL_VM = 1;
-
 	/**
 	 * Returns true if the VM supports attach-on-demand.
 	 *

@@ -25,8 +25,6 @@
 
 package sun.jvmstat.perfdata.monitor.protocol.local;
 
-import sun.jvmstat.monitor.*;
-import sun.jvmstat.monitor.event.*;
 import java.util.*;
 import java.util.regex.*;
 import java.io.*;

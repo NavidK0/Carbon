@@ -203,8 +203,6 @@ public class PerfDataFile {
 	 *             Thrown if the file name does not conform to the expected pattern
 	 */
 	public static int getLocalVmId(File file) {
-		int lvmid = 0;
-
 		try {
 			// try 1.4.2 and later format first
 			return Integer.parseInt(file.getName());

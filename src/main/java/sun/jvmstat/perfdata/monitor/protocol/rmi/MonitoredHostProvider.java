@@ -29,11 +29,10 @@ import sun.jvmstat.monitor.*;
 import sun.jvmstat.monitor.event.*;
 import sun.jvmstat.monitor.remote.*;
 import sun.jvmstat.perfdata.monitor.*;
+
 import java.util.*;
 import java.net.*;
-import java.io.*;
 import java.rmi.*;
-import java.util.HashMap;
 
 /**
  * Concrete implementation of the MonitoredHost interface for the <em>rmi</em> protocol of the HotSpot PerfData monitoring implementation.
@@ -225,15 +224,16 @@ public class MonitoredHostProvider extends MonitoredHost {
 	 * @param terminated
 	 *            Set of Integer objects containing the local Vm Identifiers of terminated JVMs since last interval.
 	 */
-	private void fireVmStatusChangedEvents(Set active, Set started, Set terminated) {
-		ArrayList registered = null;
+	@SuppressWarnings("unchecked")
+	private void fireVmStatusChangedEvents(Set<Integer> active, Set<Integer> started, Set<Object> terminated) {
+		ArrayList<HostListener> registered = null;
 		VmStatusChangeEvent ev = null;
 
 		synchronized (listeners) {
-			registered = (ArrayList) listeners.clone();
+			registered = (ArrayList<HostListener>) listeners.clone();
 		}
 
-		for (Iterator i = registered.iterator(); i.hasNext(); /* empty */) {
+		for (Iterator<HostListener> i = registered.iterator(); i.hasNext(); /* empty */) {
 			HostListener l = (HostListener) i.next();
 			if (ev == null) {
 				ev = new VmStatusChangeEvent(this, active, started, terminated);
@@ -245,15 +245,16 @@ public class MonitoredHostProvider extends MonitoredHost {
 	/**
 	 * Fire hostDisconnectEvent events.
 	 */
+	@SuppressWarnings("unchecked")
 	void fireDisconnectedEvents() {
-		ArrayList registered = null;
+		ArrayList<HostListener> registered = null;
 		HostEvent ev = null;
 
 		synchronized (listeners) {
-			registered = (ArrayList) listeners.clone();
+			registered = (ArrayList<HostListener>) listeners.clone();
 		}
 
-		for (Iterator i = registered.iterator(); i.hasNext(); /* empty */) {
+		for (Iterator<HostListener> i = registered.iterator(); i.hasNext(); /* empty */) {
 			HostListener l = (HostListener) i.next();
 			if (ev == null) {
 				ev = new HostEvent(this);
@@ -270,7 +271,7 @@ public class MonitoredHostProvider extends MonitoredHost {
 			super.run();
 
 			// save the last set of active JVMs
-			Set lastActiveVms = activeVms;
+			Set<Integer> lastActiveVms = activeVms;
 
 			try {
 				// get the current set of active JVMs
@@ -293,7 +294,7 @@ public class MonitoredHostProvider extends MonitoredHost {
 			Set<Integer> startedVms = new HashSet<Integer>();
 			Set<Object> terminatedVms = new HashSet<Object>();
 
-			for (Iterator i = activeVms.iterator(); i.hasNext(); /* empty */) {
+			for (Iterator<Integer> i = activeVms.iterator(); i.hasNext(); /* empty */) {
 				Integer vmid = (Integer) i.next();
 				if (!lastActiveVms.contains(vmid)) {
 					// a new file has been detected, add to set
@@ -301,7 +302,7 @@ public class MonitoredHostProvider extends MonitoredHost {
 				}
 			}
 
-			for (Iterator i = lastActiveVms.iterator(); i.hasNext();
+			for (Iterator<Integer> i = lastActiveVms.iterator(); i.hasNext();
 			/* empty */) {
 				Object o = i.next();
 				if (!activeVms.contains(o)) {

@@ -27,85 +27,7 @@ package sun.jvmstat.monitor;
 
 import java.net.*;
 
-/**
- * An abstraction that identifies a target host and communications protocol. The HostIdentifier, or hostid, provides a convenient string representation of the information needed to locate and communicate with a target host. The string, based on a {@link URI}, may specify the the communications protocol, host name, and protocol specific information for a target host. The format for a HostIdentifier string is:
- * 
- * <pre>
- *       [<I>protocol</I>:][[<I>//</I>]<I>hostname</I>][<I>:port</I>][<I>/servername</I>]
- * </pre>
- * 
- * There are actually no required components of this string, as a null string is interpreted to mean a local connection to the local host and is equivalent to the string <em>local://localhost</em>. The components of the HostIdentifier are:
- * <ul>
- * <li>
- * <p>
- * <tt>protocol</tt> - The communications protocol. If omitted, and a hostname is not specified, then default local protocol, <em>local:</em>, is assumed. If the protocol is omitted and a hostname is specified then the default remote protocol, <em>rmi:</em> is assumed.
- * </p>
- * </li>
- * <li>
- * <p>
- * <tt>hostname</tt> - The hostname. If omitted, then <em>localhost</em> is assumed. If the protocol is also omitted, then default local protocol <em>local:</em> is also assumed. If the hostname is not omitted but the protocol is omitted, then the default remote protocol, <em>rmi:</em> is assumed.
- * </p>
- * </li>
- * <li>
- * <p>
- * <tt>port</tt> - The port for the communications protocol. Treatment of the <tt>port</tt> parameter is implementation (protocol) specific. It is unused by the default local protocol, <em>local:</em>. For the default remote protocol, <em>rmi:</em>, <tt>port</tt> indicates the port number of the <em>rmiregistry</em> on the target host and defaults to port 1099.
- * </p>
- * </li>
- * <li>
- * <p>
- * <tt>servername</tt> - The treatment of the Path, Query, and Fragment components of the HostIdentifier are implementation (protocol) dependent. These components are ignored by the default local protocol, <em>local:</em>. For the default remote protocol, <em>rmi</em>, the Path component is interpreted as the name of the RMI remote object. The Query component may contain an access mode specifier <em>?mode=</em> specifying <em>"r"</em> or <em>"rw"</em> access (write access currently ignored). The
- * Fragment part is ignored.
- * </p>
- * </li>
- * </ul>
- * <p>
- * All HostIdentifier objects are represented as absolute, hierarchical URIs. The constructors accept relative URIs, but these will generally be transformed into an absolute URI specifying a default protocol. A HostIdentifier differs from a URI in that certain contractions and illicit syntactical constructions are allowed. The following are all valid HostIdentifier strings:
- *
- * <ul>
- * <li>
- * <p>
- * &lt null &gt - transformed into "//localhost"
- * </p>
- * </li>
- * <li>
- * <p>
- * localhost - transformed into "//localhost"
- * </p>
- * </li>
- * <li>
- * <p>
- * hostname - transformed into "//hostname"
- * </p>
- * </li>
- * <li>
- * <p>
- * hostname:port - transformed into "//hostname:port"
- * </p>
- * </li>
- * <li>
- * <p>
- * proto:hostname - transformed into "proto://hostname"
- * </p>
- * </li>
- * <li>
- * <p>
- * proto:hostname:port - transformed into "proto://hostname:port"
- * </p>
- * </li>
- * <li>
- * <p>
- * proto://hostname:port
- * </p>
- * </li>
- * </ul>
- * </p>
- *
- * @see URI
- * @see VmIdentifier
- *
- * @author Brian Doherty
- * @since 1.5
- */
+
 public class HostIdentifier {
 	private URI uri;
 
@@ -314,8 +236,6 @@ public class HostIdentifier {
 		if (scheme == null) {
 			scheme = getScheme();
 		}
-
-		URI nuri = null;
 
 		StringBuffer sb = new StringBuffer();
 

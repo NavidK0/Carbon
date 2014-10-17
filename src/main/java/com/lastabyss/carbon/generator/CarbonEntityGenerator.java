@@ -16,7 +16,6 @@ import net.minecraft.server.v1_7_R4.BiomeTaiga;
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.entity.EntityGuardian;
 import com.lastabyss.carbon.entity.EntityRabbit;
-import net.minecraft.server.v1_7_R4.EnumCreatureType;
 
 public class CarbonEntityGenerator {
     Carbon plugin;

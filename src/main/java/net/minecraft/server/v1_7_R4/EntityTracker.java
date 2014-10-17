@@ -91,6 +91,7 @@ public class EntityTracker {
 		addEntity(entity, i, j, false);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void addEntity(Entity entity, int i, int j, boolean flag) {
 		AsyncCatcher.catchOp("entity track");
 		i = TrackingRange.getEntityTrackingRange(entity, i);
@@ -142,6 +143,7 @@ public class EntityTracker {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void updatePlayers() {
 		ArrayList<EntityPlayer> arraylist = new ArrayList<EntityPlayer>();
 		Iterator<EntityTrackerEntry> iterator = this.c.iterator();

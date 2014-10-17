@@ -26,6 +26,7 @@
 package sun.jvmstat.monitor.event;
 
 import java.util.EventObject;
+
 import sun.jvmstat.monitor.MonitoredHost;
 
 /**
@@ -34,6 +35,7 @@ import sun.jvmstat.monitor.MonitoredHost;
  * @author Brian Doherty
  * @since 1.5
  */
+@SuppressWarnings("serial")
 public class HostEvent extends EventObject {
 
 	/**

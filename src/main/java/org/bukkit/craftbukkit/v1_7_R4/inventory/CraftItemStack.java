@@ -20,6 +20,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 public final class CraftItemStack extends org.bukkit.inventory.ItemStack {
 	net.minecraft.server.v1_7_R4.ItemStack handle;
 
+	@SuppressWarnings("deprecation")
 	public static net.minecraft.server.v1_7_R4.ItemStack asNMSCopy(org.bukkit.inventory.ItemStack original) {
 		if ((original instanceof CraftItemStack)) {
 			CraftItemStack stack = (CraftItemStack) original;
@@ -80,6 +81,7 @@ public final class CraftItemStack extends org.bukkit.inventory.ItemStack {
 		this.handle = item;
 	}
 
+	@SuppressWarnings("deprecation")
 	private CraftItemStack(org.bukkit.inventory.ItemStack item) {
 		this(item.getTypeId(), item.getAmount(), item.getDurability(), item.hasItemMeta() ? item.getItemMeta() : null);
 	}
@@ -91,14 +93,17 @@ public final class CraftItemStack extends org.bukkit.inventory.ItemStack {
 		setItemMeta(itemMeta);
 	}
 
+	@SuppressWarnings("deprecation")
 	private CraftItemStack(int typeId, int amount, short durability, ItemMeta itemMeta) {
 		this(Material.getMaterial(typeId), amount, durability, itemMeta);
 	}
 
+	@SuppressWarnings("deprecation")
 	public int getTypeId() {
 		return this.handle != null ? CraftMagicNumbers.getId(this.handle.getItem()) : 0;
 	}
 
+	@SuppressWarnings("deprecation")
 	public void setTypeId(int type) {
 		if (type == 0) {
 			this.handle = null;
@@ -147,6 +152,7 @@ public final class CraftItemStack extends org.bukkit.inventory.ItemStack {
 		return this.handle == null ? Material.AIR.getMaxStackSize() : this.handle.getItem().getMaxStackSize();
 	}
 
+	@SuppressWarnings("deprecation")
 	public void addUnsafeEnchantment(Enchantment ench, int level) {
 		Validate.notNull(ench, "Cannot add null enchantment");
 		if (!makeTag(this.handle)) {
@@ -186,6 +192,7 @@ public final class CraftItemStack extends org.bukkit.inventory.ItemStack {
 		return getEnchantmentLevel(ench) > 0;
 	}
 
+	@SuppressWarnings("deprecation")
 	public int getEnchantmentLevel(Enchantment ench) {
 		Validate.notNull(ench, "Cannot find null enchantment");
 		if (this.handle == null) {
@@ -194,6 +201,7 @@ public final class CraftItemStack extends org.bukkit.inventory.ItemStack {
 		return EnchantmentManager.getEnchantmentLevel(ench.getId(), this.handle);
 	}
 
+	@SuppressWarnings("deprecation")
 	public int removeEnchantment(Enchantment ench) {
 		Validate.notNull(ench, "Cannot remove null enchantment");
 
@@ -238,6 +246,7 @@ public final class CraftItemStack extends org.bukkit.inventory.ItemStack {
 		return getEnchantments(this.handle);
 	}
 
+	@SuppressWarnings("deprecation")
 	static Map<Enchantment, Integer> getEnchantments(net.minecraft.server.v1_7_R4.ItemStack item) {
 		NBTTagList list = (item != null) && (item.hasEnchantments()) ? item.getEnchantments() : null;
 		if ((list == null) || (list.size() == 0)) {
@@ -304,6 +313,7 @@ public final class CraftItemStack extends org.bukkit.inventory.ItemStack {
 		return new CraftMetaItem(item.tag);
 	}
 
+	@SuppressWarnings("deprecation")
 	static Material getType(net.minecraft.server.v1_7_R4.ItemStack item) {
 		Material material = Material.getMaterial(item == null ? 0 : CraftMagicNumbers.getId(item.getItem()));
 		return material == null ? Material.AIR : material;

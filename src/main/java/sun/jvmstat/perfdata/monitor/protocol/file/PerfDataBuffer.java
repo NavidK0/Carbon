@@ -27,8 +27,8 @@ package sun.jvmstat.perfdata.monitor.protocol.file;
 
 import sun.jvmstat.monitor.*;
 import sun.jvmstat.perfdata.monitor.*;
+
 import java.io.*;
-import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
@@ -55,6 +55,7 @@ public class PerfDataBuffer extends AbstractPerfDataBuffer {
 		String mode = vmid.getMode();
 
 		try {
+			@SuppressWarnings("resource")
 			FileChannel fc = new RandomAccessFile(f, mode).getChannel();
 			ByteBuffer bb = null;
 

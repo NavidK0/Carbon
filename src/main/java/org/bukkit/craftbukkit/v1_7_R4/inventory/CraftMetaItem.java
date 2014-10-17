@@ -332,6 +332,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	static Map<Enchantment, Integer> buildEnchantments(NBTTagCompound tag, ItemMetaKey key) {
 		if (!tag.hasKey(key.NBT)) {
 			return null;
@@ -417,6 +418,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
 		return tagList;
 	}
 
+	@SuppressWarnings("deprecation")
 	static void applyEnchantments(Map<Enchantment, Integer> enchantments, NBTTagCompound tag, ItemMetaKey key) {
 		if (enchantments == null) {
 			return;
@@ -488,7 +490,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
 	}
 
 	public Map<Enchantment, Integer> getEnchants() {
-		return (Map<Enchantment, Integer>) (hasEnchants() ? ImmutableMap.copyOf(this.enchantments) : ImmutableMap.of());
+		return hasEnchants() ? ImmutableMap.<Enchantment, Integer>copyOf(this.enchantments) : ImmutableMap.<Enchantment, Integer>of();
 	}
 
 	public boolean addEnchant(Enchantment ench, int level, boolean ignoreRestrictions) {

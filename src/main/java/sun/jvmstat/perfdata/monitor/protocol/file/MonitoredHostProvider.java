@@ -27,9 +27,7 @@ package sun.jvmstat.perfdata.monitor.protocol.file;
 
 import sun.jvmstat.monitor.*;
 import sun.jvmstat.monitor.event.HostListener;
-import sun.jvmstat.perfdata.monitor.*;
 import java.util.*;
-import java.net.*;
 
 /**
  * Concrete implementation of the MonitoredHost interface for the <em>file:</em> protocol of the HotSpot PerfData monitoring implementation.

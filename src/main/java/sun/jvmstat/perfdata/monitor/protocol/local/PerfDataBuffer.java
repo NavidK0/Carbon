@@ -28,11 +28,10 @@ package sun.jvmstat.perfdata.monitor.protocol.local;
 import sun.misc.Perf;
 import sun.jvmstat.monitor.*;
 import sun.jvmstat.perfdata.monitor.*;
-import java.util.*;
+
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.lang.reflect.Constructor;
 import java.security.AccessController;
 
 /**
@@ -69,6 +68,7 @@ public class PerfDataBuffer extends AbstractPerfDataBuffer {
 
 				File f = new File(filename);
 
+				@SuppressWarnings("resource")
 				FileChannel fc = new RandomAccessFile(f, "r").getChannel();
 				ByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0L, (int) fc.size());
 				fc.close();

@@ -1,6 +1,5 @@
-package com.lastabyss.carbon.reflection;
+package com.lastabyss.carbon;
 
-import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.blocks.BlockAnvil;
 import com.lastabyss.carbon.blocks.BlockBarrier;
 import com.lastabyss.carbon.blocks.BlockDaylightDetector;
@@ -191,16 +190,27 @@ public class Injector {
   public Material acaciaDoorMat = Utilities.addMaterial("ACACIA_DOOR", 430);
   public Material darkOakDoorMat = Utilities.addMaterial("DARK_OAK_DOOR", 431);
   
+  @SuppressWarnings("deprecation")
   public MaterialData graniteMat = new MaterialData(Material.STONE, (byte)1);
+  @SuppressWarnings("deprecation")
   public MaterialData dioriteMat = new MaterialData(Material.STONE, (byte)3);
+  @SuppressWarnings("deprecation")
   public MaterialData andesiteMat = new MaterialData(Material.STONE, (byte)5);
+  @SuppressWarnings("deprecation")
   public MaterialData redSandMat = new MaterialData(Material.SAND, (byte)1);
+  @SuppressWarnings("deprecation")
   public MaterialData oakWoodMat = new MaterialData(Material.WOOD, (byte)0);
+  @SuppressWarnings("deprecation")
   public MaterialData spruceWoodMat = new MaterialData(Material.WOOD, (byte)1);
+  @SuppressWarnings("deprecation")
   public MaterialData birchWoodMat = new MaterialData(Material.WOOD, (byte)2);
+  @SuppressWarnings("deprecation")
   public MaterialData jungleWoodMat = new MaterialData(Material.WOOD, (byte)3);
+  @SuppressWarnings("deprecation")
   public MaterialData acaciaWoodMat = new MaterialData(Material.WOOD, (byte)4);
+  @SuppressWarnings("deprecation")
   public MaterialData darkOakWoodMat = new MaterialData(Material.WOOD, (byte)5);
+  @SuppressWarnings("deprecation")
   public MaterialData wetSpongeMat = new MaterialData(Material.SPONGE, (byte)1);
 
   //Items
@@ -572,7 +582,8 @@ public class Injector {
       ShapelessRecipe prismarineBricksRecipe = new ShapelessRecipe(new ItemStack(this.prismarineBlockMat, 1, (short)1)).addIngredient(9, this.prismarineShardMat);
       addRecipe(prismarineBricksRecipe);
 
-      ShapedRecipe prismarineDarkRecipe = new ShapedRecipe(new ItemStack(this.prismarineBlockMat, 1, (short)2)).shape(new String[] { "***", "*x*", "***" }).setIngredient('*', this.prismarineShardMat).setIngredient('x', Material.INK_SACK, 0);
+      @SuppressWarnings("deprecation")
+	  ShapedRecipe prismarineDarkRecipe = new ShapedRecipe(new ItemStack(this.prismarineBlockMat, 1, (short)2)).shape(new String[] { "***", "*x*", "***" }).setIngredient('*', this.prismarineShardMat).setIngredient('x', Material.INK_SACK, 0);
       addRecipe(prismarineDarkRecipe);
 
       ShapedRecipe oakFence = new ShapedRecipe(new ItemStack(Material.FENCE, 3)).shape(new String[] { "*x*", "*x*" }).setIngredient('*', oakWoodMat).setIngredient('x', Material.STICK);
@@ -656,7 +667,8 @@ public class Injector {
       ShapedRecipe rabbitStew2 = new ShapedRecipe(new ItemStack(this.rabbitStewItemMat)).shape(new String[] { " r ", "cpm", " b " }).setIngredient('r', this.cookedRabbitItemMat).setIngredient('c', Material.CARROT_ITEM).setIngredient('p', Material.BAKED_POTATO).setIngredient('m', Material.BROWN_MUSHROOM).setIngredient('b', Material.BOWL);
       addRecipe(rabbitStew2);
 
-      ShapedRecipe chiseledStone = new ShapedRecipe(new ItemStack(Material.SMOOTH_BRICK, 1, (short)3)).shape(new String[] { "s", "s"}).setIngredient('s', Material.STEP, 5);
+      @SuppressWarnings("deprecation")
+	  ShapedRecipe chiseledStone = new ShapedRecipe(new ItemStack(Material.SMOOTH_BRICK, 1, (short)3)).shape(new String[] { "s", "s"}).setIngredient('s', Material.STEP, 5);
       addRecipe(chiseledStone);
 
       ShapedRecipe stoneBricks = new ShapedRecipe(new ItemStack(Material.SMOOTH_BRICK, 4)).shape(new String[] { "xx", "xx" }).setIngredient('x', Material.STONE);
