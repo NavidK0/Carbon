@@ -55,7 +55,7 @@ public class Carbon extends JavaPlugin {
   private static Injector injector;
   private static Instrumentator instrumentator;
   
-  private double localConfigVersion = 0.5;
+  private final double localConfigVersion = 0.6;
 
   @Override
   public void onLoad() {
