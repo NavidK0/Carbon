@@ -46,11 +46,8 @@ public class PacketEncoder extends net.minecraft.server.v1_7_R4.PacketEncoder {
 					dayTime = dayTime | (24000L - 1);
 					dayTimeField.set(packet, dayTimeField);
 				}
-			} catch (NoSuchFieldException e) {
-			} catch (SecurityException e) {
-                    } catch (IllegalArgumentException e) {
-                    } catch (IllegalAccessException e) {
-                    }
+			} catch (Exception e) {
+			}
 		}
 		Integer packetid = ((BiMap<Integer, Class<? extends Packet>>) channelhandlercontext.channel().attr(NetworkManager.f).get()).inverse().get(packet.getClass());
 		if (logger.isDebugEnabled()) {

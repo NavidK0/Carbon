@@ -10,7 +10,9 @@ import com.sun.tools.attach.spi.AttachProvider;
 import java.io.File;
 import java.io.IOException;
 
+import sun.tools.attach.BsdAttachProvider;
 import sun.tools.attach.LinuxAttachProvider;
+import sun.tools.attach.SolarisAttachProvider;
 import sun.tools.attach.WindowsAttachProvider;
 
 /**
@@ -32,11 +34,6 @@ public class Instrumentator {
         AgentLoader.attachAgentToJVM(Tools.getCurrentPID(), CarbonTransformAgent.class, 
         	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemStack.class",
         	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem.class",
-        	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem$1.class",
-        	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem$SerializableMeta.class",
-        	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem$ItemMetaKey.class",
-        	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem$ItemMetaKey$Specific.class",
-        	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem$ItemMetaKey$Specific$To.class",
         	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemFactory.class",
         	"org/bukkit/craftbukkit/v1_7_R4/inventory/BannerMeta.class"
         );
@@ -69,6 +66,10 @@ public class Instrumentator {
             	return new LinuxAttachProvider();
             case WINDOWS:
             	return new WindowsAttachProvider();
+            case MAC:
+            	return new BsdAttachProvider();
+            case SOLARIS:
+            	return new SolarisAttachProvider();
 			default:
                 throw new UnsupportedOperationException("unsupported platform");
         }
