@@ -127,7 +127,7 @@ public class EntityTrackerEntry {
 						if ((this.tracker instanceof EntityPlayer)) {
 							scanPlayers(new ArrayList<EntityPlayer>(this.trackedPlayers));
 						}
-						object = new PacketPlayOutEntityTeleport(this.tracker.getId(), i, j, k, (byte) l, (byte) i1, this.tracker.onGround);
+						object = new PacketPlayOutEntityTeleport(this.tracker.getId(), i, j, k, (byte) l, (byte) i1, this.tracker.onGround, this.tracker instanceof EntityFallingBlock || this.tracker instanceof EntityTNTPrimed);
 					}
 				}
 				if (this.u) {
