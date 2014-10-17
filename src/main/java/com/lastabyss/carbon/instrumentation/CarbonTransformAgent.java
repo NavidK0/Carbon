@@ -50,9 +50,9 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 					getPreTransformedClass("net/minecraft/server/v1_7_R4/EntityTracker")
 				),
 				new ClassDefinition(
-						Class.forName("net.minecraft.server.v1_7_R4.EntityTrackerEntry"),
-						getPreTransformedClass("net/minecraft/server/v1_7_R4/EntityTrackerEntry")
-					),
+					Class.forName("net.minecraft.server.v1_7_R4.EntityTrackerEntry"),
+					getPreTransformedClass("net/minecraft/server/v1_7_R4/EntityTrackerEntry")
+				),
 				new ClassDefinition(
 					Class.forName("org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack"),
 					getPreTransformedClass("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemStack")
