@@ -26,15 +26,25 @@ public class TileEntityBanner extends TileEntity {
 		if (itemStack.hasTag() && itemStack.getTag().hasKeyOfType("BlockEntityTag", 10)) {
 			NBTTagCompound compound = itemStack.getTag().getCompound("BlockEntityTag");
 
-			if (compound.hasKey("Patterns")) {
-				this.patterns = (NBTTagList) compound.getList("Patterns", 10).clone();
-			}
-
 			if (compound.hasKeyOfType("Base", 99)) {
 				this.baseColor = compound.getInt("Base");
 			} else {
 				this.baseColor = itemStack.getData() & 15;
 			}
+
+			if (compound.hasKey("Patterns")) {
+				this.patterns = (NBTTagList) compound.getList("Patterns", 10).clone();
+			}
+
+			//transform lore banners (legacy format hat was used in Carbon 1.6.4)
+			NBTTagList lorepatterns = EnumBannerPatterns.fromLoreToNBT(itemStack);
+			if (lorepatterns != null) {
+				for (int i = 0; i < lorepatterns.size(); i++) {
+					patterns.add(lorepatterns.get(i));
+				}
+			}
+		} else {
+			this.baseColor = itemStack.getData() & 15;
 		}
 	}
 

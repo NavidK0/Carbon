@@ -16,7 +16,7 @@ public class BannerMeta extends CraftMetaItem {
 	public static void init() {
 	}
 
-	private int baseColor = 1;
+	private int baseColor = -1;
 	private HashMap<String, Integer> patternsData = new HashMap<String, Integer>();
 
 	BannerMeta(int itemData, NBTTagCompound tag) {
@@ -61,7 +61,9 @@ public class BannerMeta extends CraftMetaItem {
 		super.applyToItem(tag);
 		tag.set("BlockEntityTag", new NBTTagCompound());
 		NBTTagCompound compound = tag.getCompound("BlockEntityTag");
-		compound.setInt("Base", baseColor);
+		if (baseColor != -1) {
+			compound.setInt("Base", baseColor);
+		}
 		NBTTagList patterns = new NBTTagList();
 		for (Entry<String, Integer> entry : patternsData.entrySet()) {
 			NBTTagCompound pattern = new NBTTagCompound();

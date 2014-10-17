@@ -71,9 +71,6 @@ public class RecipesBannerPatterns implements IRecipe {
 				result.getTag().set("BlockEntityTag", compund);
 			}
 			NBTTagCompound compound = result.getTag().getCompound("BlockEntityTag");
-			if (!compound.hasKey("Base")) {
-				compound.setInt("Base", result.getData());
-			}
 			NBTTagList patterns;
 			if (compound.hasKeyOfType("Patterns", 9)) {
 				patterns = compound.getList("Patterns", 10);

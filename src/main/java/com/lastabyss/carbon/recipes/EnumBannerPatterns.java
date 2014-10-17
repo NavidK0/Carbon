@@ -98,52 +98,34 @@ public enum EnumBannerPatterns {
 		return tag != null && tag.hasKey("Patterns") ? tag.getList("Patterns", 10).size() : 0;
 	}
 
-	private static String BLOCK_ENTITY_TAG_NAME = "BlockEntityTag";
 	private static String DISPLAY_TAG_NAME = "display";
 	private static String LORE_TAG_NAME = "Lore";
-	private static String PATTERNS_TAG_NAME = "Patterns";
 	private static String PATTERN_TAG_NAME = "Pattern";
 	private static String COLOR_TAG_NAME = "Color";
 
-	public static void fromLoreToNBT(ItemStack itemstack) {
+	public static NBTTagList fromLoreToNBT(ItemStack itemstack) {
 		if (!itemstack.hasTag()) {
-			return;
+			return null;
 		}
 		if (itemstack.getTag().hasKey(DISPLAY_TAG_NAME)) {
 			NBTTagCompound display = itemstack.getTag().getCompound(DISPLAY_TAG_NAME);
 			if (display.hasKeyOfType(LORE_TAG_NAME, 9)) {
-				NBTTagCompound patternsCompound = new NBTTagCompound();
 				NBTTagList patterns = new NBTTagList();
-
-				NBTTagList oldlore = display.getList(LORE_TAG_NAME, 8);
-				NBTTagList newlore = new NBTTagList();
-				for (int i = 0; i < oldlore.size(); i++) {
-					String string = oldlore.getString(i);
+				NBTTagList lore = display.getList(LORE_TAG_NAME, 8);
+				for (int i = 0; i < lore.size(); i++) {
+					String string = lore.getString(i);
 					String[] split = string.split("[|]");
 					if (split.length == 3 && split[0].equals("Carbon")) {
 						NBTTagCompound pattern = new NBTTagCompound();
 						pattern.setString(PATTERN_TAG_NAME, split[1]);
 						pattern.setInt(COLOR_TAG_NAME, Integer.parseInt(split[2]));
 						patterns.add(pattern);
-					} else {
-						newlore.add(new NBTTagString(string));
 					}
 				}
-
-				patternsCompound.set(PATTERNS_TAG_NAME, patterns);
-
-				if (newlore.size() > 0) {
-					display.set(LORE_TAG_NAME, newlore);
-				} else {
-					display.remove(LORE_TAG_NAME);
-					if (!display.hasKey("Name") && !display.hasKey("color")) {
-						itemstack.getTag().remove(DISPLAY_TAG_NAME);
-					}
-				}
-
-				itemstack.getTag().set(BLOCK_ENTITY_TAG_NAME, patternsCompound);
+				return patterns;
 			}
 		}
+		return null;
 	}
 
 }
