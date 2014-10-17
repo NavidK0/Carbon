@@ -31,6 +31,8 @@ import net.minecraft.server.v1_7_R4.World;
 
 public class EntityArmorStand extends EntityLiving {
 
+	//IMPORTANT: IT NEEDS TO BE NAMED EntityArmorStand so EntityTracker can track this entity
+
 	private static final ArmorStandPose defaultHeadPose = new ArmorStandPose(0.0F, 0.0F, 0.0F);
 	private static final ArmorStandPose defaultBodyPose = new ArmorStandPose(0.0F, 0.0F, 0.0F);
 	private static final ArmorStandPose defaultLeftArmPose = new ArmorStandPose(-10.0F, 0.0F, -10.0F);

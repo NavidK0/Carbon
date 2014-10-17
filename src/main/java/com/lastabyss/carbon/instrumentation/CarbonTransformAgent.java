@@ -46,6 +46,14 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 			// redefine classes
 			instrumentation.redefineClasses(
 				new ClassDefinition(
+					Class.forName("net.minecraft.server.v1_7_R4.EntityTracker"),
+					getPreTransformedClass("net/minecraft/server/v1_7_R4/EntityTracker")
+				),
+				new ClassDefinition(
+						Class.forName("net.minecraft.server.v1_7_R4.EntityTrackerEntry"),
+						getPreTransformedClass("net/minecraft/server/v1_7_R4/EntityTrackerEntry")
+					),
+				new ClassDefinition(
 					Class.forName("org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack"),
 					getPreTransformedClass("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemStack")
 				),
@@ -127,7 +135,9 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 		if (
 			className.equals("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemStack") ||
 			className.equals("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem") ||
-			className.equals("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemFactory")
+			className.equals("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemFactory") ||
+			className.equals("net/minecraft/server/v1_7_R4/EntityTracker") ||
+			className.equals("net/minecraft/server/v1_7_R4/EntityTrackerEntry")
 		) {
 			LogManager.getLogger().log(Level.INFO, "[Carbon] Transforming "+className);
 			try {

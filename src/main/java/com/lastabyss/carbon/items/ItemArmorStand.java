@@ -28,6 +28,9 @@ public class ItemArmorStand extends Item {
 		if (blockFace == CraftBlock.blockFaceToNotch(BlockFace.DOWN)) {
 			return false;
 		}
+		if (!world.getType(x, y, z).getMaterial().isReplaceable()) {
+	    	y++;
+	    }
 		List<?> entities = world.getEntities(null, AxisAlignedBB.a(x, y, z, x + 1.0D, y + 2.0D, z + 1.0D));
 		if (entities.size() > 0) {
 			return false;

@@ -25,6 +25,11 @@
 				</not>
 			</fileset>
 		</move>
+		<move todir="build/classes/pretransformedclasses/net/minecraft/server/v1_7_R4/">
+			<fileset dir="build/classes/net/minecraft/server/v1_7_R4/">
+				<filename name= "**/*"/>
+			</fileset>
+		</move>
 		<copy todir="build/classes/">
 			<fileset dir="src/main/resources/">
 				<filename name="**/*"/>
