@@ -17,7 +17,7 @@ import net.minecraft.server.v1_7_R4.EntityArrow;
 import net.minecraft.server.v1_7_R4.EntityHuman;
 import net.minecraft.server.v1_7_R4.EntityItem;
 import net.minecraft.server.v1_7_R4.EntityLiving;
-import net.minecraft.server.v1_7_R4.EntityMinecartAbstract;
+import net.minecraft.server.v1_7_R4.EntityMinecartRideable;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.ItemArmor;
 import net.minecraft.server.v1_7_R4.ItemStack;
@@ -39,26 +39,19 @@ public class EntityArmorStand extends EntityLiving {
 	private static final ArmorStandPose defaultRightArmPose = new ArmorStandPose(-15.0F, 0.0F, 10.0F);
 	private static final ArmorStandPose defaultLeftLegPose = new ArmorStandPose(-1.0F, 0.0F, -1.0F);
 	private static final ArmorStandPose defaultRightLegPose = new ArmorStandPose(1.0F, 0.0F, 1.0F);
-	private final ItemStack[] equipment;
+	private final ItemStack[] equipment = new ItemStack[5];
 	private boolean invisible;
 	private long lastDamageTime;
 	private int disabledSlots;
-	private ArmorStandPose headpose;
-	private ArmorStandPose bodypose;
-	private ArmorStandPose leftarmpose;
-	private ArmorStandPose rightarmpose;
-	private ArmorStandPose leftlegpose;
-	private ArmorStandPose rightlegpose;
+	private ArmorStandPose headpose = defaultHeadPose;
+	private ArmorStandPose bodypose = defaultBodyPose;
+	private ArmorStandPose leftarmpose = defaultLeftArmPose;
+	private ArmorStandPose rightarmpose = defaultRightArmPose;
+	private ArmorStandPose leftlegpose = defaultLeftLegPose;
+	private ArmorStandPose rightlegpose = defaultRightLegPose;
 
 	public EntityArmorStand(World world) {
 		super(world);
-		this.equipment = new ItemStack[5];
-		this.headpose = defaultHeadPose;
-		this.bodypose = defaultBodyPose;
-		this.leftarmpose = defaultLeftArmPose;
-		this.rightarmpose = defaultRightArmPose;
-		this.leftlegpose = defaultLeftLegPose;
-		this.rightlegpose = defaultRightLegPose;
 		this.X = this.isNoGravity();
 		this.a(0.5F, 1.975F);
 	}
@@ -256,16 +249,15 @@ public class EntityArmorStand extends EntityLiving {
 	@Override
 	protected void bo() {
 		@SuppressWarnings("unchecked")
-		List<Entity> var1 = this.world.getEntities((Entity) this, this.boundingBox);
-		if (var1 != null && !var1.isEmpty()) {
-			for (int var2 = 0; var2 < var1.size(); ++var2) {
-				Entity entity = (Entity) var1.get(var2);
-				if (entity instanceof EntityMinecartAbstract && ((EntityMinecartAbstract) entity).getType() == 42 && Utilities.getDistanceSqToEntity(this, entity) <= 0.2D) {
-					entity.i(this);
+		List<Entity> list = this.world.getEntities(this, this.boundingBox);
+		if (list != null && !list.isEmpty()) {
+			for (int i = 0; i < list.size(); ++i) {
+				Entity entity = (Entity) list.get(i);
+				if (entity instanceof EntityMinecartRideable && Utilities.getDistanceSqToEntity(this, entity) <= 0.2D) {
+					entity.collide(this);
 				}
 			}
 		}
-
 	}
 
 	public boolean interactAt(EntityHuman human, Vec3D at) {
