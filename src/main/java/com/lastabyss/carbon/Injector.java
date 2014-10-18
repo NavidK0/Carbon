@@ -683,6 +683,9 @@ public class Injector {
       ShapedRecipe leather = new ShapedRecipe(new ItemStack(Material.LEATHER)).shape(new String[] { "ll", "ll" }).setIngredient('l', this.rabbitHideItemMat);
       addRecipe(leather);
 
+      ShapedRecipe armorStand = new ShapedRecipe(new ItemStack(this.armorStandEntityMat)).shape(new String[] {"iii", " i ", "isi"}).setIngredient('i', Material.STICK).setIngredient('s', Material.STEP);
+      addRecipe(armorStand);
+
       new RecipesBanners().register();
   }
 
