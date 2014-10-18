@@ -44,18 +44,12 @@ public class PacketEncoder extends net.minecraft.server.v1_7_R4.PacketEncoder {
 				Field fullTimeField = packet.getClass().getDeclaredField("a");
 				fullTimeField.setAccessible(true);
 				long fullTime = fullTimeField.getLong(packet);
-				if (fullTime > Integer.MAX_VALUE) {
-					fullTime = fullTime | ((24000L * 89400L) - 1L);
-					fullTimeField.set(packet, fullTimeField);
-				}
-				Field dayTimeField = packet.getClass().getDeclaredField("b");
-				dayTimeField.setAccessible(true);
-				long dayTime = dayTimeField.getLong(packet);
-				if (dayTime > 24000L) {
-					dayTime = dayTime | (24000L - 1);
-					dayTimeField.set(packet, dayTimeField);
+				if (fullTime > 24000L * 179L) {
+					fullTime = fullTime % (24000L * 179L);
+					fullTimeField.setLong(packet, fullTime);
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		Integer packetid = ((BiMap<Integer, Class<? extends Packet>>) channelhandlercontext.channel().attr(NetworkManager.f).get()).inverse().get(packet.getClass());
