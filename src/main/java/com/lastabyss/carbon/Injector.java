@@ -558,7 +558,7 @@ public class Injector {
       ShapelessRecipe slimeBalls = new ShapelessRecipe(new ItemStack(Material.SLIME_BALL, 9)).addIngredient(this.slimeMat);
       addRecipe(slimeBalls);
 
-      ShapedRecipe redSandstone = new ShapedRecipe(new ItemStack(this.redSandstoneMat, 4, (short)0)).shape(new String[] { "ss", "ss" }).setIngredient('s', redSandMat);
+      ShapedRecipe redSandstone = new ShapedRecipe(new ItemStack(this.redSandstoneMat, 1, (short)0)).shape(new String[] { "ss", "ss" }).setIngredient('s', redSandMat);
       addRecipe(redSandstone);
 
       ShapedRecipe smoothRedSandstone = new ShapedRecipe(new ItemStack(this.redSandstoneMat, 4, (short)2)).shape(new String[] { "ss", "ss" }).setIngredient('s', this.redSandstoneMat);
