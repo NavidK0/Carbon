@@ -5,6 +5,7 @@
 /*.iml
 /*.ipr
 /*.iws
+/libs
 
 /bin
 /build
@@ -13,3 +14,4 @@
 
 /dependency-reduced-pom.xml
 *-private.sh
+/nbproject/private/

@@ -1,0 +1,30 @@
+apply plugin: 'java'
+
+sourceCompatibility = '1.7'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+if (!hasProperty('mainClass')) {
+    ext.mainClass = ''
+}
+
+file('libs').mkdirs()
+
+ant.get src: 'https://dl.dropboxusercontent.com/u/71299154/carbon/libs/spigotapi.jar', dest: file('libs'), verbose: false, skipexisting: true
+ant.get src: 'https://dl.dropboxusercontent.com/u/71299154/carbon/libs/spigotserver.jar', dest: file('libs'), verbose: false, skipexisting: true
+
+repositories {
+    maven { url "http://mvn.yawk.at" }
+    maven {
+        url "http://assets.comphenix.net/plugin/repository/everything"
+        artifactUrls "http://assets.comphenix.net/plugin/repository/everything/com/comphenix/protocol/ProtocolLib-Spigot/3.6.0-SNAPSHOT/ProtocolLib-Spigot-3.6.0-SNAPSHOT.jar"
+    }
+    
+    mavenCentral()  
+}
+
+dependencies {
+    compile group: 'com.comphenix.protocol', name: 'ProtocolLib-Spigot', version: '3.6.0-SNAPSHOT'
+    compile group: 'fr.neatmonster', name: 'nocheatplus', version: '3.10.11'
+    compile files('libs/spigotapi.jar', 'libs/spigotserver.jar')
+    testCompile group: 'junit', name: 'junit', version: '4.10'
+}
