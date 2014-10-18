@@ -24,11 +24,15 @@ repositories {
 
 tasks.build.doLast {
     File carbon = file('build/libs/Carbon.jar')
-    File dest = new File('dest')
-    dest.delete();
-    dest.mkdir();
+    File dest = file('dest')
+    dest.mkdirs()
+    for (File file: dest.listFiles()) {
+        if (file.isDirectory()) purgeDirectory(file);
+        file.delete();
+    }
     boolean success = carbon.renameTo(new File(dest, 'Carbon.jar'))
-    println "Carbon successfully built!"
+    if (success) println "Carbon successfully copied to /dest."
+    else println "Carbon failed to copy to /dest."
 }
 
 dependencies {
