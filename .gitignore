@@ -6,6 +6,7 @@
 /*.ipr
 /*.iws
 /.gradle
+/dest
 /libs
 
 /bin
