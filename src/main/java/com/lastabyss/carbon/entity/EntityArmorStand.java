@@ -61,9 +61,10 @@ public class EntityArmorStand extends EntityLiving {
 		this.setPosition(x, y, z);
 	}
 
+	@Override
 	protected void c() {
 		super.c();
-		this.datawatcher.a(10, Byte.valueOf((byte) 0));
+		this.datawatcher.a(10, (byte) 0);
 		this.datawatcher.a(11, defaultHeadPose);
 		this.datawatcher.a(12, defaultBodyPose);
 		this.datawatcher.a(13, defaultLeftArmPose);
@@ -475,7 +476,6 @@ public class EntityArmorStand extends EntityLiving {
 	@Override
 	public void e() {
 		super.e();
-		//TODO: instrument dataWatcher
 		try {
 			ArmorStandPose headpose = getArmorStandPose(11);
 			if (!this.headpose.equals(headpose)) {
@@ -534,7 +534,7 @@ public class EntityArmorStand extends EntityLiving {
 			prevstate &= -2;
 		}
 
-		this.datawatcher.watch(10, Byte.valueOf(prevstate));
+		this.datawatcher.watch(10, prevstate);
 	}
 
 	public boolean isSmall() {
@@ -549,7 +549,7 @@ public class EntityArmorStand extends EntityLiving {
 			prevstate &= -3;
 		}
 
-		this.datawatcher.watch(10, Byte.valueOf(prevstate));
+		this.datawatcher.watch(10, prevstate);
 	}
 
 	public boolean isNoGravity() {
@@ -564,7 +564,7 @@ public class EntityArmorStand extends EntityLiving {
 			prevstate &= -5;
 		}
 
-		this.datawatcher.watch(10, Byte.valueOf(prevstate));
+		this.datawatcher.watch(10, prevstate);
 	}
 
 	public boolean showArms() {

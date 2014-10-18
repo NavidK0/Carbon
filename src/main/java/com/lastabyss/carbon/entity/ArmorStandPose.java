@@ -5,6 +5,8 @@ import net.minecraft.server.v1_7_R4.NBTTagList;
 
 public class ArmorStandPose {
 
+	//IMPORTANT: METHOD NAMES SHOULD STAY IN SYNC WITH DataWatcher
+
 	protected final float x;
 	protected final float y;
 	protected final float z;
