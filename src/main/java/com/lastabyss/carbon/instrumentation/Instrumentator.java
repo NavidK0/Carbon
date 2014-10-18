@@ -31,14 +31,17 @@ public class Instrumentator {
     public void instrumentate() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, IOException, AttachNotSupportedException, AgentLoadException, AgentInitializationException {
     	Tools.addToLibPath(getLibraryPath(attachLibFolder));
     	AttachProvider.setAttachProvider(getAttachProvider());
-        AgentLoader.attachAgentToJVM(Tools.getCurrentPID(), CarbonTransformAgent.class, 
+        AgentLoader.attachAgentToJVM(Tools.getCurrentPID(), CarbonTransformAgent.class,
+        	new String[] {
+        		"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/BannerMeta.class"
+        	},
         	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemStack.class",
         	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem.class",
+        	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem$SerializableMeta.class",
         	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemFactory.class",
         	"pretransformedclasses/net/minecraft/server/v1_7_R4/EntityTracker.class",
         	"pretransformedclasses/net/minecraft/server/v1_7_R4/EntityTrackerEntry.class",
-        	"pretransformedclasses/net/minecraft/server/v1_7_R4/DataWatcher.class",
-        	"org/bukkit/craftbukkit/v1_7_R4/inventory/BannerMeta.class"
+        	"pretransformedclasses/net/minecraft/server/v1_7_R4/DataWatcher.class"
         );
     }
 

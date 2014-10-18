@@ -86,6 +86,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
 			.put(CraftMetaFirework.class, "FIREWORK")
 			.put(CraftMetaCharge.class, "FIREWORK_EFFECT")
 			.put(CraftMetaItem.class, "UNSPECIFIC")
+			.put(BannerMeta.class, "BANNER")
 		.build();
 		static final ImmutableMap<String, Constructor<? extends CraftMetaItem>> constructorMap;
 
@@ -599,9 +600,10 @@ class CraftMetaItem implements ItemMeta, Repairable {
 		}
 	}
 
+	@Override
 	public final Map<String, Object> serialize() {
 		ImmutableMap.Builder<String, Object> map = ImmutableMap.builder();
-		map.put("meta-type", SerializableMeta.classMap.get(getClass()));
+		map.put(SerializableMeta.TYPE_FIELD, SerializableMeta.classMap.get(getClass()));
 		serialize(map);
 		return map.build();
 	}

@@ -5,12 +5,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.serialization.DelegateDeserialization;
 
 import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
 import net.minecraft.server.v1_7_R4.NBTTagList;
 
+import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftMetaItem.SerializableMeta;
+
+@DelegateDeserialization(SerializableMeta.class)
 public class BannerMeta extends CraftMetaItem {
 
 	public static void init() {

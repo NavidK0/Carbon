@@ -18,6 +18,7 @@ import java.util.Map.Entry;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.craftbukkit.v1_7_R4.inventory.BannerMeta;
 
 import com.google.common.collect.ImmutableMap;
@@ -68,6 +69,10 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 				new ClassDefinition(
 					Class.forName("org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemFactory"),
 					getPreTransformedClass("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemFactory")
+				),
+				new ClassDefinition(
+					Class.forName("org.bukkit.craftbukkit.v1_7_R4.inventory.CraftMetaItem$SerializableMeta"),
+					getPreTransformedClass("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem$SerializableMeta")
 				)
 			);
 
@@ -94,7 +99,7 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 				}
 			}
 
-			// redefine add bannermeta to CraftMetaItem SerializableMeta class
+			// add bannermeta to CraftMetaItem SerializableMeta class
 			ImmutableMap<Class<?>, String> newClassMap = ImmutableMap.<Class<?>, String> builder()
 				.put(Class.forName("org.bukkit.craftbukkit.v1_7_R4.inventory.CraftMetaSkull"), "SKULL")
 				.put(Class.forName("org.bukkit.craftbukkit.v1_7_R4.inventory.CraftMetaLeatherArmor"), "LEATHER_ARMOR")
@@ -116,7 +121,7 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 				}
 			}
 			newConstructorMap = classConstructorBuilder.build();
-			Class<?> smclass = Class.forName("org.bukkit.craftbukkit.v1_7_R4.inventory.CraftMetaItem$SerializableMeta");
+			Class<? extends ConfigurationSerializable> smclass = (Class<? extends ConfigurationSerializable>) Class.forName("org.bukkit.craftbukkit.v1_7_R4.inventory.CraftMetaItem$SerializableMeta");
 			setStaticFinalField(smclass, "classMap", newClassMap);
 			setStaticFinalField(smclass, "constructorMap", newConstructorMap);
 		} catch (Throwable t) {
@@ -139,6 +144,7 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 		if (
 			className.equals("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemStack") ||
 			className.equals("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem") ||
+			className.equals("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem$SerializableMeta") ||
 			className.equals("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemFactory") ||
 			className.equals("net/minecraft/server/v1_7_R4/EntityTracker") ||
 			className.equals("net/minecraft/server/v1_7_R4/EntityTrackerEntry") ||

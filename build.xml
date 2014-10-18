@@ -20,9 +20,6 @@
 		<move todir="build/classes/pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/">
 			<fileset dir="build/classes/org/bukkit/craftbukkit/v1_7_R4/inventory/">
 				<filename name= "**/*"/>
-				<not>
-					<filename name= "BannerMeta.class"/>
-				</not>
 			</fileset>
 		</move>
 		<move todir="build/classes/pretransformedclasses/net/minecraft/server/v1_7_R4/">

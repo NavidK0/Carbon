@@ -34,9 +34,9 @@ public class AgentLoader {
      * @throws AgentLoadException
      * @throws AgentInitializationException
      */
-    public static void attachAgentToJVM(String pid, Class<?> agent, String... resources) throws IOException, AttachNotSupportedException, AgentLoadException, AgentInitializationException {
+    public static void attachAgentToJVM(String pid, Class<?> agent, String[] originalresources, String... resources) throws IOException, AttachNotSupportedException, AgentLoadException, AgentInitializationException {
         VirtualMachine vm = VirtualMachine.attach(pid);
-        vm.loadAgent(generateAgentJar(agent, resources).getAbsolutePath());
+        vm.loadAgent(generateAgentJar(agent, originalresources, resources).getAbsolutePath());
         //vm.detach();
     }
 
@@ -49,8 +49,8 @@ public class AgentLoader {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static File generateAgentJar(Class<?> agent, String... resources) throws IOException {
-        File jarFile = File.createTempFile("carbonagent", ".jar");
+    public static File generateAgentJar(Class<?> agent, String[] originalresources, String... resources) throws IOException {
+        File jarFile = new File("agent.jar");
         jarFile.deleteOnExit();
 
         Manifest manifest = new Manifest();
@@ -70,6 +70,12 @@ public class AgentLoader {
 
         for (String name : resources) {
             jos.putNextEntry(new JarEntry(name));
+            jos.write(Tools.getBytesFromStream(AgentLoader.class.getClassLoader().getResourceAsStream(name)));
+            jos.closeEntry();
+        }
+
+        for (String name : originalresources) {
+            jos.putNextEntry(new JarEntry(name.substring(name.indexOf('/') + 1)));
             jos.write(Tools.getBytesFromStream(AgentLoader.class.getClassLoader().getResourceAsStream(name)));
             jos.closeEntry();
         }
