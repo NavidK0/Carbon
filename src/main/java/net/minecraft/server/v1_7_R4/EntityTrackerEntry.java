@@ -216,7 +216,10 @@ public class EntityTrackerEntry {
 		while (iterator.hasNext()) {
 			EntityPlayer entityplayer = (EntityPlayer) iterator.next();
 
-			entityplayer.playerConnection.sendPacket(packet);
+			//do not send update attributes packet for armorstand for 1.7 clients
+			if (!(packet instanceof PacketPlayOutUpdateAttributes) || !(entityplayer.playerConnection.networkManager.getVersion() != 47 && tracker.getClass().getSimpleName().equals("EntityArmorStand"))) {
+				entityplayer.playerConnection.sendPacket(packet);
+			}
 		}
 	}
 
@@ -277,7 +280,10 @@ public class EntityTrackerEntry {
 							((EntityPlayer) this.tracker).getBukkitEntity().injectScaledMaxHealth(collection, false);
 						}
 						if (!collection.isEmpty()) {
-							entityplayer.playerConnection.sendPacket(new PacketPlayOutUpdateAttributes(this.tracker.getId(), collection));
+							//do not send update attributes packet for armorstand for 1.7 clients
+							if (!(entityplayer.playerConnection.networkManager.getVersion() != 47 && tracker.getClass().getSimpleName().equals("EntityArmorStand"))) {
+								entityplayer.playerConnection.sendPacket(new PacketPlayOutUpdateAttributes(this.tracker.getId(), collection));
+							}
 						}
 					}
 					this.j = this.tracker.motX;
@@ -356,7 +362,7 @@ public class EntityTrackerEntry {
 		if ((this.tracker instanceof EntityBoat)) {
 			return new PacketPlayOutSpawnEntity(this.tracker, 1);
 		}
-		if (this.tracker != null && tracker.getClass().getSimpleName().equals("EntityArmorStand")) {
+		if (tracker.getClass().getSimpleName().equals("EntityArmorStand")) {
 			return new PacketPlayOutSpawnEntity(this.tracker, 78);
 		}
 		if ((!(this.tracker instanceof IAnimal)) && (!(this.tracker instanceof EntityEnderDragon))) {

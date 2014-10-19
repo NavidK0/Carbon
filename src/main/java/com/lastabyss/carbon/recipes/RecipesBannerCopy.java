@@ -41,7 +41,7 @@ public class RecipesBannerCopy implements IRecipe {
 			ItemStack itemStackInSlot = inventoryCrafting.getItem(i);
 			if (itemStackInSlot != null && EnumBannerPatterns.getPatternsCount(itemStackInSlot) > 0) {
 				ItemStack copiedBanner = itemStackInSlot.cloneItemStack();
-				copiedBanner.count = 1;
+				copiedBanner.count = 2;
 				return copiedBanner;
 			}
 		}
@@ -63,14 +63,14 @@ public class RecipesBannerCopy implements IRecipe {
 					return false;
 				}
 
-				int baseColor = itemStackInSlot.getData() & 0xF;// no support for base nbt data for nowTileEntityBanner.getBaseColor(itemStackInSlot);
+				int baseColor = EnumBannerPatterns.getBaseColor(itemStackInSlot);
 				boolean hasPatterns = EnumBannerPatterns.getPatternsCount(itemStackInSlot) > 0;
 				if (bannerToCopyFrom != null) {
 					if (hasPatterns) {
 						return false;
 					}
 
-					if (baseColor != (itemStackInSlot.getData() & 0xF)/*TileEntityBanner.getBaseColor(bannerToCopyFrom)*/) {
+					if (baseColor != (EnumBannerPatterns.getBaseColor(bannerToCopyFrom))) {
 						return false;
 					}
 
@@ -80,7 +80,7 @@ public class RecipesBannerCopy implements IRecipe {
 						return false;
 					}
 
-					if (baseColor != (itemStackInSlot.getData() & 0xF)/*TileEntityBanner.getBaseColor(bannerToCopyTo)*/) {
+					if (baseColor != (EnumBannerPatterns.getBaseColor(bannerToCopyTo))) {
 						return false;
 					}
 

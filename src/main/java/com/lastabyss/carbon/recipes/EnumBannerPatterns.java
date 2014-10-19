@@ -89,6 +89,17 @@ public enum EnumBannerPatterns {
 		return this.item;
 	}
 
+	public static int getBaseColor(ItemStack itemStack) {
+		int color = itemStack.getData() & 0xF;
+		if (itemStack.hasTag() && itemStack.getTag().hasKey("BlockEntityTag")) {
+			NBTTagCompound compound = itemStack.getTag().getCompound("BlockEntityTag");
+			if (compound.hasKeyOfType("Base", 99)) {
+				color = compound.getInt("Base");
+			}
+		}
+		return color;
+	}
+
 	public static int getPatternsCount(ItemStack itemStack) {
 		if (itemStack.getTag() == null) {
 			return 0;

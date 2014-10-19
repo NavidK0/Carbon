@@ -6,16 +6,14 @@ import com.lastabyss.carbon.entity.EntityEndermite;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.UUID;
-import net.minecraft.server.v1_7_R4.Item;
+
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
 import net.minecraft.server.v1_7_R4.NBTTagList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
-import org.bukkit.craftbukkit.v1_7_R4.inventory.BannerMeta;
 import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Ageable;
@@ -37,7 +35,6 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.material.Cauldron;
 
 /**
  *
@@ -146,30 +143,44 @@ public class ItemListener implements Listener {
         }
     }
     
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @SuppressWarnings("deprecation")
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onCauldronClick(PlayerInteractEvent evt) {
         if (evt.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if (evt.getBlockFace() == BlockFace.UP && evt.getClickedBlock().getType() == Material.CAULDRON && evt.getItem().getType() == Carbon.injector().bannerItemMat) {
-                net.minecraft.server.v1_7_R4.ItemStack item = CraftItemStack.asNMSCopy(evt.getItem());
-                NBTTagCompound tag = item.getTag();
-                NBTTagList list = tag.getList("Patterns", 10);
-                NBTTagList newList = new NBTTagList();
-                for (int n = 0; n < list.size() - 2; n++) {
-                    newList.add(list.get(n));
+            if (evt.getBlockFace() == BlockFace.UP && evt.getClickedBlock().getType() == Material.CAULDRON && evt.getItem() != null && evt.getItem().getType() == Carbon.injector().bannerItemMat) {
+            	evt.setCancelled(true);
+            	ItemStack originalBanner = evt.getItem();
+            	//create new banner with latest pattern removed
+                net.minecraft.server.v1_7_R4.ItemStack nmsNewBanner = CraftItemStack.asNMSCopy(originalBanner);
+                NBTTagCompound tag = nmsNewBanner.getTag();
+                byte waterLevel = evt.getClickedBlock().getData();
+                if (waterLevel > 0 && tag != null && tag.hasKey("BlockEntityTag") && tag.getCompound("BlockEntityTag").hasKey("Patterns")) {
+	                NBTTagCompound compound = tag.getCompound("BlockEntityTag");
+	                NBTTagList list = compound.getList("Patterns", 10);
+	                NBTTagList newList = new NBTTagList();
+	                for (int n = 0; n < list.size() - 1; n++) {
+	                    newList.add(list.get(n));
+	                }
+	                if (newList.size() > 0) {
+	                	compound.set("Patterns", newList);
+	                } else {
+	                	compound.remove("Patterns");
+	                }
+	                ItemStack newBannerItem = CraftItemStack.asCraftMirror(nmsNewBanner);
+	                newBannerItem.setAmount(1);
+	                //update cauldron
+	                evt.getClickedBlock().setData(--waterLevel);
+	                //update used itemstack
+	                if (originalBanner.getAmount() > 1) {
+	                	evt.getItem().setAmount(originalBanner.getAmount() - 1);
+	                } else {
+	                	evt.getItem().setAmount(0);
+	                	evt.getPlayer().setItemInHand(null);
+	                }
+	                //add new banner
+	                evt.getPlayer().getInventory().addItem(newBannerItem);
+	                evt.getPlayer().updateInventory();
                 }
-                tag.set("Patterns", list);
-                ItemStack newItem = CraftItemStack.asBukkitCopy(item);
-                evt.getItem().setAmount(evt.getItem().getAmount() > 0 ? evt.getItem().getAmount() - 1 : 0);
-                newItem.setAmount(1);
-                evt.getPlayer().getInventory().addItem(newItem);
-                evt.getPlayer().updateInventory();
-                Cauldron cauldron = (Cauldron) evt.getClickedBlock().getState().getData();
-                byte waterLevel = cauldron.getData();
-                waterLevel = waterLevel > 0 ? waterLevel-- : waterLevel;
-                evt.getClickedBlock().setType(Material.AIR);
-                evt.getClickedBlock().setType(Material.CAULDRON);
-                ((Cauldron)evt.getClickedBlock().getState().getData()).setData(waterLevel);
-                evt.setCancelled(true);
             }
         }
     }
