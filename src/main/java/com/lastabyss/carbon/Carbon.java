@@ -82,6 +82,8 @@ public class Carbon extends JavaPlugin {
     try {
       DynamicEnumType.loadReflection();
       Utilities.instantiate(this);
+      instrumentator = new Instrumentator(this, new File(getDataFolder(), "libraries/natives/").getPath());
+      instrumentator.instrumentate();
       injector = new Injector(this);
       injector.registerAll();
       injector.registerRecipes();

@@ -161,6 +161,12 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 		return null;
 	}
 
+        /**
+         * Gets class before transformation.
+         * @param className
+         * @return
+         * @throws IOException 
+         */
 	private static byte[] getPreTransformedClass(String className) throws IOException {
 		InputStream stream = CarbonTransformAgent.class.getClassLoader().getResourceAsStream("pretransformedclasses/" + className + ".class");
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();

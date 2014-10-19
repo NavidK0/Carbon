@@ -2,6 +2,7 @@ name: Carbon
 main: com.lastabyss.carbon.Carbon
 description: Transforms a 1.7.10 Spigot protocol hacked server into 1.8.
 softdepend: [ProtocolLib]
+loadbefore: [NoCheatPlus, NoCheatPlusCompat]
 load: STARTUP
 version: 1.7
 authors: [Navid K., _Shevchik_, Aust1n46]
