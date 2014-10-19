@@ -21,10 +21,15 @@ Some things to note before downloading and compiling the repository:
 - If any errors occur while using this plugin in game, be sure to post an issue with your spigot version, Carbon version, and any steps to reproduce the issue.
 
 How to compile the repository:
+
 Compiling the project is easy as 1, 2, and 3.
-1) Fork the project or download the sources.
-2) Open the gradle project in your favorite IDE. You may see errors when you first open it.
-3) Compile the projects and the errors should magically disappear.
+
+<ol>
+<li>1) Fork the project or download the sources.</li>
+<li>2) Open the gradle project in your favorite IDE. You may see errors when you first open it.</li>
+<li>3) Compile the projects and the errors should magically disappear.</li>
+</ol>
+
 Extra: You may have to reload the project after building.
 
 Some things to note before submitting a pull request:
