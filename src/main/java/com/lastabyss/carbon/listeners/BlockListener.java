@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
 import net.minecraft.server.v1_7_R4.TileEntity;
-import org.bukkit.Bukkit;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;

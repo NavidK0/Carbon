@@ -25,7 +25,6 @@ public class ProtocolBlockListener {
 		for (int i = 0; i < replacements.length; i++) {
 			replacements[i] = -1;
 		}
-                replacements[151] = plugin.getConfig().getInt("protocollib.blocks.inverted_daylight_detector", 151);
 		// slime -> emerald block
 		replacements[165] = plugin.getConfig().getInt("protocollib.blocks.slime", 133);
 		// barrier -> ? (probably not needed) (or maybe glass?)

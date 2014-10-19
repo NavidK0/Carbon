@@ -25,7 +25,6 @@ protocollib:
     fence_gates: 107
     fences: 85
     doors: 64
-    inverted_daylight_detector: 151
   entities:
     silverfish: 60
     endermites: 94
