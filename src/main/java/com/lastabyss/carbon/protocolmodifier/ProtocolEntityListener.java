@@ -1,5 +1,7 @@
 package com.lastabyss.carbon.protocolmodifier;
 
+import net.minecraft.server.v1_7_R4.Entity;
+
 import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 
 import com.comphenix.protocol.PacketType;
@@ -93,7 +95,8 @@ public class ProtocolEntityListener {
 					}
 					//do not update attributes for armor stand
 					int entityId = event.getPacket().getIntegers().read(0);
-					if (((CraftWorld) event.getPlayer().getWorld()).getHandle().getEntity(entityId) instanceof EntityArmorStand) {
+					Entity entity = ((CraftWorld) event.getPlayer().getWorld()).getHandle().getEntity(entityId);
+					if (entity == null || entity instanceof EntityArmorStand) {
 						event.setCancelled(true);
 					}
 				}
