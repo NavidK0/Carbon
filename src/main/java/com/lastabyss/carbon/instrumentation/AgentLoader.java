@@ -50,7 +50,7 @@ public class AgentLoader {
      * @throws IOException
      */
     public static File generateAgentJar(Class<?> agent, String[] originalresources, String... resources) throws IOException {
-        File jarFile = new File("agent.jar");
+        File jarFile = new File("carbon-agent.jar");
         jarFile.deleteOnExit();
 
         Manifest manifest = new Manifest();

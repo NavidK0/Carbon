@@ -1,10 +1,40 @@
 apply plugin: 'java'
 
+println 'Compiling Carbon via Gradle ver. ' + gradle.gradleVersion
+
 sourceCompatibility = '1.7'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.1'
+}
+
 if (!hasProperty('mainClass')) {
     ext.mainClass = ''
+}
+
+jar {
+    baseName "Carbon"
+}
+
+tasks.build.doLast {
+    ant.move(todir: "build/classes/main/pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/") {
+        fileset dir: "build/classes/main/org/bukkit/craftbukkit/v1_7_R4/inventory/"
+    }
+    ant.move(todir: "build/classes/main/pretransformedclasses/net/minecraft/server/v1_7_R4/") {
+        fileset dir: "build/classes/main/net/minecraft/server/v1_7_R4/"
+    }
+    ant.jar destfile:"build/libs/Carbon.jar", basedir: "build/classes/main", includes: "**/*.*", update: true
+    File export = file('build/libs/Carbon.jar')
+    File dest = file('dest')
+    dest.mkdir()
+    dest.listFiles().each {
+        it.delete()
+    }
+    export.renameTo(new File(dest, "Carbon.jar"))
+    file('build').delete()
+    println "Copied Carbon.jar into /dest"
+    println "Carbon is finished compiling, have a nice day!"
 }
 
 file('libs').mkdirs()
@@ -13,7 +43,9 @@ ant.get src: 'https://dl.dropboxusercontent.com/u/71299154/carbon/libs/spigotapi
 ant.get src: 'https://dl.dropboxusercontent.com/u/71299154/carbon/libs/spigotserver.jar', dest: file('libs'), verbose: false, skipexisting: true
 
 repositories {
-    maven { url "http://mvn.yawk.at" }
+    maven {
+        url "http://mvn.yawk.at"
+    }
     maven {
         url "http://assets.comphenix.net/plugin/repository/everything"
         artifactUrls "http://assets.comphenix.net/plugin/repository/everything/com/comphenix/protocol/ProtocolLib-Spigot/3.6.0-SNAPSHOT/ProtocolLib-Spigot-3.6.0-SNAPSHOT.jar"
@@ -22,22 +54,11 @@ repositories {
     mavenCentral()  
 }
 
-tasks.build.doLast {
-    File carbon = file('build/libs/Carbon.jar')
-    File dest = file('dest')
-    dest.mkdirs()
-    for (File file: dest.listFiles()) {
-        if (file.isDirectory()) purgeDirectory(file);
-        file.delete();
-    }
-    boolean success = carbon.renameTo(new File(dest, 'Carbon.jar'))
-    if (success) println "Carbon successfully copied to /dest."
-    else println "Carbon failed to copy to /dest."
-}
-
 dependencies {
     compile group: 'com.comphenix.protocol', name: 'ProtocolLib-Spigot', version: '3.6.0-SNAPSHOT'
     compile group: 'fr.neatmonster', name: 'nocheatplus', version: '3.10.11'
     compile files('libs/spigotapi.jar', 'libs/spigotserver.jar')
     testCompile group: 'junit', name: 'junit', version: '4.10'
 }
+
+
