@@ -65,6 +65,8 @@ public class ProtocolBlockListener {
 		replacements[195] = plugin.getConfig().getInt("protocollib.blocks.doors", 64);
 		replacements[196] = plugin.getConfig().getInt("protocollib.blocks.doors", 64);
 		replacements[197] = plugin.getConfig().getInt("protocollib.blocks.doors", 64);
+		//inverted daylight detector -> daylight detector
+		replacements[178] = plugin.getConfig().getInt("protocollib.blocks.inverted_daylight_detector", 151);
 		return this;
 	}
 
