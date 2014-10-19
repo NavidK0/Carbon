@@ -3,6 +3,8 @@ Carbon
 
 Carbon is a plugin which adds 1.8 blocks and features into a spigot protocol hacked server.
 
+IMPORTANT: [http://www.spigotmc.org/threads/1-8-progress-check.32792/](http://www.spigotmc.org/threads/1-8-progress-check.32792/)
+
 <h4><b>Proper issue format is: [issue type] Title of Issue</b></h4>
 <h4><b>Proper pull request format is: [PR type] Title of Pull Request</b></h4>
 If your issue/pull request is properly created, a label will be given to your issue/pull request.
