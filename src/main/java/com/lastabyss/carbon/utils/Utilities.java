@@ -2,7 +2,6 @@ package com.lastabyss.carbon.utils;
 
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.DynamicEnumType;
-import com.sun.org.apache.xerces.internal.impl.xs.identity.Selector;
 
 import net.minecraft.server.v1_7_R4.EntityPlayer;
 import net.minecraft.server.v1_7_R4.Packet;
