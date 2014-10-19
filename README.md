@@ -3,6 +3,9 @@ Carbon
 
 Carbon is a plugin which adds 1.8 blocks and features into a spigot protocol hacked server.
 
+IMPORTANT: [http://www.spigotmc.org/threads/1-8-progress-check.32792/](http://www.spigotmc.org/threads/1-8-progress-check.32792/)
+Please remember that this plugin was always meant to be a temporary plugin, and should be removed once 1.8 truly comes out. Once it does, this plugin will no longer be supported, and the issue tracker will be closed. All 1.8 features created by this plugin are fully compatible with actual version of 1.8, so the transition should be seamless.
+
 <h4><b>Proper issue format is: [issue type] Title of Issue</b></h4>
 <h4><b>Proper pull request format is: [PR type] Title of Pull Request</b></h4>
 If your issue/pull request is properly created, a label will be given to your issue/pull request.

@@ -77,20 +77,22 @@ class CraftMetaItem implements ItemMeta, Repairable {
 		}
 
 		static final String TYPE_FIELD = "meta-type";
-		static final ImmutableMap<Class<? extends CraftMetaItem>, String> classMap = ImmutableMap.<Class<? extends CraftMetaItem>, String>builder()
-			.put(CraftMetaSkull.class, "SKULL")
-			.put(CraftMetaLeatherArmor.class, "LEATHER_ARMOR")
-			.put(CraftMetaMap.class, "MAP")
-			.put(CraftMetaPotion.class, "POTION")
-			.put(CraftMetaEnchantedBook.class, "ENCHANTED")
-			.put(CraftMetaFirework.class, "FIREWORK")
-			.put(CraftMetaCharge.class, "FIREWORK_EFFECT")
-			.put(CraftMetaItem.class, "UNSPECIFIC")
-			.put(BannerMeta.class, "BANNER")
-		.build();
+		static final ImmutableMap<Class<? extends CraftMetaItem>, String> classMap; 
 		static final ImmutableMap<String, Constructor<? extends CraftMetaItem>> constructorMap;
 
 		static {
+			ImmutableMap.Builder<Class<? extends CraftMetaItem>, String> classMapBuilder = ImmutableMap.builder();
+			classMapBuilder
+				.put(CraftMetaBook.class, "BOOK")
+				.put(CraftMetaSkull.class, "SKULL")
+				.put(CraftMetaLeatherArmor.class, "LEATHER_ARMOR")
+				.put(CraftMetaMap.class, "MAP")
+				.put(CraftMetaPotion.class, "POTION")
+				.put(CraftMetaEnchantedBook.class, "ENCHANTED")
+				.put(CraftMetaFirework.class, "FIREWORK")
+				.put(CraftMetaCharge.class, "FIREWORK_EFFECT")
+				.put(CraftMetaItem.class, "UNSPECIFIC");
+			classMap = classMapBuilder.build();
 			ImmutableMap.Builder<String, Constructor<? extends CraftMetaItem>> classConstructorBuilder = ImmutableMap.builder();
 			for (Entry<Class<? extends CraftMetaItem>, String> mapping : classMap.entrySet()) {
 				try {
@@ -675,15 +677,15 @@ class CraftMetaItem implements ItemMeta, Repairable {
 	}
 
 	private final ItemMeta.Spigot spigot = new ItemMeta.Spigot() {
-        private boolean unbreakable;
+		private boolean unbreakable;
 
-        public void setUnbreakable(boolean setUnbreakable) {
-                this.unbreakable = setUnbreakable;
-        }
+		public void setUnbreakable(boolean setUnbreakable) {
+			this.unbreakable = setUnbreakable;
+		}
 
-        public boolean isUnbreakable() {
-                return this.unbreakable;
-        }
+		public boolean isUnbreakable() {
+			return this.unbreakable;
+		}
 	};
 
 	public ItemMeta.Spigot spigot() {

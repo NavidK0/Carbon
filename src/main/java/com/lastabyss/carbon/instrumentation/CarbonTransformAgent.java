@@ -101,6 +101,7 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 
 			// add bannermeta to CraftMetaItem SerializableMeta class
 			ImmutableMap<Class<?>, String> newClassMap = ImmutableMap.<Class<?>, String> builder()
+				.put(Class.forName("org.bukkit.craftbukkit.v1_7_R4.inventory.CraftMetaBook"), "BOOK")
 				.put(Class.forName("org.bukkit.craftbukkit.v1_7_R4.inventory.CraftMetaSkull"), "SKULL")
 				.put(Class.forName("org.bukkit.craftbukkit.v1_7_R4.inventory.CraftMetaLeatherArmor"), "LEATHER_ARMOR")
 				.put(Class.forName("org.bukkit.craftbukkit.v1_7_R4.inventory.CraftMetaMap"), "MAP")
