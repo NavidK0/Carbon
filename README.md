@@ -25,9 +25,9 @@ How to compile the repository:
 Compiling the project is easy as 1, 2, and 3.
 
 <ol>
-<li>1) Fork the project or download the sources.</li>
-<li>2) Open the gradle project in your favorite IDE. You may see errors when you first open it.</li>
-<li>3) Compile the projects and the errors should magically disappear.</li>
+<li> Fork the project or download the sources.</li>
+<li> Open the gradle project in your favorite IDE. You may see errors when you first open it.</li>
+<li> Compile the projects and the errors should magically disappear.</li>
 </ol>
 
 Extra: You may have to reload the project after building.
