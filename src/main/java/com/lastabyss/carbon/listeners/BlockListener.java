@@ -1,10 +1,16 @@
 package com.lastabyss.carbon.listeners;
 
 import com.lastabyss.carbon.Carbon;
+import com.lastabyss.carbon.blocks.BlockDaylightDetector;
 import com.lastabyss.carbon.entity.TileEntityBanner;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
 import net.minecraft.server.v1_7_R4.TileEntity;
+import org.bukkit.Bukkit;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -13,6 +19,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
+import org.bukkit.craftbukkit.v1_7_R4.block.CraftBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -173,4 +180,40 @@ public class BlockListener implements Listener {
 		if (evt.getCause().equals(DamageCause.FALL) && evt.getEntity().getLocation().subtract(0.0D, 1.0D, 0.0D).getBlock().getType().equals(Carbon.injector().slimeMat))
 			evt.setCancelled(true);
 	}
+        
+        @EventHandler
+        public void onDaylightChange(PlayerInteractEvent evt) {
+            Player player = evt.getPlayer();
+            if (evt.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                if (evt.getClickedBlock().getType() == Carbon.injector().daylightDetectorInvertedMat) {
+                    try {
+                        CraftBlock craftBlock = (CraftBlock)evt.getClickedBlock();
+                        craftBlock.setType(Material.DAYLIGHT_DETECTOR);
+                        //Some stupid reflection
+                        Method method = CraftBlock.class.getDeclaredMethod("getNMSBlock", net.minecraft.server.v1_7_R4.Block.class);
+                        method.setAccessible(true);
+                        net.minecraft.server.v1_7_R4.Block nmsBlock = (net.minecraft.server.v1_7_R4.Block) method.invoke(craftBlock, Void.class);
+                        BlockDaylightDetector detector = (BlockDaylightDetector)nmsBlock;
+                        detector.setInverted(false);
+                        player.getWorld().playSound(evt.getClickedBlock().getLocation(), Sound.CLICK, 1, 1);
+                    } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                        Logger.getLogger(BlockListener.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else if (evt.getClickedBlock().getType() == Material.DAYLIGHT_DETECTOR) {
+                    try {
+                        CraftBlock craftBlock = (CraftBlock)evt.getClickedBlock();
+                        craftBlock.setType(Carbon.injector().daylightDetectorInvertedMat);
+                        //Some stupid reflection
+                        Method method = CraftBlock.class.getDeclaredMethod("getNMSBlock", net.minecraft.server.v1_7_R4.Block.class);
+                        method.setAccessible(true);
+                        net.minecraft.server.v1_7_R4.Block nmsBlock = (net.minecraft.server.v1_7_R4.Block) method.invoke(craftBlock, Void.class);
+                        BlockDaylightDetector detector = (BlockDaylightDetector)nmsBlock;
+                        detector.setInverted(true);
+                        player.getWorld().playSound(evt.getClickedBlock().getLocation(), Sound.CLICK, 1, 1);
+                    } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                        Logger.getLogger(BlockListener.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }
 }

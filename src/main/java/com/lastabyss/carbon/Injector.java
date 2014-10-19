@@ -482,7 +482,6 @@ public class Injector {
     registerPotionEffect(MobEffectList.JUMP.getId(), "0 & 1 & !2 & 3", "5");
 
     //inject our modified blocks
-    //inject our items too
     try {
         Class<Blocks> blocksClass = Blocks.class;
         setStaticFinalField(blocksClass, "STONE", stoneBlock);
@@ -500,6 +499,7 @@ public class Injector {
         setStaticFinalField(blocksClass, "ENCHANTMENT_TABLE", enchantTableBlock);
         setStaticFinalField(blocksClass, "CHEST", optimizedChestBlock);
         setStaticFinalField(blocksClass, "TRAPPED_CHEST", optimizedTrappedChestBlock);
+        setStaticFinalField(blocksClass, "DAYLIGHT_DETECTOR", daylightDetectorBlock);
     } catch (Throwable t) {
         t.printStackTrace();
         Bukkit.shutdown();
