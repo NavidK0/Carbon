@@ -55,10 +55,17 @@ public class Carbon extends JavaPlugin {
   private static Instrumentator instrumentator;
   
   private final double localConfigVersion = 0.6;
+  private final String supportedVersion = "1.7.10"; //Wanna use reflection and change this value? I dare you.
 
   @Override
   public void onLoad() {
-      System.out.println(Bukkit.getServer().getVersion());
+    if(!Utilities.getMinecraftVersion(Bukkit.getVersion()).equals(supportedVersion)) {
+      log.log(Level.WARNING, "[Carbon] It appears you are using version {0}! Sorry, but Carbon doesn''t support any other version than Spigot 1.7.10! Please remove this plugin from your server.", Bukkit.getVersion());
+      Bukkit.shutdown();
+      return;
+    } else {
+      log.log(Level.INFO, "[Carbon] Server version {0} detected! Carbon is loading...", Bukkit.getVersion());
+    }
     //call to server shutdown if worlds are already loaded, prevents various errors when loading plugin on the fly
     if (!Bukkit.getWorlds().isEmpty()) {
       log.log(Level.SEVERE, "World loaded before{0} {1}! (Was {2} loaded on the fly?)", new Object[]{pluginDescriptionFile.getName(), pluginDescriptionFile.getVersion(), pluginDescriptionFile.getName()});
@@ -96,6 +103,7 @@ public class Carbon extends JavaPlugin {
       e.printStackTrace();
       log.warning("[Carbon] 1.8 injection failed! Something went wrong, server cannot start properly, shutting down...");
       Bukkit.shutdown();
+      return;
     }
 
     log.info("Carbon has finished injecting all 1.8 functionalities.");

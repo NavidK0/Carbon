@@ -2,6 +2,7 @@ package com.lastabyss.carbon.utils;
 
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.DynamicEnumType;
+import com.sun.org.apache.xerces.internal.impl.xs.identity.Selector;
 
 import net.minecraft.server.v1_7_R4.EntityPlayer;
 import net.minecraft.server.v1_7_R4.Packet;
@@ -26,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -277,6 +280,22 @@ public class Utilities {
 	public static <T extends AccessibleObject> T setAccessible(Class<T> objectType, AccessibleObject object, boolean accessible) {
     	object.setAccessible(accessible);
     	return (T) object;
+    }
+        
+    /**
+     * Grabs the numerical version portion of the full server's version.
+     * @param serverVersion
+     * @return 
+     */
+    public static String getMinecraftVersion(String serverVersion) {
+        Pattern pattern = Pattern.compile("\\(.*?\\) ?");
+        Matcher matcher = pattern.matcher(serverVersion);
+        String regex = "";
+        if (matcher.find()) {
+            regex = matcher.group(0);
+        }
+        regex = regex.replaceAll("\\([M][C][:][\" \"]", "").replace(')', ' ').trim();
+        return regex;
     }
 
 }
