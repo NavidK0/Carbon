@@ -390,7 +390,7 @@ public class Injector {
       }
   }
 
-  public void registerAll() {
+  public void registerAll() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
 	//Register datawatcher types
 	registerDataWatcherType(ArmorStandPose.class, 7);
 
