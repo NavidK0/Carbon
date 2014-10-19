@@ -8,8 +8,8 @@
     		<file name="${basedir}/libs/ProtocolLib-Spigot-3.6.0-SNAPSHOT.jar" />
     	</filelist>
     </path>
-    
-    <target name="build">
+
+	<target name="build">
 		<mkdir dir="libs" />
 		<get src="https://dl.dropboxusercontent.com/u/71299154/carbon/libs/NoCheatPlus.jar" dest="libs/NoCheatPlus.jar" skipexisting="true"/>
 		<get src="https://dl.dropboxusercontent.com/u/71299154/carbon/libs/ProtocolLib-Spigot-3.6.0-SNAPSHOT.jar" dest="libs/ProtocolLib-Spigot-3.6.0-SNAPSHOT.jar" skipexisting="true"/>
