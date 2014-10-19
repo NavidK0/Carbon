@@ -54,7 +54,7 @@ public class Carbon extends JavaPlugin {
   private static Injector injector;
   private static Instrumentator instrumentator;
   
-  private final double localConfigVersion = 0.6;
+  private final double localConfigVersion = 0.7;
   private final String supportedVersion = "1.7.10"; //Wanna use reflection and change this value? I dare you.
 
   @Override
