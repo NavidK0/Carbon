@@ -6,10 +6,17 @@ import com.lastabyss.carbon.entity.EntityEndermite;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.UUID;
+import net.minecraft.server.v1_7_R4.Item;
+import net.minecraft.server.v1_7_R4.NBTTagCompound;
+import net.minecraft.server.v1_7_R4.NBTTagList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
+import org.bukkit.craftbukkit.v1_7_R4.inventory.BannerMeta;
+import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Arrow;
@@ -21,13 +28,16 @@ import org.bukkit.entity.Skeleton;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.material.Cauldron;
 
 /**
  *
@@ -133,6 +143,34 @@ public class ItemListener implements Listener {
             final UUID uuid = damageEvent.getDamager().getUniqueId();
             recentCreepers.add(uuid); // Temporarily track UUID to prevent another head drop
             entity.getWorld().dropItemNaturally(entity.getLocation(), skullItem);
+        }
+    }
+    
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onCauldronClick(PlayerInteractEvent evt) {
+        if (evt.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if (evt.getBlockFace() == BlockFace.UP && evt.getClickedBlock().getType() == Material.CAULDRON && evt.getItem().getType() == Carbon.injector().bannerItemMat) {
+                net.minecraft.server.v1_7_R4.ItemStack item = CraftItemStack.asNMSCopy(evt.getItem());
+                NBTTagCompound tag = item.getTag();
+                NBTTagList list = tag.getList("Patterns", 10);
+                NBTTagList newList = new NBTTagList();
+                for (int n = 0; n < list.size() - 2; n++) {
+                    newList.add(list.get(n));
+                }
+                tag.set("Patterns", list);
+                ItemStack newItem = CraftItemStack.asBukkitCopy(item);
+                evt.getItem().setAmount(evt.getItem().getAmount() > 0 ? evt.getItem().getAmount() - 1 : 0);
+                newItem.setAmount(1);
+                evt.getPlayer().getInventory().addItem(newItem);
+                evt.getPlayer().updateInventory();
+                Cauldron cauldron = (Cauldron) evt.getClickedBlock().getState().getData();
+                byte waterLevel = cauldron.getData();
+                waterLevel = waterLevel > 0 ? waterLevel-- : waterLevel;
+                evt.getClickedBlock().setType(Material.AIR);
+                evt.getClickedBlock().setType(Material.CAULDRON);
+                ((Cauldron)evt.getClickedBlock().getState().getData()).setData(waterLevel);
+                evt.setCancelled(true);
+            }
         }
     }
 

@@ -1,13 +1,7 @@
 package com.lastabyss.carbon.entity;
 
-import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.recipes.EnumBannerPatterns;
 
-import net.minecraft.server.v1_7_R4.Blocks;
-import net.minecraft.server.v1_7_R4.Items;
 import net.minecraft.server.v1_7_R4.ItemStack;
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
 import net.minecraft.server.v1_7_R4.NBTTagList;
