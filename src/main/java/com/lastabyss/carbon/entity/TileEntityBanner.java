@@ -9,7 +9,6 @@ import net.minecraft.server.v1_7_R4.Packet;
 import net.minecraft.server.v1_7_R4.PacketPlayOutTileEntityData;
 import net.minecraft.server.v1_7_R4.TileEntity;
 
-@SuppressWarnings("unused")
 public class TileEntityBanner extends TileEntity {
 
 	private int baseColor;
