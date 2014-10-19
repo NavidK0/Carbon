@@ -190,9 +190,9 @@ public class BlockListener implements Listener {
                         CraftBlock craftBlock = (CraftBlock)evt.getClickedBlock();
                         craftBlock.setType(Material.DAYLIGHT_DETECTOR);
                         //Some stupid reflection
-                        Method method = CraftBlock.class.getDeclaredMethod("getNMSBlock", net.minecraft.server.v1_7_R4.Block.class);
+                        Method method = CraftBlock.class.getDeclaredMethod("getNMSBlock");
                         method.setAccessible(true);
-                        net.minecraft.server.v1_7_R4.Block nmsBlock = (net.minecraft.server.v1_7_R4.Block) method.invoke(craftBlock, Void.class);
+                        net.minecraft.server.v1_7_R4.Block nmsBlock = (net.minecraft.server.v1_7_R4.Block) method.invoke(craftBlock);
                         BlockDaylightDetector detector = (BlockDaylightDetector)nmsBlock;
                         detector.setInverted(false);
                         player.getWorld().playSound(evt.getClickedBlock().getLocation(), Sound.CLICK, 1, 1);
@@ -204,9 +204,9 @@ public class BlockListener implements Listener {
                         CraftBlock craftBlock = (CraftBlock)evt.getClickedBlock();
                         craftBlock.setType(Carbon.injector().daylightDetectorInvertedMat);
                         //Some stupid reflection
-                        Method method = CraftBlock.class.getDeclaredMethod("getNMSBlock", net.minecraft.server.v1_7_R4.Block.class);
+                        Method method = CraftBlock.class.getDeclaredMethod("getNMSBlock");
                         method.setAccessible(true);
-                        net.minecraft.server.v1_7_R4.Block nmsBlock = (net.minecraft.server.v1_7_R4.Block) method.invoke(craftBlock, Void.class);
+                        net.minecraft.server.v1_7_R4.Block nmsBlock = (net.minecraft.server.v1_7_R4.Block) method.invoke(craftBlock);
                         BlockDaylightDetector detector = (BlockDaylightDetector)nmsBlock;
                         detector.setInverted(true);
                         player.getWorld().playSound(evt.getClickedBlock().getLocation(), Sound.CLICK, 1, 1);

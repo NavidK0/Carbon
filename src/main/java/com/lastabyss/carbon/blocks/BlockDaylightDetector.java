@@ -1,11 +1,14 @@
 package com.lastabyss.carbon.blocks;
 
+import com.lastabyss.carbon.Carbon;
 import java.util.Random;
 import net.minecraft.server.v1_7_R4.Block;
+import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.CreativeModeTab;
 import net.minecraft.server.v1_7_R4.EnumSkyBlock;
 import net.minecraft.server.v1_7_R4.IBlockAccess;
 import net.minecraft.server.v1_7_R4.IIcon;
+import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.MathHelper;
 import net.minecraft.server.v1_7_R4.TileEntity;
 import net.minecraft.server.v1_7_R4.TileEntityLightDetector;
@@ -21,6 +24,7 @@ public class BlockDaylightDetector extends net.minecraft.server.v1_7_R4.BlockDay
         super();
         this.inverted = inverted;
         this.a(0.0F, 0.0F, 0.0F, 1.0F, 0.375F, 1.0F);
+        c(0.2f);
         this.a(CreativeModeTab.d);
     }
 
@@ -70,8 +74,11 @@ public class BlockDaylightDetector extends net.minecraft.server.v1_7_R4.BlockDay
             }
         }
     }
-    
-    
+
+    @Override
+    public Item getDropType(int i, Random random, int j) {
+        return Item.getItemOf(Blocks.DAYLIGHT_DETECTOR);
+    }
 
     public boolean d() {
         return false;
