@@ -20,6 +20,7 @@ import org.apache.logging.log4j.LogManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.craftbukkit.v1_7_R4.inventory.BannerMeta;
+import org.bukkit.craftbukkit.v1_7_R4.inventory.BannerMeta.BannerPattern;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -90,8 +91,9 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 						sealBaseField.setAccessible(true);
 						sealBase = sealBaseField.get(pkg);
 						sealBaseField.set(pkg, null);
-						// load class
+						// load classes
 						BannerMeta.init();
+						BannerPattern.init();
 						// seal back
 						sealBaseField.set(pkg, sealBase);
 						break;

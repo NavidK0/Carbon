@@ -1,11 +1,15 @@
 package org.bukkit.craftbukkit.v1_7_R4.inventory;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
+import org.bukkit.configuration.serialization.SerializableAs;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -21,7 +25,7 @@ public class BannerMeta extends CraftMetaItem {
 	}
 
 	private int baseColor = -1;
-	private HashMap<String, Integer> patternsData = new HashMap<String, Integer>();
+	private LinkedList<BannerPattern> patternsData = new LinkedList<BannerPattern>();
 
 	BannerMeta(int itemData, NBTTagCompound tag) {
 		super(tag);
@@ -38,7 +42,7 @@ public class BannerMeta extends CraftMetaItem {
 			NBTTagList patterns = (NBTTagList) compound.getList("Patterns", 10);
 			for (int i = 0; i < patterns.size(); i++) {
 				NBTTagCompound pattern = patterns.get(i);
-				patternsData.put(pattern.getString("Pattern"), pattern.getInt("Color"));
+				patternsData.add(new BannerPattern(pattern.getString("Pattern"), pattern.getInt("Color")));
 			}
 		}
 	}
@@ -47,7 +51,15 @@ public class BannerMeta extends CraftMetaItem {
 	BannerMeta(Map<String, Object> map) {
 		super(map);
 		baseColor = (Integer) map.get("BaseColor");
-		patternsData = (HashMap<String, Integer>) map.get("Patterns");
+		Object patternsDataObject = map.get("Patterns");
+		if (patternsDataObject instanceof HashMap) {
+			patternsData.clear();
+			for (Entry<String, Integer> entry : ((HashMap<String, Integer>)patternsDataObject).entrySet()) {
+				patternsData.add(new BannerPattern(entry.getKey(), entry.getValue()));
+			}
+		} else if (patternsDataObject instanceof LinkedList) {
+			patternsData = (LinkedList<BannerPattern>) patternsDataObject;
+		}
 	}
 
 	BannerMeta(CraftMetaItem meta) {
@@ -69,10 +81,10 @@ public class BannerMeta extends CraftMetaItem {
 			compound.setInt("Base", baseColor);
 		}
 		NBTTagList patterns = new NBTTagList();
-		for (Entry<String, Integer> entry : patternsData.entrySet()) {
+		for (BannerPattern bannerpattern : patternsData) {
 			NBTTagCompound pattern = new NBTTagCompound();
-			pattern.setString("Pattern", entry.getKey());
-			pattern.setInt("Color", entry.getValue());
+			pattern.setString("Pattern", bannerpattern.getPattern());
+			pattern.setInt("Color", bannerpattern.getColor());
 			patterns.add(pattern);
 		}
 		if (patterns.size() != 0) {
@@ -84,7 +96,7 @@ public class BannerMeta extends CraftMetaItem {
 		return baseColor;
 	}
 
-	public HashMap<String, Integer> getPatterns() {
+	public LinkedList<BannerPattern> getPatterns() {
 		return patternsData;
 	}
 
@@ -129,7 +141,43 @@ public class BannerMeta extends CraftMetaItem {
 
 	@Override
 	public BannerMeta clone() {
-		return (BannerMeta) super.clone();
+		BannerMeta cloned = (BannerMeta) super.clone();
+		cloned.patternsData = new LinkedList<BannerPattern>(patternsData);
+		return cloned;
+	}
+
+	@SerializableAs("BannerPattern")
+	public static class BannerPattern implements ConfigurationSerializable {
+
+		public static void init() {
+			ConfigurationSerialization.registerClass(BannerPattern.class);
+		}
+
+		private String pattern;
+		private int color;
+
+		public BannerPattern(String pattern, int color) {
+			this.pattern = pattern;
+			this.color = color;
+		}
+
+		public String getPattern() {
+			return pattern;
+		}
+
+		public int getColor() {
+			return color;
+		}
+
+		@Override
+		public Map<String, Object> serialize() {
+			return ImmutableMap.of("Pattern", pattern, "Color", ((Object) Integer.valueOf(color)));
+		}
+
+		public static ConfigurationSerializable deserialize(Map<String, Object> map) {
+			return new BannerPattern(((String) map.get("Pattern")), (int) map.get("Color"));
+		}
+
 	}
 
 }

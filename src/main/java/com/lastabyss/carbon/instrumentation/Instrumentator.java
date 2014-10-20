@@ -33,7 +33,8 @@ public class Instrumentator {
     	AttachProvider.setAttachProvider(getAttachProvider());
         AgentLoader.attachAgentToJVM(Tools.getCurrentPID(), CarbonTransformAgent.class,
         	new String[] {
-        		"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/BannerMeta.class"
+        		"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/BannerMeta.class",
+        		"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/BannerMeta$BannerPattern.class"
         	},
         	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemStack.class",
         	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem.class",
