@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_7_R4.event.CraftEventFactory;
 
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.entity.bukkit.ArmorStand;
@@ -352,7 +353,10 @@ public class EntityArmorStand extends EntityLiving {
 
 	@Override
 	public boolean damageEntity(DamageSource source, float damage) {
-		if (!this.world.isStatic && !this.invisible) {
+		if (!this.invisible) {
+			if (CraftEventFactory.handleNonLivingEntityDamageEvent(this, source, damage)) {
+				return false;
+			}
 			if (DamageSource.OUT_OF_WORLD.equals(source)) {
 				this.die();
 				return false;
