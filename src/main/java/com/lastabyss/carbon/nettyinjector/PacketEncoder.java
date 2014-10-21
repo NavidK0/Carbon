@@ -1,7 +1,6 @@
 package com.lastabyss.carbon.nettyinjector;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +13,6 @@ import net.minecraft.server.v1_7_R4.EnumProtocol;
 import net.minecraft.server.v1_7_R4.NetworkManager;
 import net.minecraft.server.v1_7_R4.NetworkStatistics;
 import net.minecraft.server.v1_7_R4.Packet;
-import net.minecraft.server.v1_7_R4.PacketPlayOutUpdateTime;
 import net.minecraft.util.com.google.common.collect.BiMap;
 import net.minecraft.util.io.netty.buffer.ByteBuf;
 import net.minecraft.util.io.netty.channel.ChannelHandlerContext;
@@ -39,20 +37,6 @@ public class PacketEncoder extends net.minecraft.server.v1_7_R4.PacketEncoder {
 	@Override
 	protected void encode(ChannelHandlerContext channelhandlercontext, Object object, ByteBuf bytebuf) throws IOException {
 		Packet packet = (Packet) object;
-		//clamp packet play out time to not exceed integer
-		if (packet instanceof PacketPlayOutUpdateTime) {
-			try {
-				Field fullTimeField = packet.getClass().getDeclaredField("a");
-				fullTimeField.setAccessible(true);
-				long fullTime = fullTimeField.getLong(packet);
-				if (fullTime > 24000L * 179L) {
-					fullTime = fullTime % (24000L * 179L);
-					fullTimeField.setLong(packet, fullTime);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
 		Integer packetid = ((BiMap<Integer, Class<? extends Packet>>) channelhandlercontext.channel().attr(NetworkManager.f).get()).inverse().get(packet.getClass());
 		if (logger.isDebugEnabled()) {
 			logger.debug(logmarker, "OUT: [{}:{}] {}[{}]", channelhandlercontext.channel().attr(NetworkManager.d).get(), packetid, packet.getClass().getName(), packet.b());
