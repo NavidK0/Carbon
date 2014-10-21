@@ -25,7 +25,6 @@ import net.minecraft.server.v1_7_R4.PacketHandshakingInSetProtocol;
 import net.minecraft.server.v1_7_R4.PacketLoginOutDisconnect;
 import net.minecraft.util.com.google.common.collect.BiMap;
 import net.minecraft.util.io.netty.buffer.ByteBuf;
-import net.minecraft.util.io.netty.channel.ChannelFutureListener;
 import net.minecraft.util.io.netty.channel.ChannelHandlerContext;
 
 public class PacketDecoder extends net.minecraft.server.v1_7_R4.PacketDecoder {
@@ -87,11 +86,7 @@ public class PacketDecoder extends net.minecraft.server.v1_7_R4.PacketDecoder {
 						channelhandlercontext.channel().attr(NetworkManager.f).set(EnumProtocol.LOGIN.b());
 						//send packetloginoutdisconnect
 						PacketLoginOutDisconnect disconnectPacket = new PacketLoginOutDisconnect(new ChatComponentText(restrictedProtocols.get(version)));
-						try {
-							channelhandlercontext.channel().writeAndFlush(disconnectPacket).addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
-						} catch (Throwable t) {
-					    	
-					    }
+						channelhandlercontext.channel().writeAndFlush(disconnectPacket);
 						//disconnect channel
 						channelhandlercontext.close();
 					}
