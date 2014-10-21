@@ -191,10 +191,10 @@ public class EnchantingContainer extends Container {
 					}
 					CraftItemStack item = CraftItemStack.asCraftMirror(itemstack);
 
-					EnchantItemEvent event = new EnchantItemEvent((Player) entityhuman.getBukkitEntity(), getBukkitView(), this.world.getWorld().getBlockAt(this.x, this.y, this.z), item, i + 1, enchants, i);
+					EnchantItemEvent event = new EnchantItemEvent((Player) entityhuman.getBukkitEntity(), getBukkitView(), this.world.getWorld().getBlockAt(this.x, this.y, this.z), item, costs[i], enchants, i);
 					this.world.getServer().getPluginManager().callEvent(event);
 
-					int level = event.getExpLevelCost();
+					int level = i + 1;
 					boolean hasEnoughLapis = false;
 					if (level == 0) {
 						hasEnoughLapis = true;
