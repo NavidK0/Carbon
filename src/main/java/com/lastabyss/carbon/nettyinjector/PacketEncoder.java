@@ -10,6 +10,7 @@ import org.apache.logging.log4j.MarkerManager;
 
 import com.lastabyss.carbon.utils.Utilities;
 
+import net.minecraft.server.v1_7_R4.EnumProtocol;
 import net.minecraft.server.v1_7_R4.NetworkManager;
 import net.minecraft.server.v1_7_R4.NetworkStatistics;
 import net.minecraft.server.v1_7_R4.Packet;
@@ -61,11 +62,11 @@ public class PacketEncoder extends net.minecraft.server.v1_7_R4.PacketEncoder {
 		}
 		//skip new packets for 1.7 client
 		int version = NetworkManager.getVersion(channelhandlercontext.channel());
-		if (version != Utilities.CLIENT_1_8_PROTOCOL_VERSION && newpackets[packetid.intValue()]) {
+		if (version != Utilities.CLIENT_1_8_PROTOCOL_VERSION && channelhandlercontext.channel().attr(NetworkManager.d).get() == EnumProtocol.PLAY && newpackets[packetid.intValue()]) {
 			return;
 		}
-		PacketDataSerializer packetdataserializer = new PacketDataSerializer(bytebuf, version);
 
+		PacketDataSerializer packetdataserializer = new PacketDataSerializer(bytebuf, version);
 		packetdataserializer.b(packetid.intValue());
 		packet.b(packetdataserializer);
 		//don't use packet statistic because it is a waste of resources

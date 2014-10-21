@@ -9,9 +9,7 @@ import com.lastabyss.carbon.listeners.EntityListener;
 import com.lastabyss.carbon.listeners.ItemListener;
 import com.lastabyss.carbon.listeners.PlayerListener;
 import com.lastabyss.carbon.listeners.WorldBorderListener;
-import com.lastabyss.carbon.protocolblocker.BukkitProtocolBlocker;
-import com.lastabyss.carbon.protocolblocker.ProtocolBlocker;
-import com.lastabyss.carbon.protocolblocker.ProtocolLibProtocolBlocker;
+import com.lastabyss.carbon.nettyinjector.PacketDecoder;
 import com.lastabyss.carbon.protocolmodifier.ProtocolBlockListener;
 import com.lastabyss.carbon.protocolmodifier.ProtocolEntityListener;
 import com.lastabyss.carbon.protocolmodifier.ProtocolItemListener;
@@ -42,7 +40,6 @@ public class Carbon extends JavaPlugin {
   private EntityListener entityListener = new EntityListener();
   private PlayerListener playerListener = new PlayerListener();
 
-  private ProtocolBlocker protocolBlocker;
   private CarbonWorldGenerator worldGenerator = new CarbonWorldGenerator(this);
   private CarbonEntityGenerator entityGenerator = new CarbonEntityGenerator(this);
 
@@ -96,8 +93,6 @@ public class Carbon extends JavaPlugin {
       injector.registerAll();
       injector.registerRecipes();
       entityGenerator.injectNewCreatures();
-      instrumentator = new Instrumentator(this, new File(getDataFolder(), "libraries/natives/").getPath());
-      instrumentator.instrumentate();
     }
     catch (Exception e) {
       e.printStackTrace();
@@ -124,10 +119,11 @@ public class Carbon extends JavaPlugin {
     getServer().getPluginManager().registerEvents(entityListener, this);
     getServer().getPluginManager().registerEvents(worldBorderListener, this);
     getServer().getPluginManager().registerEvents(playerListener, this);
+
+    PacketDecoder.loadConfig(this);
     
     if (getConfig().getDouble("donottouch.configVersion", 0.0f) < localConfigVersion) {
-      log.warning(
-          "Please delete your Carbon config and let it regenerate! Yours is outdated and may cause issues with the mod!");
+      log.warning("Please delete your Carbon config and let it regenerate! Yours is outdated and may cause issues with the mod!");
     }
 
     if (getServer().getPluginManager().getPlugin("ProtocolLib") != null) {
@@ -135,18 +131,13 @@ public class Carbon extends JavaPlugin {
         new ProtocolBlockListener(this).loadRemapList().init();
         new ProtocolItemListener(this).loadRemapList().init();
         new ProtocolEntityListener(this).loadRemapList().init();
-        protocolBlocker = new ProtocolLibProtocolBlocker(this).init();
       } catch (Throwable t) {
         t.printStackTrace();
       }
     } else {
-      log.info("ProtocolLib not found, not hooking. 1.7 clients not supported. ProtocolBlocker will kick clients only after full join.");
+      log.info("ProtocolLib not found, not hooking. 1.7 clients not supported.");
     }
-    if (protocolBlocker == null) {
-    	protocolBlocker = new BukkitProtocolBlocker(this);
-    	getServer().getPluginManager().registerEvents(protocolBlocker, this);
-    }
-    protocolBlocker.loadConfig();
+
     try {
         Metrics metrics = new Metrics(this);
         metrics.start();
@@ -154,7 +145,6 @@ public class Carbon extends JavaPlugin {
     log.info("Carbon is enabled.");
   }
 
-  //We don't want to rely on Vault for this plugin, so the command shall be OP only for now.
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("carbon")) {
@@ -170,7 +160,7 @@ public class Carbon extends JavaPlugin {
                         sender.sendMessage(ChatColor.GREEN + "[Carbon] The world generator has been reset for all worlds.");
                         log.log(Level.INFO, "{0}[Carbon] The world generator has been reset for all worlds.", ChatColor.GREEN);
                         reloadConfig();
-                        protocolBlocker.loadConfig();
+                        PacketDecoder.loadConfig(this);
                         sender.sendMessage(ChatColor.GREEN + "[Carbon] The config has been reloaded.");
                         log.log(Level.INFO, "{0}[Carbon] The config has been reloaded.", ChatColor.GREEN);
                         worldGenerator.populate();
@@ -228,10 +218,6 @@ public class Carbon extends JavaPlugin {
 
     public double getLocalConfigVersion() {
         return localConfigVersion;
-    }
-
-    public ProtocolBlocker getProtocolBlocker() {
-        return protocolBlocker;
     }
 
   private void printHelpMenu(CommandSender sender) {
