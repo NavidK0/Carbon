@@ -80,6 +80,7 @@ import net.minecraft.server.v1_7_R4.ItemBlock;
 import net.minecraft.server.v1_7_R4.ItemMultiTexture;
 import net.minecraft.server.v1_7_R4.MobEffectList;
 import net.minecraft.server.v1_7_R4.Packet;
+import net.minecraft.server.v1_7_R4.PacketPlayOutEntityTeleport;
 import net.minecraft.server.v1_7_R4.PotionBrewer;
 import net.minecraft.server.v1_7_R4.TileEntity;
 import net.minecraft.server.v1_7_R4.World;
@@ -507,6 +508,9 @@ public class Injector {
 
     //inject custom netty stream serializer
     NettyInjector.injectStreamSerializer();
+
+    //check if we actually have a needed constructor for the packet
+    new PacketPlayOutEntityTeleport(0, 0, 0, 0, (byte) 0, (byte) 0, true, true);
   }
 
   private void setStaticFinalField(Class<?> clazz, String fieldname, Object newValue) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
