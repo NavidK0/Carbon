@@ -1,11 +1,13 @@
 package com.lastabyss.carbon.recipes;
 
-import com.lastabyss.carbon.Carbon;
-import net.minecraft.server.v1_7_R4.CraftingManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+
+import com.lastabyss.carbon.Carbon;
+
+import net.minecraft.server.v1_7_R4.CraftingManager;
 
 /**
  *

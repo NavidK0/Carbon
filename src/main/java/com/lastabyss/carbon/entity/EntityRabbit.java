@@ -1,7 +1,10 @@
 package com.lastabyss.carbon.entity;
 
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
+
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.entity.bukkit.Rabbit;
+
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.EntityAgeable;
 import net.minecraft.server.v1_7_R4.EntityAnimal;
@@ -25,7 +28,6 @@ import net.minecraft.server.v1_7_R4.PathfinderGoalRandomLookaround;
 import net.minecraft.server.v1_7_R4.PathfinderGoalRandomStroll;
 import net.minecraft.server.v1_7_R4.PathfinderGoalTempt;
 import net.minecraft.server.v1_7_R4.World;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
 
 /**
  *

@@ -6,13 +6,14 @@ import com.sun.tools.attach.AgentInitializationException;
 import com.sun.tools.attach.AgentLoadException;
 import com.sun.tools.attach.AttachNotSupportedException;
 import com.sun.tools.attach.spi.AttachProvider;
+
+import java.io.File;
+import java.io.IOException;
+
 import sun.tools.attach.BsdAttachProvider;
 import sun.tools.attach.LinuxAttachProvider;
 import sun.tools.attach.SolarisAttachProvider;
 import sun.tools.attach.WindowsAttachProvider;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * This is exactly what you think it is.

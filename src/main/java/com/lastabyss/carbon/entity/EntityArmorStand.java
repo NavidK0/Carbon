@@ -1,8 +1,16 @@
 package com.lastabyss.carbon.entity;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.List;
+
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_7_R4.event.CraftEventFactory;
+
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.entity.bukkit.ArmorStand;
 import com.lastabyss.carbon.utils.Utilities;
+
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.DamageSource;
 import net.minecraft.server.v1_7_R4.Entity;
@@ -21,12 +29,6 @@ import net.minecraft.server.v1_7_R4.NBTTagList;
 import net.minecraft.server.v1_7_R4.Vec3D;
 import net.minecraft.server.v1_7_R4.WatchableObject;
 import net.minecraft.server.v1_7_R4.World;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_7_R4.event.CraftEventFactory;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.List;
 
 public class EntityArmorStand extends EntityLiving {
 

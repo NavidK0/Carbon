@@ -2,6 +2,9 @@ package com.lastabyss.carbon.blocks;
 
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.entity.TileEntityBanner;
+
+import java.util.Random;
+
 import net.minecraft.server.v1_7_R4.AxisAlignedBB;
 import net.minecraft.server.v1_7_R4.BlockContainer;
 import net.minecraft.server.v1_7_R4.Item;
@@ -10,8 +13,6 @@ import net.minecraft.server.v1_7_R4.Material;
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
 import net.minecraft.server.v1_7_R4.TileEntity;
 import net.minecraft.server.v1_7_R4.World;
-
-import java.util.Random;
 
 public class BlockBanner extends BlockContainer {
 

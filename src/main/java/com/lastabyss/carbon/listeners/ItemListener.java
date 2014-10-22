@@ -2,8 +2,14 @@ package com.lastabyss.carbon.listeners;
 
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.entity.EntityEndermite;
+
+import java.util.HashSet;
+import java.util.Random;
+import java.util.UUID;
+
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
 import net.minecraft.server.v1_7_R4.NBTTagList;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -29,10 +35,6 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-
-import java.util.HashSet;
-import java.util.Random;
-import java.util.UUID;
 
 /**
  *

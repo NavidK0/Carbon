@@ -1,13 +1,5 @@
 package com.lastabyss.carbon.instrumentation;
 
-import com.google.common.collect.ImmutableMap;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.craftbukkit.v1_7_R4.inventory.BannerMeta;
-import org.bukkit.craftbukkit.v1_7_R4.inventory.BannerMeta.BannerPattern;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +14,15 @@ import java.security.ProtectionDomain;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.craftbukkit.v1_7_R4.inventory.BannerMeta;
+import org.bukkit.craftbukkit.v1_7_R4.inventory.BannerMeta.BannerPattern;
+
+import com.google.common.collect.ImmutableMap;
 
 /**
  *

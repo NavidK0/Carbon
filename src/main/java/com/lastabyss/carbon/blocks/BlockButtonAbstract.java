@@ -1,5 +1,7 @@
 package com.lastabyss.carbon.blocks;
 
+import java.util.List;
+import java.util.Random;
 import net.minecraft.server.v1_7_R4.AxisAlignedBB;
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.CreativeModeTab;
@@ -11,9 +13,6 @@ import net.minecraft.server.v1_7_R4.Material;
 import net.minecraft.server.v1_7_R4.World;
 import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.entity.EntityInteractEvent;
-
-import java.util.List;
-import java.util.Random;
 
 public abstract class BlockButtonAbstract extends Block {
 

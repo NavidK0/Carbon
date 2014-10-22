@@ -1,7 +1,21 @@
 package com.lastabyss.carbon.inventory;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import org.bukkit.DyeColor;
+import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftInventoryView;
+import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
+import org.bukkit.entity.Player;
+import org.bukkit.event.enchantment.EnchantItemEvent;
+import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
+
 import com.lastabyss.carbon.inventory.bukkit.CraftInventoryEnchanting;
 import com.lastabyss.carbon.utils.Utilities;
+
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.Container;
 import net.minecraft.server.v1_7_R4.Enchantment;
@@ -16,18 +30,6 @@ import net.minecraft.server.v1_7_R4.Items;
 import net.minecraft.server.v1_7_R4.PlayerInventory;
 import net.minecraft.server.v1_7_R4.Slot;
 import net.minecraft.server.v1_7_R4.World;
-import org.bukkit.DyeColor;
-import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftInventoryView;
-import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
-import org.bukkit.entity.Player;
-import org.bukkit.event.enchantment.EnchantItemEvent;
-import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 public class EnchantingContainer extends Container {
 

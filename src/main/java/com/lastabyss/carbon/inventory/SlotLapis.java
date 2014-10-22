@@ -1,10 +1,11 @@
 package com.lastabyss.carbon.inventory;
 
+import org.bukkit.DyeColor;
+
 import net.minecraft.server.v1_7_R4.IInventory;
 import net.minecraft.server.v1_7_R4.ItemStack;
 import net.minecraft.server.v1_7_R4.Items;
 import net.minecraft.server.v1_7_R4.Slot;
-import org.bukkit.DyeColor;
 
 public class SlotLapis extends Slot {
 

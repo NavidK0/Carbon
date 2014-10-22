@@ -1,6 +1,11 @@
 package com.lastabyss.carbon.entity;
 
+import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
+
 import com.lastabyss.carbon.entity.bukkit.Endermite;
+
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.BlockMonsterEggs;
 import net.minecraft.server.v1_7_R4.Blocks;
@@ -16,9 +21,6 @@ import net.minecraft.server.v1_7_R4.MathHelper;
 import net.minecraft.server.v1_7_R4.MinecraftServer;
 import net.minecraft.server.v1_7_R4.World;
 import net.minecraft.util.org.apache.commons.lang3.tuple.ImmutablePair;
-import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
 
 /**
  * These things are god awful.

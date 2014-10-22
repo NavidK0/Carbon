@@ -2,14 +2,15 @@ package com.lastabyss.carbon.generator;
 
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.generator.populator.StoneVariantPopulator;
+
+import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
-
-import java.util.logging.Level;
 
 
 /**

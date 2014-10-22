@@ -1,14 +1,15 @@
 package com.lastabyss.carbon.inventory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.server.v1_7_R4.InventorySubcontainer;
 import net.minecraft.server.v1_7_R4.ItemStack;
+
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftHumanEntity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class EnchantingContainerInventory extends InventorySubcontainer {
 

@@ -1,15 +1,16 @@
 package com.lastabyss.carbon.nettyinjector;
 
+import java.lang.reflect.Field;
+import java.util.List;
+
 import com.lastabyss.carbon.utils.Utilities;
+
 import net.minecraft.server.v1_7_R4.MinecraftServer;
 import net.minecraft.server.v1_7_R4.NetworkManager;
 import net.minecraft.server.v1_7_R4.ServerConnection;
 import net.minecraft.util.io.netty.channel.Channel;
 import net.minecraft.util.io.netty.channel.ChannelFuture;
 import net.minecraft.util.io.netty.channel.ChannelHandler;
-
-import java.lang.reflect.Field;
-import java.util.List;
 
 public class NettyInjector {
 

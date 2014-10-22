@@ -16,6 +16,12 @@ import com.lastabyss.carbon.protocolmodifier.ProtocolItemListener;
 import com.lastabyss.carbon.utils.Metrics;
 import com.lastabyss.carbon.utils.Utilities;
 import com.lastabyss.carbon.worldborder.WorldBorder;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -24,11 +30,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Carbon extends JavaPlugin {
 
@@ -118,6 +119,7 @@ public class Carbon extends JavaPlugin {
     getServer().getPluginManager().registerEvents(entityListener, this);
     getServer().getPluginManager().registerEvents(worldBorderListener, this);
     getServer().getPluginManager().registerEvents(playerListener, this);
+
     PacketDecoder.loadConfig(this);
     
     if (getConfig().getDouble("donottouch.configVersion", 0.0f) < localConfigVersion) {

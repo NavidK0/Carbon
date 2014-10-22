@@ -1,9 +1,9 @@
 package com.lastabyss.carbon.inventory;
 
+import java.util.Random;
+
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
 import net.minecraft.server.v1_7_R4.PlayerAbilities;
-
-import java.util.Random;
 
 public class AdditionalNBTDataPlayerAbilities extends PlayerAbilities {
 

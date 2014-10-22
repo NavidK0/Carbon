@@ -1,5 +1,10 @@
 package com.lastabyss.carbon.nettyinjector;
 
+import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_7_R4.util.CraftChatMessage;
+import org.spigotmc.SpigotComponentReverter;
+import org.spigotmc.SpigotDebreakifier;
+
 import net.minecraft.server.v1_7_R4.ChatSerializer;
 import net.minecraft.server.v1_7_R4.IChatBaseComponent;
 import net.minecraft.server.v1_7_R4.Item;
@@ -9,10 +14,6 @@ import net.minecraft.server.v1_7_R4.NBTTagCompound;
 import net.minecraft.server.v1_7_R4.NBTTagList;
 import net.minecraft.server.v1_7_R4.NBTTagString;
 import net.minecraft.util.io.netty.buffer.ByteBuf;
-import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
-import org.bukkit.craftbukkit.v1_7_R4.util.CraftChatMessage;
-import org.spigotmc.SpigotComponentReverter;
-import org.spigotmc.SpigotDebreakifier;
 
 public class PacketDataSerializer extends net.minecraft.server.v1_7_R4.PacketDataSerializer {
 
