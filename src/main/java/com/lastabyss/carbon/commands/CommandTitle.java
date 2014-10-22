@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.spigotmc.ProtocolInjector;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 /**
  *
@@ -169,7 +170,8 @@ public class CommandTitle extends Command {
 
     private Player getOnlinePlayer(String name){
         for (Player p : Bukkit.getOnlinePlayers()){
-            if (p.getName() == name){
+            Bukkit.getLogger().log(Level.SEVERE, p.getName());
+            if (p.getName().equalsIgnoreCase(name)){
                 return p;
             }
         }
