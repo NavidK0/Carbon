@@ -6,10 +6,11 @@
 
 package com.lastabyss.carbon.generator.populator;
 
-import java.util.Random;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
+
+import java.util.Random;
 
 /**
  *

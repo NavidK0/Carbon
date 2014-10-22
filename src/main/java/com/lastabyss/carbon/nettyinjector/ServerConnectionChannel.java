@@ -1,7 +1,5 @@
 package com.lastabyss.carbon.nettyinjector;
 
-import java.util.List;
-
 import net.minecraft.server.v1_7_R4.HandshakeListener;
 import net.minecraft.server.v1_7_R4.LegacyPingHandler;
 import net.minecraft.server.v1_7_R4.MinecraftServer;
@@ -14,6 +12,8 @@ import net.minecraft.util.io.netty.channel.ChannelException;
 import net.minecraft.util.io.netty.channel.ChannelInitializer;
 import net.minecraft.util.io.netty.channel.ChannelOption;
 import net.minecraft.util.io.netty.handler.timeout.ReadTimeoutHandler;
+
+import java.util.List;
 
 public class ServerConnectionChannel extends ChannelInitializer<Channel> {
 

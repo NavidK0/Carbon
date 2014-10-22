@@ -1,15 +1,13 @@
 package com.lastabyss.carbon.blocks;
 
-import org.bukkit.craftbukkit.v1_7_R4.event.CraftEventFactory;
-
 import com.lastabyss.carbon.inventory.EnchantingContainer;
-
 import net.minecraft.server.v1_7_R4.Container;
 import net.minecraft.server.v1_7_R4.EntityHuman;
 import net.minecraft.server.v1_7_R4.EntityPlayer;
 import net.minecraft.server.v1_7_R4.PacketPlayOutOpenWindow;
 import net.minecraft.server.v1_7_R4.TileEntityEnchantTable;
 import net.minecraft.server.v1_7_R4.World;
+import org.bukkit.craftbukkit.v1_7_R4.event.CraftEventFactory;
 
 public class BlockEnchantTable extends net.minecraft.server.v1_7_R4.BlockEnchantmentTable {
 

@@ -1,17 +1,15 @@
 package com.lastabyss.carbon.recipes;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.inventory.Recipe;
-
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.recipes.bukkit.DynamicBannerRecipe;
-
 import net.minecraft.server.v1_7_R4.IRecipe;
 import net.minecraft.server.v1_7_R4.InventoryCrafting;
 import net.minecraft.server.v1_7_R4.ItemStack;
 import net.minecraft.server.v1_7_R4.World;
+import org.bukkit.inventory.Recipe;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RecipesBannerCopy implements IRecipe {
 

@@ -1,8 +1,8 @@
 package com.lastabyss.carbon.generator;
 
-import java.lang.reflect.Field;
-import java.util.List;
-
+import com.lastabyss.carbon.Carbon;
+import com.lastabyss.carbon.entity.EntityGuardian;
+import com.lastabyss.carbon.entity.EntityRabbit;
 import net.minecraft.server.v1_7_R4.BiomeBase;
 import net.minecraft.server.v1_7_R4.BiomeBigHills;
 import net.minecraft.server.v1_7_R4.BiomeForest;
@@ -13,9 +13,8 @@ import net.minecraft.server.v1_7_R4.BiomeSavanna;
 import net.minecraft.server.v1_7_R4.BiomeSwamp;
 import net.minecraft.server.v1_7_R4.BiomeTaiga;
 
-import com.lastabyss.carbon.Carbon;
-import com.lastabyss.carbon.entity.EntityGuardian;
-import com.lastabyss.carbon.entity.EntityRabbit;
+import java.lang.reflect.Field;
+import java.util.List;
 
 public class CarbonEntityGenerator {
     Carbon plugin;

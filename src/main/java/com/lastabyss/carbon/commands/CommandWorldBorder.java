@@ -1,15 +1,13 @@
 package com.lastabyss.carbon.commands;
 
-import java.util.ArrayList;
-
+import com.lastabyss.carbon.worldborder.ICommandConv;
+import com.lastabyss.carbon.worldborder.WorldBorderCommand;
 import net.minecraft.server.v1_7_R4.ExceptionUsage;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.lastabyss.carbon.worldborder.ICommandConv;
-import com.lastabyss.carbon.worldborder.WorldBorderCommand;
+import java.util.ArrayList;
 
 /**
  * Thanks minelazz! Modified this a bit.

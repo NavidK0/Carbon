@@ -1,13 +1,14 @@
 package com.lastabyss.carbon.blocks;
 
 import com.lastabyss.carbon.Carbon;
-import java.util.Random;
 import net.minecraft.server.v1_7_R4.BlockStepAbstract;
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.CreativeModeTab;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.ItemStack;
 import net.minecraft.server.v1_7_R4.Material;
+
+import java.util.Random;
 
 /**
  *

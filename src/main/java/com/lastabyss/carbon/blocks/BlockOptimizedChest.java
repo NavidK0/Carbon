@@ -1,7 +1,6 @@
 package com.lastabyss.carbon.blocks;
 
 import com.lastabyss.carbon.entity.TileEntityOptimizedChest;
-
 import net.minecraft.server.v1_7_R4.TileEntity;
 import net.minecraft.server.v1_7_R4.World;
 

@@ -1,10 +1,11 @@
 package com.lastabyss.carbon.blocks;
 
 import com.lastabyss.carbon.Carbon;
-import java.util.Random;
 import net.minecraft.server.v1_7_R4.BlockLightStone;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.Material;
+
+import java.util.Random;
 
 /**
  *

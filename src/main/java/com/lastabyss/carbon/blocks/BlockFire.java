@@ -1,7 +1,10 @@
 package com.lastabyss.carbon.blocks;
 
-import java.util.Random;
-
+import com.lastabyss.carbon.Carbon;
+import net.minecraft.server.v1_7_R4.Block;
+import net.minecraft.server.v1_7_R4.Blocks;
+import net.minecraft.server.v1_7_R4.World;
+import net.minecraft.server.v1_7_R4.WorldProviderTheEnd;
 import org.bukkit.Server;
 import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.v1_7_R4.event.CraftEventFactory;
@@ -9,11 +12,7 @@ import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.material.MaterialData;
 
-import net.minecraft.server.v1_7_R4.Block;
-import net.minecraft.server.v1_7_R4.Blocks;
-import net.minecraft.server.v1_7_R4.World;
-import net.minecraft.server.v1_7_R4.WorldProviderTheEnd;
-import com.lastabyss.carbon.Carbon;
+import java.util.Random;
 
 public class BlockFire extends net.minecraft.server.v1_7_R4.BlockFire {
 	private int[] a = new int[256];

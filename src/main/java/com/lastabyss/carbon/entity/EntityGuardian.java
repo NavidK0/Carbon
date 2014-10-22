@@ -6,13 +6,10 @@
 
 package com.lastabyss.carbon.entity;
 
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
-
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.ai.PathfinderWrapper;
 import com.lastabyss.carbon.entity.bukkit.Guardian;
 import com.lastabyss.carbon.utils.Utilities;
-
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.EntityHuman;
 import net.minecraft.server.v1_7_R4.EntityLiving;
@@ -32,6 +29,7 @@ import net.minecraft.server.v1_7_R4.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_7_R4.PathfinderGoalRandomLookaround;
 import net.minecraft.server.v1_7_R4.PathfinderGoalRandomStroll;
 import net.minecraft.server.v1_7_R4.World;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
 
 /**
  *

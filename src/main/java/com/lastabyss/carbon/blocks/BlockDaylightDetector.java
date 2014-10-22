@@ -1,6 +1,5 @@
 package com.lastabyss.carbon.blocks;
 
-import java.util.Random;
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.CreativeModeTab;
@@ -12,6 +11,8 @@ import net.minecraft.server.v1_7_R4.TileEntity;
 import net.minecraft.server.v1_7_R4.TileEntityLightDetector;
 import net.minecraft.server.v1_7_R4.World;
 import org.bukkit.craftbukkit.v1_7_R4.event.CraftEventFactory;
+
+import java.util.Random;
 
 public class BlockDaylightDetector extends net.minecraft.server.v1_7_R4.BlockDaylightDetector {
 

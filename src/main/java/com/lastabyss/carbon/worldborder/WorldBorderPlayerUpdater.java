@@ -1,13 +1,11 @@
 package com.lastabyss.carbon.worldborder;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
 import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
 import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder.WorldBorderAction;
 import com.lastabyss.carbon.utils.Utilities;
-
 import net.minecraft.server.v1_7_R4.Packet;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 public class WorldBorderPlayerUpdater implements WorldBorderChangeListener {
 

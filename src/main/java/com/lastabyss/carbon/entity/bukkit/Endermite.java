@@ -1,11 +1,10 @@
 package com.lastabyss.carbon.entity.bukkit;
 
+import com.lastabyss.carbon.Carbon;
+import com.lastabyss.carbon.entity.EntityEndermite;
 import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftMonster;
 import org.bukkit.entity.EntityType;
-
-import com.lastabyss.carbon.Carbon;
-import com.lastabyss.carbon.entity.EntityEndermite;
 
 /**
  * Apparently nothing goes in these.

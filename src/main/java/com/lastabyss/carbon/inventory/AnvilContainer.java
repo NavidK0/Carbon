@@ -1,11 +1,6 @@
 package com.lastabyss.carbon.inventory;
 
-import java.lang.reflect.Field;
-import java.util.Iterator;
-import java.util.Map;
-
 import com.lastabyss.carbon.utils.Utilities;
-
 import net.minecraft.server.v1_7_R4.Enchantment;
 import net.minecraft.server.v1_7_R4.EnchantmentManager;
 import net.minecraft.server.v1_7_R4.EntityHuman;
@@ -15,6 +10,10 @@ import net.minecraft.server.v1_7_R4.Items;
 import net.minecraft.server.v1_7_R4.PlayerInventory;
 import net.minecraft.server.v1_7_R4.World;
 import net.minecraft.util.org.apache.commons.lang3.StringUtils;
+
+import java.lang.reflect.Field;
+import java.util.Iterator;
+import java.util.Map;
 
 public class AnvilContainer extends net.minecraft.server.v1_7_R4.ContainerAnvil {
 

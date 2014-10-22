@@ -1,9 +1,7 @@
 package com.lastabyss.carbon.worldborder;
 
 import com.google.common.collect.Lists;
-
 import net.minecraft.server.v1_7_R4.Entity;
-
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
