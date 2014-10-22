@@ -29,6 +29,7 @@ import com.lastabyss.carbon.blocks.BlockWoodenDoor;
 import com.lastabyss.carbon.blocks.BlockWoodenFence;
 import com.lastabyss.carbon.blocks.BlockWoodenFenceGate;
 import com.lastabyss.carbon.commands.CommandParticle;
+import com.lastabyss.carbon.commands.CommandTitle;
 import com.lastabyss.carbon.commands.CommandWorldBorder;
 import com.lastabyss.carbon.entity.ArmorStandPose;
 import com.lastabyss.carbon.entity.EntityArmorStand;
@@ -59,15 +60,6 @@ import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
 import com.lastabyss.carbon.recipes.RecipesBanners;
 import com.lastabyss.carbon.utils.Utilities;
 import com.lastabyss.carbon.worldborder.WorldBorder;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.logging.Level;
-
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.DataWatcher;
@@ -85,7 +77,6 @@ import net.minecraft.server.v1_7_R4.PotionBrewer;
 import net.minecraft.server.v1_7_R4.TileEntity;
 import net.minecraft.server.v1_7_R4.World;
 import net.minecraft.util.gnu.trove.map.TObjectIntMap;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -96,6 +87,14 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.material.MaterialData;
 import org.spigotmc.SpigotDebreakifier;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.logging.Level;
 
 public class Injector {
     
@@ -471,6 +470,7 @@ public class Injector {
     //Register commands from 1.8
     Utilities.registerBukkitCommand("minecraft", new CommandWorldBorder());
     Utilities.registerBukkitCommand("minecraft", new CommandParticle());
+    Utilities.registerBukkitCommand("minecraft", new CommandTitle());
 
     //Register additional packets
     registerPacket(EnumProtocol.PLAY, PacketPlayOutWorldBorder.class, 68, true);
