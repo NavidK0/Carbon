@@ -1,64 +1,38 @@
 package com.lastabyss.carbon;
 
 import com.lastabyss.carbon.blocks.BlockAnvil;
-import com.lastabyss.carbon.blocks.BlockBarrier;
+import com.lastabyss.carbon.blocks.*;
 import com.lastabyss.carbon.blocks.BlockDaylightDetector;
-import com.lastabyss.carbon.blocks.BlockEnchantTable;
-import com.lastabyss.carbon.blocks.BlockGoldPressurePlate;
-import com.lastabyss.carbon.blocks.BlockIronPressurePlate;
-import com.lastabyss.carbon.blocks.BlockIronTrapdoor;
-import com.lastabyss.carbon.blocks.BlockOptimizedChest;
-import com.lastabyss.carbon.blocks.BlockPrismarine;
-import com.lastabyss.carbon.blocks.BlockRedSandstone;
-import com.lastabyss.carbon.blocks.BlockRedSandstoneStairs;
-import com.lastabyss.carbon.blocks.BlockRedstoneTorchOff;
-import com.lastabyss.carbon.blocks.BlockRedstoneTorchOn;
-import com.lastabyss.carbon.blocks.BlockSeaLantern;
-import com.lastabyss.carbon.blocks.BlockSlime;
 import com.lastabyss.carbon.blocks.BlockSponge;
-import com.lastabyss.carbon.blocks.BlockStandingBanner;
 import com.lastabyss.carbon.blocks.BlockStep;
 import com.lastabyss.carbon.blocks.BlockStone;
 import com.lastabyss.carbon.blocks.BlockStoneButton;
-import com.lastabyss.carbon.blocks.BlockStonePressurePlate;
 import com.lastabyss.carbon.blocks.BlockTorch;
-import com.lastabyss.carbon.blocks.BlockWallBanner;
 import com.lastabyss.carbon.blocks.BlockWoodButton;
-import com.lastabyss.carbon.blocks.BlockWoodPressurePlate;
-import com.lastabyss.carbon.blocks.BlockWoodenDoor;
-import com.lastabyss.carbon.blocks.BlockWoodenFence;
-import com.lastabyss.carbon.blocks.BlockWoodenFenceGate;
 import com.lastabyss.carbon.commands.CommandParticle;
+import com.lastabyss.carbon.commands.CommandTitle;
 import com.lastabyss.carbon.commands.CommandWorldBorder;
-import com.lastabyss.carbon.entity.ArmorStandPose;
-import com.lastabyss.carbon.entity.EntityArmorStand;
-import com.lastabyss.carbon.entity.EntityEndermite;
-import com.lastabyss.carbon.entity.EntityGuardian;
-import com.lastabyss.carbon.entity.EntityRabbit;
-import com.lastabyss.carbon.entity.TileEntityBanner;
-import com.lastabyss.carbon.entity.TileEntityOptimizedChest;
+import com.lastabyss.carbon.entity.*;
 import com.lastabyss.carbon.entity.bukkit.ArmorStand;
 import com.lastabyss.carbon.entity.bukkit.Endermite;
 import com.lastabyss.carbon.entity.bukkit.Guardian;
 import com.lastabyss.carbon.entity.bukkit.Rabbit;
-import com.lastabyss.carbon.items.ItemArmorStand;
-import com.lastabyss.carbon.items.ItemBanner;
-import com.lastabyss.carbon.items.ItemCookedMutton;
-import com.lastabyss.carbon.items.ItemCookedRabbit;
-import com.lastabyss.carbon.items.ItemMutton;
-import com.lastabyss.carbon.items.ItemPrismarineCrystal;
-import com.lastabyss.carbon.items.ItemPrismarineShard;
-import com.lastabyss.carbon.items.ItemRabbit;
-import com.lastabyss.carbon.items.ItemRabbitFoot;
-import com.lastabyss.carbon.items.ItemRabbitHide;
-import com.lastabyss.carbon.items.ItemRabbitStew;
-import com.lastabyss.carbon.items.ItemWoodenDoor;
+import com.lastabyss.carbon.items.*;
 import com.lastabyss.carbon.nettyinjector.NettyInjector;
 import com.lastabyss.carbon.packets.PacketPlayInUseEntity;
 import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
 import com.lastabyss.carbon.recipes.RecipesBanners;
 import com.lastabyss.carbon.utils.Utilities;
 import com.lastabyss.carbon.worldborder.WorldBorder;
+import net.minecraft.server.v1_7_R4.*;
+import net.minecraft.util.gnu.trove.map.TObjectIntMap;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.*;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
+import org.spigotmc.SpigotDebreakifier;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -67,35 +41,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
-
-import net.minecraft.server.v1_7_R4.Block;
-import net.minecraft.server.v1_7_R4.Blocks;
-import net.minecraft.server.v1_7_R4.DataWatcher;
-import net.minecraft.server.v1_7_R4.Entity;
-import net.minecraft.server.v1_7_R4.EntityTypes;
-import net.minecraft.server.v1_7_R4.EnumProtocol;
-import net.minecraft.server.v1_7_R4.Item;
-import net.minecraft.server.v1_7_R4.ItemAnvil;
-import net.minecraft.server.v1_7_R4.ItemBlock;
-import net.minecraft.server.v1_7_R4.ItemMultiTexture;
-import net.minecraft.server.v1_7_R4.MobEffectList;
-import net.minecraft.server.v1_7_R4.Packet;
-import net.minecraft.server.v1_7_R4.PacketPlayOutEntityTeleport;
-import net.minecraft.server.v1_7_R4.PotionBrewer;
-import net.minecraft.server.v1_7_R4.TileEntity;
-import net.minecraft.server.v1_7_R4.World;
-import net.minecraft.util.gnu.trove.map.TObjectIntMap;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
-import org.bukkit.inventory.FurnaceRecipe;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.ShapelessRecipe;
-import org.bukkit.material.MaterialData;
-import org.spigotmc.SpigotDebreakifier;
 
 public class Injector {
     
@@ -471,6 +416,7 @@ public class Injector {
     //Register commands from 1.8
     Utilities.registerBukkitCommand("minecraft", new CommandWorldBorder());
     Utilities.registerBukkitCommand("minecraft", new CommandParticle());
+    Utilities.registerBukkitCommand("minecraft", new CommandTitle());
 
     //Register additional packets
     registerPacket(EnumProtocol.PLAY, PacketPlayOutWorldBorder.class, 68, true);

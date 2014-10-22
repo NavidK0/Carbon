@@ -3,12 +3,7 @@ package com.lastabyss.carbon;
 import com.lastabyss.carbon.generator.CarbonEntityGenerator;
 import com.lastabyss.carbon.generator.CarbonWorldGenerator;
 import com.lastabyss.carbon.instrumentation.Instrumentator;
-import com.lastabyss.carbon.listeners.BlockListener;
-import com.lastabyss.carbon.listeners.CommandListener;
-import com.lastabyss.carbon.listeners.EntityListener;
-import com.lastabyss.carbon.listeners.ItemListener;
-import com.lastabyss.carbon.listeners.PlayerListener;
-import com.lastabyss.carbon.listeners.WorldBorderListener;
+import com.lastabyss.carbon.listeners.*;
 import com.lastabyss.carbon.nettyinjector.PacketDecoder;
 import com.lastabyss.carbon.protocolmodifier.ProtocolBlockListener;
 import com.lastabyss.carbon.protocolmodifier.ProtocolEntityListener;
@@ -16,12 +11,6 @@ import com.lastabyss.carbon.protocolmodifier.ProtocolItemListener;
 import com.lastabyss.carbon.utils.Metrics;
 import com.lastabyss.carbon.utils.Utilities;
 import com.lastabyss.carbon.worldborder.WorldBorder;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -30,6 +19,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Carbon extends JavaPlugin {
 
@@ -119,7 +113,6 @@ public class Carbon extends JavaPlugin {
     getServer().getPluginManager().registerEvents(entityListener, this);
     getServer().getPluginManager().registerEvents(worldBorderListener, this);
     getServer().getPluginManager().registerEvents(playerListener, this);
-
     PacketDecoder.loadConfig(this);
     
     if (getConfig().getDouble("donottouch.configVersion", 0.0f) < localConfigVersion) {
