@@ -31,64 +31,76 @@ public class CommandTitle extends Command {
                 return true;
             }
 
-                Player player = Bukkit.getPlayer(args[0]);
+                Player player = getOnlinePlayer(args[0]);
                 if (player == null) {
-                    sender.sendMessage(ChatColor.RED + args[0] + " is not a player!");
+                    sender.sendMessage(ChatColor.RED + args[0] + " is not a valid player or is offline.");
                     return true;
                 }
 
-                if (args[1].equalsIgnoreCase("times")){
-                    int fadeIn,stay,fadeOut;
+                if (((CraftPlayer)player).getHandle().playerConnection.networkManager.getVersion() >= 47) {
+                    if (args[1].equalsIgnoreCase("times")) {
+                        int fadeIn, stay, fadeOut;
 
-                    if (args.length < 5) { sender.sendMessage(ChatColor.RED + "Usage: /title <player> times <fadeIn> <stay> <fadeOut>"); return true;}
+                        if (args.length < 5) {
+                            sender.sendMessage(ChatColor.RED + "Usage: /title <player> times <fadeIn> <stay> <fadeOut>");
+                            return true;
+                        }
 
-                    if (isInteger(args[2])){
-                        fadeIn = Integer.parseInt(args[2]);
-                    }else{
-                        sender.sendMessage(ChatColor.RED + args[2] + " is not a valid number");
-                        return true;
+                        if (isInteger(args[2])) {
+                            fadeIn = Integer.parseInt(args[2]);
+                        } else {
+                            sender.sendMessage(ChatColor.RED + args[2] + " is not a valid number");
+                            return true;
+                        }
+
+                        if (isInteger(args[3])) {
+                            stay = Integer.parseInt(args[3]);
+                        } else {
+                            sender.sendMessage(ChatColor.RED + args[3] + " is not a valid number");
+                            return true;
+                        }
+
+                        if (isInteger(args[4])) {
+                            fadeOut = Integer.parseInt(args[4]);
+                        } else {
+                            sender.sendMessage(ChatColor.RED + args[4] + " is not a valid number");
+                            return true;
+                        }
+
+                        sendTimes(fadeIn, stay, fadeOut, player);
+                        sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
+                    } else if (args[1].equalsIgnoreCase("title")) {
+                        if (args.length < 3) {
+                            sender.sendMessage(ChatColor.RED + "Usage: /title <player> title <raw json title|text>");
+                            return true;
+                        }
+
+                        sendTitle(args, 2, player);
+                        sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
+                    } else if (args[1].equalsIgnoreCase("subtitle")) {
+                        if (args.length < 3) {
+                            sender.sendMessage(ChatColor.RED + "Usage: /title <player> subtitle <raw json title|text>");
+                            return true;
+                        }
+
+                        sendSubtitle(args, 2, player);
+                        sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
+
+                    } else if (args[1].equalsIgnoreCase("clear")) {
+
+                        //sendTimes(0,0,0,player);
+                        sendClear(player);
+                        sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
+
+                    } else if (args[1].equalsIgnoreCase("reset")) {
+
+                        sendReset(player);
+                        sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
+
                     }
-
-                    if (isInteger(args[3])){
-                        stay = Integer.parseInt(args[3]);
-                    }else{
-                        sender.sendMessage(ChatColor.RED + args[3] + " is not a valid number");
-                        return true;
-                    }
-
-                    if (isInteger(args[4])){
-                        fadeOut = Integer.parseInt(args[4]);
-                    }else{
-                        sender.sendMessage(ChatColor.RED + args[4] + " is not a valid number");
-                        return true;
-                    }
-
-                    sendTimes(fadeIn,stay,fadeOut,player);
-                    sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
-                }else if(args[1].equalsIgnoreCase("title")){
-                    if (args.length < 3) { sender.sendMessage(ChatColor.RED + "Usage: /title <player> title <raw json title|text>"); return true;}
-
-                    sendTitle(args, 2, player);
-                    sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
-                }else if(args[1].equalsIgnoreCase("subtitle")){
-                    if (args.length < 3) { sender.sendMessage(ChatColor.RED + "Usage: /title <player> subtitle <raw json title|text>"); return true;}
-
-                    sendSubtitle(args, 2, player);
-                    sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
-
-                }else if(args[1].equalsIgnoreCase("clear")){
-
-                    //sendTimes(0,0,0,player);
-                    sendClear(player);
-                    sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
-
-                }else if(args[1].equalsIgnoreCase("reset")) {
-
-                    sendReset(player);
-                    sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
-
+                }else{
+                    sender.sendMessage(ChatColor.RED + "Sorry, that player can not receive title commands!");
                 }
-
             return true;
         }
         return false;
@@ -154,6 +166,15 @@ public class CommandTitle extends Command {
         // only got here if we didn't return false
         return true;
     }
+
+    private Player getOnlinePlayer(String name){
+        for (Player p : Bukkit.getOnlinePlayers()){
+            if (p.getName() == name){
+                return p;
+            }
+        }
+        return null;
+    }
 }
 /*
  * Creates raw json from plain text
@@ -210,4 +231,6 @@ class TextConverter {
         sb.append('"');
         return sb.toString();
     }
+
+
 }
