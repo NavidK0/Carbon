@@ -36,11 +36,11 @@ public class TileEntityOptimizedChest extends net.minecraft.server.v1_7_R4.TileE
 	@Override
 	public void closeContainer() {
 		super.closeContainer();
+		o = getViewers().size();
 		if (world == null) {
 			return;
 		}
 		if (i == null && k == null) {
-			o = getViewers().size();
 			if (o == 0 && !closed) {
 				closed = true;
 				opened = false;

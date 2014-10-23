@@ -8,6 +8,7 @@ import com.lastabyss.carbon.blocks.BlockGoldPressurePlate;
 import com.lastabyss.carbon.blocks.BlockIronPressurePlate;
 import com.lastabyss.carbon.blocks.BlockIronTrapdoor;
 import com.lastabyss.carbon.blocks.BlockOptimizedChest;
+import com.lastabyss.carbon.blocks.BlockOptimizedEnderChest;
 import com.lastabyss.carbon.blocks.BlockPrismarine;
 import com.lastabyss.carbon.blocks.BlockRedSandstone;
 import com.lastabyss.carbon.blocks.BlockRedSandstoneStairs;
@@ -38,6 +39,8 @@ import com.lastabyss.carbon.entity.EntityGuardian;
 import com.lastabyss.carbon.entity.EntityRabbit;
 import com.lastabyss.carbon.entity.TileEntityBanner;
 import com.lastabyss.carbon.entity.TileEntityOptimizedChest;
+import com.lastabyss.carbon.entity.TileEntityOptimizedEnchantTable;
+import com.lastabyss.carbon.entity.TileEntityOptimizedEnderChest;
 import com.lastabyss.carbon.entity.bukkit.ArmorStand;
 import com.lastabyss.carbon.entity.bukkit.Endermite;
 import com.lastabyss.carbon.entity.bukkit.Guardian;
@@ -60,6 +63,7 @@ import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
 import com.lastabyss.carbon.recipes.RecipesBanners;
 import com.lastabyss.carbon.utils.Utilities;
 import com.lastabyss.carbon.worldborder.WorldBorder;
+
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.DataWatcher;
@@ -77,6 +81,7 @@ import net.minecraft.server.v1_7_R4.PotionBrewer;
 import net.minecraft.server.v1_7_R4.TileEntity;
 import net.minecraft.server.v1_7_R4.World;
 import net.minecraft.util.gnu.trove.map.TObjectIntMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -144,6 +149,7 @@ public class Injector {
   public Block daylightDetectorInvertedBlock = new BlockDaylightDetector(true);
   public Block optimizedChestBlock = new BlockOptimizedChest(0);
   public Block optimizedTrappedChestBlock = new BlockOptimizedChest(1);
+  public Block optimizedEnderChestBlock = new BlockOptimizedEnderChest();
 
   //Bukkit materials
   public Material slimeMat = Utilities.addMaterial("SLIME", 165);
@@ -253,9 +259,10 @@ public class Injector {
   public Item anvilItem = new ItemAnvil(anvilBlock);
   public Item enchantTableItem = new ItemBlock(enchantTableBlock);
   public Item daylightDetectorItem = new ItemBlock(daylightDetectorBlock);
+  public Item armorStandItem = new ItemArmorStand();
   public Item optimizedChestItem = new ItemBlock(optimizedChestBlock);
   public Item optimizedTrappedChestItem = new ItemBlock(optimizedTrappedChestBlock);
-  public Item armorStandItem = new ItemArmorStand();
+  public Item optimizedEnderChestItem = new ItemBlock(optimizedEnderChestBlock);
 
   public Item rabbitItem = new ItemRabbit();
   public Item cookedRabbitItem = new ItemCookedRabbit();
@@ -443,6 +450,7 @@ public class Injector {
     registerBlock(116, "enchanting_table", enchantTableBlock, enchantTableItem);
     registerBlock(54, "chest", optimizedChestBlock, optimizedChestItem);
     registerBlock(146, "trapped_chest", optimizedTrappedChestBlock, optimizedTrappedChestItem);
+    registerBlock(130, "ender_chest", optimizedEnderChestBlock, optimizedEnderChestItem);
 
     //Register items
     registerItem(409, "prismarine_shard", prismarineShardItem);
@@ -466,6 +474,8 @@ public class Injector {
     //Register tile entities
     registerTileEntity(TileEntityBanner.class, "Banner");
     registerTileEntity(TileEntityOptimizedChest.class, "Chest");
+    registerTileEntity(TileEntityOptimizedEnderChest.class, "EnderChest");
+    registerTileEntity(TileEntityOptimizedEnchantTable.class, "EnchantTable");
 
     //Register commands from 1.8
     Utilities.registerBukkitCommand("minecraft", new CommandWorldBorder());
