@@ -169,7 +169,7 @@ public class CommandTitle extends Command {
 
     private Player getOnlinePlayer(String name){
         for (Player p : Bukkit.getOnlinePlayers()){
-            if (p.getName() == name){
+            if (p.getName().equalsIgnoreCase(name)){
                 return p;
             }
         }
