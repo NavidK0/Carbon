@@ -12,6 +12,7 @@ import com.lastabyss.carbon.blocks.BlockOptimizedEnderChest;
 import com.lastabyss.carbon.blocks.BlockPrismarine;
 import com.lastabyss.carbon.blocks.BlockRedSandstone;
 import com.lastabyss.carbon.blocks.BlockRedSandstoneStairs;
+import com.lastabyss.carbon.blocks.BlockRedstoneComparator;
 import com.lastabyss.carbon.blocks.BlockRedstoneTorchOff;
 import com.lastabyss.carbon.blocks.BlockRedstoneTorchOn;
 import com.lastabyss.carbon.blocks.BlockSeaLantern;
@@ -76,6 +77,7 @@ import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.ItemAnvil;
 import net.minecraft.server.v1_7_R4.ItemBlock;
 import net.minecraft.server.v1_7_R4.ItemMultiTexture;
+import net.minecraft.server.v1_7_R4.ItemReed;
 import net.minecraft.server.v1_7_R4.Items;
 import net.minecraft.server.v1_7_R4.MobEffectList;
 import net.minecraft.server.v1_7_R4.MonsterEggInfo;
@@ -154,6 +156,8 @@ public class Injector {
   public Block optimizedChestBlock = new BlockOptimizedChest(0);
   public Block optimizedTrappedChestBlock = new BlockOptimizedChest(1);
   public Block optimizedEnderChestBlock = new BlockOptimizedEnderChest();
+  public Block redstoneComparatorOffBlock = new BlockRedstoneComparator(false);
+  public Block redstoneComparatorOnBlock = new BlockRedstoneComparator(true);
 
   //Bukkit materials
   public Material slimeMat = Utilities.addMaterial("SLIME", 165);
@@ -267,6 +271,7 @@ public class Injector {
   public Item optimizedChestItem = new ItemBlock(optimizedChestBlock);
   public Item optimizedTrappedChestItem = new ItemBlock(optimizedTrappedChestBlock);
   public Item optimizedEnderChestItem = new ItemBlock(optimizedEnderChestBlock);
+  public Item redstoneComparatorItem = new ItemReed(redstoneComparatorOffBlock);
 
   public Item rabbitItem = new ItemRabbit();
   public Item cookedRabbitItem = new ItemCookedRabbit();
@@ -455,6 +460,8 @@ public class Injector {
     registerBlock(54, "chest", optimizedChestBlock, optimizedChestItem);
     registerBlock(146, "trapped_chest", optimizedTrappedChestBlock, optimizedTrappedChestItem);
     registerBlock(130, "ender_chest", optimizedEnderChestBlock, optimizedEnderChestItem);
+    registerBlock(149, "unpowered_comparator", redstoneComparatorOffBlock);
+    registerBlock(150, "powered_comparator", redstoneComparatorOnBlock);
 
     //Register items
     registerItem(409, "prismarine_shard", prismarineShardItem);
@@ -469,6 +476,7 @@ public class Injector {
     registerItem(425, "banner", standingBannerItem);
     registerItem(416, "armor_stand", armorStandItem);
     registerItem(389, "item_frame", frameItem);
+    registerItem(404, "comparator", redstoneComparatorItem);
 
     //Register entities (data copied straight from 1.8, from EntityList.java)
     registerEntity(EntityEndermite.class, "Endermite", 67, 1447446, 7237230);
@@ -516,8 +524,11 @@ public class Injector {
     setStaticFinalField(blocksClass, "CHEST", optimizedChestBlock);
     setStaticFinalField(blocksClass, "TRAPPED_CHEST", optimizedTrappedChestBlock);
     setStaticFinalField(blocksClass, "DAYLIGHT_DETECTOR", daylightDetectorBlock);
+    setStaticFinalField(blocksClass, "REDSTONE_COMPARATOR_OFF", redstoneComparatorOffBlock);
+    setStaticFinalField(blocksClass, "REDSTONE_COMPARATOR_ON", redstoneComparatorOnBlock);
     Class<Items> itemsClass = Items.class;
     setStaticFinalField(itemsClass, "ITEM_FRAME", frameItem);
+    setStaticFinalField(itemsClass, "REDSTONE_COMPARATOR", redstoneComparatorItem);
 
     //inject custom netty stream serializer
     NettyInjector.injectStreamSerializer();
