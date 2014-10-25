@@ -85,7 +85,6 @@ public class Carbon extends JavaPlugin {
     
     //Inject 1.8 features. Stop server if something fails
     try {
-      DynamicEnumType.loadReflection();
       Utilities.instantiate(this);
       instrumentator = new Instrumentator(this, new File(getDataFolder(), "libraries/natives/").getPath());
       instrumentator.instrumentate();

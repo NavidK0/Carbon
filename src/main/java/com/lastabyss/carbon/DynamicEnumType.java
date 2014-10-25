@@ -1,152 +1,75 @@
 package com.lastabyss.carbon;
 
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import sun.reflect.ConstructorAccessor;
+import sun.reflect.FieldAccessor;
+import sun.reflect.ReflectionFactory;
 
 public class DynamicEnumType {
-	private static Method reflectionFactory;
-	private static Object reflectionRealFactory;
-	private static Method newconstructorAccesor;
-	private static Method constructorAccesor;
-	private static Method newFieldAccesor;
-	private static Method fieldAccesorSet;
 
-	public static void loadReflection() throws NoSuchMethodException,
-			SecurityException, ClassNotFoundException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException
-	{
-		reflectionFactory = Class.forName("sun.reflect.ReflectionFactory")
-				.getDeclaredMethod("getReflectionFactory");
-
-		reflectionFactory.setAccessible(true);
-		reflectionRealFactory = reflectionFactory.invoke(null);
-
-		fieldAccesorSet = Class.forName("sun.reflect.FieldAccessor")
-				.getDeclaredMethod("set",
-                                                   Object.class, Object.class);
-		newFieldAccesor = Class.forName("sun.reflect.ReflectionFactory")
-				.getDeclaredMethod("newFieldAccessor",
-                                                   Field.class, Boolean.TYPE);
-		constructorAccesor = Class.forName("sun.reflect.ConstructorAccessor")
-				.getDeclaredMethod("newInstance", Object[].class);
-
-		constructorAccesor.setAccessible(true);
-		newconstructorAccesor = Class.forName("sun.reflect.ReflectionFactory")
-				.getDeclaredMethod("newConstructorAccessor",
-                                                   Constructor.class);
-	}
-
-	private static void setFailsafeFieldValue(Field field, Object target,
-			Object value) throws NoSuchFieldException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException
-	{
+	private static void setField(Field field, Object target, Object value) throws NoSuchFieldException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		field.setAccessible(true);
 		Field modifiersField = Field.class.getDeclaredField("modifiers");
 		modifiersField.setAccessible(true);
-		int modifiers = modifiersField.getInt(field);
-		modifiers &= -17;
-		modifiersField.setInt(field, modifiers);
-		Object fieldAccesor = newFieldAccesor.invoke(reflectionRealFactory, field, false);
-		fieldAccesorSet.invoke(fieldAccesor, target, value);
+		modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+
+		FieldAccessor fieldAccessor = ReflectionFactory.getReflectionFactory().newFieldAccessor(field, true);
+		fieldAccessor.set(target, value);
 	}
 
-	private static void blankField(Class<?> enumClass, String fieldName)
-			throws NoSuchFieldException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException
-	{
-		for (Field field : Class.class.getDeclaredFields())
-		{
-			if (field.getName().contains(fieldName))
-			{
-				AccessibleObject.setAccessible(new Field[] { field }, true);
-				setFailsafeFieldValue(field, enumClass, null);
-				break;
-			}
-		}
+	private static void cleanEnumCache(Class<?> enumClass) throws NoSuchFieldException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		setField(Class.class.getDeclaredField("enumConstantDirectory"), enumClass, null);
 	}
 
-	private static void cleanEnumCache(Class<?> enumClass)
-			throws NoSuchFieldException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException
-	{
-		blankField(enumClass, "enumConstantDirectory");
-		blankField(enumClass, "enumConstants");
-	}
+	public static Object makeEnum(Class<?> enumClass, String name, int ordinal, Class<?>[] paramTypes, Object[] paramValues) throws Exception {
+		ArrayList<Class<?>> allParamTypes = new ArrayList<Class<?>>();
+		allParamTypes.add(String.class);
+		allParamTypes.add(int.class);
+		allParamTypes.addAll(Arrays.asList(paramTypes));
 
-	private static Object getConstructorAccessor(Class<?> enumClass,
-			Class<?>[] additionalParameterTypes) throws NoSuchMethodException,
-			IllegalAccessException, IllegalArgumentException,
-			InvocationTargetException, SecurityException
-	{
-		Class<?>[] parameterTypes = new Class[additionalParameterTypes.length + 2];
-		parameterTypes[0] = String.class;
-		parameterTypes[1] = Integer.TYPE;
-		System.arraycopy(additionalParameterTypes, 0, parameterTypes, 2,
-				additionalParameterTypes.length);
-		return newconstructorAccesor
-				.invoke(reflectionRealFactory,  enumClass
-						.getDeclaredConstructor(parameterTypes) );
-	}
-	public static Object makeEnum(Class<?> enumClass, String value,
-			int ordinal, Class<?>[] additionalTypes, Object[] additionalValues)
-			throws Exception
-	{
-		Object[] parms = new Object[additionalValues.length + 2];
-		parms[0] = value;
-		parms[1] = ordinal;
-		System.arraycopy(additionalValues, 0, parms, 2, additionalValues.length);
+		ArrayList<Object> allParamValues = new ArrayList<Object>();
+		allParamValues.add(name);
+		allParamValues.add(ordinal);
+		allParamValues.addAll(Arrays.asList(paramValues));
 
-		return enumClass.cast(constructorAccesor.invoke(
-				getConstructorAccessor(enumClass, additionalTypes),
-				new Object[] { parms }));
+		Constructor<?> enumConstructor = enumClass.getDeclaredConstructor(allParamTypes.toArray(new Class<?>[0]));
+		ConstructorAccessor constructorAccessor = ReflectionFactory.getReflectionFactory().newConstructorAccessor(enumConstructor);
+		return constructorAccessor.newInstance(allParamValues.toArray(new Object[0]));
 	}
 
 	@SuppressWarnings("unchecked")
 	public static <T extends Enum<?>> T addEnum(Class<T> enumType, String enumName, Class<?>[] paramTypes, Object[] paramValues) {
-		if (!Enum.class.isAssignableFrom(enumType))
-		{
-			throw new RuntimeException("class " + enumType
-					+ " is not an instance of Enum");
+		if (!Enum.class.isAssignableFrom(enumType)) {
+			throw new RuntimeException("class " + enumType + " is not an instance of Enum");
 		}
 
-		Field valuesField = null;
-		Field[] fields = enumType.getDeclaredFields();
-		for (Field field : fields)
-		{
-			if (field.getName().contains("$VALUES"))
-			{
-				valuesField = field;
-				break;
-			}
-		}
-		AccessibleObject.setAccessible(new Field[] { valuesField }, true);
-		try
-		{
+		try {
+			Field valuesField = enumType.getDeclaredField("$VALUES");
+
+			valuesField.setAccessible(true);
 			T[] previousValues = (T[]) valuesField.get(enumType);
 			List<T> values = new ArrayList<T>(Arrays.asList(previousValues));
 
-			T newValue = (T) makeEnum(enumType, enumName, values.size(),
-					paramTypes, paramValues);
+			T newValue = (T) makeEnum(enumType, enumName, values.size(), paramTypes, paramValues);
 			values.add(newValue);
 
-			setFailsafeFieldValue(valuesField, null,
-					values.toArray((T[]) Array.newInstance(enumType, 0)));
+			setField(valuesField, null, values.toArray((T[]) Array.newInstance(enumType, 0)));
 
 			cleanEnumCache(enumType);
 
 			return newValue;
-		} catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
+
 }
