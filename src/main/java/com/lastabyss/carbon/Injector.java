@@ -36,6 +36,7 @@ import com.lastabyss.carbon.entity.ArmorStandPose;
 import com.lastabyss.carbon.entity.EntityArmorStand;
 import com.lastabyss.carbon.entity.EntityEndermite;
 import com.lastabyss.carbon.entity.EntityGuardian;
+import com.lastabyss.carbon.entity.EntityItemFrame;
 import com.lastabyss.carbon.entity.EntityRabbit;
 import com.lastabyss.carbon.entity.TileEntityBanner;
 import com.lastabyss.carbon.entity.TileEntityOptimizedChest;
@@ -49,6 +50,7 @@ import com.lastabyss.carbon.items.ItemArmorStand;
 import com.lastabyss.carbon.items.ItemBanner;
 import com.lastabyss.carbon.items.ItemCookedMutton;
 import com.lastabyss.carbon.items.ItemCookedRabbit;
+import com.lastabyss.carbon.items.ItemHanging;
 import com.lastabyss.carbon.items.ItemMutton;
 import com.lastabyss.carbon.items.ItemPrismarineCrystal;
 import com.lastabyss.carbon.items.ItemPrismarineShard;
@@ -74,7 +76,9 @@ import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.ItemAnvil;
 import net.minecraft.server.v1_7_R4.ItemBlock;
 import net.minecraft.server.v1_7_R4.ItemMultiTexture;
+import net.minecraft.server.v1_7_R4.Items;
 import net.minecraft.server.v1_7_R4.MobEffectList;
+import net.minecraft.server.v1_7_R4.MonsterEggInfo;
 import net.minecraft.server.v1_7_R4.Packet;
 import net.minecraft.server.v1_7_R4.PacketPlayOutEntityTeleport;
 import net.minecraft.server.v1_7_R4.PotionBrewer;
@@ -273,6 +277,7 @@ public class Injector {
   public Item cookedMuttonItem = new ItemCookedMutton();
   public Item prismarineShardItem = new ItemPrismarineShard();
   public Item prismarineCrystalItem = new ItemPrismarineCrystal();
+  public Item frameItem = new ItemHanging(EntityItemFrame.class);
 
   //Entities
   public EntityType endermiteEntity = Utilities.addEntity("ENDERMITE", 67, Endermite.class);
@@ -330,12 +335,14 @@ public class Injector {
       }
   }
 
+  @SuppressWarnings("unchecked")
   public static void registerEntity(Class<? extends Entity> entityClass, String name, int id) {
       try {
-          Class<EntityTypes> clazz = EntityTypes.class;
-          Method register = clazz.getDeclaredMethod("a", Class.class, String.class, Integer.TYPE);
-          register.setAccessible(true);
-          register.invoke(null, entityClass, name, id);
+    	  ((Map<String, Class<? extends Entity>>) Utilities.setAccessible(Field.class, EntityTypes.class.getDeclaredField("c"), true).get(null)).put(name, entityClass);
+    	  ((Map<Class<? extends Entity>, String>) Utilities.setAccessible(Field.class, EntityTypes.class.getDeclaredField("d"), true).get(null)).put(entityClass, name);
+    	  ((Map<Integer, Class<? extends Entity>>) Utilities.setAccessible(Field.class, EntityTypes.class.getDeclaredField("e"), true).get(null)).put(id, entityClass);
+    	  ((Map<Class<? extends Entity>, Integer>) Utilities.setAccessible(Field.class, EntityTypes.class.getDeclaredField("f"), true).get(null)).put(entityClass, id);
+    	  ((Map<String, Integer>) Utilities.setAccessible(Field.class, EntityTypes.class.getDeclaredField("g"), true).get(null)).put(name, id);
           if (plugin.getConfig().getBoolean("debug.verbose", false))
             Carbon.log.log(Level.INFO, "[Carbon] Entity {0} was registered into Minecraft.", entityClass.getCanonicalName());
       } catch (Exception e) {
@@ -343,14 +350,11 @@ public class Injector {
       }
   }
 
-  public static void registerEntity(Class<? extends Entity> entityClass, String name, int id, int monsterEgg, int monsterEggData2) {
+  @SuppressWarnings("unchecked")
+  public static void registerEntity(Class<? extends Entity> entityClass, String name, int id, int monsterEgg, int monsterEggData) {
       try {
-          Class<EntityTypes> clazz = EntityTypes.class;
-          Method register = clazz.getDeclaredMethod("a", Class.class, String.class, Integer.TYPE, Integer.TYPE, Integer.TYPE);
-          register.setAccessible(true);
-          register.invoke(null, entityClass, name, id, monsterEgg, monsterEggData2);
-          if (plugin.getConfig().getBoolean("debug.verbose", false))
-            Carbon.log.log(Level.INFO, "[Carbon] Entity {0} was registered into Minecraft.", entityClass.getCanonicalName());
+    	  registerEntity(entityClass, name, id);
+    	  EntityTypes.eggInfo.put(id, new MonsterEggInfo(id, monsterEgg, monsterEggData));
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -464,12 +468,14 @@ public class Injector {
     registerItem(424, "cooked_mutton", cookedMuttonItem);
     registerItem(425, "banner", standingBannerItem);
     registerItem(416, "armor_stand", armorStandItem);
+    registerItem(389, "item_frame", frameItem);
 
     //Register entities (data copied straight from 1.8, from EntityList.java)
     registerEntity(EntityEndermite.class, "Endermite", 67, 1447446, 7237230);
     registerEntity(EntityGuardian.class, "Guardian", 68, 5931634, 15826224);
     registerEntity(EntityRabbit.class, "Rabbit", 101, 10051392, 7555121);
     registerEntity(EntityArmorStand.class, "ArmorStand", 30);
+    registerEntity(EntityItemFrame.class, "ItemFrame", 18);
 
     //Register tile entities
     registerTileEntity(TileEntityBanner.class, "Banner");
@@ -492,29 +498,26 @@ public class Injector {
     //Register additional potion effects
     registerPotionEffect(MobEffectList.JUMP.getId(), "0 & 1 & !2 & 3", "5");
 
-    //inject our modified blocks
-    try {
-        Class<Blocks> blocksClass = Blocks.class;
-        setStaticFinalField(blocksClass, "STONE", stoneBlock);
-        setStaticFinalField(blocksClass, "SPONGE", spongeBlock);
-        setStaticFinalField(blocksClass, "TORCH", torchBlock);
-        setStaticFinalField(blocksClass, "REDSTONE_TORCH_ON", redstoneTorchBlockOn);
-        setStaticFinalField(blocksClass, "REDSTONE_TORCH_OFF", redstoneTorchBlockOff);
-        setStaticFinalField(blocksClass, "STONE_BUTTON", stoneButtonBlock);
-        setStaticFinalField(blocksClass, "WOOD_BUTTON", woodButtonBlock);
-        setStaticFinalField(blocksClass, "STONE_PLATE", stonePlateBlock);
-        setStaticFinalField(blocksClass, "WOOD_PLATE", woodPlateBlock);
-        setStaticFinalField(blocksClass, "IRON_PLATE", ironPlateBlock);
-        setStaticFinalField(blocksClass, "GOLD_PLATE", goldPlateBlock);
-        setStaticFinalField(blocksClass, "ANVIL", anvilBlock);
-        setStaticFinalField(blocksClass, "ENCHANTMENT_TABLE", enchantTableBlock);
-        setStaticFinalField(blocksClass, "CHEST", optimizedChestBlock);
-        setStaticFinalField(blocksClass, "TRAPPED_CHEST", optimizedTrappedChestBlock);
-        setStaticFinalField(blocksClass, "DAYLIGHT_DETECTOR", daylightDetectorBlock);
-    } catch (Throwable t) {
-        t.printStackTrace();
-        Bukkit.shutdown();
-    }
+    //inject our modified blocks and items to nms static classes
+    Class<Blocks> blocksClass = Blocks.class;
+    setStaticFinalField(blocksClass, "STONE", stoneBlock);
+    setStaticFinalField(blocksClass, "SPONGE", spongeBlock);
+    setStaticFinalField(blocksClass, "TORCH", torchBlock);
+    setStaticFinalField(blocksClass, "REDSTONE_TORCH_ON", redstoneTorchBlockOn);
+    setStaticFinalField(blocksClass, "REDSTONE_TORCH_OFF", redstoneTorchBlockOff);
+    setStaticFinalField(blocksClass, "STONE_BUTTON", stoneButtonBlock);
+    setStaticFinalField(blocksClass, "WOOD_BUTTON", woodButtonBlock);
+    setStaticFinalField(blocksClass, "STONE_PLATE", stonePlateBlock);
+    setStaticFinalField(blocksClass, "WOOD_PLATE", woodPlateBlock);
+    setStaticFinalField(blocksClass, "IRON_PLATE", ironPlateBlock);
+    setStaticFinalField(blocksClass, "GOLD_PLATE", goldPlateBlock);
+    setStaticFinalField(blocksClass, "ANVIL", anvilBlock);
+    setStaticFinalField(blocksClass, "ENCHANTMENT_TABLE", enchantTableBlock);
+    setStaticFinalField(blocksClass, "CHEST", optimizedChestBlock);
+    setStaticFinalField(blocksClass, "TRAPPED_CHEST", optimizedTrappedChestBlock);
+    setStaticFinalField(blocksClass, "DAYLIGHT_DETECTOR", daylightDetectorBlock);
+    Class<Items> itemsClass = Items.class;
+    setStaticFinalField(itemsClass, "ITEM_FRAME", frameItem);
 
     //inject custom netty stream serializer
     NettyInjector.injectStreamSerializer();
