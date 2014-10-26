@@ -43,7 +43,7 @@ public class PacketDecoder extends net.minecraft.server.v1_7_R4.PacketDecoder {
 				config.save(configFile);
 				config = YamlConfiguration.loadConfiguration(configFile);
 			} catch (IOException e) {
-				e.printStackTrace();
+				e.printStackTrace(System.out);
 			}
 		}
 		YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
@@ -52,7 +52,7 @@ public class PacketDecoder extends net.minecraft.server.v1_7_R4.PacketDecoder {
 			try {
 				restrictedProtocols.put(Integer.parseInt(version), ChatColor.translateAlternateColorCodes('&', config.getString(version)));
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace(System.out);
 			}
 		}
 	}
@@ -90,8 +90,8 @@ public class PacketDecoder extends net.minecraft.server.v1_7_R4.PacketDecoder {
 						//disconnect channel
 						channelhandlercontext.close();
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+					e.printStackTrace(System.out);
 				}
 			}
 			list.add(packet);

@@ -94,6 +94,7 @@ import org.bukkit.material.MaterialData;
 import org.spigotmc.SpigotDebreakifier;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
@@ -312,8 +313,8 @@ public class Injector {
     	  ((Map<Class<? extends TileEntity>, String>)Utilities.setAccessible(Field.class, TileEntity.class.getDeclaredField("j"), true).get(null)).put(entityClass, name);
           if (plugin.getConfig().getBoolean("debug.verbose", false))
             Carbon.log.log(Level.INFO, "[Carbon] Tile Entity {0} was registered into Minecraft.", entityClass.getCanonicalName());
-      } catch (Exception e) {
-        e.printStackTrace();
+      } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+        e.printStackTrace(System.out);
       }
   }
 
@@ -325,8 +326,8 @@ public class Injector {
           ((TObjectIntMap<Class<?>>) classToIdField.get(null)).put(type, id);
           if (plugin.getConfig().getBoolean("debug.verbose", false))
               Carbon.log.log(Level.INFO, "[Carbon] DataWatcher type {0} was registered into Minecraft.", type.getCanonicalName());
-      } catch (Exception e) {
-        e.printStackTrace();
+      } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+        e.printStackTrace(System.out);
       }
   }
 
@@ -338,8 +339,8 @@ public class Injector {
           register.invoke(null, entityClass, name, id);
           if (plugin.getConfig().getBoolean("debug.verbose", false))
             Carbon.log.log(Level.INFO, "[Carbon] Entity {0} was registered into Minecraft.", entityClass.getCanonicalName());
-      } catch (Exception e) {
-        e.printStackTrace();
+      } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+        e.printStackTrace(System.out);
       }
   }
 
@@ -351,8 +352,8 @@ public class Injector {
           register.invoke(null, entityClass, name, id, monsterEgg, monsterEggData2);
           if (plugin.getConfig().getBoolean("debug.verbose", false))
             Carbon.log.log(Level.INFO, "[Carbon] Entity {0} was registered into Minecraft.", entityClass.getCanonicalName());
-      } catch (Exception e) {
-        e.printStackTrace();
+      } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+        e.printStackTrace(System.out);
       }
   }
 
@@ -370,8 +371,8 @@ public class Injector {
          map.put(packetClass, protocol);
          if (plugin.getConfig().getBoolean("debug.verbose", false))
             Carbon.log.log(Level.INFO, "[Carbon] Packet {0} was registered into Minecraft with ID: " + packetID, packetClass.getCanonicalName());
-      } catch (Exception e) {
-         e.printStackTrace();
+      } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+         e.printStackTrace(System.out);
       }
   }
 
@@ -382,8 +383,8 @@ public class Injector {
           method.invoke(null, block, replacement);
           if (plugin.getConfig().getBoolean("debug.verbose", false))
             Carbon.log.log(Level.INFO, "[Carbon] SpigotDebreakfier for block {0} with replacement {1} was registered into Minecraft.", new String[] {block.getName(), replacement.getName()});
-      } catch (Exception e) {
-          e.printStackTrace();
+      } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+          e.printStackTrace(System.out);
       }
   }
 
@@ -392,8 +393,8 @@ public class Injector {
       try {
           ((Map<Integer, String>)Utilities.setAccessible(Field.class, PotionBrewer.class.getDeclaredField("effectDurations"), true).get(null)).put(effectId, durations);
           ((Map<Integer, String>)Utilities.setAccessible(Field.class, PotionBrewer.class.getDeclaredField("effectAmplifiers"), true).get(null)).put(effectId, amplifier);
-      } catch (Exception e) {
-          e.printStackTrace();
+      } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+          e.printStackTrace(System.out);
       }
   }
 
@@ -511,8 +512,8 @@ public class Injector {
         setStaticFinalField(blocksClass, "CHEST", optimizedChestBlock);
         setStaticFinalField(blocksClass, "TRAPPED_CHEST", optimizedTrappedChestBlock);
         setStaticFinalField(blocksClass, "DAYLIGHT_DETECTOR", daylightDetectorBlock);
-    } catch (Throwable t) {
-        t.printStackTrace();
+    } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException t) {
+        t.printStackTrace(System.out);
         Bukkit.shutdown();
     }
 

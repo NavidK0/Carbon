@@ -297,8 +297,8 @@ public class DataWatcher {
 					packetdataserializer.writeFloat(getArmorStandPoseData(armorStandPose, "getX"));
 					packetdataserializer.writeFloat(getArmorStandPoseData(armorStandPose, "getY"));
 					packetdataserializer.writeFloat(getArmorStandPoseData(armorStandPose, "getZ"));
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					e.printStackTrace(System.out);
 				}
 				break;
 			}

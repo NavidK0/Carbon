@@ -33,8 +33,8 @@ public class BlockAnvil extends net.minecraft.server.v1_7_R4.BlockAnvil {
 			player.activeContainer = container;
 			player.activeContainer.windowId = newWidnowId;
 			player.activeContainer.addSlotListener(player);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+			e.printStackTrace(System.out);
 		}
 		return true;
 	}

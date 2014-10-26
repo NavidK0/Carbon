@@ -68,7 +68,7 @@ public class Utilities {
             cmap.register(fallbackPrefix, cmd);
         }
         } catch (NoSuchFieldException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.out);
         } catch (IllegalArgumentException ex) {
             Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -95,8 +95,8 @@ public class Utilities {
                 NAME_MAP.put(name, entityType);
                 if (plugin.getConfig().getBoolean("debug.verbose", false))
                     Carbon.log.log(Level.INFO, "[Carbon] Entity {0} with ID {1} was injected into CraftBukkit.", new Object[]{name, id});
-        } catch (Exception e) {
-                e.printStackTrace();
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+                e.printStackTrace(System.out);
         }
         try {
                 Field field = EntityType.class.getDeclaredField("ID_MAP");
@@ -104,8 +104,8 @@ public class Utilities {
                 Object object = field.get(null);
                 Map<Short, EntityType> ID_MAP = (Map<Short, EntityType>) object;
                 ID_MAP.put((short)id, entityType);
-        } catch (Exception e) {
-                e.printStackTrace();
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+                e.printStackTrace(System.out);
         }
         return entityType;
     }
@@ -121,9 +121,9 @@ public class Utilities {
                 BY_NAME.put(name, material);
                 if (plugin.getConfig().getBoolean("debug.verbose", false))
                     Carbon.log.log(Level.INFO, "[Carbon] Material {0} with ID {1} was injected into CraftBukkit.", new Object[]{name, id});
-        } catch (Exception e)
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e)
         {
-                e.printStackTrace();
+                e.printStackTrace(System.out);
         }
         try {
                 Field field = Material.class.getDeclaredField("byId");
@@ -132,9 +132,9 @@ public class Utilities {
                 Material[] byId = (Material[]) object;
                 byId[id] = material;
                 field.set(object, byId);
-        } catch (Exception e)
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e)
         {
-                e.printStackTrace();
+                e.printStackTrace(System.out);
         }
         return material;
     }
@@ -150,9 +150,9 @@ public class Utilities {
                 BY_NAME.put(name, material);
                 if (plugin.getConfig().getBoolean("debug.verbose", false))
                     Carbon.log.log(Level.INFO, "[Carbon] Material {0} with ID {1} with data {2} was injected into CraftBukkit.", new Object[]{name, id, data});
-        } catch (Exception e)
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e)
         {
-                e.printStackTrace();
+                e.printStackTrace(System.out);
         }
         try {
                 Field field = Material.class.getDeclaredField("byId");
@@ -161,8 +161,8 @@ public class Utilities {
                 Material[] byId = (Material[]) object;
                 byId[id] = material;
                 field.set(object, byId);
-        } catch (Exception e) {
-                e.printStackTrace();
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+                e.printStackTrace(System.out);
         }
         try {
                 Field field = Material.class.getDeclaredField("durability");
@@ -171,8 +171,8 @@ public class Utilities {
                 Material[] durability = (Material[]) object;
                 durability[data] = material;
                 field.set(object, durability);
-        } catch (Exception e) {
-                e.printStackTrace();
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+                e.printStackTrace(System.out);
         }
         return material;
     }
@@ -189,7 +189,7 @@ public class Utilities {
             Field field = b.getClass().getField("strength");
             field.setAccessible(true);
             return field.getFloat(b);
-        } catch (Exception ex) {
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
@@ -206,7 +206,7 @@ public class Utilities {
             Field field = b.getClass().getField("durability");
             field.setAccessible(true);
             return field.getFloat(b);
-        } catch (Exception ex) {
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;

@@ -16,9 +16,13 @@ import com.lastabyss.carbon.protocolmodifier.ProtocolItemListener;
 import com.lastabyss.carbon.utils.Metrics;
 import com.lastabyss.carbon.utils.Utilities;
 import com.lastabyss.carbon.worldborder.WorldBorder;
+import com.sun.tools.attach.AgentInitializationException;
+import com.sun.tools.attach.AgentLoadException;
+import com.sun.tools.attach.AttachNotSupportedException;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -94,8 +98,8 @@ public class Carbon extends JavaPlugin {
       injector.registerRecipes();
       entityGenerator.injectNewCreatures();
     }
-    catch (Exception e) {
-      e.printStackTrace();
+    catch (NoSuchMethodException | SecurityException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException | IOException | AttachNotSupportedException | AgentLoadException | AgentInitializationException e) {
+      e.printStackTrace(System.out);
       log.warning("[Carbon] 1.8 injection failed! Something went wrong, server cannot start properly, shutting down...");
       Bukkit.shutdown();
       return;
@@ -132,7 +136,7 @@ public class Carbon extends JavaPlugin {
         new ProtocolItemListener(this).loadRemapList().init();
         new ProtocolEntityListener(this).loadRemapList().init();
       } catch (Throwable t) {
-        t.printStackTrace();
+        t.printStackTrace(System.out);
       }
     } else {
       log.info("ProtocolLib not found, not hooking. 1.7 clients not supported.");

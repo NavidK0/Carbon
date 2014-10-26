@@ -218,7 +218,7 @@ public class ProtocolItemListener {
 					try {
 						ProtocolLibrary.getProtocolManager().sendServerPacket(event.getPlayer(), newpacket, false);
 					} catch (InvocationTargetException e) {
-						e.printStackTrace();
+						e.printStackTrace(System.out);
 					}
 				}
 			}
@@ -268,7 +268,7 @@ public class ProtocolItemListener {
 						}
 						event.getPacket().getByteArrays().write(0, newdataserializer.array());
 					} catch (Exception e) {
-						e.printStackTrace();
+						e.printStackTrace(System.out);
 					}
 				}
 			}

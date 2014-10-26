@@ -173,8 +173,8 @@ public class AnvilContainer extends net.minecraft.server.v1_7_R4.ContainerAnvil 
 				this.result.setItem(0, itemToRepairClone);
 				this.b();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+			e.printStackTrace(System.out);
 			human.getBukkitEntity().closeInventory();
 		}
 	}
