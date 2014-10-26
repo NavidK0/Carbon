@@ -54,6 +54,10 @@ protocollib:
     rabbit_foot: 1
     rabbit_hide: 1
     armor_stand: 51
+optimizations:
+  world:
+    tileentitytick: false
+  usercache: false
 debug:
   verbose: true
         
