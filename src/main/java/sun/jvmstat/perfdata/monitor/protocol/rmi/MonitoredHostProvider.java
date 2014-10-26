@@ -110,7 +110,7 @@ public class MonitoredHostProvider extends MonitoredHost {
 			throw new MonitorException("RMI Server " + message + " not available", e);
 		} catch (MalformedURLException e) {
 			// this is a programming problem
-			e.printStackTrace(System.out);
+			e.printStackTrace();
 			throw new IllegalArgumentException("Malformed URL: " + rmiName);
 		}
 		this.vmManager = new RemoteVmManager(remoteHost);
@@ -280,7 +280,7 @@ public class MonitoredHostProvider extends MonitoredHost {
 			} catch (MonitorException e) {
 				// XXX: use logging api
 				System.err.println("MonitoredHostProvider: polling task " + "caught MonitorException:");
-				e.printStackTrace(System.out);
+				e.printStackTrace();
 
 				// mark the HostManager as errored and notify listeners
 				setLastException(e);

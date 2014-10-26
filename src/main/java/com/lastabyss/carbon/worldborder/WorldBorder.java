@@ -57,7 +57,7 @@ public class WorldBorder {
 			try {
 				config.save(new File(entry.getKey().getWorldFolder(), "worldborder.yml"));
 			} catch (IOException e) {
-                          e.printStackTrace(System.out);
+                          e.printStackTrace();
 			}
 		}
 	}

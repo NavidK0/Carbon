@@ -68,7 +68,7 @@ public class Utilities {
             cmap.register(fallbackPrefix, cmd);
         }
         } catch (NoSuchFieldException e) {
-            e.printStackTrace(System.out);
+            e.printStackTrace();
         } catch (IllegalArgumentException ex) {
             Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -96,7 +96,7 @@ public class Utilities {
                 if (plugin.getConfig().getBoolean("debug.verbose", false))
                     Carbon.log.log(Level.INFO, "[Carbon] Entity {0} with ID {1} was injected into CraftBukkit.", new Object[]{name, id});
         } catch (Exception e) {
-                e.printStackTrace(System.out);
+                e.printStackTrace();
         }
         try {
                 Field field = EntityType.class.getDeclaredField("ID_MAP");
@@ -105,7 +105,7 @@ public class Utilities {
                 Map<Short, EntityType> ID_MAP = (Map<Short, EntityType>) object;
                 ID_MAP.put((short)id, entityType);
         } catch (Exception e) {
-                e.printStackTrace(System.out);
+                e.printStackTrace();
         }
         return entityType;
     }
@@ -123,7 +123,7 @@ public class Utilities {
                     Carbon.log.log(Level.INFO, "[Carbon] Material {0} with ID {1} was injected into CraftBukkit.", new Object[]{name, id});
         } catch (Exception e)
         {
-                e.printStackTrace(System.out);
+                e.printStackTrace();
         }
         try {
                 Field field = Material.class.getDeclaredField("byId");
@@ -134,7 +134,7 @@ public class Utilities {
                 field.set(object, byId);
         } catch (Exception e)
         {
-                e.printStackTrace(System.out);
+                e.printStackTrace();
         }
         return material;
     }
@@ -152,7 +152,7 @@ public class Utilities {
                     Carbon.log.log(Level.INFO, "[Carbon] Material {0} with ID {1} with data {2} was injected into CraftBukkit.", new Object[]{name, id, data});
         } catch (Exception e)
         {
-                e.printStackTrace(System.out);
+                e.printStackTrace();
         }
         try {
                 Field field = Material.class.getDeclaredField("byId");
@@ -162,7 +162,7 @@ public class Utilities {
                 byId[id] = material;
                 field.set(object, byId);
         } catch (Exception e) {
-                e.printStackTrace(System.out);
+                e.printStackTrace();
         }
         try {
                 Field field = Material.class.getDeclaredField("durability");
@@ -172,7 +172,7 @@ public class Utilities {
                 durability[data] = material;
                 field.set(object, durability);
         } catch (Exception e) {
-                e.printStackTrace(System.out);
+                e.printStackTrace();
         }
         return material;
     }

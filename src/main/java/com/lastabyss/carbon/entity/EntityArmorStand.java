@@ -511,7 +511,7 @@ public class EntityArmorStand extends EntityLiving {
 				this.setRightLegPose(rightlegpose);
 			}
 		} catch (Exception e) {
-			e.printStackTrace(System.out);
+			e.printStackTrace();
 		}
 	}
 

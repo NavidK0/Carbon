@@ -128,7 +128,7 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 			setStaticFinalField(smclass, "classMap", newClassMap);
 			setStaticFinalField(smclass, "constructorMap", newConstructorMap);
 		} catch (Throwable t) {
-			t.printStackTrace(System.out);
+			t.printStackTrace();
 			Bukkit.shutdown();
 		}
 	}
@@ -157,7 +157,7 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 			try {
 				return getPreTransformedClass(className);
 			} catch (Exception e) {
-				e.printStackTrace(System.out);
+				e.printStackTrace();
 				System.out.println("Failed to transform class!");
 			}
 		}

@@ -104,7 +104,7 @@ public class RemoteMonitoredVm extends AbstractMonitoredVm {
 		} catch (RemoteException e) {
 			// XXX: - use logging api? throw an exception instead?
 			System.err.println("Could not read data for remote JVM " + vmid);
-			e.printStackTrace(System.out);
+			e.printStackTrace();
 
 		} finally {
 			super.detach();
@@ -256,7 +256,7 @@ public class RemoteMonitoredVm extends AbstractMonitoredVm {
 				// XXX: use logging api? fire disconnect events? mark errored?
 				// fireDisconnectedEvents();
 				System.err.println("Exception updating monitors for " + getVmIdentifier());
-				e.printStackTrace(System.out);
+				e.printStackTrace();
 				// XXX: should we cancle the notifierTask here?
 				// this.cancel();
 			}
@@ -276,7 +276,7 @@ public class RemoteMonitoredVm extends AbstractMonitoredVm {
 			} catch (RemoteException e) {
 				// XXX: use logging api, mark vm as errored.
 				System.err.println("Exception taking sample for " + getVmIdentifier());
-				e.printStackTrace(System.out);
+				e.printStackTrace();
 				this.cancel();
 			}
 		}

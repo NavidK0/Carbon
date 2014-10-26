@@ -431,7 +431,7 @@ public class Metrics {
 			gzos = new GZIPOutputStream(baos);
 			gzos.write(input.getBytes("UTF-8"));
 		} catch (IOException e) {
-			e.printStackTrace(System.out);
+			e.printStackTrace();
 		} finally {
 			if (gzos != null)
 				try {

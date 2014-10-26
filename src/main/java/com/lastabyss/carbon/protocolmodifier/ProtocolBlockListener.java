@@ -149,7 +149,7 @@ public class ProtocolBlockListener {
 						try {
 							ProtocolLibrary.getProtocolManager().sendServerPacket(event.getPlayer(), newpacket, false);
 						} catch (InvocationTargetException e) {
-                                                  e.printStackTrace(System.out);
+                                                  e.printStackTrace();
 						}
 					}
 				}
