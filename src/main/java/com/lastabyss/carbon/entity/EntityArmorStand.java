@@ -510,8 +510,8 @@ public class EntityArmorStand extends EntityLiving {
 			if (!this.rightlegpose.equals(rightlegpose)) {
 				this.setRightLegPose(rightlegpose);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace(System.out);
 		}
 	}
 

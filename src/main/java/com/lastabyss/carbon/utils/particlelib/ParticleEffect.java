@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 
 import com.lastabyss.carbon.utils.particlelib.ReflectionUtils.PackageType;
 import com.lastabyss.carbon.utils.particlelib.ReflectionUtils.PacketType;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * <b>ParticleEffect Library</b>
@@ -641,7 +642,7 @@ public enum ParticleEffect {
 				getHandle = ReflectionUtils.getMethod("CraftPlayer", PackageType.CRAFTBUKKIT_ENTITY, "getHandle");
 				playerConnection = ReflectionUtils.getField("EntityPlayer", PackageType.MINECRAFT_SERVER, false, "playerConnection");
 				sendPacket = ReflectionUtils.getMethod(playerConnection.getType(), "sendPacket", PackageType.MINECRAFT_SERVER.getClass("Packet"));
-			} catch (Exception exception) {
+			} catch (NumberFormatException | ClassNotFoundException | NoSuchMethodException | NoSuchFieldException | SecurityException exception) {
 				throw new VersionIncompatibleException("Your current bukkit version seems to be incompatible with this library", exception);
 			}
 			initialized = true;
@@ -678,13 +679,13 @@ public enum ParticleEffect {
 					ReflectionUtils.setValue(packet, true, "g", offsetZ);
 					ReflectionUtils.setValue(packet, true, "h", speed);
 					ReflectionUtils.setValue(packet, true, "i", amount);
-				} catch (Exception exception) {
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException | SecurityException exception) {
 					throw new PacketInstantiationException("Packet instantiation failed", exception);
 				}
 			}
 			try {
 				sendPacket.invoke(playerConnection.get(getHandle.invoke(player)), packet);
-			} catch (Exception exception) {
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) {
 				throw new PacketSendingException("Failed to send the packet to player '" + player.getName() + "'", exception);
 			}
 		}

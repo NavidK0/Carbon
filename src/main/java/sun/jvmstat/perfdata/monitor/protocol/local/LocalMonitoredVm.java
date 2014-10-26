@@ -195,7 +195,7 @@ public class LocalMonitoredVm extends AbstractMonitoredVm {
 			} catch (MonitorException e) {
 				// XXX: use logging api
 				System.err.println("Exception updating monitors for " + getVmIdentifier());
-				e.printStackTrace();
+				e.printStackTrace(System.out);
 			}
 		}
 	}

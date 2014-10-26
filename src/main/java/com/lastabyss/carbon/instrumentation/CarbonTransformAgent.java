@@ -23,6 +23,7 @@ import org.bukkit.craftbukkit.v1_7_R4.inventory.BannerMeta;
 import org.bukkit.craftbukkit.v1_7_R4.inventory.BannerMeta.BannerPattern;
 
 import com.google.common.collect.ImmutableMap;
+import java.lang.instrument.UnmodifiableClassException;
 
 /**
  *
@@ -127,8 +128,8 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 			Class<? extends ConfigurationSerializable> smclass = (Class<? extends ConfigurationSerializable>) Class.forName("org.bukkit.craftbukkit.v1_7_R4.inventory.CraftMetaItem$SerializableMeta");
 			setStaticFinalField(smclass, "classMap", newClassMap);
 			setStaticFinalField(smclass, "constructorMap", newConstructorMap);
-		} catch (Throwable t) {
-			t.printStackTrace();
+		} catch (ClassNotFoundException | IOException | UnmodifiableClassException | NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException | AssertionError t) {
+			t.printStackTrace(System.out);
 			Bukkit.shutdown();
 		}
 	}
@@ -157,7 +158,7 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 			try {
 				return getPreTransformedClass(className);
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace(System.out);
 				System.out.println("Failed to transform class!");
 			}
 		}

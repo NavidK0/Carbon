@@ -46,9 +46,9 @@ public class CarbonEntityGenerator {
                              }
             } catch (SecurityException e) {
             } catch (IllegalArgumentException e) {
-                e.printStackTrace();
+                e.printStackTrace(System.out);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.out);
         }
     }
     
@@ -66,8 +66,8 @@ public class CarbonEntityGenerator {
 							((List<BiomeMeta>) atField.get(biomeBase)).add(new BiomeMeta(EntityRabbit.class, 10, 3, 3));
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace(System.out);
 		}
 	}
 }
