@@ -97,8 +97,7 @@ public class Carbon extends JavaPlugin {
       injector.registerAll();
       injector.registerRecipes();
       entityGenerator.injectNewCreatures();
-    }
-    catch (NoSuchMethodException | SecurityException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException | IOException | AttachNotSupportedException | AgentLoadException | AgentInitializationException e) {
+    } catch (Throwable e) {
       e.printStackTrace(System.out);
       log.warning("[Carbon] 1.8 injection failed! Something went wrong, server cannot start properly, shutting down...");
       Bukkit.shutdown();
