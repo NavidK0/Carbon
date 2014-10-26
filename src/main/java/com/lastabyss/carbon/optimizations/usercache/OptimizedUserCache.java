@@ -42,7 +42,6 @@ public class OptimizedUserCache extends UserCache {
 
 	@Override
 	public void a(GameProfile gameProfile) {
-		System.out.println("saving profile");
 		String playername = gameProfile.getName().toLowerCase(Locale.ROOT);
 		UUID uuid = gameProfile.getId();
 		UserCacheEntry entry = new UserCacheEntry(gameProfile);
@@ -91,7 +90,6 @@ public class OptimizedUserCache extends UserCache {
 
 	@Override
 	public void c() {
-		System.out.println("saving profiles");
 		ArrayList<UserCacheEntry> list = new ArrayList<UserCacheEntry>();
 		int saved = 0;
 		for (UserCacheEntry entry : uuidToProfile.values()) {
@@ -101,7 +99,6 @@ public class OptimizedUserCache extends UserCache {
 			list.add(entry);
 			saved++;
 		}
-		System.out.println(list.size());
 		String data = gson.toJson(list);
 		BufferedWriter bufferedwriter = null;
 		try  {
