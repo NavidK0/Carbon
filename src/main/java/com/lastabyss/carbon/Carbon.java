@@ -93,7 +93,7 @@ public class Carbon extends JavaPlugin {
       injector.registerRecipes();
       entityGenerator.injectNewCreatures();
     }
-    catch (Exception e) {
+    catch (Throwable e) {
       e.printStackTrace();
       log.warning("[Carbon] 1.8 injection failed! Something went wrong, server cannot start properly, shutting down...");
       Bukkit.shutdown();
