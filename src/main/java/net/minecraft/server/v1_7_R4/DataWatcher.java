@@ -298,7 +298,7 @@ public class DataWatcher {
 					packetdataserializer.writeFloat(getArmorStandPoseData(armorStandPose, "getY"));
 					packetdataserializer.writeFloat(getArmorStandPoseData(armorStandPose, "getZ"));
 				} catch (Exception e) {
-					e.printStackTrace();
+					e.printStackTrace(System.out);
 				}
 				break;
 			}

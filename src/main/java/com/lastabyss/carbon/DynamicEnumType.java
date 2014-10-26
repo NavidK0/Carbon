@@ -145,7 +145,7 @@ public class DynamicEnumType {
 			return newValue;
 		} catch (Exception e)
 		{
-			e.printStackTrace();
+			e.printStackTrace(System.out);
 			throw new RuntimeException(e.getMessage(), e);
 		}
 	}

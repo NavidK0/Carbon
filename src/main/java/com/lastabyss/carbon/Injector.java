@@ -313,7 +313,7 @@ public class Injector {
           if (plugin.getConfig().getBoolean("debug.verbose", false))
             Carbon.log.log(Level.INFO, "[Carbon] Tile Entity {0} was registered into Minecraft.", entityClass.getCanonicalName());
       } catch (Exception e) {
-        e.printStackTrace();
+        e.printStackTrace(System.out);
       }
   }
 
@@ -326,7 +326,7 @@ public class Injector {
           if (plugin.getConfig().getBoolean("debug.verbose", false))
               Carbon.log.log(Level.INFO, "[Carbon] DataWatcher type {0} was registered into Minecraft.", type.getCanonicalName());
       } catch (Exception e) {
-        e.printStackTrace();
+        e.printStackTrace(System.out);
       }
   }
 
@@ -339,7 +339,7 @@ public class Injector {
           if (plugin.getConfig().getBoolean("debug.verbose", false))
             Carbon.log.log(Level.INFO, "[Carbon] Entity {0} was registered into Minecraft.", entityClass.getCanonicalName());
       } catch (Exception e) {
-        e.printStackTrace();
+        e.printStackTrace(System.out);
       }
   }
 
@@ -352,7 +352,7 @@ public class Injector {
           if (plugin.getConfig().getBoolean("debug.verbose", false))
             Carbon.log.log(Level.INFO, "[Carbon] Entity {0} was registered into Minecraft.", entityClass.getCanonicalName());
       } catch (Exception e) {
-        e.printStackTrace();
+        e.printStackTrace(System.out);
       }
   }
 
@@ -371,7 +371,7 @@ public class Injector {
          if (plugin.getConfig().getBoolean("debug.verbose", false))
             Carbon.log.log(Level.INFO, "[Carbon] Packet {0} was registered into Minecraft with ID: " + packetID, packetClass.getCanonicalName());
       } catch (Exception e) {
-         e.printStackTrace();
+         e.printStackTrace(System.out);
       }
   }
 
@@ -383,7 +383,7 @@ public class Injector {
           if (plugin.getConfig().getBoolean("debug.verbose", false))
             Carbon.log.log(Level.INFO, "[Carbon] SpigotDebreakfier for block {0} with replacement {1} was registered into Minecraft.", new String[] {block.getName(), replacement.getName()});
       } catch (Exception e) {
-          e.printStackTrace();
+          e.printStackTrace(System.out);
       }
   }
 
@@ -393,7 +393,7 @@ public class Injector {
           ((Map<Integer, String>)Utilities.setAccessible(Field.class, PotionBrewer.class.getDeclaredField("effectDurations"), true).get(null)).put(effectId, durations);
           ((Map<Integer, String>)Utilities.setAccessible(Field.class, PotionBrewer.class.getDeclaredField("effectAmplifiers"), true).get(null)).put(effectId, amplifier);
       } catch (Exception e) {
-          e.printStackTrace();
+          e.printStackTrace(System.out);
       }
   }
 
@@ -512,7 +512,7 @@ public class Injector {
         setStaticFinalField(blocksClass, "TRAPPED_CHEST", optimizedTrappedChestBlock);
         setStaticFinalField(blocksClass, "DAYLIGHT_DETECTOR", daylightDetectorBlock);
     } catch (Throwable t) {
-        t.printStackTrace();
+        t.printStackTrace(System.out);
         Bukkit.shutdown();
     }
 

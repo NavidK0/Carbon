@@ -46,9 +46,9 @@ public class CarbonEntityGenerator {
                              }
             } catch (SecurityException e) {
             } catch (IllegalArgumentException e) {
-                e.printStackTrace();
+                e.printStackTrace(System.out);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.out);
         }
     }
     
@@ -67,7 +67,7 @@ public class CarbonEntityGenerator {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace(System.out);
 		}
 	}
 }

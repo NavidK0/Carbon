@@ -95,7 +95,7 @@ public class Carbon extends JavaPlugin {
       entityGenerator.injectNewCreatures();
     }
     catch (Exception e) {
-      e.printStackTrace();
+      e.printStackTrace(System.out);
       log.warning("[Carbon] 1.8 injection failed! Something went wrong, server cannot start properly, shutting down...");
       Bukkit.shutdown();
       return;
@@ -132,7 +132,7 @@ public class Carbon extends JavaPlugin {
         new ProtocolItemListener(this).loadRemapList().init();
         new ProtocolEntityListener(this).loadRemapList().init();
       } catch (Throwable t) {
-        t.printStackTrace();
+        t.printStackTrace(System.out);
       }
     } else {
       log.info("ProtocolLib not found, not hooking. 1.7 clients not supported.");

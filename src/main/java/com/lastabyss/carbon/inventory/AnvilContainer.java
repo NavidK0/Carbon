@@ -174,7 +174,7 @@ public class AnvilContainer extends net.minecraft.server.v1_7_R4.ContainerAnvil 
 				this.b();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace(System.out);
 			human.getBukkitEntity().closeInventory();
 		}
 	}
