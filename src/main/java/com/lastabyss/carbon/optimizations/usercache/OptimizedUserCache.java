@@ -59,7 +59,7 @@ public class OptimizedUserCache extends UserCache {
 		String playername = name.toLowerCase(Locale.ROOT);
 		UserCacheEntry entry = stringToProfile.get(playername);
 		if (entry != null && entry.isExpired()) {
-			uuidToProfile.remove(playername);
+			stringToProfile.remove(playername);
 			uuidToProfile.remove(entry.getProfile().getId());
 			return null;
 		}

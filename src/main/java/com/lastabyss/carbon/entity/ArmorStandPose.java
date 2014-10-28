@@ -31,6 +31,7 @@ public class ArmorStandPose {
 		return list;
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof ArmorStandPose)) {
 			return false;
@@ -38,6 +39,11 @@ public class ArmorStandPose {
 			ArmorStandPose pose = (ArmorStandPose) obj;
 			return this.x == pose.x && this.y == pose.y && this.z == pose.z;
 		}
+	}
+
+	@Override
+	public int hashCode() {
+		return ((int) x) ^ ((int) y) ^ ((int) z);
 	}
 
 	public float getX() {
