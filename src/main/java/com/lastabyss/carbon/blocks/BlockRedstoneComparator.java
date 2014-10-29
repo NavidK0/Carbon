@@ -53,12 +53,11 @@ public class BlockRedstoneComparator extends net.minecraft.server.v1_7_R4.BlockR
 					new IEntitySelector() {
 						@Override
 						public boolean a(Entity entity) {
-							int framedirection = (MathHelper.floor((entity.yaw * 4.0F / 360.0F) + 0.5D) & 3);
-							if (framedirection == 2) {
-								framedirection = 0;
-							}
+							int framedirection = (MathHelper.floor((entity.yaw / 90.0F) + 0.5D) & 3);
 							if (framedirection == 0) {
 								framedirection = 2;
+							} else if (framedirection == 2) {
+								framedirection = 0;
 							}
 							return framedirection == direction;
 						}

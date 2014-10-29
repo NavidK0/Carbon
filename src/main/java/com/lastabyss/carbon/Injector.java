@@ -12,6 +12,7 @@ import com.lastabyss.carbon.blocks.BlockOptimizedEnderChest;
 import com.lastabyss.carbon.blocks.BlockPrismarine;
 import com.lastabyss.carbon.blocks.BlockRedSandstone;
 import com.lastabyss.carbon.blocks.BlockRedSandstoneStairs;
+import com.lastabyss.carbon.blocks.BlockRedstoneComparator;
 import com.lastabyss.carbon.blocks.BlockRedstoneTorchOff;
 import com.lastabyss.carbon.blocks.BlockRedstoneTorchOn;
 import com.lastabyss.carbon.blocks.BlockSeaLantern;
@@ -36,6 +37,7 @@ import com.lastabyss.carbon.entity.ArmorStandPose;
 import com.lastabyss.carbon.entity.EntityArmorStand;
 import com.lastabyss.carbon.entity.EntityEndermite;
 import com.lastabyss.carbon.entity.EntityGuardian;
+import com.lastabyss.carbon.entity.EntityItemFrame;
 import com.lastabyss.carbon.entity.EntityRabbit;
 import com.lastabyss.carbon.entity.TileEntityBanner;
 import com.lastabyss.carbon.entity.TileEntityOptimizedChest;
@@ -49,6 +51,7 @@ import com.lastabyss.carbon.items.ItemArmorStand;
 import com.lastabyss.carbon.items.ItemBanner;
 import com.lastabyss.carbon.items.ItemCookedMutton;
 import com.lastabyss.carbon.items.ItemCookedRabbit;
+import com.lastabyss.carbon.items.ItemHanging;
 import com.lastabyss.carbon.items.ItemMutton;
 import com.lastabyss.carbon.items.ItemPrismarineCrystal;
 import com.lastabyss.carbon.items.ItemPrismarineShard;
@@ -74,7 +77,10 @@ import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.ItemAnvil;
 import net.minecraft.server.v1_7_R4.ItemBlock;
 import net.minecraft.server.v1_7_R4.ItemMultiTexture;
+import net.minecraft.server.v1_7_R4.ItemReed;
+import net.minecraft.server.v1_7_R4.Items;
 import net.minecraft.server.v1_7_R4.MobEffectList;
+import net.minecraft.server.v1_7_R4.MonsterEggInfo;
 import net.minecraft.server.v1_7_R4.Packet;
 import net.minecraft.server.v1_7_R4.PacketPlayOutEntityTeleport;
 import net.minecraft.server.v1_7_R4.PotionBrewer;
@@ -151,6 +157,8 @@ public class Injector {
   public Block optimizedChestBlock = new BlockOptimizedChest(0);
   public Block optimizedTrappedChestBlock = new BlockOptimizedChest(1);
   public Block optimizedEnderChestBlock = new BlockOptimizedEnderChest();
+  public Block redstoneComparatorOffBlock = new BlockRedstoneComparator(false);
+  public Block redstoneComparatorOnBlock = new BlockRedstoneComparator(true);
 
   //Bukkit materials
   public Material slimeMat = Utilities.addMaterial("SLIME", 165);
@@ -274,6 +282,8 @@ public class Injector {
   public Item cookedMuttonItem = new ItemCookedMutton();
   public Item prismarineShardItem = new ItemPrismarineShard();
   public Item prismarineCrystalItem = new ItemPrismarineCrystal();
+  public Item redstoneComparatorItem = new ItemReed(redstoneComparatorOffBlock);
+  public Item frameItem = new ItemHanging(EntityItemFrame.class);
 
   //Entities
   public EntityType endermiteEntity = Utilities.addEntity("ENDERMITE", 67, Endermite.class);
@@ -331,28 +341,27 @@ public class Injector {
       }
   }
 
+  @SuppressWarnings("unchecked")
   public static void registerEntity(Class<? extends Entity> entityClass, String name, int id) {
       try {
-          Class<EntityTypes> clazz = EntityTypes.class;
-          Method register = clazz.getDeclaredMethod("a", Class.class, String.class, Integer.TYPE);
-          register.setAccessible(true);
-          register.invoke(null, entityClass, name, id);
+    	  ((Map<String, Class<? extends Entity>>) Utilities.setAccessible(Field.class, EntityTypes.class.getDeclaredField("c"), true).get(null)).put(name, entityClass);
+    	  ((Map<Class<? extends Entity>, String>) Utilities.setAccessible(Field.class, EntityTypes.class.getDeclaredField("d"), true).get(null)).put(entityClass, name);
+    	  ((Map<Integer, Class<? extends Entity>>) Utilities.setAccessible(Field.class, EntityTypes.class.getDeclaredField("e"), true).get(null)).put(id, entityClass);
+    	  ((Map<Class<? extends Entity>, Integer>) Utilities.setAccessible(Field.class, EntityTypes.class.getDeclaredField("f"), true).get(null)).put(entityClass, id);
+    	  ((Map<String, Integer>) Utilities.setAccessible(Field.class, EntityTypes.class.getDeclaredField("g"), true).get(null)).put(name, id);
           if (plugin.getConfig().getBoolean("debug.verbose", false))
             Carbon.log.log(Level.INFO, "[Carbon] Entity {0} was registered into Minecraft.", entityClass.getCanonicalName());
-      } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+      } catch (SecurityException | IllegalAccessException | IllegalArgumentException | NoSuchFieldException e) {
         e.printStackTrace(System.out);
       }
   }
 
-  public static void registerEntity(Class<? extends Entity> entityClass, String name, int id, int monsterEgg, int monsterEggData2) {
+  @SuppressWarnings("unchecked")
+  public static void registerEntity(Class<? extends Entity> entityClass, String name, int id, int monsterEgg, int monsterEggData) {
       try {
-          Class<EntityTypes> clazz = EntityTypes.class;
-          Method register = clazz.getDeclaredMethod("a", Class.class, String.class, Integer.TYPE, Integer.TYPE, Integer.TYPE);
-          register.setAccessible(true);
-          register.invoke(null, entityClass, name, id, monsterEgg, monsterEggData2);
-          if (plugin.getConfig().getBoolean("debug.verbose", false))
-            Carbon.log.log(Level.INFO, "[Carbon] Entity {0} was registered into Minecraft.", entityClass.getCanonicalName());
-      } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+    	  registerEntity(entityClass, name, id);
+    	  EntityTypes.eggInfo.put(id, new MonsterEggInfo(id, monsterEgg, monsterEggData));
+      } catch (SecurityException | IllegalArgumentException e) {
         e.printStackTrace(System.out);
       }
   }
@@ -452,6 +461,8 @@ public class Injector {
     registerBlock(54, "chest", optimizedChestBlock, optimizedChestItem);
     registerBlock(146, "trapped_chest", optimizedTrappedChestBlock, optimizedTrappedChestItem);
     registerBlock(130, "ender_chest", optimizedEnderChestBlock, optimizedEnderChestItem);
+    registerBlock(149, "unpowered_comparator", redstoneComparatorOffBlock);
+    registerBlock(150, "powered_comparator", redstoneComparatorOnBlock);
 
     //Register items
     registerItem(409, "prismarine_shard", prismarineShardItem);
@@ -465,12 +476,15 @@ public class Injector {
     registerItem(424, "cooked_mutton", cookedMuttonItem);
     registerItem(425, "banner", standingBannerItem);
     registerItem(416, "armor_stand", armorStandItem);
+    registerItem(389, "item_frame", frameItem);
+    registerItem(404, "comparator", redstoneComparatorItem);
 
     //Register entities (data copied straight from 1.8, from EntityList.java)
     registerEntity(EntityEndermite.class, "Endermite", 67, 1447446, 7237230);
     registerEntity(EntityGuardian.class, "Guardian", 68, 5931634, 15826224);
     registerEntity(EntityRabbit.class, "Rabbit", 101, 10051392, 7555121);
     registerEntity(EntityArmorStand.class, "ArmorStand", 30);
+    registerEntity(EntityItemFrame.class, "ItemFrame", 18);
 
     //Register tile entities
     registerTileEntity(TileEntityBanner.class, "Banner");
@@ -512,6 +526,11 @@ public class Injector {
         setStaticFinalField(blocksClass, "CHEST", optimizedChestBlock);
         setStaticFinalField(blocksClass, "TRAPPED_CHEST", optimizedTrappedChestBlock);
         setStaticFinalField(blocksClass, "DAYLIGHT_DETECTOR", daylightDetectorBlock);
+        setStaticFinalField(blocksClass, "REDSTONE_COMPARATOR_OFF", redstoneComparatorOffBlock);
+        setStaticFinalField(blocksClass, "REDSTONE_COMPARATOR_ON", redstoneComparatorOnBlock);
+        Class<Items> itemsClass = Items.class;
+        setStaticFinalField(itemsClass, "ITEM_FRAME", frameItem);
+        setStaticFinalField(itemsClass, "REDSTONE_COMPARATOR", redstoneComparatorItem);
     } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException t) {
         t.printStackTrace(System.out);
         Bukkit.shutdown();
