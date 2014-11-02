@@ -124,7 +124,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 /**
- * I like pie.
+ * The injector class is the driver behind Carbon.
  * @author Navid
  */
 public class Injector {
