@@ -2,9 +2,7 @@ package com.lastabyss.carbon.generator.monument;
 
 import com.google.common.collect.Lists;
 import com.lastabyss.carbon.entity.EntityGuardian;
-import com.lastabyss.carbon.utils.Utilities;
 
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -17,7 +15,6 @@ import net.minecraft.server.v1_7_R4.BiomeMeta;
 import net.minecraft.server.v1_7_R4.MathHelper;
 import net.minecraft.server.v1_7_R4.StructureGenerator;
 import net.minecraft.server.v1_7_R4.StructureStart;
-import net.minecraft.server.v1_7_R4.World;
 
 public class WorldGenMonument extends StructureGenerator {
 
@@ -75,9 +72,6 @@ public class WorldGenMonument extends StructureGenerator {
 		randomi += (random.nextInt(this.f - this.g) + random.nextInt(this.f - this.g)) / 2;
 		randomj += (random.nextInt(this.f - this.g) + random.nextInt(this.f - this.g)) / 2;
 		if (icopy == randomi && jcopy == randomj) {
-			System.out.println(icopy * 16 + 8);
-			System.out.println(jcopy * 16 + 8);
-			System.out.println(this.c.getWorldChunkManager().getBiome(icopy * 16 + 8, jcopy * 16 + 8));
 			if (this.c.getWorldChunkManager().getBiome(icopy * 16 + 8, jcopy * 16 + 8) != BiomeBase.DEEP_OCEAN) {
 				return false;
 			}
@@ -100,23 +94,16 @@ public class WorldGenMonument extends StructureGenerator {
 		return meta;
 	}
 
-	//wrapper methods
-
-	public boolean a(World world, int x, int y, int z) {
-		try {
-			Utilities.setAccessible(Method.class, StructureGenerator.class.getDeclaredMethod("a", World.class), true).invoke(this, world);
-		} catch (Exception e) {
-		}
-		Iterator<?> var3 = this.d.values().iterator();
-		StructureStart structureStart;
-		do {
-			if (!var3.hasNext()) {
-				return false;
+	public boolean isInside(int x, int y, int z) {
+		Iterator<?> iterator = this.d.values().iterator();
+		while (iterator.hasNext()) {
+			StructureStart structureStart = (StructureStart) iterator.next();
+			if (structureStart.a().b(x, y, z)) {
+				return true;
 			}
-			structureStart = (StructureStart) var3.next();
-		} while (!structureStart.d() || !structureStart.a().b(x, y, z));
+		}
 
-		return true;
+		return false;
 	}
 
 }

@@ -346,7 +346,9 @@ public class ChunkProviderGenerate implements IChunkProvider {
 		if (enumCreatureType == EnumCreatureType.MONSTER && this.x.a(x, y, z)) {
 			return this.x.b();
 		}
-		if (enumCreatureType == EnumCreatureType.MONSTER && this.monumentGenerator.a(this.n, x, y, z));
+		/*if (enumCreatureType == EnumCreatureType.MONSTER && this.monumentGenerator.isInside(x, y, z)) {
+			return this.monumentGenerator.b();
+		}*/
 		return biome.getMobs(enumCreatureType);
 	}
 
