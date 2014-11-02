@@ -123,6 +123,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 
+/**
+ * I like pie.
+ * @author Navid
+ */
 public class Injector {
     
   private static Carbon plugin;
