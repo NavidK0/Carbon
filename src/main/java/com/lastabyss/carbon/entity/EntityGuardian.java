@@ -329,7 +329,7 @@ public class EntityGuardian extends EntityMonster {
 
     @Override
     public boolean canSpawn() {
-        return this.locY > 45.0D && this.locY < 63.0D && super.canSpawn();
+    	return this.world.a(this.boundingBox, this) && this.world.getCubes(this, this.boundingBox).isEmpty();
     }
 
     private Guardian bukkitEntity;

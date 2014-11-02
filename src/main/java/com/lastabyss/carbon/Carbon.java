@@ -10,6 +10,8 @@ import com.lastabyss.carbon.listeners.ItemListener;
 import com.lastabyss.carbon.listeners.PlayerListener;
 import com.lastabyss.carbon.listeners.WorldBorderListener;
 import com.lastabyss.carbon.nettyinjector.PacketDecoder;
+import com.lastabyss.carbon.optimizations.usercache.OptimizedUserCacheInjector;
+import com.lastabyss.carbon.optimizations.world.WorldTileEntityListInjectorListener;
 import com.lastabyss.carbon.protocolmodifier.ProtocolBlockListener;
 import com.lastabyss.carbon.protocolmodifier.ProtocolEntityListener;
 import com.lastabyss.carbon.protocolmodifier.ProtocolItemListener;
@@ -21,6 +23,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import net.minecraft.server.v1_7_R4.MinecraftServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -85,7 +89,6 @@ public class Carbon extends JavaPlugin {
     
     //Inject 1.8 features. Stop server if something fails
     try {
-      DynamicEnumType.loadReflection();
       Utilities.instantiate(this);
       instrumentator = new Instrumentator(this, new File(getDataFolder(), "libraries/natives/").getPath());
       instrumentator.instrumentate();
@@ -93,6 +96,12 @@ public class Carbon extends JavaPlugin {
       injector.registerAll();
       injector.registerRecipes();
       entityGenerator.injectNewCreatures();
+      if (getConfig().getBoolean("optimizations.usercache", false)) {
+        OptimizedUserCacheInjector.injectUserCache();
+        if (getConfig().getBoolean("debug.verbose", false)) {
+          Carbon.log.log(Level.INFO, "[Carbon] Optimized UserCache was injected into Minecraft");
+        }
+      }
     } catch (Throwable e) {
       e.printStackTrace(System.out);
       log.warning("[Carbon] 1.8 injection failed! Something went wrong, server cannot start properly, shutting down...");
@@ -110,6 +119,14 @@ public class Carbon extends JavaPlugin {
       this.getDataFolder().mkdirs();
     }
     reloadConfig();
+
+    if (getConfig().getBoolean("optimizations.world.tileentitytick", false)) {
+        getServer().getPluginManager().registerEvents(new WorldTileEntityListInjectorListener(), this);
+        if (getConfig().getBoolean("debug.verbose", false)) {
+          Carbon.log.log(Level.INFO, "[Carbon] Started optimized entity tick list injector listener");
+        }
+    }
+
     getServer().getPluginManager().registerEvents(blockListener, this);
     getServer().getPluginManager().registerEvents(commandListener, this);
     getServer().getPluginManager().registerEvents(itemListener, this);
@@ -179,6 +196,7 @@ public class Carbon extends JavaPlugin {
   @Override
   public void onDisable() {
     WorldBorder.save();
+    MinecraftServer.getServer().getUserCache().c();
   }
 
   //There is no way to reload this plugin safely do to the fact it adds 1.8 blocks into the server.

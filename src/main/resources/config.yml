@@ -24,6 +24,8 @@ modify:
     wooden_button: true
     light_weighted_pressure_plate: true
     heavy_weighted_pressure_plate: true
+    unpowered_comparator: true
+    powered_comparator: true
     daylight_detector: true
     slime: true
     barrier: true
@@ -75,11 +77,14 @@ modify:
     cooked_mutton: true
     banner: true
     armor_stand: true
+    item_frame: true
+    comparator: true
   entities:
     Endermite: true
     Guardian: true
     Rabbit: true
     ArmorStand: true
+    ItemFrame: true
   tileentities:
     Banner: true
     Chest: true
@@ -135,6 +140,11 @@ protocollib:
     rabbit_foot: 1
     rabbit_hide: 1
     armor_stand: 51
+    
+optimizations:
+  world:
+    tileentitytick: false
+  usercache: false
     
 debug:
   verbose: true

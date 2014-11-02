@@ -231,7 +231,7 @@ public class Utilities {
         return list;
     }
 
-    public static int CLIENT_1_8_PROTOCOL_VERSION = 47;
+    public static final int CLIENT_1_8_PROTOCOL_VERSION = 47;
     /**
      * Gets protocol version of a player
      * @param player

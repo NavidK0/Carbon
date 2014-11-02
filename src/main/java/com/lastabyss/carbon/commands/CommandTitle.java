@@ -31,13 +31,18 @@ public class CommandTitle extends Command {
                 return true;
             }
 
+            ArrayList<Player> targets = new ArrayList<Player>();
+            if (args[0].equalsIgnoreCase("@a")) {
+            	targets.addAll(Bukkit.getOnlinePlayers());
+            }
             Player player = getOnlinePlayer(args[0]);
             if (player == null) {
                 sender.sendMessage(ChatColor.RED + args[0] + " is not a valid player or is offline.");
                 return true;
             }
 
-            if (((CraftPlayer)player).getHandle().playerConnection.networkManager.getVersion() >= 47) {
+            targets.add(player);
+            for (Player target : targets) {
                 if (args[1].equalsIgnoreCase("times")) {
                     int fadeIn, stay, fadeOut;
 
@@ -67,7 +72,7 @@ public class CommandTitle extends Command {
                         return true;
                     }
 
-                    sendTimes(fadeIn, stay, fadeOut, player);
+                    sendTimes(fadeIn, stay, fadeOut, target);
                     sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
                 } else if (args[1].equalsIgnoreCase("title")) {
                     if (args.length < 3) {
@@ -75,7 +80,7 @@ public class CommandTitle extends Command {
                         return true;
                     }
 
-                    sendTitle(args, 2, player);
+                    sendTitle(args, 2, target);
                     sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
                 } else if (args[1].equalsIgnoreCase("subtitle")) {
                     if (args.length < 3) {
@@ -83,23 +88,21 @@ public class CommandTitle extends Command {
                         return true;
                     }
 
-                    sendSubtitle(args, 2, player);
+                    sendSubtitle(args, 2, target);
                     sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
 
                 } else if (args[1].equalsIgnoreCase("clear")) {
 
                     //sendTimes(0,0,0,player);
-                    sendClear(player);
+                    sendClear(target);
                     sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
 
                 } else if (args[1].equalsIgnoreCase("reset")) {
 
-                    sendReset(player);
+                    sendReset(target);
                     sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
 
                 }
-            }else{
-                sender.sendMessage(ChatColor.RED + "Sorry, that player can not receive title commands!");
             }
             return true;
         }
