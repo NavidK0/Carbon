@@ -16,13 +16,9 @@ import com.lastabyss.carbon.protocolmodifier.ProtocolItemListener;
 import com.lastabyss.carbon.utils.Metrics;
 import com.lastabyss.carbon.utils.Utilities;
 import com.lastabyss.carbon.worldborder.WorldBorder;
-import com.sun.tools.attach.AgentInitializationException;
-import com.sun.tools.attach.AgentLoadException;
-import com.sun.tools.attach.AttachNotSupportedException;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -55,7 +51,7 @@ public class Carbon extends JavaPlugin {
   private static Injector injector;
   private static Instrumentator instrumentator;
   
-  private final double localConfigVersion = 0.7;
+  private final double localConfigVersion = 0.8;
   private final String supportedVersion = "1.7.10"; //Wanna use reflection and change this value? I dare you...
 
   @Override

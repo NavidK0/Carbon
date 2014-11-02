@@ -5,10 +5,91 @@ options:
   creeper:
     dropMobHead: true
   worlds: [world]
+  
 mobSpawning:
   rabbits: true
   endermites: true
   guardians: true
+  
+modify:
+  blocks:
+    stone: true
+    sponge: true
+    stone_button: true
+    torch: true
+    stone_pressure_plate: true
+    wooden_pressure_plate: true
+    unlit_redstone_torch: true
+    redstone_torch: true
+    wooden_button: true
+    light_weighted_pressure_plate: true
+    heavy_weighted_pressure_plate: true
+    daylight_detector: true
+    slime: true
+    barrier: true
+    prismarine: true
+    sea_lantern: true
+    standing_banner: true
+    wall_banner: true
+    daylight_detector_inverted: true
+    red_sandstone: true
+    red_sandstone_stairs: true
+    #Red Sandstone Doubleslab
+    double_stone_slab2: true 
+    #Red Sandstone Slab
+    stone_slab2: true
+    spruce_fence_gate: true
+    birch_fence_gate: true
+    jungle_fence_gate: true
+    dark_oak_fence_gate: true
+    acacia_fence_gate: true
+    spruce_fence: true
+    birch_fence: true
+    jungle_fence: true
+    dark_oak_fence: true
+    acacia_fence: true
+    spruce_door: true
+    birch_door: true
+    jungle_door: true
+    acacia_door: true
+    dark_oak_door: true
+    anvil: true
+    enchanting_table: true
+    chest: true
+    trapped_chest: true
+    ender_chest: true
+  items:
+    spruce_door: true
+    birch_door: true
+    jungle_door: true
+    acacia_door: true
+    dark_oak_door: true
+    prismarine_shard: true
+    prismarine_crystals: true
+    rabbit: true
+    cooked_rabbit: true
+    rabbit_stew: true
+    rabbit_foot: true
+    rabbit_hide: true
+    mutton: true
+    cooked_mutton: true
+    banner: true
+    armor_stand: true
+  entities:
+    Endermite: true
+    Guardian: true
+    Rabbit: true
+    ArmorStand: true
+  tileentities:
+    Banner: true
+    Chest: true
+    EnderChest: true
+    EnchantTable: true
+  commands:
+    worldborder: true
+    title: true
+    particle: true
+    
 protocollib:
   blocks:
     slime: 133
@@ -54,8 +135,8 @@ protocollib:
     rabbit_foot: 1
     rabbit_hide: 1
     armor_stand: 51
+    
 debug:
   verbose: true
         
-        
-donottouch.configVersion: 0.7
+donottouch.configVersion: 0.8

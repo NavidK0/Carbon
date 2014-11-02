@@ -287,92 +287,130 @@ public class Injector {
       Injector.plugin = plugin;
   }
 
-  public static void registerBlock(int id, String name, Block block) {
-      Block.REGISTRY.a(id, name, block);
-      if (plugin.getConfig().getBoolean("debug.verbose", false))
-        Carbon.log.log(Level.INFO, "[Carbon] Block {0} was registered into Minecraft.", name);
-  }
+    public static void registerBlock(int id, String name, Block block) {
+        if (plugin.getConfig().getBoolean("modify.blocks." + name, true)) {
+            Block.REGISTRY.a(id, name, block);
+        } else {
+            if (plugin.getConfig().getBoolean("debug.verbose", false))
+                Carbon.log.log(Level.INFO, "[Carbon] Block {0} is disabled in the config; skipped.", name);  
+            return;
+        }
+        if (plugin.getConfig().getBoolean("debug.verbose", false))
+            Carbon.log.log(Level.INFO, "[Carbon] Block {0} was registered into Minecraft.", name);
+    }
 
   public static void registerBlock(int id, String name, Block block, Item item) {
-      Block.REGISTRY.a(id, name, block);
-      Item.REGISTRY.a(id, name, item);
+      if (plugin.getConfig().getBoolean("modify.blocks." + name, true)) {
+        Block.REGISTRY.a(id, name, block);
+        Item.REGISTRY.a(id, name, item);
+      } else {
+          if (plugin.getConfig().getBoolean("debug.verbose", false))
+            Carbon.log.log(Level.INFO, "[Carbon] Block {0} with item {1} is disabled in the config; skipped.", new Object[]{name + "(" + block.getName() + ")", item.getName()});
+          return;
+      }
       if (plugin.getConfig().getBoolean("debug.verbose", false))
         Carbon.log.log(Level.INFO, "[Carbon] Block {0} with item {1} was registered into Minecraft.", new Object[]{name + "(" + block.getName() + ")", item.getName()});
   }
 
   public static void registerItem(int id, String name, Item item) {
-      Item.REGISTRY.a(id, name, item);
+      if (plugin.getConfig().getBoolean("modify.items." + name, true)) {
+        Item.REGISTRY.a(id, name, item);
+      } else {
+          if (plugin.getConfig().getBoolean("debug.verbose", false))
+            Carbon.log.log(Level.INFO, "[Carbon] Item {0} is disabled in the config; skipped.", name);
+          return;
+      }
       if (plugin.getConfig().getBoolean("debug.verbose", false))
         Carbon.log.log(Level.INFO, "[Carbon] Item {0} was registered into Minecraft.", name);
   }
 
   @SuppressWarnings("unchecked")
   public static void registerTileEntity(Class<? extends TileEntity> entityClass, String name) {
-      try {
-    	  ((Map<String, Class<? extends TileEntity>>)Utilities.setAccessible(Field.class, TileEntity.class.getDeclaredField("i"), true).get(null)).put(name, entityClass);
-    	  ((Map<Class<? extends TileEntity>, String>)Utilities.setAccessible(Field.class, TileEntity.class.getDeclaredField("j"), true).get(null)).put(entityClass, name);
-          if (plugin.getConfig().getBoolean("debug.verbose", false))
-            Carbon.log.log(Level.INFO, "[Carbon] Tile Entity {0} was registered into Minecraft.", entityClass.getCanonicalName());
-      } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-        e.printStackTrace(System.out);
+      if (plugin.getConfig().getBoolean("modify.tileentities." + name, true)) {
+        try {
+            ((Map<String, Class<? extends TileEntity>>)Utilities.setAccessible(Field.class, TileEntity.class.getDeclaredField("i"), true).get(null)).put(name, entityClass);
+            ((Map<Class<? extends TileEntity>, String>)Utilities.setAccessible(Field.class, TileEntity.class.getDeclaredField("j"), true).get(null)).put(entityClass, name);
+            if (plugin.getConfig().getBoolean("debug.verbose", false))
+              Carbon.log.log(Level.INFO, "[Carbon] Tile Entity {0} was registered into Minecraft.", entityClass.getCanonicalName());
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+          e.printStackTrace(System.out);
+        }
+      } else {
+            if (plugin.getConfig().getBoolean("debug.verbose", false))
+                Carbon.log.log(Level.INFO, "[Carbon] Tile Entity {0} is disabled in the config; skipped.", name);
       }
   }
 
   @SuppressWarnings("unchecked")
   public static void registerDataWatcherType(Class<?> type, int id) {
-      try {
-          Field classToIdField = DataWatcher.class.getDeclaredField("classToId");
-          classToIdField.setAccessible(true);
-          ((TObjectIntMap<Class<?>>) classToIdField.get(null)).put(type, id);
-          if (plugin.getConfig().getBoolean("debug.verbose", false))
-              Carbon.log.log(Level.INFO, "[Carbon] DataWatcher type {0} was registered into Minecraft.", type.getCanonicalName());
-      } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-        e.printStackTrace(System.out);
-      }
+        try {
+            Field classToIdField = DataWatcher.class.getDeclaredField("classToId");
+            classToIdField.setAccessible(true);
+            ((TObjectIntMap<Class<?>>) classToIdField.get(null)).put(type, id);
+            if (plugin.getConfig().getBoolean("debug.verbose", false))
+                Carbon.log.log(Level.INFO, "[Carbon] DataWatcher type {0} was registered into Minecraft.", type.getCanonicalName());
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+          e.printStackTrace(System.out);
+        }
   }
 
   public static void registerEntity(Class<? extends Entity> entityClass, String name, int id) {
-      try {
-          Class<EntityTypes> clazz = EntityTypes.class;
-          Method register = clazz.getDeclaredMethod("a", Class.class, String.class, Integer.TYPE);
-          register.setAccessible(true);
-          register.invoke(null, entityClass, name, id);
-          if (plugin.getConfig().getBoolean("debug.verbose", false))
-            Carbon.log.log(Level.INFO, "[Carbon] Entity {0} was registered into Minecraft.", entityClass.getCanonicalName());
-      } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-        e.printStackTrace(System.out);
+      if (plugin.getConfig().getBoolean("modify.entities." + name, true)) {
+        try {
+            Class<EntityTypes> clazz = EntityTypes.class;
+            Method register = clazz.getDeclaredMethod("a", Class.class, String.class, Integer.TYPE);
+            register.setAccessible(true);
+            register.invoke(null, entityClass, name, id);
+            if (plugin.getConfig().getBoolean("debug.verbose", false))
+              Carbon.log.log(Level.INFO, "[Carbon] Entity {0} was registered into Minecraft.", entityClass.getCanonicalName());
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+          e.printStackTrace(System.out);
+        }
+      } else {
+            if (plugin.getConfig().getBoolean("debug.verbose", false))
+                Carbon.log.log(Level.INFO, "[Carbon] Entity {0} is disabled in the config; skipped.", name);
       }
   }
 
   public static void registerEntity(Class<? extends Entity> entityClass, String name, int id, int monsterEgg, int monsterEggData2) {
-      try {
-          Class<EntityTypes> clazz = EntityTypes.class;
-          Method register = clazz.getDeclaredMethod("a", Class.class, String.class, Integer.TYPE, Integer.TYPE, Integer.TYPE);
-          register.setAccessible(true);
-          register.invoke(null, entityClass, name, id, monsterEgg, monsterEggData2);
-          if (plugin.getConfig().getBoolean("debug.verbose", false))
-            Carbon.log.log(Level.INFO, "[Carbon] Entity {0} was registered into Minecraft.", entityClass.getCanonicalName());
-      } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-        e.printStackTrace(System.out);
+      if (plugin.getConfig().getBoolean("modify.entities." + name, true)) {
+        try {
+            Class<EntityTypes> clazz = EntityTypes.class;
+            Method register = clazz.getDeclaredMethod("a", Class.class, String.class, Integer.TYPE, Integer.TYPE, Integer.TYPE);
+            register.setAccessible(true);
+            register.invoke(null, entityClass, name, id, monsterEgg, monsterEggData2);
+            if (plugin.getConfig().getBoolean("debug.verbose", false))
+              Carbon.log.log(Level.INFO, "[Carbon] Entity {0} was registered into Minecraft.", entityClass.getCanonicalName());
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+          e.printStackTrace(System.out);
+        }
+      } else {
+            if (plugin.getConfig().getBoolean("debug.verbose", false))
+                Carbon.log.log(Level.INFO, "[Carbon] Entity {0} is disabled in the config; skipped.", name);
       }
   }
 
   @SuppressWarnings("unchecked")
   public static void registerPacket(EnumProtocol protocol, Class<? extends Packet> packetClass, int packetID, boolean isClientbound) {
-      try {
-         if (isClientbound) {
-           protocol.b().put(packetID, packetClass);
-         } else {
-           protocol.a().put(packetID, packetClass);
-         }
-         Field mapField = EnumProtocol.class.getDeclaredField("f");
-         mapField.setAccessible(true);
-         Map<Class<? extends Packet>, EnumProtocol> map = (Map<Class<? extends Packet>, EnumProtocol>) mapField.get(null);
-         map.put(packetClass, protocol);
-         if (plugin.getConfig().getBoolean("debug.verbose", false))
-            Carbon.log.log(Level.INFO, "[Carbon] Packet {0} was registered into Minecraft with ID: " + packetID, packetClass.getCanonicalName());
-      } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-         e.printStackTrace(System.out);
+      if (plugin.getConfig().getBoolean("modify.packets." + packetID, true)) {
+        try {
+           if (isClientbound) {
+             protocol.b().put(packetID, packetClass);
+           } else {
+             protocol.a().put(packetID, packetClass);
+           }
+           Field mapField = EnumProtocol.class.getDeclaredField("f");
+           mapField.setAccessible(true);
+           Map<Class<? extends Packet>, EnumProtocol> map = (Map<Class<? extends Packet>, EnumProtocol>) mapField.get(null);
+           map.put(packetClass, protocol);
+           if (plugin.getConfig().getBoolean("debug.verbose", false))
+              Carbon.log.log(Level.INFO, "[Carbon] Packet {0} was registered into Minecraft with ID: " + packetID, packetClass.getCanonicalName());
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+           e.printStackTrace(System.out);
+        }
+      } else {
+            if (plugin.getConfig().getBoolean("debug.verbose", false))
+                Carbon.log.log(Level.INFO, "[Carbon] Packet {0} is disabled in the config; skipped.", packetID);
       }
   }
 
@@ -390,17 +428,22 @@ public class Injector {
 
   @SuppressWarnings("unchecked")
   public static void registerPotionEffect(int effectId, String durations, String amplifier) {
-      try {
-          ((Map<Integer, String>)Utilities.setAccessible(Field.class, PotionBrewer.class.getDeclaredField("effectDurations"), true).get(null)).put(effectId, durations);
-          ((Map<Integer, String>)Utilities.setAccessible(Field.class, PotionBrewer.class.getDeclaredField("effectAmplifiers"), true).get(null)).put(effectId, amplifier);
-      } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-          e.printStackTrace(System.out);
+      if (plugin.getConfig().getBoolean("modify.potions." + effectId, true)) {
+        try {
+            ((Map<Integer, String>)Utilities.setAccessible(Field.class, PotionBrewer.class.getDeclaredField("effectDurations"), true).get(null)).put(effectId, durations);
+            ((Map<Integer, String>)Utilities.setAccessible(Field.class, PotionBrewer.class.getDeclaredField("effectAmplifiers"), true).get(null)).put(effectId, amplifier);
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+            e.printStackTrace(System.out);
+        }
+      } else {
+            if (plugin.getConfig().getBoolean("debug.verbose", false))
+                Carbon.log.log(Level.INFO, "[Carbon] Potion effect {0} is disabled in the config; skipped.", effectId);
       }
   }
 
   public void registerAll() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
-	//Register datawatcher types
-	registerDataWatcherType(ArmorStandPose.class, 7);
+    //Register datawatcher types
+    registerDataWatcherType(ArmorStandPose.class, 7);
 
     //Register blocks
     registerBlock(1, "stone", stoneBlock, stoneItem);
@@ -479,9 +522,12 @@ public class Injector {
     registerTileEntity(TileEntityOptimizedEnchantTable.class, "EnchantTable");
 
     //Register commands from 1.8
-    Utilities.registerBukkitCommand("minecraft", new CommandWorldBorder());
-    Utilities.registerBukkitCommand("minecraft", new CommandParticle());
-    Utilities.registerBukkitCommand("minecraft", new CommandTitle());
+    if (plugin.getConfig().getBoolean("modify.commands.worldborder", true))
+        Utilities.registerBukkitCommand("minecraft", new CommandWorldBorder());
+    if (plugin.getConfig().getBoolean("modify.commands.particle", true))
+        Utilities.registerBukkitCommand("minecraft", new CommandParticle());
+    if (plugin.getConfig().getBoolean("modify.commands.title", true))
+        Utilities.registerBukkitCommand("minecraft", new CommandTitle());
 
     //Register additional packets
     registerPacket(EnumProtocol.PLAY, PacketPlayOutWorldBorder.class, 68, true);
@@ -496,22 +542,40 @@ public class Injector {
     //inject our modified blocks
     try {
         Class<Blocks> blocksClass = Blocks.class;
-        setStaticFinalField(blocksClass, "STONE", stoneBlock);
-        setStaticFinalField(blocksClass, "SPONGE", spongeBlock);
-        setStaticFinalField(blocksClass, "TORCH", torchBlock);
-        setStaticFinalField(blocksClass, "REDSTONE_TORCH_ON", redstoneTorchBlockOn);
-        setStaticFinalField(blocksClass, "REDSTONE_TORCH_OFF", redstoneTorchBlockOff);
-        setStaticFinalField(blocksClass, "STONE_BUTTON", stoneButtonBlock);
-        setStaticFinalField(blocksClass, "WOOD_BUTTON", woodButtonBlock);
-        setStaticFinalField(blocksClass, "STONE_PLATE", stonePlateBlock);
-        setStaticFinalField(blocksClass, "WOOD_PLATE", woodPlateBlock);
-        setStaticFinalField(blocksClass, "IRON_PLATE", ironPlateBlock);
-        setStaticFinalField(blocksClass, "GOLD_PLATE", goldPlateBlock);
-        setStaticFinalField(blocksClass, "ANVIL", anvilBlock);
-        setStaticFinalField(blocksClass, "ENCHANTMENT_TABLE", enchantTableBlock);
-        setStaticFinalField(blocksClass, "CHEST", optimizedChestBlock);
-        setStaticFinalField(blocksClass, "TRAPPED_CHEST", optimizedTrappedChestBlock);
-        setStaticFinalField(blocksClass, "DAYLIGHT_DETECTOR", daylightDetectorBlock);
+        if (plugin.getConfig().getBoolean("modify.blocks.stone", true))
+            setStaticFinalField(blocksClass, "STONE", stoneBlock);
+        if (plugin.getConfig().getBoolean("modify.blocks.sponge", true))
+            setStaticFinalField(blocksClass, "SPONGE", spongeBlock);
+        if (plugin.getConfig().getBoolean("modify.blocks.torch", true))
+            setStaticFinalField(blocksClass, "TORCH", torchBlock);
+        if (plugin.getConfig().getBoolean("modify.blocks.redstone_torch", true))
+            setStaticFinalField(blocksClass, "REDSTONE_TORCH_ON", redstoneTorchBlockOn);
+        if (plugin.getConfig().getBoolean("modify.blocks.unlit_redstone_torch", true))
+            setStaticFinalField(blocksClass, "REDSTONE_TORCH_OFF", redstoneTorchBlockOff);
+        if (plugin.getConfig().getBoolean("modify.blocks.stone_button", true))
+            setStaticFinalField(blocksClass, "STONE_BUTTON", stoneButtonBlock);
+        if (plugin.getConfig().getBoolean("modify.blocks.wooden_button", true))
+            setStaticFinalField(blocksClass, "WOOD_BUTTON", woodButtonBlock);
+        if (plugin.getConfig().getBoolean("modify.blocks.stone_pressure_plate", true))
+            setStaticFinalField(blocksClass, "STONE_PLATE", stonePlateBlock);
+        if (plugin.getConfig().getBoolean("modify.blocks.wooden_pressure_plate", true))
+            setStaticFinalField(blocksClass, "WOOD_PLATE", woodPlateBlock);
+        if (plugin.getConfig().getBoolean("modify.blocks.light_weighted_pressure_plate", true))
+            setStaticFinalField(blocksClass, "IRON_PLATE", ironPlateBlock);
+        if (plugin.getConfig().getBoolean("modify.blocks.heavy_weighted_pressure_plate", true))
+            setStaticFinalField(blocksClass, "GOLD_PLATE", goldPlateBlock);
+        if (plugin.getConfig().getBoolean("modify.blocks.anvil", true))
+            setStaticFinalField(blocksClass, "ANVIL", anvilBlock);
+        if (plugin.getConfig().getBoolean("modify.blocks.enchanting_table", true))
+            setStaticFinalField(blocksClass, "ENCHANTMENT_TABLE", enchantTableBlock);
+        if (plugin.getConfig().getBoolean("modify.blocks.chest", true))
+            setStaticFinalField(blocksClass, "CHEST", optimizedChestBlock);
+        if (plugin.getConfig().getBoolean("modify.blocks.trapped_chest", true))
+            setStaticFinalField(blocksClass, "TRAPPED_CHEST", optimizedTrappedChestBlock);
+        if (plugin.getConfig().getBoolean("modify.blocks.ender_chest", true))
+            setStaticFinalField(blocksClass, "ENDER_CHEST", optimizedEnderChestBlock);
+        if (plugin.getConfig().getBoolean("modify.blocks.daylight_detector", true))
+            setStaticFinalField(blocksClass, "DAYLIGHT_DETECTOR", daylightDetectorBlock);
     } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException t) {
         t.printStackTrace(System.out);
         Bukkit.shutdown();
