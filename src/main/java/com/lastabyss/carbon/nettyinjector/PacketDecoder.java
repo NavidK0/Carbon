@@ -21,6 +21,7 @@ import net.minecraft.server.v1_7_R4.EnumProtocol;
 import net.minecraft.server.v1_7_R4.NetworkManager;
 import net.minecraft.server.v1_7_R4.NetworkStatistics;
 import net.minecraft.server.v1_7_R4.Packet;
+import net.minecraft.server.v1_7_R4.PacketDataSerializer;
 import net.minecraft.server.v1_7_R4.PacketHandshakingInSetProtocol;
 import net.minecraft.server.v1_7_R4.PacketLoginOutDisconnect;
 import net.minecraft.util.com.google.common.collect.BiMap;

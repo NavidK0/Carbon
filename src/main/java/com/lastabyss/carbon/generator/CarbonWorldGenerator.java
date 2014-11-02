@@ -5,11 +5,16 @@ import com.lastabyss.carbon.generator.populator.StoneVariantPopulator;
 
 import java.util.logging.Level;
 
+import net.minecraft.server.v1_7_R4.WorldServer;
+
+import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.World.Environment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 
 
@@ -24,9 +29,18 @@ public class CarbonWorldGenerator implements Listener {
     public final static StoneVariantPopulator granitePopulator = new StoneVariantPopulator(Material.STONE, (byte) 5, 33, 10);
 
     public CarbonWorldGenerator(Carbon plugin) {
-    this.plugin = plugin;
+        this.plugin = plugin;
     }
-    
+
+    @EventHandler
+    public void onWorldInit(WorldInitEvent event) {
+    	//Add new chunkprovidergenerate
+    	if (event.getWorld().getEnvironment() == Environment.NORMAL) {
+	    	WorldServer nmsWorld = ((CraftWorld) event.getWorld()).getHandle();
+	    	nmsWorld.chunkProviderServer.chunkProvider = new ChunkProviderGenerate(nmsWorld, nmsWorld.getSeed(), nmsWorld.getWorldData().shouldGenerateMapFeatures());
+    	}
+    }
+
     @EventHandler()
     public void onWorldLoad(WorldLoadEvent evt) {
         //Add populator on world load

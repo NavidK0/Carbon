@@ -47,6 +47,18 @@ import com.lastabyss.carbon.entity.bukkit.ArmorStand;
 import com.lastabyss.carbon.entity.bukkit.Endermite;
 import com.lastabyss.carbon.entity.bukkit.Guardian;
 import com.lastabyss.carbon.entity.bukkit.Rabbit;
+import com.lastabyss.carbon.generator.monument.WorldGenMonumentBuilding;
+import com.lastabyss.carbon.generator.monument.WorldGenMonumentDoubleXRoom;
+import com.lastabyss.carbon.generator.monument.WorldGenMonumentDoubleXYRoom;
+import com.lastabyss.carbon.generator.monument.WorldGenMonumentDoubleYRoom;
+import com.lastabyss.carbon.generator.monument.WorldGenMonumentDoubleYZRoom;
+import com.lastabyss.carbon.generator.monument.WorldGenMonumentDoubleZRoom;
+import com.lastabyss.carbon.generator.monument.WorldGenMonumentPenthouse;
+import com.lastabyss.carbon.generator.monument.WorldGenMonumentPiece1;
+import com.lastabyss.carbon.generator.monument.WorldGenMonumentPiece2;
+import com.lastabyss.carbon.generator.monument.WorldGenMonumentSimpleRoom;
+import com.lastabyss.carbon.generator.monument.WorldGenMonumentSimpleTopRoom;
+import com.lastabyss.carbon.generator.monument.WorldGenMonumentStart;
 import com.lastabyss.carbon.items.ItemArmorStand;
 import com.lastabyss.carbon.items.ItemBanner;
 import com.lastabyss.carbon.items.ItemCookedMutton;
@@ -86,6 +98,7 @@ import net.minecraft.server.v1_7_R4.PacketPlayOutEntityTeleport;
 import net.minecraft.server.v1_7_R4.PotionBrewer;
 import net.minecraft.server.v1_7_R4.TileEntity;
 import net.minecraft.server.v1_7_R4.World;
+import net.minecraft.server.v1_7_R4.WorldGenFactory;
 import net.minecraft.util.gnu.trove.map.TObjectIntMap;
 
 import org.bukkit.Bukkit;
@@ -407,7 +420,12 @@ public class Injector {
       }
   }
 
-  public void registerAll() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+  public static void registerWorldGenFactoryAddition(boolean isStructureStart, Class<?> clazz, String string) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+	  Method method = Utilities.setAccessible(Method.class, WorldGenFactory.class.getDeclaredMethod(isStructureStart ? "b" : "a", Class.class, String.class), true);
+	  method.invoke(null, clazz, string);
+  }
+
+  public void registerAll() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, InvocationTargetException, NoSuchMethodException {
 	//Register datawatcher types
 	registerDataWatcherType(ArmorStandPose.class, 7);
 
@@ -508,39 +526,48 @@ public class Injector {
     registerPotionEffect(MobEffectList.JUMP.getId(), "0 & 1 & !2 & 3", "5");
 
     //inject our modified blocks
-    try {
-        Class<Blocks> blocksClass = Blocks.class;
-        setStaticFinalField(blocksClass, "STONE", stoneBlock);
-        setStaticFinalField(blocksClass, "SPONGE", spongeBlock);
-        setStaticFinalField(blocksClass, "TORCH", torchBlock);
-        setStaticFinalField(blocksClass, "REDSTONE_TORCH_ON", redstoneTorchBlockOn);
-        setStaticFinalField(blocksClass, "REDSTONE_TORCH_OFF", redstoneTorchBlockOff);
-        setStaticFinalField(blocksClass, "STONE_BUTTON", stoneButtonBlock);
-        setStaticFinalField(blocksClass, "WOOD_BUTTON", woodButtonBlock);
-        setStaticFinalField(blocksClass, "STONE_PLATE", stonePlateBlock);
-        setStaticFinalField(blocksClass, "WOOD_PLATE", woodPlateBlock);
-        setStaticFinalField(blocksClass, "IRON_PLATE", ironPlateBlock);
-        setStaticFinalField(blocksClass, "GOLD_PLATE", goldPlateBlock);
-        setStaticFinalField(blocksClass, "ANVIL", anvilBlock);
-        setStaticFinalField(blocksClass, "ENCHANTMENT_TABLE", enchantTableBlock);
-        setStaticFinalField(blocksClass, "CHEST", optimizedChestBlock);
-        setStaticFinalField(blocksClass, "TRAPPED_CHEST", optimizedTrappedChestBlock);
-        setStaticFinalField(blocksClass, "DAYLIGHT_DETECTOR", daylightDetectorBlock);
-        setStaticFinalField(blocksClass, "REDSTONE_COMPARATOR_OFF", redstoneComparatorOffBlock);
-        setStaticFinalField(blocksClass, "REDSTONE_COMPARATOR_ON", redstoneComparatorOnBlock);
-        Class<Items> itemsClass = Items.class;
-        setStaticFinalField(itemsClass, "ITEM_FRAME", frameItem);
-        setStaticFinalField(itemsClass, "REDSTONE_COMPARATOR", redstoneComparatorItem);
-    } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException t) {
-        t.printStackTrace(System.out);
-        Bukkit.shutdown();
-    }
+    Class<Blocks> blocksClass = Blocks.class;
+    setStaticFinalField(blocksClass, "STONE", stoneBlock);
+    setStaticFinalField(blocksClass, "SPONGE", spongeBlock);
+    setStaticFinalField(blocksClass, "TORCH", torchBlock);
+    setStaticFinalField(blocksClass, "REDSTONE_TORCH_ON", redstoneTorchBlockOn);
+    setStaticFinalField(blocksClass, "REDSTONE_TORCH_OFF", redstoneTorchBlockOff);
+    setStaticFinalField(blocksClass, "STONE_BUTTON", stoneButtonBlock);
+    setStaticFinalField(blocksClass, "WOOD_BUTTON", woodButtonBlock);
+    setStaticFinalField(blocksClass, "STONE_PLATE", stonePlateBlock);
+    setStaticFinalField(blocksClass, "WOOD_PLATE", woodPlateBlock);
+    setStaticFinalField(blocksClass, "IRON_PLATE", ironPlateBlock);
+    setStaticFinalField(blocksClass, "GOLD_PLATE", goldPlateBlock);
+    setStaticFinalField(blocksClass, "ANVIL", anvilBlock);
+    setStaticFinalField(blocksClass, "ENCHANTMENT_TABLE", enchantTableBlock);
+    setStaticFinalField(blocksClass, "CHEST", optimizedChestBlock);
+    setStaticFinalField(blocksClass, "TRAPPED_CHEST", optimizedTrappedChestBlock);
+    setStaticFinalField(blocksClass, "DAYLIGHT_DETECTOR", daylightDetectorBlock);
+    setStaticFinalField(blocksClass, "REDSTONE_COMPARATOR_OFF", redstoneComparatorOffBlock);
+    setStaticFinalField(blocksClass, "REDSTONE_COMPARATOR_ON", redstoneComparatorOnBlock);
+    Class<Items> itemsClass = Items.class;
+    setStaticFinalField(itemsClass, "ITEM_FRAME", frameItem);
+    setStaticFinalField(itemsClass, "REDSTONE_COMPARATOR", redstoneComparatorItem);
 
     //inject custom netty stream serializer
     NettyInjector.injectStreamSerializer();
 
     //check if we actually have a needed constructor for the packet
     new PacketPlayOutEntityTeleport(0, 0, 0, 0, (byte) 0, (byte) 0, true, true);
+
+    //inject some world gen factory types
+	registerWorldGenFactoryAddition(true, WorldGenMonumentStart.class, "Monument");
+	registerWorldGenFactoryAddition(false, WorldGenMonumentBuilding.class, "OMB");
+	registerWorldGenFactoryAddition(false, WorldGenMonumentPiece2.class, "OMCR");
+	registerWorldGenFactoryAddition(false, WorldGenMonumentDoubleXRoom.class, "OMDXR");
+	registerWorldGenFactoryAddition(false, WorldGenMonumentDoubleXYRoom.class, "OMDXYR");
+	registerWorldGenFactoryAddition(false, WorldGenMonumentDoubleYRoom.class, "OMDYR");
+	registerWorldGenFactoryAddition(false, WorldGenMonumentDoubleYZRoom.class, "OMDYZR");
+	registerWorldGenFactoryAddition(false, WorldGenMonumentDoubleZRoom.class, "OMDZR");
+	registerWorldGenFactoryAddition(false, WorldGenMonumentPiece1.class, "OMEntry");
+	registerWorldGenFactoryAddition(false, WorldGenMonumentPenthouse.class, "OMPenthouse");
+	registerWorldGenFactoryAddition(false, WorldGenMonumentSimpleRoom.class, "OMSimple");
+	registerWorldGenFactoryAddition(false, WorldGenMonumentSimpleTopRoom.class, "OMSimpleT");
   }
 
   private void setStaticFinalField(Class<?> clazz, String fieldname, Object newValue) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
