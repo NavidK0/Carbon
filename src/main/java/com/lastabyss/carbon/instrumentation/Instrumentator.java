@@ -34,7 +34,9 @@ public class Instrumentator {
         AgentLoader.attachAgentToJVM(Tools.getCurrentPID(), CarbonTransformAgent.class,
         	new String[] {
         		"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/BannerMeta.class",
-        		"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/BannerMeta$BannerPattern.class"
+        		"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/BannerMeta$BannerPattern.class",
+        		"pretransformedclasses/net/minecraft/server/v1_7_R4/EnumEntitySpawnZone.class",
+        		"pretransformedclasses/net/minecraft/server/v1_7_R4/EntitySpawnZone.class",
         	},
         	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemStack.class",
         	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem.class",
@@ -42,7 +44,9 @@ public class Instrumentator {
         	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemFactory.class",
         	"pretransformedclasses/net/minecraft/server/v1_7_R4/EntityTracker.class",
         	"pretransformedclasses/net/minecraft/server/v1_7_R4/EntityTrackerEntry.class",
-        	"pretransformedclasses/net/minecraft/server/v1_7_R4/DataWatcher.class"
+        	"pretransformedclasses/net/minecraft/server/v1_7_R4/DataWatcher.class",
+        	"pretransformedclasses/net/minecraft/server/v1_7_R4/SpawnerCreature.class",
+        	"pretransformedclasses/net/minecraft/server/v1_7_R4/SpawnerCreature$1.class"
         );
     }
 

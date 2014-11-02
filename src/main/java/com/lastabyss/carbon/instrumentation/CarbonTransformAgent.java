@@ -15,6 +15,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.minecraft.server.v1_7_R4.EnumEntitySpawnZone;
+import net.minecraft.server.v1_7_R4.EntitySpawnZone;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.Bukkit;
@@ -23,6 +26,7 @@ import org.bukkit.craftbukkit.v1_7_R4.inventory.BannerMeta;
 import org.bukkit.craftbukkit.v1_7_R4.inventory.BannerMeta.BannerPattern;
 
 import com.google.common.collect.ImmutableMap;
+
 import java.lang.instrument.UnmodifiableClassException;
 
 /**
@@ -75,6 +79,14 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 				new ClassDefinition(
 					Class.forName("org.bukkit.craftbukkit.v1_7_R4.inventory.CraftMetaItem$SerializableMeta"),
 					getPreTransformedClass("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem$SerializableMeta")
+				),
+				new ClassDefinition(
+					Class.forName("net.minecraft.server.v1_7_R4.SpawnerCreature"),
+					getPreTransformedClass("net/minecraft/server/v1_7_R4/SpawnerCreature")
+				),
+				new ClassDefinition(
+					Class.forName("net.minecraft.server.v1_7_R4.SpawnerCreature$1"),
+					getPreTransformedClass("net/minecraft/server/v1_7_R4/SpawnerCreature$1")
 				)
 			);
 
@@ -97,7 +109,19 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 						BannerPattern.init();
 						// seal back
 						sealBaseField.set(pkg, sealBase);
-						break;
+					}
+					if (pkg.getName().equals("net.minecraft.server.v1_7_R4")) {
+						// unseal
+						Object sealBase = null;
+						Field sealBaseField = pkg.getClass().getDeclaredField("sealBase");
+						sealBaseField.setAccessible(true);
+						sealBase = sealBaseField.get(pkg);
+						sealBaseField.set(pkg, null);
+						// load classes
+						EnumEntitySpawnZone.init();
+						EntitySpawnZone.init();
+						// seal back
+						sealBaseField.set(pkg, sealBase);
 					}
 				}
 			}
@@ -152,7 +176,9 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 			className.equals("org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemFactory") ||
 			className.equals("net/minecraft/server/v1_7_R4/EntityTracker") ||
 			className.equals("net/minecraft/server/v1_7_R4/EntityTrackerEntry") ||
-			className.equals("net/minecraft/server/v1_7_R4/DataWatcher")
+			className.equals("net/minecraft/server/v1_7_R4/DataWatcher") ||
+			className.equals("net/minecraft/server/v1_7_R4/SpawnerCreature") ||
+			className.equals("net/minecraft/server/v1_7_R4/SpawnerCreature$1")
 		) {
 			LogManager.getLogger().log(Level.INFO, "[Carbon] Transforming "+className);
 			try {

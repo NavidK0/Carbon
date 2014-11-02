@@ -83,7 +83,9 @@ import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.DataWatcher;
 import net.minecraft.server.v1_7_R4.Entity;
+import net.minecraft.server.v1_7_R4.EntitySpawnZone;
 import net.minecraft.server.v1_7_R4.EntityTypes;
+import net.minecraft.server.v1_7_R4.EnumEntitySpawnZone;
 import net.minecraft.server.v1_7_R4.EnumProtocol;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.ItemAnvil;
@@ -568,6 +570,11 @@ public class Injector {
 	registerWorldGenFactoryAddition(false, WorldGenMonumentPenthouse.class, "OMPenthouse");
 	registerWorldGenFactoryAddition(false, WorldGenMonumentSimpleRoom.class, "OMSimple");
 	registerWorldGenFactoryAddition(false, WorldGenMonumentSimpleTopRoom.class, "OMSimpleT");
+
+	//inject additional spawn zone classes
+	EntitySpawnZone.register(EntityRabbit.class, EnumEntitySpawnZone.ON_GROUND);
+	EntitySpawnZone.register(EntityEndermite.class, EnumEntitySpawnZone.ON_GROUND);
+	EntitySpawnZone.register(EntityGuardian.class, EnumEntitySpawnZone.IN_WATER);
   }
 
   private void setStaticFinalField(Class<?> clazz, String fieldname, Object newValue) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
