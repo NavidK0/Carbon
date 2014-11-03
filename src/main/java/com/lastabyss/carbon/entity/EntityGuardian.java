@@ -1,370 +1,415 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.lastabyss.carbon.entity;
 
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
-
-import com.lastabyss.carbon.Carbon;
-import com.lastabyss.carbon.ai.PathfinderWrapper;
-import com.lastabyss.carbon.entity.bukkit.Guardian;
-import com.lastabyss.carbon.utils.Utilities;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 import net.minecraft.server.v1_7_R4.Blocks;
+import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.EntityHuman;
+import net.minecraft.server.v1_7_R4.EntityInsentient;
 import net.minecraft.server.v1_7_R4.EntityLiving;
 import net.minecraft.server.v1_7_R4.EntityMonster;
+import net.minecraft.server.v1_7_R4.EntityPlayer;
+import net.minecraft.server.v1_7_R4.EntitySquid;
+import net.minecraft.server.v1_7_R4.EnumGamemode;
 import net.minecraft.server.v1_7_R4.GenericAttributes;
+import net.minecraft.server.v1_7_R4.IEntitySelector;
 import net.minecraft.server.v1_7_R4.Item;
 import net.minecraft.server.v1_7_R4.ItemStack;
 import net.minecraft.server.v1_7_R4.Items;
 import net.minecraft.server.v1_7_R4.Material;
 import net.minecraft.server.v1_7_R4.MathHelper;
 import net.minecraft.server.v1_7_R4.MinecraftServer;
+import net.minecraft.server.v1_7_R4.MobEffect;
+import net.minecraft.server.v1_7_R4.MobEffectList;
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
-import net.minecraft.server.v1_7_R4.PathfinderGoalFloat;
-import net.minecraft.server.v1_7_R4.PathfinderGoalHurtByTarget;
+import net.minecraft.server.v1_7_R4.PacketPlayOutGameStateChange;
 import net.minecraft.server.v1_7_R4.PathfinderGoalLookAtPlayer;
+import net.minecraft.server.v1_7_R4.PathfinderGoalMoveTowardsRestriction;
 import net.minecraft.server.v1_7_R4.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_7_R4.PathfinderGoalRandomLookaround;
-import net.minecraft.server.v1_7_R4.PathfinderGoalRandomStroll;
+import net.minecraft.server.v1_7_R4.Vec3D;
 import net.minecraft.server.v1_7_R4.World;
+
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
+
+import com.lastabyss.carbon.Carbon;
+import com.lastabyss.carbon.ai.GuardianLookController;
+import com.lastabyss.carbon.ai.GuardianMoveController;
+import com.lastabyss.carbon.ai.PathfinderGoalGuardianAttack;
+import com.lastabyss.carbon.ai.PathfinderGoalNewRandomStroll;
+import com.lastabyss.carbon.entity.bukkit.Guardian;
+import com.lastabyss.carbon.utils.Utilities;
 
 /**
  *
  * @author Navid
  */
 public class EntityGuardian extends EntityMonster {
-    public float bp;
-    public float previousSquidPitch;
-    public float br;
-    public float previousSquidYaw;
-    public float bt;
-    public float prevSquidRotation;
-    public float bv;
-    public float lastTentacleRotation;
-    private float bx;
-    private float by;
-    private float bz;
-    private float bA;
-    private float bB;
-    private float bC;
-    
-    private boolean elder = false;
 
-    public EntityGuardian(World world) {
-        super(world);
-        this.a(0.85F, 0.85F);
-        this.by = 1.0F / (this.random.nextFloat() + 1.0F) * 0.2F;
-        this.expToDrop = 10;
-        //Add pathfinding goals
-        this.goalSelector.a(1, new PathfinderGoalFloat(this));
-        this.goalSelector.a(2, new PathfinderGoalRandomStroll(this, 1.0D));
-        this.goalSelector.a(3, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 8.0F));
-        this.goalSelector.a(3, new PathfinderGoalRandomLookaround(this));
-        this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, true));
-        this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget(this, EntityHuman.class, 10, true));
-    }
+	private EntityLiving beamTarget;
+	private int beamTargetTicks;
+	private boolean bp;
+	private PathfinderGoalNewRandomStroll stroll;
 
-    //entityInit
-    @Override
-    protected void c() {
-        super.c();
-        this.datawatcher.a(16, 0);
-        this.datawatcher.a(17, 0);
-    }
+	private boolean elder = false;
 
-    @Override
-    public void C() {
-        super.C();
-        this.setAirTicks(300);
-    }
-    
-    
-    
-    protected void addElderData(int var1, boolean var2) {
-        int var3 = this.datawatcher.getInt(16);
-        if (var2) {
-            this.datawatcher.watch(16, var3 | var1);
-        } else {
-           this.datawatcher.watch(16, var3 & ~var1);
-        }
-    }
+	public EntityGuardian(World world) {
+		super(world);
+		this.a(0.85F, 0.85F);
+		b = 10;
+		// Add pathfinding goals
+		stroll = new PathfinderGoalNewRandomStroll(this, 1.0D, 80);
+		goalSelector.a(4, new PathfinderGoalGuardianAttack(this, stroll));
+		PathfinderGoalMoveTowardsRestriction movetowards = new PathfinderGoalMoveTowardsRestriction(this, 1.0D);
+		goalSelector.a(5, movetowards);
+		goalSelector.a(7, stroll);
+		goalSelector.a(8, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 8.0F));
+		goalSelector.a(8, new PathfinderGoalLookAtPlayer(this, EntityGuardian.class, 12.0F, 0.01F));
+		goalSelector.a(9, new PathfinderGoalRandomLookaround(this));
+		movetowards.a(3);
+		stroll.setMutexBits(3);
+		targetSelector.a(1, new PathfinderGoalNearestAttackableTarget(this, EntityLiving.class, 10, true, false, new IEntitySelector() {
+			@Override
+			public boolean a(Entity entitylivingObj) {
+				EntityLiving entityliving = (EntityLiving) entitylivingObj;
+				return ((entityliving instanceof EntityHuman) || (entityliving instanceof EntitySquid)) && (Utilities.getDistanceSqToEntity(entityliving, EntityGuardian.this) > 9.0D);
+			}
+		}));
+		try {
+			Utilities.setAccessible(Field.class, EntityInsentient.class.getDeclaredField("lookController"), true).set(this, new GuardianLookController(this));
+			Utilities.setAccessible(Field.class, EntityInsentient.class.getDeclaredField("moveController"), true).set(this, new GuardianMoveController(this));
+		} catch (Exception e) {
+			Carbon.log.info("[Carbon] Failed to set guardian look&move controller: " + e.getMessage() + "caused by: " + e.getCause().getMessage());
+		}
+	}
 
-    //applyEntityAttributes()
-    @Override
-    protected void aD() {
-        super.aD();
-        if (!isElder()) {
-            //Attack damage
-            this.getAttributeInstance(GenericAttributes.e).setValue(6.0D);
-            //Movement Speed
-            this.getAttributeInstance(GenericAttributes.d).setValue(0.5D);
-            //Follow range
-            this.getAttributeInstance(GenericAttributes.b).setValue(16.0D);
-            //Max health, obviously
-            this.getAttributeInstance(GenericAttributes.maxHealth).setValue(30.0D);
-        } else {
-            //Attack damage
-            this.getAttributeInstance(GenericAttributes.e).setValue(8.0D);
-            //Movement Speed
-            this.getAttributeInstance(GenericAttributes.d).setValue(0.30000001192092896D);
-            //Max health, obviously
-            this.getAttributeInstance(GenericAttributes.maxHealth).setValue(80.0D);
-            
-            this.a(1.9975F, 1.9975F);
-            this.ak = true;
-        }
-    }
+	// entityInit
+	@Override
+	protected void c() {
+		super.c();
+		datawatcher.a(16, 0);
+		datawatcher.a(17, 0);
+	}
 
-    //getLivingSound
-    @Override
-    protected String t() {
-        return !this.isInWater() ? "mob.guardian.land.idle" : (this.isElder() ? "mob.guardian.elder.idle" : "mob.guardian.idle");
-    }
+	@Override
+	public void C() {
+		super.C();
+		setAirTicks(300);
+	}
 
-    //getHurtSound
-    @Override
-    protected String aT() {
-        return !this.isInWater() ? "mob.guardian.land.hit" : (this.isElder() ? "mob.guardian.elder.hit" : "mob.guardian.hit");
-    }
+	protected void addData(int data, boolean add) {
+		int prevvalue = datawatcher.getInt(16);
+		if (add) {
+			datawatcher.watch(16, prevvalue | data);
+		} else {
+			datawatcher.watch(16, prevvalue & ~data);
+		}
+	}
 
-    //getDeathSound
-    @Override
-    protected String aU() {
-        return !this.isInWater() ? "mob.guardian.land.death" : (this.isElder() ? "mob.guardian.elder.death" : "mob.guardian.death");
-    }
+	public void addData2(boolean add) {
+		this.addData(2, add);
+	}
 
-    @Override
-    protected Item getLoot() {
-        return this.isBurning() ? Items.COOKED_FISH : Items.RAW_FISH;
-    }
+	// applyEntityAttributes()
+	@Override
+	protected void aD() {
+		super.aD();
+		if (!isElder()) {
+			// Attack damage
+			getAttributeInstance(GenericAttributes.e).setValue(6.0D);
+			// Movement Speed
+			getAttributeInstance(GenericAttributes.d).setValue(0.5D);
+			// Follow range
+			getAttributeInstance(GenericAttributes.b).setValue(16.0D);
+			// Max health, obviously
+			getAttributeInstance(GenericAttributes.maxHealth).setValue(30.0D);
+		} else {
+			// Attack damage
+			getAttributeInstance(GenericAttributes.e).setValue(8.0D);
+			// Movement Speed
+			getAttributeInstance(GenericAttributes.d).setValue(0.30000001192092896D);
+			// Max health, obviously
+			getAttributeInstance(GenericAttributes.maxHealth).setValue(80.0D);
 
-    //canTriggerWalking
-    @Override
-    protected boolean g_() {
-        return false;
-    }
+			this.a(1.9975F, 1.9975F);
+			ak = true;
+		}
+	}
 
-    @Override
-    protected void dropDeathLoot(boolean flag, int i) {
-        int var3 = this.random.nextInt(3) + this.random.nextInt(i + 1);
+	// getLivingSound
+	@Override
+	protected String t() {
+		return !M() ? "mob.guardian.land.idle" : (isElder() ? "mob.guardian.elder.idle" : "mob.guardian.idle");
+	}
 
-        if (var3 > 0)
-        { 
-            this.a(new ItemStack(Carbon.injector().prismarineShardItem, var3, 0), 1.0F);
-        }
+	// getHurtSound
+	@Override
+	protected String aT() {
+		return !M() ? "mob.guardian.land.hit" : (isElder() ? "mob.guardian.elder.hit" : "mob.guardian.hit");
+	}
 
-        if (this.random.nextInt(3 + i) > 1)
-        {
-            if (!this.isBurning()) {
-                this.a(new ItemStack(Items.RAW_FISH, 1, 0), 1.0F);
-            } else {
-               this.a(new ItemStack(Items.RAW_FISH, 1, 0), 1.0F); 
-            }
-        }
-        else if (this.random.nextInt(3 + i) > 1)
-        {
-            this.a(new ItemStack(Carbon.injector().prismarineCrystalItem, 1, 0), 1.0F);
-        }
+	// getDeathSound
+	@Override
+	protected String aU() {
+		return !M() ? "mob.guardian.land.death" : (isElder() ? "mob.guardian.elder.death" : "mob.guardian.death");
+	}
 
-        if (flag && this.isElder())
-        {
-            this.a(new ItemStack(Blocks.SPONGE, 1, 1), 1.0F);
-        }
-    }
+	@Override
+	protected Item getLoot() {
+		return isBurning() ? Items.COOKED_FISH : Items.RAW_FISH;
+	}
 
-    //isInWater
-    @Override
-    public boolean M() {
-        return this.world.a(this.boundingBox.grow(0.0D, -0.6000000238418579D, 0.0D), Material.WATER, this);
-    }
-    
-    
+	// canTriggerWalking
+	@Override
+	protected boolean g_() {
+		return false;
+	}
 
-    /** 
-     onLivingUpdate()
-     This is the entity update loop.
-     Stupid obfuscation.
-    **/
-    @Override
-    public void e() {
-        super.e();
-        this.previousSquidPitch = this.bp;
-        this.previousSquidYaw = this.br;
-        this.prevSquidRotation = this.bt;
-        this.lastTentacleRotation = this.bv;
-        this.bt += this.by;
-        if (this.bt > 6.2831855F) {
-            this.bt -= 6.2831855F;
-            if (this.random.nextInt(10) == 0) {
-                this.by = 1.0F / (this.random.nextFloat() + 1.0F) * 0.2F;
-            }
-        }
+	@Override
+	protected void dropDeathLoot(boolean flag, int i) {
+		int var3 = random.nextInt(3) + random.nextInt(i + 1);
 
-        if (this.M()) {
-            float f;
+		if (var3 > 0) {
+			this.a(new ItemStack(Carbon.injector().prismarineShardItem, var3, 0), 1.0F);
+		}
 
-            if (this.bt < 3.1415927F) {
-                f = this.bt / 3.1415927F;
-                this.bv = MathHelper.sin(f * f * 3.1415927F) * 3.1415927F * 0.25F;
-                if ((double) f > 0.75D) {
-                    this.bx = 1.0F;
-                    this.bz = 1.0F;
-                } else {
-                    this.bz *= 0.8F;
-                }
-            } else {
-                this.bv = 0.0F;
-                this.bx *= 0.9F;
-                this.bz *= 0.99F;
-            }
+		if (random.nextInt(3 + i) > 1) {
+			if (!isBurning()) {
+				this.a(new ItemStack(Items.RAW_FISH, 1, 0), 1.0F);
+			} else {
+				this.a(new ItemStack(Items.RAW_FISH, 1, 0), 1.0F);
+			}
+		} else if (random.nextInt(3 + i) > 1) {
+			this.a(new ItemStack(Carbon.injector().prismarineCrystalItem, 1, 0), 1.0F);
+		}
 
-            if (!this.world.isStatic) {
-                this.motX = (double) (this.bA * this.bx);
-                this.motY = (double) (this.bB * this.bx);
-                this.motZ = (double) (this.bC * this.bx);
-            }
+		if (flag && isElder()) {
+			this.a(new ItemStack(Blocks.SPONGE, 1, 1), 1.0F);
+		}
+	}
 
-            f = MathHelper.sqrt(this.motX * this.motX + this.motZ * this.motZ);
-            this.aM += (-((float) Math.atan2(this.motX, this.motZ)) * 180.0F / 3.1415927F - this.aM) * 0.1F;
-            this.yaw = this.aM;
-            this.br += 3.1415927F * this.bz * 1.5F;
-            this.bp += (-((float) Math.atan2((double) f, this.motY)) * 180.0F / 3.1415927F - this.bp) * 0.1F;
-        } else {
-            this.bv = MathHelper.abs(MathHelper.sin(this.bt)) * 3.1415927F * 0.25F;
-            if (!this.world.isStatic) {
-                this.motX = 0.0D;
-                this.motY -= 0.08D;
-                this.motY *= 0.9800000190734863D;
-                this.motZ = 0.0D;
-            }
+	// isInWater
+	@Override
+	public boolean M() {
+		return world.a(boundingBox.grow(0.0D, -0.6000000238418579D, 0.0D), Material.WATER, this);
+	}
 
-            this.bp = (float) ((double) this.bp + (double) (-90.0F - this.bp) * 0.02D);
-        }
-    }
+	private boolean isDataSet(int data) {
+		return (datawatcher.getInt(16) & data) != 0;
+	}
 
-    //getTalkInterval
-    @Override
-    public int q() {
-        return 160;
-    }
-    
-    /**
-     * Returns if this entity is in water and will end up adding the waters velocity to the entity
-    public boolean handleWaterMovement()
-    {
-        if (this.worldObj.handleMaterialAcceleration(this.getEntityBoundingBox().expand(0.0D, -0.4000000059604645D, 0.0D).contract(0.001D, 0.001D, 0.001D), Material.water, this)) {
-            if (!this.inWater && !this.firstUpdate)
-            {
-                this.resetHeight();
-            }
+	public boolean isData2Set() {
+		return isDataSet(2);
+	}
 
-            this.fallDistance = 0.0F;
-            this.inWater = true;
-            this.fire = 0;
-        }
-        else
-        {
-            this.inWater = false;
-        }
+	//makes entity use proper AI, spent day to figure that shit out
+	public boolean bk() {
+		return true;
+	}
 
-        return this.inWater;
-    }
-    **/
+	/**
+	 * onLivingUpdate() This is the entity update loop. Stupid obfuscation.
+	 **/
+	@Override
+	public void e() {
+		if (!M()) {
+			if ((motY > 0.0D) && bp) {
+				world.a(locX, locY, locZ, "mob.guardian.flop", 1.0F, 1.0F, false);
+			}
 
-    //moveEntityWithHeading/
-    @Override
-    public void e(float f, float f1) {
-        this.move(this.motX, this.motY, this.motZ);
-    }
+			bp = (motY < 0.0D) && world.d(MathHelper.floor(locX), MathHelper.floor(locY - 1), MathHelper.floor(locZ), false);
+		}
 
-    //Jump helper
-    @Override
-    protected void bq() {
-        ++this.aU;
-        if (this.aU > 100) {
-            this.bA = this.bB = this.bC = 0.0F;
-        } else if (this.random.nextInt(50) == 0 || !this.inWater || this.bA == 0.0F && this.bB == 0.0F && this.bC == 0.0F) {
-            float f = this.random.nextFloat() * 3.1415927F * 2.0F;
+		if (isData2Set() && M()) {
+			Vec3D vec = this.j(0.0F);
+			for (int i = 0; i < 2; ++i) {
+				this.world.addParticle("bubble", this.locX + (this.random.nextDouble() - 0.5D) * (double) this.height - vec.a * 1.5D, this.locY + this.random.nextDouble() * (double) this.width - vec.b * 1.5D, this.locZ + (this.random.nextDouble() - 0.5D) * (double) this.height - vec.c * 1.5D, 0.0D, 0.0D, 0.0D);
+			}
+		}
 
-            this.bA = MathHelper.cos(f) * 0.2F;
-            this.bB = -0.1F + this.random.nextFloat() * 0.2F;
-            this.bC = MathHelper.sin(f) * 0.2F;
-        }
+		if (hasBeamTarget()) {
+			if (beamTargetTicks < (isElder() ? 60 : 80)) {
+				++beamTargetTicks;
+			}
 
-        this.w();
-    }
+			EntityLiving target = getBeamTarget();
+			if (target != null) {
+				getControllerLook().a(target, 90.0F, 90.0F);
+				getControllerLook().a();
+				double beamReadyPercent = this.getBeamShootReadyPercent(0.0F);
+				double diffX = target.locX - locX;
+				double diffY = (target.locY + target.width * 0.5F) - (locY + getHeadHeight());
+				double diffZ = target.locZ - locZ;
+				double dist = Math.sqrt((diffX * diffX) + (diffY * diffY) + (diffZ * diffZ));
+				diffX /= dist;
+				diffY /= dist;
+				diffZ /= dist;
+				double randomDouble = random.nextDouble();
 
-    //We can make a guess as to which one of these is write, and which one of these is read...
-    //readEntityFromNBT
-    @Override
-    public void a(NBTTagCompound tagCompound) {
-        super.a(tagCompound);
-        this.setElder(tagCompound.getBoolean("Elder"));
-    }
-    
-    //writeEntityFromNBT
-    @Override
-    public void b(NBTTagCompound tagCompound) {
-        super.b(tagCompound);
-        tagCompound.setBoolean("Elder", this.isElder());
-    }
-    
-    public boolean isElder(){
-        return elder;
-    }
+				while (randomDouble < dist) {
+					randomDouble += (1.8D - beamReadyPercent) + (random.nextDouble() * (1.7D - beamReadyPercent));
+					this.world.addParticle("bubble", this.locX + diffX * randomDouble, this.locY + diffY * randomDouble + this.getHeadHeight(), this.locZ + diffZ * randomDouble, 0.0D, 0.0D, 0.0D);
+				}
+			}
+		}
 
-    public boolean isInWater() {
-        return inWater;
-    }
-    
-    public void setElder(boolean elder) {
-        this.elder = elder;
-        addElderData(4, elder);
-    }
+		if (M()) {
+			this.setAirTicks(300);
+		} else if (onGround) {
+			motY += 0.5D;
+			motX += ((random.nextFloat() * 2.0F) - 1.0F) * 0.4F;
+			motZ += ((random.nextFloat() * 2.0F) - 1.0F) * 0.4F;
+			yaw = random.nextFloat() * 360.0F;
+			onGround = false;
+			al = true;
+		}
 
-    @Override
-    public boolean canSpawn() {
-    	return this.world.a(this.boundingBox, this) && this.world.getCubes(this, this.boundingBox).isEmpty();
-    }
+		if (hasBeamTarget()) {
+			yaw = aO;
+		}
 
-    private Guardian bukkitEntity;
-    @Override
-    public CraftEntity getBukkitEntity() {
-    	if (bukkitEntity == null) {
-    		bukkitEntity = new Guardian(MinecraftServer.getServer().server, this); 
-    	}
-    	return bukkitEntity;
-    }
+		super.e();
+	}
 
-    class AIGuardianAttack extends PathfinderWrapper {
+	public boolean hasBeamTarget() {
+		return datawatcher.getInt(17) != 0;
+	}
 
-        private EntityGuardian guardian = EntityGuardian.this;
-        
-        public AIGuardianAttack() {
-            setMutexBits(3);
-        }
+	public void updateBeamTarget(int id) {
+		datawatcher.watch(17, id);
+	}
 
-        
-        @Override
-        public boolean canExecute() {
-            EntityLiving var1 = this.guardian.getGoalTarget();
-            return var1 != null && var1.isAlive();
-        }
+	public EntityLiving getBeamTarget() {
+		if (!hasBeamTarget()) {
+			return null;
+		} else if (world.isStatic) {
+			if (beamTarget != null) {
+				return beamTarget;
+			} else {
+				Entity beamTarget = world.getEntity(datawatcher.getInt(17));
+				if (beamTarget instanceof EntityLiving) {
+					this.beamTarget = (EntityLiving) beamTarget;
+					return this.beamTarget;
+				} else {
+					return null;
+				}
+			}
+		} else {
+			return getGoalTarget();
+		}
+	}
 
-        @Override
-        public boolean canContinue() {
-            return super.canContinue() && (this.guardian.isElder() || Utilities.getDistanceSqToEntity(this.guardian, this.guardian.getGoalTarget()) > 9.0D);
-        }
+	public float getBeamShootReadyPercent(float initial) {
+		return (beamTargetTicks + initial) / (isElder() ? 60 : 80);
+	}
 
-        @Override
-        public void finish() {
-            super.finish();
-        }
-        
-    }
+	@Override
+	public void i(int id) {
+		super.i(id);
+		if (id == 16) {
+			if (isElder() && (height < 1.0F)) {
+				a(1.9975F, 1.9975F);
+			}
+		} else if (id == 17) {
+			beamTargetTicks = 0;
+			beamTarget = null;
+		}
+	}
+
+	// getTalkInterval
+	@Override
+	public int q() {
+		return 160;
+	}
+
+	@Override
+	public boolean j_() {
+		return true;
+	}
+
+	@Override
+	public void e(float f1, float f2) {
+		if (M()) {
+			this.a(f1, f2, 0.1F);
+			move(motX, motY, motZ);
+			motX *= 0.8999999761581421D;
+			motY *= 0.8999999761581421D;
+			motZ *= 0.8999999761581421D;
+			if (!this.isData2Set() && (getGoalTarget() == null)) {
+				motY -= 0.005D;
+			}
+		} else {
+			super.e(f1, f2);
+		}
+	}
+
+	@Override
+	protected void bp() {
+		super.bp();
+		if (isElder()) {
+			if (((ticksLived + getId()) % 1200) == 0) {
+				MobEffectList effect = MobEffectList.SLOWER_DIG;
+				ArrayList<EntityPlayer> players = new ArrayList<EntityPlayer>();
+				for (Object obj : world.players) {
+					EntityPlayer worldplayer = (EntityPlayer) obj;
+					if ((worldplayer.playerInteractManager.getGameMode() == EnumGamemode.SURVIVAL || worldplayer.playerInteractManager.getGameMode() == EnumGamemode.ADVENTURE) && Utilities.getDistanceSqToEntity(worldplayer, this) < 2500.0D) {
+						players.add(worldplayer);
+					}
+				}
+				for (EntityPlayer player : players) {
+					if (!player.hasEffect(effect) || (player.getEffect(effect).getAmplifier() < 2) || (player.getEffect(effect).getDuration() < 1200)) {
+						player.playerConnection.sendPacket(new PacketPlayOutGameStateChange(10, 0.0F));
+						player.addEffect(new MobEffect(effect.id, 6000, 2));
+					}
+				}
+			}
+
+			if (!bY()) {
+				this.a(MathHelper.floor(locX), MathHelper.floor(locY), MathHelper.floor(locZ), 16);
+			}
+		}
+	}
+
+	// We can make a guess as to which one of these is write, and which one of these is read...
+	// readEntityFromNBT
+	@Override
+	public void a(NBTTagCompound tagCompound) {
+		super.a(tagCompound);
+		setElder(tagCompound.getBoolean("Elder"));
+	}
+
+	// writeEntityFromNBT
+	@Override
+	public void b(NBTTagCompound tagCompound) {
+		super.b(tagCompound);
+		tagCompound.setBoolean("Elder", isElder());
+	}
+
+	public boolean isElder() {
+		return elder;
+	}
+
+	public void setElder(boolean elder) {
+		this.elder = elder;
+		addData(4, elder);
+	}
+
+	@Override
+	public boolean canSpawn() {
+		return world.a(boundingBox, this) && world.getCubes(this, boundingBox).isEmpty();
+	}
+
+	private Guardian bukkitEntity;
+
+	@Override
+	public CraftEntity getBukkitEntity() {
+		if (bukkitEntity == null) {
+			bukkitEntity = new Guardian(MinecraftServer.getServer().server, this);
+		}
+		return bukkitEntity;
+	}
+
+	
+
 }
