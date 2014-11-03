@@ -18,12 +18,12 @@ public class CommandListener implements Listener {
     if (event.getMessage().equalsIgnoreCase("/reload") && event.getPlayer().hasPermission("bukkit.command.reload")) {
       // Restarts server if server is set up for it.
       if (spigot.getBoolean("settings.restart-on-crash")) {
-        Bukkit.getLogger().severe("Restarting server due to reload command!");
+        Bukkit.getLogger().severe("[Carbon] Restarting server due to reload command!");
         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart");
       } else {
         // Call to server shutdown on disable.
         // Won't hurt if server already disables itself, but will prevent plugin unload/reload.
-        Bukkit.getLogger().severe("Stopping server due to reload command!");
+        Bukkit.getLogger().severe("[Carbon] Stopping server due to reload command!");
         Bukkit.shutdown();
       }
     }
