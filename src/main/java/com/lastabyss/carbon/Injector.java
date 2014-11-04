@@ -614,7 +614,11 @@ public static void registerWorldGenFactoryAddition(boolean isStructureStart, Cla
             setStaticFinalField(blocksClass, "ENDER_CHEST", optimizedEnderChestBlock);
         if (plugin.getConfig().getBoolean("modify.blocks.daylight_detector", true))
             setStaticFinalField(blocksClass, "DAYLIGHT_DETECTOR", daylightDetectorBlock);
-        
+        if (plugin.getConfig().getBoolean("modify.blocks.unpowered_comparator", true) || plugin.getConfig().getBoolean("modify.blocks.unpowered_comparator", true)) {
+        	setStaticFinalField(blocksClass, "REDSTONE_COMPARATOR_OFF", redstoneComparatorOffBlock);
+        	setStaticFinalField(blocksClass, "REDSTONE_COMPARATOR_ON", redstoneComparatorOffBlock);
+        }
+
         Class<Items> itemsClass = Items.class;
         if (plugin.getConfig().getBoolean("modify.items.item_frame", true))
             setStaticFinalField(itemsClass, "ITEM_FRAME", frameItem);
