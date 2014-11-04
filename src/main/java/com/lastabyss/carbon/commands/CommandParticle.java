@@ -96,6 +96,9 @@ public class CommandParticle extends Command {
 		Location location = null;
 		boolean color = false;
 		if (sender instanceof Player) {
+			if (!sender.isOp()) {
+				return false;
+			}
 			location = ((Player) sender).getLocation();
 			color = true;
 		} else if (sender instanceof BlockCommandSender) {

@@ -24,89 +24,90 @@ public class CommandTitle extends Command {
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        if (commandLabel.equalsIgnoreCase("title")) {
-
-            if (args.length < 1) {
-                sender.sendMessage(ChatColor.RED + "Usage: /title <player> <title|subtitle|clear|reset|times> ...");
-                return true;
-            }
-
-            ArrayList<Player> targets = new ArrayList<Player>();
-            if (args[0].equalsIgnoreCase("@a")) {
-            	targets.addAll(Bukkit.getOnlinePlayers());
-            }
-            Player player = getOnlinePlayer(args[0]);
-            if (player == null) {
-                sender.sendMessage(ChatColor.RED + args[0] + " is not a valid player or is offline.");
-                return true;
-            }
-
-            targets.add(player);
-            for (Player target : targets) {
-                if (args[1].equalsIgnoreCase("times")) {
-                    int fadeIn, stay, fadeOut;
-
-                    if (args.length < 5) {
-                        sender.sendMessage(ChatColor.RED + "Usage: /title <player> times <fadeIn> <stay> <fadeOut>");
-                        return true;
-                    }
-
-                    if (isInteger(args[2])) {
-                        fadeIn = Integer.parseInt(args[2]);
-                    } else {
-                        sender.sendMessage(ChatColor.RED + args[2] + " is not a valid number");
-                        return true;
-                    }
-
-                    if (isInteger(args[3])) {
-                        stay = Integer.parseInt(args[3]);
-                    } else {
-                        sender.sendMessage(ChatColor.RED + args[3] + " is not a valid number");
-                        return true;
-                    }
-
-                    if (isInteger(args[4])) {
-                        fadeOut = Integer.parseInt(args[4]);
-                    } else {
-                        sender.sendMessage(ChatColor.RED + args[4] + " is not a valid number");
-                        return true;
-                    }
-
-                    sendTimes(fadeIn, stay, fadeOut, target);
-                    sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
-                } else if (args[1].equalsIgnoreCase("title")) {
-                    if (args.length < 3) {
-                        sender.sendMessage(ChatColor.RED + "Usage: /title <player> title <raw json title|text>");
-                        return true;
-                    }
-
-                    sendTitle(args, 2, target);
-                    sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
-                } else if (args[1].equalsIgnoreCase("subtitle")) {
-                    if (args.length < 3) {
-                        sender.sendMessage(ChatColor.RED + "Usage: /title <player> subtitle <raw json title|text>");
-                        return true;
-                    }
-
-                    sendSubtitle(args, 2, target);
-                    sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
-
-                } else if (args[1].equalsIgnoreCase("clear")) {
-
-                    //sendTimes(0,0,0,player);
-                    sendClear(target);
-                    sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
-
-                } else if (args[1].equalsIgnoreCase("reset")) {
-
-                    sendReset(target);
-                    sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
-
-                }
-            }
+    	if (sender instanceof Player) {
+			if (!sender.isOp()) {
+				return false;
+			}
+    	}
+        if (args.length < 1) {
+            sender.sendMessage(ChatColor.RED + "Usage: /title <player> <title|subtitle|clear|reset|times> ...");
             return true;
         }
-        return false;
+
+        ArrayList<Player> targets = new ArrayList<Player>();
+        if (args[0].equalsIgnoreCase("@a")) {
+        	targets.addAll(Bukkit.getOnlinePlayers());
+        }
+        Player player = getOnlinePlayer(args[0]);
+        if (player == null) {
+            sender.sendMessage(ChatColor.RED + args[0] + " is not a valid player or is offline.");
+            return true;
+        }
+
+        targets.add(player);
+        for (Player target : targets) {
+            if (args[1].equalsIgnoreCase("times")) {
+                int fadeIn, stay, fadeOut;
+
+                if (args.length < 5) {
+                    sender.sendMessage(ChatColor.RED + "Usage: /title <player> times <fadeIn> <stay> <fadeOut>");
+                    return true;
+                }
+
+                if (isInteger(args[2])) {
+                    fadeIn = Integer.parseInt(args[2]);
+                } else {
+                    sender.sendMessage(ChatColor.RED + args[2] + " is not a valid number");
+                    return true;
+                }
+
+                if (isInteger(args[3])) {
+                    stay = Integer.parseInt(args[3]);
+                } else {
+                    sender.sendMessage(ChatColor.RED + args[3] + " is not a valid number");
+                    return true;
+                }
+
+                if (isInteger(args[4])) {
+                    fadeOut = Integer.parseInt(args[4]);
+                } else {
+                    sender.sendMessage(ChatColor.RED + args[4] + " is not a valid number");
+                    return true;
+                }
+
+                sendTimes(fadeIn, stay, fadeOut, target);
+                sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
+            } else if (args[1].equalsIgnoreCase("title")) {
+                if (args.length < 3) {
+                    sender.sendMessage(ChatColor.RED + "Usage: /title <player> title <raw json title|text>");
+                    return true;
+                }
+
+                sendTitle(args, 2, target);
+                sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
+            } else if (args[1].equalsIgnoreCase("subtitle")) {
+                if (args.length < 3) {
+                    sender.sendMessage(ChatColor.RED + "Usage: /title <player> subtitle <raw json title|text>");
+                    return true;
+                }
+
+                sendSubtitle(args, 2, target);
+                sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
+
+            } else if (args[1].equalsIgnoreCase("clear")) {
+
+                //sendTimes(0,0,0,player);
+                sendClear(target);
+                sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
+
+            } else if (args[1].equalsIgnoreCase("reset")) {
+
+                sendReset(target);
+                sender.sendMessage(ChatColor.GREEN + "Title command successfully executed");
+
+            }
+        }
+        return true;
     }
     private void sendClear(Player player) {
         //((CraftPlayer)player).getHandle().playerConnection.sendPacket(new ProtocolInjector.PacketTitle(ProtocolInjector.PacketTitle.Action.CLEAR));
