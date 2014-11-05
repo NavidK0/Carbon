@@ -39,7 +39,7 @@ public class CommandTitle extends Command {
         	targets.addAll(Bukkit.getOnlinePlayers());
         }
         Player player = getOnlinePlayer(args[0]);
-        if (player == null) {
+        if (player == null && targets.isEmpty()) {
             sender.sendMessage(ChatColor.RED + args[0] + " is not a valid player or is offline.");
             return true;
         }
