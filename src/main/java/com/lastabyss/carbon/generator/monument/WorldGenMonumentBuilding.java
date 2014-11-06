@@ -1,7 +1,7 @@
 package com.lastabyss.carbon.generator.monument;
 
 import com.google.common.collect.Lists;
-import com.lastabyss.carbon.generator.monument.util.BlockFace;
+import com.lastabyss.carbon.utils.nmsclasses.BlockFace;
 
 import java.util.ArrayList;
 import java.util.Collections;

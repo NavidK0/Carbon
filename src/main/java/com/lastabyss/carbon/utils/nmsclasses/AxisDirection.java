@@ -1,4 +1,4 @@
-package com.lastabyss.carbon.generator.monument.util;
+package com.lastabyss.carbon.utils.nmsclasses;
 
 public enum AxisDirection {
 

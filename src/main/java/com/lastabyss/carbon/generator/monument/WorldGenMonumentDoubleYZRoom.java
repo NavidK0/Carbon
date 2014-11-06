@@ -5,8 +5,8 @@ import java.util.Random;
 import net.minecraft.server.v1_7_R4.StructureBoundingBox;
 import net.minecraft.server.v1_7_R4.World;
 
-import com.lastabyss.carbon.generator.monument.util.BlockFace;
-import com.lastabyss.carbon.generator.monument.util.IBlockState;
+import com.lastabyss.carbon.utils.nmsclasses.BlockFace;
+import com.lastabyss.carbon.utils.nmsclasses.IBlockState;
 
 public class WorldGenMonumentDoubleYZRoom extends WorldGenMonumentPiece {
 

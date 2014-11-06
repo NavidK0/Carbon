@@ -1,4 +1,4 @@
-package com.lastabyss.carbon.generator.monument.util;
+package com.lastabyss.carbon.utils.nmsclasses;
 
 import net.minecraft.server.v1_7_R4.Block;
 

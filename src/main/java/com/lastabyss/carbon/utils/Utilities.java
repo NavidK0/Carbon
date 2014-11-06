@@ -5,6 +5,7 @@ import com.lastabyss.carbon.DynamicEnumType;
 
 import net.minecraft.server.v1_7_R4.EntityPlayer;
 import net.minecraft.server.v1_7_R4.Packet;
+import net.minecraft.server.v1_7_R4.Vec3D;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -257,16 +258,29 @@ public class Utilities {
     }
 
     /**
+     * Returns the squared distance to the vec.
+     * @param entity
+     * @param target
+     * @return
+     */
+    public static double getDistanceSqToVec(net.minecraft.server.v1_7_R4.Entity entity, Vec3D target) {
+        double diffX = entity.locX - target.a;
+        double diffY = entity.locY - target.b;
+        double diffZ = entity.locZ - target.c;
+        return diffX * diffX + diffY * diffY + diffZ * diffZ;
+    }
+
+    /**
      * Returns the squared distance to the entity.
      * @param entity
      * @param target
      * @return
      */
     public static double getDistanceSqToEntity(net.minecraft.server.v1_7_R4.Entity entity, net.minecraft.server.v1_7_R4.Entity target) {
-        double var2 = entity.locX - target.locX;
-        double var4 = entity.locY - target.locY;
-        double var6 = entity.locZ - target.locZ;
-        return var2 * var2 + var4 * var4 + var6 * var6;
+        double diffX = entity.locX - target.locX;
+        double diffY = entity.locY - target.locY;
+        double diffZ = entity.locZ - target.locZ;
+        return diffX * diffX + diffY * diffY + diffZ * diffZ;
     }
 
     /**

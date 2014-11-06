@@ -2,7 +2,7 @@ package com.lastabyss.carbon.generator.monument;
 
 import java.util.Random;
 
-import com.lastabyss.carbon.generator.monument.util.BlockFace;
+import com.lastabyss.carbon.utils.nmsclasses.BlockFace;
 
 class WorldGenMonumentFitSimpleRoomTopHelper implements WorldGenMonumentRoomFitHelper {
 

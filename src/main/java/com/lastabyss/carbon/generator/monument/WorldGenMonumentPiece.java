@@ -8,8 +8,8 @@ import net.minecraft.server.v1_7_R4.World;
 
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.entity.EntityGuardian;
-import com.lastabyss.carbon.generator.monument.util.BlockFace;
-import com.lastabyss.carbon.generator.monument.util.IBlockState;
+import com.lastabyss.carbon.utils.nmsclasses.BlockFace;
+import com.lastabyss.carbon.utils.nmsclasses.IBlockState;
 
 public abstract class WorldGenMonumentPiece extends StructurePiece {
 

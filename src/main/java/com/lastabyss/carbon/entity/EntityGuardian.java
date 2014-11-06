@@ -80,7 +80,7 @@ public class EntityGuardian extends EntityMonster {
 			Utilities.setAccessible(Field.class, EntityInsentient.class.getDeclaredField("lookController"), true).set(this, new GuardianLookController(this));
 			Utilities.setAccessible(Field.class, EntityInsentient.class.getDeclaredField("moveController"), true).set(this, new GuardianMoveController(this));
 		} catch (Exception e) {
-			Carbon.log.info("[Carbon] Failed to set guardian look&move controller: " + e.getMessage() + "caused by: " + e.getCause().getMessage());
+			Carbon.log.info("[Carbon] Failed to set guardian look&move controller: " + e.getMessage());
 		}
 	}
 
@@ -203,7 +203,7 @@ public class EntityGuardian extends EntityMonster {
 		return isDataSet(2);
 	}
 
-	//makes entity use proper AI, spent day to figure that shit out
+	@Override
 	public boolean bk() {
 		return true;
 	}

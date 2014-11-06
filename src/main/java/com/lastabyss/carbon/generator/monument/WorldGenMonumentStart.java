@@ -1,7 +1,7 @@
 package com.lastabyss.carbon.generator.monument;
 
-import com.lastabyss.carbon.generator.monument.util.BlockFace;
-import com.lastabyss.carbon.generator.monument.util.UniverseDirection;
+import com.lastabyss.carbon.utils.nmsclasses.BlockFace;
+import com.lastabyss.carbon.utils.nmsclasses.UniverseDirection;
 
 import java.util.Random;
 
