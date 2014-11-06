@@ -79,7 +79,7 @@ public final class SpawnerCreature {
 					}
 				}
 			}
-			ChunkCoordinates chunkcoordinates = worldserver.getSpawn();
+			ChunkCoordinates spawn = worldserver.getSpawn();
 			for (EnumCreatureType enumcreaturetype : EnumCreatureType.values()) {
 				int limit = enumcreaturetype.b();
 				switch (enumcreaturetype) {
@@ -100,7 +100,7 @@ public final class SpawnerCreature {
 					continue;
 				}
 				// CraftBukkit end
-				if ((!enumcreaturetype.d() || flag1) && (enumcreaturetype.d() || flag) && (!enumcreaturetype.e() || flag2) && worldserver.a(enumcreaturetype.a()) <= limit * this.a.size() / 256) { // CraftBukkit - use per-world limits
+				if ((!enumcreaturetype.d() || flag1) && (enumcreaturetype.d() || flag) && (!enumcreaturetype.e() || flag2) && worldserver.a(enumcreaturetype.a()) <= limit * this.a.size() / 289) {
 					Iterator<?> iterator = this.a.keySet().iterator();
 					label110: while (iterator.hasNext()) {
 						long key = ((Long) iterator.next()).longValue();
@@ -116,23 +116,23 @@ public final class SpawnerCreature {
 									int localX = x;
 									int localY = y;
 									int localZ = z;
-									byte b1 = 6;
+									byte rndL = 6;
 									BiomeMeta biomemeta = null;
 									GroupDataEntity groupdataentity = null;
 									int spawnedThisChunk = 0;
 									while (true) {
 										if (spawnedThisChunk < 4) {
 											label103: {
-												localX += worldserver.random.nextInt(b1) - worldserver.random.nextInt(b1);
+												localX += worldserver.random.nextInt(rndL) - worldserver.random.nextInt(rndL);
 												localY += worldserver.random.nextInt(1) - worldserver.random.nextInt(1);
-												localZ += worldserver.random.nextInt(b1) - worldserver.random.nextInt(b1);
+												localZ += worldserver.random.nextInt(rndL) - worldserver.random.nextInt(rndL);
 												float mobX = (float) localX + 0.5F;
 												float mobY = (float) localY;
 												float mobZ = (float) localZ + 0.5F;
-												if (worldserver.findNearbyPlayer((double) mobX, (double) mobY, (double) mobZ, 24.0D) == null) {
-													float diffX = mobX - (float) chunkcoordinates.x;
-													float diffY = mobY - (float) chunkcoordinates.y;
-													float diffZ = mobZ - (float) chunkcoordinates.z;
+												if (worldserver.findNearbyPlayer(mobX, mobY, mobZ, 24.0D) == null) {
+													float diffX = mobX - spawn.x;
+													float diffY = mobY - spawn.y;
+													float diffZ = mobZ - spawn.z;
 													float sqDist = diffX * diffX + diffY * diffY + diffZ * diffZ;
 													if (sqDist >= 576.0F) {
 														if (biomemeta == null) {
@@ -141,7 +141,7 @@ public final class SpawnerCreature {
 																break label103;
 															}
 														}
-														if (canSpawn(EntitySpawnZone.getSpawnZone(biomemeta.b), worldserver, (int) mobX, (int) mobY, (int) mobZ)) {
+														if (canSpawn(EntitySpawnZone.getSpawnZone(biomemeta.b), worldserver, localX, localY, localZ)) {
 															EntityInsentient entity;
 															try {
 																entity = (EntityInsentient) biomemeta.b.getConstructor(new Class[] { World.class }).newInstance(new Object[] { worldserver });

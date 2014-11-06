@@ -397,7 +397,7 @@ public class EntityGuardian extends EntityMonster {
 
 	@Override
 	public boolean canSpawn() {
-		return world.a(boundingBox, this) && world.getCubes(this, boundingBox).isEmpty();
+		return random.nextInt(20) == 0 && world.a(boundingBox, this) && world.getCubes(this, boundingBox).isEmpty();
 	}
 
 	private Guardian bukkitEntity;
