@@ -35,7 +35,7 @@ public class CarbonWorldGenerator implements Listener {
     @EventHandler
     public void onWorldInit(WorldInitEvent event) {
     	//Add new chunkprovidergenerate
-    	if (event.getWorld().getEnvironment() == Environment.NORMAL) {
+    	if (plugin.getConfig().getStringList("options.worlds").contains(event.getWorld().getName()) && event.getWorld().getEnvironment() == Environment.NORMAL) {
 	    	WorldServer nmsWorld = ((CraftWorld) event.getWorld()).getHandle();
 	    	nmsWorld.chunkProviderServer.chunkProvider = new ChunkProviderGenerate(nmsWorld, nmsWorld.getSeed(), nmsWorld.getWorldData().shouldGenerateMapFeatures());
     	}
