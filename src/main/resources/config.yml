@@ -141,6 +141,9 @@ protocollib:
     rabbit_hide: 1
     armor_stand: 51
     
+features:
+  monsterEggMobSpawner: true
+    
 optimizations:
   world:
     tileentitytick: false
@@ -149,4 +152,4 @@ optimizations:
 debug:
   verbose: true
         
-donottouch.configVersion: 0.8
+donottouch.configVersion: 0.9
