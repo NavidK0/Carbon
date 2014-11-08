@@ -42,7 +42,7 @@ public class Carbon extends JavaPlugin {
   private ItemListener itemListener = new ItemListener(this);
   private WorldBorderListener worldBorderListener = new WorldBorderListener();
   private EntityListener entityListener = new EntityListener();
-  private PlayerListener playerListener = new PlayerListener();
+  private PlayerListener playerListener = new PlayerListener(this);
 
   private CarbonWorldGenerator worldGenerator = new CarbonWorldGenerator(this);
   private CarbonEntityGenerator entityGenerator = new CarbonEntityGenerator(this);
@@ -55,7 +55,7 @@ public class Carbon extends JavaPlugin {
   private static Injector injector;
   private static Instrumentator instrumentator;
   
-  private final double localConfigVersion = 0.8;
+  private final double localConfigVersion = 0.9;
   private final String supportedVersion = "1.7.10"; //Wanna use reflection and change this value? I dare you...
 
   @Override
