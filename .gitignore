@@ -8,6 +8,7 @@
 /.gradle
 /dest
 /libs
+/.externalToolBuilders
 
 /bin
 /build
