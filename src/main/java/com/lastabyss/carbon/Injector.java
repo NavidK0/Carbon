@@ -9,6 +9,7 @@ import com.lastabyss.carbon.blocks.BlockIronPressurePlate;
 import com.lastabyss.carbon.blocks.BlockIronTrapdoor;
 import com.lastabyss.carbon.blocks.BlockOptimizedChest;
 import com.lastabyss.carbon.blocks.BlockOptimizedEnderChest;
+import com.lastabyss.carbon.blocks.BlockPiston;
 import com.lastabyss.carbon.blocks.BlockPrismarine;
 import com.lastabyss.carbon.blocks.BlockRedSandstone;
 import com.lastabyss.carbon.blocks.BlockRedSandstoneStairs;
@@ -114,6 +115,9 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.material.MaterialData;
 import org.spigotmc.SpigotDebreakifier;
 
+import sun.reflect.FieldAccessor;
+import sun.reflect.ReflectionFactory;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -178,6 +182,8 @@ public class Injector {
   public Block optimizedEnderChestBlock = new BlockOptimizedEnderChest();
   public Block redstoneComparatorOffBlock = new BlockRedstoneComparator(false);
   public Block redstoneComparatorOnBlock = new BlockRedstoneComparator(true);
+  public Block pistonBlock = new BlockPiston(false);
+  public Block pistonStickyBlock = new BlockPiston(true);
 
   //Bukkit materials
   public Material slimeMat = Utilities.addMaterial("SLIME", 165);
@@ -291,6 +297,8 @@ public class Injector {
   public Item optimizedChestItem = new ItemBlock(optimizedChestBlock);
   public Item optimizedTrappedChestItem = new ItemBlock(optimizedTrappedChestBlock);
   public Item optimizedEnderChestItem = new ItemBlock(optimizedEnderChestBlock);
+  public Item pistonItem = new ItemBlock(pistonBlock);
+  public Item pistonStickyItem = new ItemBlock(pistonStickyBlock);
 
   public Item rabbitItem = new ItemRabbit();
   public Item cookedRabbitItem = new ItemCookedRabbit();
@@ -530,6 +538,8 @@ public static void registerWorldGenFactoryAddition(boolean isStructureStart, Cla
     registerBlock(54, "chest", optimizedChestBlock, optimizedChestItem);
     registerBlock(146, "trapped_chest", optimizedTrappedChestBlock, optimizedTrappedChestItem);
     registerBlock(130, "ender_chest", optimizedEnderChestBlock, optimizedEnderChestItem);
+    registerBlock(33, "piston", pistonBlock, pistonItem);
+    registerBlock(29, "sticky_piston", pistonStickyBlock, pistonStickyItem);
 
     //Register items
     registerItem(409, "prismarine_shard", prismarineShardItem);
@@ -577,56 +587,22 @@ public static void registerWorldGenFactoryAddition(boolean isStructureStart, Cla
     //Register additional potion effects
     registerPotionEffect(MobEffectList.JUMP.getId(), "0 & 1 & !2 & 3", "5");
 
-    //inject our modified blocks
-    try {
-        Class<Blocks> blocksClass = Blocks.class;
-        if (plugin.getConfig().getBoolean("modify.blocks.stone", true))
-            setStaticFinalField(blocksClass, "STONE", stoneBlock);
-        if (plugin.getConfig().getBoolean("modify.blocks.sponge", true))
-            setStaticFinalField(blocksClass, "SPONGE", spongeBlock);
-        if (plugin.getConfig().getBoolean("modify.blocks.torch", true))
-            setStaticFinalField(blocksClass, "TORCH", torchBlock);
-        if (plugin.getConfig().getBoolean("modify.blocks.redstone_torch", true))
-            setStaticFinalField(blocksClass, "REDSTONE_TORCH_ON", redstoneTorchBlockOn);
-        if (plugin.getConfig().getBoolean("modify.blocks.unlit_redstone_torch", true))
-            setStaticFinalField(blocksClass, "REDSTONE_TORCH_OFF", redstoneTorchBlockOff);
-        if (plugin.getConfig().getBoolean("modify.blocks.stone_button", true))
-            setStaticFinalField(blocksClass, "STONE_BUTTON", stoneButtonBlock);
-        if (plugin.getConfig().getBoolean("modify.blocks.wooden_button", true))
-            setStaticFinalField(blocksClass, "WOOD_BUTTON", woodButtonBlock);
-        if (plugin.getConfig().getBoolean("modify.blocks.stone_pressure_plate", true))
-            setStaticFinalField(blocksClass, "STONE_PLATE", stonePlateBlock);
-        if (plugin.getConfig().getBoolean("modify.blocks.wooden_pressure_plate", true))
-            setStaticFinalField(blocksClass, "WOOD_PLATE", woodPlateBlock);
-        if (plugin.getConfig().getBoolean("modify.blocks.light_weighted_pressure_plate", true))
-            setStaticFinalField(blocksClass, "IRON_PLATE", ironPlateBlock);
-        if (plugin.getConfig().getBoolean("modify.blocks.heavy_weighted_pressure_plate", true))
-            setStaticFinalField(blocksClass, "GOLD_PLATE", goldPlateBlock);
-        if (plugin.getConfig().getBoolean("modify.blocks.anvil", true))
-            setStaticFinalField(blocksClass, "ANVIL", anvilBlock);
-        if (plugin.getConfig().getBoolean("modify.blocks.enchanting_table", true))
-            setStaticFinalField(blocksClass, "ENCHANTMENT_TABLE", enchantTableBlock);
-        if (plugin.getConfig().getBoolean("modify.blocks.chest", true))
-            setStaticFinalField(blocksClass, "CHEST", optimizedChestBlock);
-        if (plugin.getConfig().getBoolean("modify.blocks.trapped_chest", true))
-            setStaticFinalField(blocksClass, "TRAPPED_CHEST", optimizedTrappedChestBlock);
-        if (plugin.getConfig().getBoolean("modify.blocks.ender_chest", true))
-            setStaticFinalField(blocksClass, "ENDER_CHEST", optimizedEnderChestBlock);
-        if (plugin.getConfig().getBoolean("modify.blocks.daylight_detector", true))
-            setStaticFinalField(blocksClass, "DAYLIGHT_DETECTOR", daylightDetectorBlock);
-        if (plugin.getConfig().getBoolean("modify.blocks.unpowered_comparator", true) || plugin.getConfig().getBoolean("modify.blocks.powered_comparator", true)) {
-        	setStaticFinalField(blocksClass, "REDSTONE_COMPARATOR_OFF", redstoneComparatorOffBlock);
-        	setStaticFinalField(blocksClass, "REDSTONE_COMPARATOR_ON", redstoneComparatorOffBlock);
-        }
-
-        Class<Items> itemsClass = Items.class;
-        if (plugin.getConfig().getBoolean("modify.items.item_frame", true))
-            setStaticFinalField(itemsClass, "ITEM_FRAME", frameItem);
-        if (plugin.getConfig().getBoolean("modify.items.comparator", true))
-            setStaticFinalField(itemsClass, "REDSTONE_COMPARATOR", redstoneComparatorItem);
-    } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException t) {
-        t.printStackTrace(System.out);
-        Bukkit.shutdown();
+    //update Blocks.class and Items.class
+    for (Field field : Blocks.class.getDeclaredFields()) {
+    	field.setAccessible(true);
+    	if (Block.class.isAssignableFrom(field.getType())) {
+    		Block block = (Block) field.get(null);
+    		block = Block.getById(Block.getId(block));
+    		setStaticFinalField(field, block);
+    	}
+    }
+    for (Field field : Items.class.getDeclaredFields()) {
+    	field.setAccessible(true);
+    	if (Item.class.isAssignableFrom(field.getType())) {
+    		Item item = (Item) field.get(null);
+    		item = Item.getById(Item.getId(item));
+    		setStaticFinalField(field, item);
+    	}
     }
 
     //inject custom netty stream serializer
@@ -655,13 +631,13 @@ public static void registerWorldGenFactoryAddition(boolean isStructureStart, Cla
     EntitySpawnZone.register(EntityGuardian.class, EnumEntitySpawnZone.IN_WATER);
   }
 
-  private void setStaticFinalField(Class<?> clazz, String fieldname, Object newValue) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-      Field field = clazz.getDeclaredField(fieldname);
+  private void setStaticFinalField(Field field, Object newValue) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
       field.setAccessible(true);
       Field fieldModifiers = Field.class.getDeclaredField("modifiers");
       fieldModifiers.setAccessible(true);
       fieldModifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-      field.set(null, newValue);
+	  FieldAccessor fieldAccessor = ReflectionFactory.getReflectionFactory().newFieldAccessor(field, true);
+	  fieldAccessor.set(null, newValue);
   }
 
   public void registerRecipes() {

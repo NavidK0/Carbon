@@ -79,36 +79,6 @@ public enum BlockFace {
 		return getById(this.oppositeId);
 	}
 
-	public BlockFace rotateY() {
-		switch (SwitchWrapper.ySwtich[ordinal()]) {
-			case 1:
-				return EAST;
-			case 2:
-				return SOUTH;
-			case 3:
-				return WEST;
-			case 4:
-				return NORTH;
-			default:
-				throw new IllegalStateException("Unable to get Y-rotated facing of " + this);
-		}
-	}
-
-	public BlockFace rotateYCCW() {
-		switch (SwitchWrapper.yccwSwtich[this.ordinal()]) {
-			case 1:
-				return WEST;
-			case 2:
-				return NORTH;
-			case 3:
-				return EAST;
-			case 4:
-				return SOUTH;
-			default:
-				throw new IllegalStateException("Unable to get CCW facing of " + this);
-		}
-	}
-
 	public int getFrontDirectionX() {
 		return this.axis == Axis.X ? this.axisDirection.getDirection() : 0;
 	}
@@ -131,26 +101,6 @@ public enum BlockFace {
 
 	public String toString() {
 		return this.name;
-	}
-
-	public String l() {
-		return this.name;
-	}
-
-	private static class SwitchWrapper {
-		static int[] yccwSwtich = new int[BlockFace.values().length];
-		static int[] ySwtich = new int[Axis.values().length];
-		static {
-			yccwSwtich[BlockFace.NORTH.ordinal()] = 1;
-			yccwSwtich[BlockFace.EAST.ordinal()] = 2;
-			yccwSwtich[BlockFace.SOUTH.ordinal()] = 3;
-			yccwSwtich[BlockFace.WEST.ordinal()] = 4;
-			yccwSwtich[BlockFace.UP.ordinal()] = 5;
-			yccwSwtich[BlockFace.DOWN.ordinal()] = 6;
-			ySwtich[Axis.X.ordinal()] = 1;
-			ySwtich[Axis.Y.ordinal()] = 2;
-			ySwtich[Axis.Z.ordinal()] = 3;
-		}
 	}
 
 }
