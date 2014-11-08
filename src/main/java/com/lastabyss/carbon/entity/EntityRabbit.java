@@ -3,6 +3,7 @@ package com.lastabyss.carbon.entity;
 import java.lang.reflect.Field;
 
 import net.minecraft.server.v1_7_R4.Block;
+import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.EntityAgeable;
 import net.minecraft.server.v1_7_R4.EntityAnimal;
@@ -172,7 +173,13 @@ public class EntityRabbit extends EntityAnimal {
 	}
 
 	public void setFullCarrotTicks() {
-		world.addParticle("BLOCK_DUST", (locX + random.nextFloat() * height * 2.0F) - height, locY + 0.5D + random.nextFloat() * width, (locZ + random.nextFloat() * height * 2.0F) - height, 0.0D, 0.0D, 0.0D);
+		world.addParticle(
+			"blockdust_"+String.valueOf(Block.getId(Blocks.CARROTS) << 12 | 7),
+			(locX + random.nextFloat() * width * 2.0F) - width,
+			locY + 0.5D + random.nextFloat() * height,
+			(locZ + random.nextFloat() * width * 2.0F) - width,
+			0.0D, 0.0D, 0.0D
+		);
 		moreCarrotTicks = 100;
 	}
 

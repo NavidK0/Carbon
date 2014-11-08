@@ -57,7 +57,7 @@ public class EntityGuardian extends EntityMonster {
 	public EntityGuardian(World world) {
 		super(world);
 		this.a(0.85F, 0.85F);
-		b = 10;
+		this.b = 10;
 		// Add pathfinding goals
 		stroll = new PathfinderGoalNewRandomStroll(this, 1.0D, 80);
 		goalSelector.a(4, new PathfinderGoalGuardianAttack(this, stroll));
@@ -224,7 +224,13 @@ public class EntityGuardian extends EntityMonster {
 		if (isData2Set() && M()) {
 			Vec3D vec = this.j(0.0F);
 			for (int i = 0; i < 2; ++i) {
-				this.world.addParticle("bubble", this.locX + (this.random.nextDouble() - 0.5D) * (double) this.height - vec.a * 1.5D, this.locY + this.random.nextDouble() * (double) this.width - vec.b * 1.5D, this.locZ + (this.random.nextDouble() - 0.5D) * (double) this.height - vec.c * 1.5D, 0.0D, 0.0D, 0.0D);
+				this.world.addParticle(
+					"bubble",
+					this.locX + (this.random.nextDouble() - 0.5D) * (double) this.width - vec.a * 1.5D,
+					this.locY + this.random.nextDouble() * (double) this.height - vec.b * 1.5D,
+					this.locZ + (this.random.nextDouble() - 0.5D) * (double) this.width - vec.c * 1.5D,
+					0.0D, 0.0D, 0.0D
+				);
 			}
 		}
 
@@ -239,7 +245,7 @@ public class EntityGuardian extends EntityMonster {
 				getControllerLook().a();
 				double beamReadyPercent = this.getBeamShootReadyPercent(0.0F);
 				double diffX = target.locX - locX;
-				double diffY = (target.locY + target.width * 0.5F) - (locY + getHeadHeight());
+				double diffY = (target.locY + target.height * 0.5F) - (locY + getHeadHeight());
 				double diffZ = target.locZ - locZ;
 				double dist = Math.sqrt((diffX * diffX) + (diffY * diffY) + (diffZ * diffZ));
 				diffX /= dist;
@@ -308,7 +314,7 @@ public class EntityGuardian extends EntityMonster {
 	public void i(int id) {
 		super.i(id);
 		if (id == 16) {
-			if (isElder() && (height < 1.0F)) {
+			if (isElder() && (width < 1.0F)) {
 				a(1.9975F, 1.9975F);
 			}
 		} else if (id == 17) {

@@ -258,6 +258,19 @@ public class Utilities {
     }
 
     /**
+     * Returns the squared distance to the location.
+     * @param entity
+     * @param target
+     * @return
+     */
+    public static double getDistanceSqTo(net.minecraft.server.v1_7_R4.Entity entity, double x, double y, double z) {
+        double diffX = entity.locX - x;
+        double diffY = entity.locY - y;
+        double diffZ = entity.locZ - z;
+        return diffX * diffX + diffY * diffY + diffZ * diffZ;
+    }
+
+    /**
      * Returns the squared distance to the vec.
      * @param entity
      * @param target
