@@ -25,6 +25,11 @@
 				<filename name= "**/*"/>
 			</fileset>
 		</move>
+		<move todir="build/classes/pretransformedclasses/org/bukkit/">
+			<fileset dir="build/classes/org/bukkit/">
+				<filename name= "**/*"/>
+			</fileset>
+		</move>
 		<copy todir="build/classes/">
 			<fileset dir="src/main/resources/">
 				<filename name="**/*"/>

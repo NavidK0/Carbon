@@ -21,6 +21,8 @@ import sun.tools.attach.WindowsAttachProvider;
  */
 public class Instrumentator {
 
+	//All pretransformed classes should be located in the pretransformedclasses folder inside the jar
+
     private String attachLibFolder;
 
     public Instrumentator(Carbon plugin, String attachLibFolder) {
@@ -31,22 +33,25 @@ public class Instrumentator {
     public void instrumentate() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, IOException, AttachNotSupportedException, AgentLoadException, AgentInitializationException {
     	Tools.addToLibPath(getLibraryPath(attachLibFolder));
     	AttachProvider.setAttachProvider(getAttachProvider());
-        AgentLoader.attachAgentToJVM(Tools.getCurrentPID(), CarbonTransformAgent.class,
+        AgentLoader.attachAgentToJVM(
+        	Tools.getCurrentPID(), CarbonTransformAgent.class,
         	new String[] {
-        		"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/BannerMeta.class",
-        		"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/BannerMeta$BannerPattern.class",
-        		"pretransformedclasses/net/minecraft/server/v1_7_R4/EnumEntitySpawnZone.class",
-        		"pretransformedclasses/net/minecraft/server/v1_7_R4/EntitySpawnZone.class",
+        		"org/bukkit/craftbukkit/v1_7_R4/inventory/BannerMeta.class",
+        		"org/bukkit/craftbukkit/v1_7_R4/inventory/BannerMeta$BannerPattern.class",
+        		"net/minecraft/server/v1_7_R4/EnumEntitySpawnZone.class",
+        		"net/minecraft/server/v1_7_R4/EntitySpawnZone.class",
         	},
-        	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemStack.class",
-        	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem.class",
-        	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem$SerializableMeta.class",
-        	"pretransformedclasses/org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemFactory.class",
-        	"pretransformedclasses/net/minecraft/server/v1_7_R4/EntityTracker.class",
-        	"pretransformedclasses/net/minecraft/server/v1_7_R4/EntityTrackerEntry.class",
-        	"pretransformedclasses/net/minecraft/server/v1_7_R4/DataWatcher.class",
-        	"pretransformedclasses/net/minecraft/server/v1_7_R4/SpawnerCreature.class",
-        	"pretransformedclasses/net/minecraft/server/v1_7_R4/SpawnerCreature$1.class"
+        	"org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemStack.class",
+        	"org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem.class",
+        	"org/bukkit/craftbukkit/v1_7_R4/inventory/CraftMetaItem$SerializableMeta.class",
+        	"org/bukkit/craftbukkit/v1_7_R4/inventory/CraftItemFactory.class",
+        	"net/minecraft/server/v1_7_R4/EntityTracker.class",
+        	"net/minecraft/server/v1_7_R4/EntityTrackerEntry.class",
+        	"net/minecraft/server/v1_7_R4/DataWatcher.class",
+        	"net/minecraft/server/v1_7_R4/SpawnerCreature.class",
+        	"net/minecraft/server/v1_7_R4/SpawnerCreature$1.class",
+        	"org/bukkit/Material.class",
+        	"org/bukkit/Material$1.class"
         );
     }
 

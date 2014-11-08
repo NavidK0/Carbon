@@ -72,17 +72,18 @@ public class AgentLoader {
         jos.closeEntry();
 
         for (String name : resources) {
-            jos.putNextEntry(new JarEntry(name));
-            jos.write(Tools.getBytesFromStream(AgentLoader.class.getClassLoader().getResourceAsStream(name)));
+            jos.putNextEntry(new JarEntry("pretransformedclasses/"+name));
+            jos.write(Tools.getBytesFromStream(AgentLoader.class.getClassLoader().getResourceAsStream("pretransformedclasses/"+name)));
             jos.closeEntry();
         }
 
         for (String name : originalresources) {
-            jos.putNextEntry(new JarEntry(name.substring(name.indexOf('/') + 1)));
-            jos.write(Tools.getBytesFromStream(AgentLoader.class.getClassLoader().getResourceAsStream(name)));
+            jos.putNextEntry(new JarEntry(name));
+            jos.write(Tools.getBytesFromStream(AgentLoader.class.getClassLoader().getResourceAsStream("pretransformedclasses/"+name)));
             jos.closeEntry();
         }
 
+        jos.flush();
         jos.close();
         return jarFile;
     }

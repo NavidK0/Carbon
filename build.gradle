@@ -24,6 +24,9 @@ tasks.build.doLast {
     ant.move(todir: "build/classes/main/pretransformedclasses/net/minecraft/server/v1_7_R4/") {
         fileset dir: "build/classes/main/net/minecraft/server/v1_7_R4/"
     }
+    ant.move(todir: "build/classes/pretransformedclasses/org/bukkit/") {
+    	fileset dir: "build/classes/org/bukkit/"
+    }
     ant.jar destfile:"build/libs/Carbon.jar", basedir: "build/classes/main", includes: "**/*.*", update: true
     File export = file('build/libs/Carbon.jar')
     File dest = file('dist')
