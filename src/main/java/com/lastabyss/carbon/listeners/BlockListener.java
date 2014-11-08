@@ -81,55 +81,55 @@ public class BlockListener implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onDoorBreak(BlockBreakEvent evt) {
-            if (evt.getPlayer().getGameMode() == GameMode.CREATIVE)
-                    return;
-            Material mat = evt.getBlock().getType();
-            if (mat == Carbon.injector().spruceDoorBlockMat)
-                evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().spruceDoorMat, 1));
-            else if (mat == Carbon.injector().birchDoorBlockMat)
-                evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().birchDoorMat, 1));
-            else if (mat == Carbon.injector().jungleDoorBlockMat)
-                evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().jungleDoorMat, 1));
-            else if (mat == Carbon.injector().acaciaDoorBlockMat)
-                evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().acaciaDoorMat, 1));
-            else if (mat == Carbon.injector().darkOakDoorBlockMat)
-                evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().darkOakDoorMat, 1));
+		if (evt.getPlayer().getGameMode() == GameMode.CREATIVE)
+			return;
+		Material mat = evt.getBlock().getType();
+		if (mat == Carbon.injector().spruceDoorBlockMat)
+			evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().spruceDoorMat, 1));
+		else if (mat == Carbon.injector().birchDoorBlockMat)
+			evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().birchDoorMat, 1));
+		else if (mat == Carbon.injector().jungleDoorBlockMat)
+			evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().jungleDoorMat, 1));
+		else if (mat == Carbon.injector().acaciaDoorBlockMat)
+			evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().acaciaDoorMat, 1));
+		else if (mat == Carbon.injector().darkOakDoorBlockMat)
+			evt.getBlock().getWorld().dropItemNaturally(evt.getBlock().getLocation(), new ItemStack(Carbon.injector().darkOakDoorMat, 1));
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onIndirectDoorBreak(BlockBreakEvent event) {
-            if (event.getBlock().getType().toString().contains("DOOR"))
-                    return;
-            Material mat = event.getBlock().getRelative(BlockFace.UP).getType();
-            if (mat == Carbon.injector().spruceDoorBlockMat)
-                event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().spruceDoorMat, 1));
-            else if (mat == Carbon.injector().birchDoorBlockMat)
-                event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().birchDoorMat, 1));
-            else if (mat == Carbon.injector().jungleDoorBlockMat)
-                event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().jungleDoorMat, 1));
-            else if (mat == Carbon.injector().acaciaDoorBlockMat)
-                event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().acaciaDoorMat, 1));
-            else if (mat == Carbon.injector().darkOakDoorBlockMat)
-                event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().darkOakDoorMat, 1));
-            }
+		if (event.getBlock().getType().toString().contains("DOOR"))
+			return;
+		Material mat = event.getBlock().getRelative(BlockFace.UP).getType();
+		if (mat == Carbon.injector().spruceDoorBlockMat)
+			event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().spruceDoorMat, 1));
+		else if (mat == Carbon.injector().birchDoorBlockMat)
+			event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().birchDoorMat, 1));
+		else if (mat == Carbon.injector().jungleDoorBlockMat)
+			event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().jungleDoorMat, 1));
+		else if (mat == Carbon.injector().acaciaDoorBlockMat)
+			event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().acaciaDoorMat, 1));
+		else if (mat == Carbon.injector().darkOakDoorBlockMat)
+			event.getBlock().getWorld().dropItemNaturally(event.getBlock().getRelative(BlockFace.UP).getLocation(), new ItemStack(Carbon.injector().darkOakDoorMat, 1));
+	}
 
 	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onSpongePlace(BlockPlaceEvent event) {
-		if(event.getBlock().getState().getData().toString().equals("SPONGE(0)") && (isTouching(event.getBlock(), Material.WATER) || isTouching(event.getBlock(), Material.STATIONARY_WATER))) {
+		if (event.getBlock().getState().getData().toString().equals("SPONGE(0)") && (isTouching(event.getBlock(), Material.WATER) || isTouching(event.getBlock(), Material.STATIONARY_WATER))) {
 			int count = 0;
-			for(int i = 1; i < 8; i++)
-				for(int x = -i; x <= i; x++)
-					for(int y = -i; y <= i; y++)
-						for(int z = -i; z <= i; z++) {
+			for (int i = 1; i < 8; i++)
+				for (int x = -i; x <= i; x++)
+					for (int y = -i; y <= i; y++)
+						for (int z = -i; z <= i; z++) {
 							int a = event.getBlock().getX() + x;
 							int b = event.getBlock().getY() + y;
 							int c = event.getBlock().getZ() + z;
-							if(event.getBlock().getWorld().getBlockAt(a, b, c).getType().equals(Material.WATER) || (event.getBlock().getWorld().getBlockAt(a, b, c).getType().equals(Material.STATIONARY_WATER))) {
+							if (event.getBlock().getWorld().getBlockAt(a, b, c).getType().equals(Material.WATER) || (event.getBlock().getWorld().getBlockAt(a, b, c).getType().equals(Material.STATIONARY_WATER))) {
 								event.getBlock().getWorld().getBlockAt(a, b, c).setType(Material.AIR);
 								event.getBlock().setData((byte) 1);
 								count++;
-								if(count >= 65)
+								if (count >= 65)
 									return;
 							}
 						}
@@ -137,8 +137,9 @@ public class BlockListener implements Listener {
 	}
 
 	public boolean isTouching(Block block, Material material) {
-		for(BlockFace b : BlockFace.values())
-			if(block.getRelative(b).getType() == material) return true;
+		for (BlockFace b : BlockFace.values())
+			if (block.getRelative(b).getType() == material)
+				return true;
 		return false;
 	}
 
@@ -179,40 +180,40 @@ public class BlockListener implements Listener {
 		if (evt.getCause().equals(DamageCause.FALL) && evt.getEntity().getLocation().subtract(0.0D, 1.0D, 0.0D).getBlock().getType().equals(Carbon.injector().slimeMat))
 			evt.setCancelled(true);
 	}
-        
-        @EventHandler
-        public void onDaylightChange(PlayerInteractEvent evt) {
-            Player player = evt.getPlayer();
-            if (evt.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                if (evt.getClickedBlock().getType() == Carbon.injector().daylightDetectorInvertedMat) {
-                    try {
-                        CraftBlock craftBlock = (CraftBlock)evt.getClickedBlock();
-                        craftBlock.setType(Material.DAYLIGHT_DETECTOR);
-                        //Some stupid reflection
-                        Method method = CraftBlock.class.getDeclaredMethod("getNMSBlock");
-                        method.setAccessible(true);
-                        net.minecraft.server.v1_7_R4.Block nmsBlock = (net.minecraft.server.v1_7_R4.Block) method.invoke(craftBlock);
-                        BlockDaylightDetector detector = (BlockDaylightDetector)nmsBlock;
-                        detector.setInverted(false);
-                        player.getWorld().playSound(evt.getClickedBlock().getLocation(), Sound.CLICK, 1, 1);
-                    } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                        Logger.getLogger(BlockListener.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else if (evt.getClickedBlock().getType() == Material.DAYLIGHT_DETECTOR) {
-                    try {
-                        CraftBlock craftBlock = (CraftBlock)evt.getClickedBlock();
-                        craftBlock.setType(Carbon.injector().daylightDetectorInvertedMat);
-                        //Some stupid reflection
-                        Method method = CraftBlock.class.getDeclaredMethod("getNMSBlock");
-                        method.setAccessible(true);
-                        net.minecraft.server.v1_7_R4.Block nmsBlock = (net.minecraft.server.v1_7_R4.Block) method.invoke(craftBlock);
-                        BlockDaylightDetector detector = (BlockDaylightDetector)nmsBlock;
-                        detector.setInverted(true);
-                        player.getWorld().playSound(evt.getClickedBlock().getLocation(), Sound.CLICK, 1, 1);
-                    } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                        Logger.getLogger(BlockListener.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-        }
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void onDaylightChange(PlayerInteractEvent evt) {
+		Player player = evt.getPlayer();
+		if (evt.getAction() == Action.RIGHT_CLICK_BLOCK) {
+			if (evt.getClickedBlock().getType() == Carbon.injector().daylightDetectorInvertedMat) {
+				try {
+					CraftBlock craftBlock = (CraftBlock) evt.getClickedBlock();
+					craftBlock.setType(Material.DAYLIGHT_DETECTOR);
+					// Some stupid reflection
+					Method method = CraftBlock.class.getDeclaredMethod("getNMSBlock");
+					method.setAccessible(true);
+					net.minecraft.server.v1_7_R4.Block nmsBlock = (net.minecraft.server.v1_7_R4.Block) method.invoke(craftBlock);
+					BlockDaylightDetector detector = (BlockDaylightDetector) nmsBlock;
+					detector.setInverted(false);
+					player.getWorld().playSound(evt.getClickedBlock().getLocation(), Sound.CLICK, 1, 1);
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+					Logger.getLogger(BlockListener.class.getName()).log(Level.SEVERE, null, ex);
+				}
+			} else if (evt.getClickedBlock().getType() == Material.DAYLIGHT_DETECTOR) {
+				try {
+					CraftBlock craftBlock = (CraftBlock) evt.getClickedBlock();
+					craftBlock.setType(Carbon.injector().daylightDetectorInvertedMat);
+					// Some stupid reflection
+					Method method = CraftBlock.class.getDeclaredMethod("getNMSBlock");
+					method.setAccessible(true);
+					net.minecraft.server.v1_7_R4.Block nmsBlock = (net.minecraft.server.v1_7_R4.Block) method.invoke(craftBlock);
+					BlockDaylightDetector detector = (BlockDaylightDetector) nmsBlock;
+					detector.setInverted(true);
+					player.getWorld().playSound(evt.getClickedBlock().getLocation(), Sound.CLICK, 1, 1);
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+					Logger.getLogger(BlockListener.class.getName()).log(Level.SEVERE, null, ex);
+				}
+			}
+		}
+	}
 }

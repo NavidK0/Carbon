@@ -1,6 +1,7 @@
 package com.lastabyss.carbon.listeners;
 
 import com.lastabyss.carbon.Carbon;
+
 import net.minecraft.server.v1_7_R4.EntityPlayer;
 
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
@@ -9,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 
 import com.lastabyss.carbon.inventory.AdditionalNBTDataPlayerAbilities;
+
 import org.bukkit.Material;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
@@ -32,7 +34,8 @@ public class PlayerListener implements Listener {
             nmsPlayer.abilities = new AdditionalNBTDataPlayerAbilities();
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @SuppressWarnings("deprecation")
+	@EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteractMobSpawner(PlayerInteractEvent evt) {
         if (plugin.getConfig().getBoolean("features.monsterEggMobSpawner", true)) {
             if (evt.getAction() == Action.RIGHT_CLICK_BLOCK) {

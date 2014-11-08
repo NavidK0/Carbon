@@ -49,7 +49,7 @@ public class ItemListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onTeleport(PlayerTeleportEvent e) {
         if (e.getCause() == TeleportCause.ENDER_PEARL && plugin.getConfig().getBoolean("mobSpawning.endermites", true)
                 && e.getTo().getWorld().getAllowMonsters()) {
@@ -61,10 +61,9 @@ public class ItemListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityKilled(EntityDeathEvent e) {
-        if (e.getEntity().getType() != EntityType.SHEEP || !plugin.getConfig().getBoolean("options.sheep.dropMutton", true)
-                || !e.getEntity().getWorld().isGameRule("doMobLoot") || !(e.getEntity() instanceof Ageable)) {
+        if (e.getEntity().getType() != EntityType.SHEEP || !plugin.getConfig().getBoolean("options.sheep.dropMutton", true) || !e.getEntity().getWorld().isGameRule("doMobLoot") || !(e.getEntity() instanceof Ageable)) {
             return;
         }
         Ageable entity = (Ageable) e.getEntity();
@@ -106,7 +105,7 @@ public class ItemListener implements Listener {
     	}, 0, 1);
     }
 
-    @EventHandler
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreeperDeath(EntityDeathEvent e) {
         LivingEntity entity = e.getEntity();
         if (entity.getLastDamageCause() == null || entity.getLastDamageCause().getCause() == null
@@ -144,7 +143,7 @@ public class ItemListener implements Listener {
     }
     
     @SuppressWarnings("deprecation")
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCauldronClick(PlayerInteractEvent evt) {
         if (evt.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (evt.getBlockFace() == BlockFace.UP && evt.getClickedBlock().getType() == Material.CAULDRON && evt.getItem() != null && evt.getItem().getType() == Carbon.injector().bannerItemMat) {
