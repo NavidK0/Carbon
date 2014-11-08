@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.minecraft.server.v1_7_R4.AxisAlignedBB;
 import net.minecraft.server.v1_7_R4.Block;
-import net.minecraft.server.v1_7_R4.BlockPistonMoving;
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.EntityHuman;
@@ -15,12 +14,12 @@ import net.minecraft.server.v1_7_R4.ItemStack;
 import net.minecraft.server.v1_7_R4.Material;
 import net.minecraft.server.v1_7_R4.MathHelper;
 import net.minecraft.server.v1_7_R4.TileEntity;
-import net.minecraft.server.v1_7_R4.TileEntityPiston;
 import net.minecraft.server.v1_7_R4.World;
 
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_7_R4.block.CraftBlock;
 
+import com.lastabyss.carbon.entity.TileEntityPiston;
 import com.lastabyss.carbon.events.CarbonBlockPistonExtendEvent;
 import com.lastabyss.carbon.events.CarbonBlockPistonRetractEvent;
 import com.lastabyss.carbon.utils.nmsclasses.BlockFace;
@@ -129,7 +128,7 @@ public class BlockPiston extends net.minecraft.server.v1_7_R4.BlockPiston {
                 ((TileEntityPiston)tileentity).f();
             }
             world.setTypeAndData(x, y, z, Blocks.PISTON_MOVING, face, 3);
-            world.setTileEntity(x, y, z, BlockPistonMoving.a(this, face, face, false, true));
+            world.setTileEntity(x, y, z, getPistonTileEntity(this, face, face, false));
             if (isSticky) {
                 final int j2 = x + (Facing.b[face] * 2);
                 final int k2 = y + (Facing.c[face] * 2);
@@ -276,7 +275,7 @@ public class BlockPiston extends net.minecraft.server.v1_7_R4.BlockPiston {
 				world.setAir(blockPosition.getX(), blockPosition.getY(), blockPosition.getZ());
 				blockPosition = blockPosition.getRelative(realFace);
 				world.setTypeAndData(blockPosition.getX(), blockPosition.getY(), blockPosition.getZ(), Blocks.PISTON_MOVING, face.getId() | (isSticky ? 8 : 0), 4);
-				world.setTileEntity(blockPosition.getX(), blockPosition.getY(), blockPosition.getZ(), BlockPistonMoving.a(blockState.getBlock(), blockState.getData(), face.getId(), push, false));
+				world.setTileEntity(blockPosition.getX(), blockPosition.getY(), blockPosition.getZ(), getPistonTileEntity(blockState.getBlock(), blockState.getData(), face.getId(), push));
 				--blockCount;
 				blocks[blockCount] = blockState.getBlock();
 			}
@@ -286,7 +285,7 @@ public class BlockPiston extends net.minecraft.server.v1_7_R4.BlockPiston {
 				IBlockState extesionBlockState = new IBlockState(Blocks.PISTON_EXTENSION, face.getId() | (isSticky ? 8 : 0));
 				IBlockState pistonBlockState = new IBlockState(Blocks.PISTON_MOVING, face.getId() | (isSticky ? 8 : 0));
 				world.setTypeAndData(pistonPosition.getX(), pistonPosition.getY(), pistonPosition.getZ(), pistonBlockState.getBlock(), pistonBlockState.getData(), 4);
-				world.setTileEntity(pistonPosition.getX(), pistonPosition.getY(), pistonPosition.getZ(), BlockPistonMoving.a(extesionBlockState.getBlock(), extesionBlockState.getData(), face.getId(), true, false));
+				world.setTileEntity(pistonPosition.getX(), pistonPosition.getY(), pistonPosition.getZ(), getPistonTileEntity(extesionBlockState.getBlock(), extesionBlockState.getData(), face.getId(), true));
 			}
 
 			for (int i = blocksToBreak.size() - 1; i >= 0; --i) {
@@ -306,6 +305,10 @@ public class BlockPiston extends net.minecraft.server.v1_7_R4.BlockPiston {
 
 			return true;
 		}
-    }
+	}
+
+	private static TileEntityPiston getPistonTileEntity(Block block, int data, int face, boolean extending) {
+		return new TileEntityPiston(block, data, face, extending);
+	}
 
 }

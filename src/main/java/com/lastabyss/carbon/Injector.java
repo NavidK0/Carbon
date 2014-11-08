@@ -44,6 +44,7 @@ import com.lastabyss.carbon.entity.TileEntityBanner;
 import com.lastabyss.carbon.entity.TileEntityOptimizedChest;
 import com.lastabyss.carbon.entity.TileEntityOptimizedEnchantTable;
 import com.lastabyss.carbon.entity.TileEntityOptimizedEnderChest;
+import com.lastabyss.carbon.entity.TileEntityPiston;
 import com.lastabyss.carbon.entity.bukkit.ArmorStand;
 import com.lastabyss.carbon.entity.bukkit.Endermite;
 import com.lastabyss.carbon.entity.bukkit.Guardian;
@@ -568,6 +569,7 @@ public static void registerWorldGenFactoryAddition(boolean isStructureStart, Cla
     registerTileEntity(TileEntityOptimizedChest.class, "Chest");
     registerTileEntity(TileEntityOptimizedEnderChest.class, "EnderChest");
     registerTileEntity(TileEntityOptimizedEnchantTable.class, "EnchantTable");
+    registerTileEntity(TileEntityPiston.class, "Piston");
 
     //Register commands from 1.8
     if (plugin.getConfig().getBoolean("modify.commands.worldborder", true))
