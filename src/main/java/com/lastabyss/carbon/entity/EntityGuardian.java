@@ -2,8 +2,8 @@ package com.lastabyss.carbon.entity;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-
 import net.minecraft.server.v1_7_R4.Blocks;
+import net.minecraft.server.v1_7_R4.DamageSource;
 import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.EntityHuman;
 import net.minecraft.server.v1_7_R4.EntityInsentient;
@@ -11,6 +11,7 @@ import net.minecraft.server.v1_7_R4.EntityLiving;
 import net.minecraft.server.v1_7_R4.EntityMonster;
 import net.minecraft.server.v1_7_R4.EntityPlayer;
 import net.minecraft.server.v1_7_R4.EntitySquid;
+import net.minecraft.server.v1_7_R4.EnumDifficulty;
 import net.minecraft.server.v1_7_R4.EnumGamemode;
 import net.minecraft.server.v1_7_R4.GenericAttributes;
 import net.minecraft.server.v1_7_R4.IEntitySelector;
@@ -28,16 +29,16 @@ import net.minecraft.server.v1_7_R4.PathfinderGoalLookAtPlayer;
 import net.minecraft.server.v1_7_R4.PathfinderGoalMoveTowardsRestriction;
 import net.minecraft.server.v1_7_R4.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_7_R4.PathfinderGoalRandomLookaround;
-import net.minecraft.server.v1_7_R4.Vec3D;
 import net.minecraft.server.v1_7_R4.World;
 
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
 
 import com.lastabyss.carbon.Carbon;
-import com.lastabyss.carbon.ai.GuardianLookController;
-import com.lastabyss.carbon.ai.GuardianMoveController;
-import com.lastabyss.carbon.ai.PathfinderGoalGuardianAttack;
 import com.lastabyss.carbon.ai.PathfinderGoalNewRandomStroll;
+import com.lastabyss.carbon.ai.guardian.GuardianLookController;
+import com.lastabyss.carbon.ai.guardian.GuardianMoveController;
+import com.lastabyss.carbon.ai.guardian.GuardianNavigation;
+import com.lastabyss.carbon.ai.guardian.PathfinderGoalGuardianAttack;
 import com.lastabyss.carbon.entity.bukkit.Guardian;
 import com.lastabyss.carbon.utils.Utilities;
 
@@ -47,8 +48,6 @@ import com.lastabyss.carbon.utils.Utilities;
  */
 public class EntityGuardian extends EntityMonster {
 
-	private int beamTargetTicks;
-	private boolean bp;
 	private PathfinderGoalNewRandomStroll stroll;
 
 	private boolean elder = false;
@@ -77,9 +76,10 @@ public class EntityGuardian extends EntityMonster {
 		}));
 		try {
 			Utilities.setAccessible(Field.class, EntityInsentient.class.getDeclaredField("lookController"), true).set(this, new GuardianLookController(this));
+			Utilities.setAccessible(Field.class, EntityInsentient.class.getDeclaredField("navigation"), true).set(this, new GuardianNavigation(this, this.world));
 			Utilities.setAccessible(Field.class, EntityInsentient.class.getDeclaredField("moveController"), true).set(this, new GuardianMoveController(this));
 		} catch (Exception e) {
-			Carbon.log.info("[Carbon] Failed to set guardian look&move controller: " + e.getMessage());
+			Carbon.log.info("[Carbon] Failed to set guardian look&move controller & navigation: " + e.getMessage());
 		}
 	}
 
@@ -89,12 +89,6 @@ public class EntityGuardian extends EntityMonster {
 		super.c();
 		datawatcher.a(16, 0);
 		datawatcher.a(17, 0);
-	}
-
-	@Override
-	public void C() {
-		super.C();
-		setAirTicks(300);
 	}
 
 	protected void addData(int data, boolean add) {
@@ -207,58 +201,8 @@ public class EntityGuardian extends EntityMonster {
 		return true;
 	}
 
-	/**
-	 * onLivingUpdate() This is the entity update loop. Stupid obfuscation.
-	 **/
 	@Override
 	public void e() {
-		if (!M()) {
-			if ((motY > 0.0D) && bp) {
-				world.a(locX, locY, locZ, "mob.guardian.flop", 1.0F, 1.0F, false);
-			}
-
-			bp = (motY < 0.0D) && world.d(MathHelper.floor(locX), MathHelper.floor(locY - 1), MathHelper.floor(locZ), false);
-		}
-
-		if (isData2Set() && M()) {
-			Vec3D vec = this.j(0.0F);
-			for (int i = 0; i < 2; ++i) {
-				this.world.addParticle(
-					"bubble",
-					this.locX + (this.random.nextDouble() - 0.5D) * (double) this.width - vec.a * 1.5D,
-					this.locY + this.random.nextDouble() * (double) this.height - vec.b * 1.5D,
-					this.locZ + (this.random.nextDouble() - 0.5D) * (double) this.width - vec.c * 1.5D,
-					0.0D, 0.0D, 0.0D
-				);
-			}
-		}
-
-		if (hasBeamTarget()) {
-			if (beamTargetTicks < (isElder() ? 60 : 80)) {
-				++beamTargetTicks;
-			}
-
-			EntityLiving target = getBeamTarget();
-			if (target != null) {
-				getControllerLook().a(target, 90.0F, 90.0F);
-				getControllerLook().a();
-				double beamReadyPercent = this.getBeamShootReadyPercent(0.0F);
-				double diffX = target.locX - locX;
-				double diffY = (target.locY + target.height * 0.5F) - (locY + getHeadHeight());
-				double diffZ = target.locZ - locZ;
-				double dist = Math.sqrt((diffX * diffX) + (diffY * diffY) + (diffZ * diffZ));
-				diffX /= dist;
-				diffY /= dist;
-				diffZ /= dist;
-				double randomDouble = random.nextDouble();
-
-				while (randomDouble < dist) {
-					randomDouble += (1.8D - beamReadyPercent) + (random.nextDouble() * (1.7D - beamReadyPercent));
-					this.world.addParticle("bubble", this.locX + diffX * randomDouble, this.locY + diffY * randomDouble + this.getHeadHeight(), this.locZ + diffZ * randomDouble, 0.0D, 0.0D, 0.0D);
-				}
-			}
-		}
-
 		if (M()) {
 			this.setAirTicks(300);
 		} else if (onGround) {
@@ -277,6 +221,19 @@ public class EntityGuardian extends EntityMonster {
 		super.e();
 	}
 
+	@Override
+	public boolean damageEntity(DamageSource source, float damage) {
+		if (!this.isData2Set() && !source.isMagic() && (source.getEntity() instanceof EntityLiving)) {
+			EntityLiving damager = (EntityLiving) source.getEntity();
+			if (!source.isExplosion()) {
+				damager.damageEntity(DamageSource.a(this), 2.0F);
+				damager.makeSound("damage.thorns", 0.5F, 1.0F);
+			}
+		}
+		stroll.force();
+		return super.damageEntity(source, damage);
+	}
+
 	public boolean hasBeamTarget() {
 		return datawatcher.getInt(17) != 0;
 	}
@@ -292,10 +249,6 @@ public class EntityGuardian extends EntityMonster {
 		return getGoalTarget();
 	}
 
-	public float getBeamShootReadyPercent(float initial) {
-		return (beamTargetTicks + initial) / (isElder() ? 60 : 80);
-	}
-
 	@Override
 	public void i(int id) {
 		super.i(id);
@@ -303,8 +256,6 @@ public class EntityGuardian extends EntityMonster {
 			if (isElder() && (width < 1.0F)) {
 				a(1.9975F, 1.9975F);
 			}
-		} else if (id == 17) {
-			beamTargetTicks = 0;
 		}
 	}
 
@@ -362,7 +313,6 @@ public class EntityGuardian extends EntityMonster {
 		}
 	}
 
-	// We can make a guess as to which one of these is write, and which one of these is read...
 	// readEntityFromNBT
 	@Override
 	public void a(NBTTagCompound tagCompound) {
@@ -387,8 +337,21 @@ public class EntityGuardian extends EntityMonster {
 	}
 
 	@Override
+	public float a(int x, int y, int z) {
+		return world.getType(x, y, z).getMaterial() == Material.WATER ? (10.0F + world.b(x, y, z)) - 0.5F : super.a(x, y, z);
+	}
+
+	@Override
 	public boolean canSpawn() {
-		return random.nextInt(20) == 0 && world.a(boundingBox, this) && world.getCubes(this, boundingBox).isEmpty();
+        final int i = MathHelper.floor(this.locX);
+        final int j = MathHelper.floor(this.boundingBox.b);
+        final int k = MathHelper.floor(this.locZ);
+		return
+			this.world.difficulty != EnumDifficulty.PEACEFUL &&
+			this.a(i, j, k) >= 0.0f && 
+			world.a(boundingBox, this) && 
+			world.getCubes(this, boundingBox).isEmpty() &&
+			random.nextInt(20) == 0;
 	}
 
 	private Guardian bukkitEntity;

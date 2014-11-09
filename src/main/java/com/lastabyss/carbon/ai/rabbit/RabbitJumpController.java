@@ -1,4 +1,4 @@
-package com.lastabyss.carbon.ai;
+package com.lastabyss.carbon.ai.rabbit;
 
 import net.minecraft.server.v1_7_R4.ControllerJump;
 

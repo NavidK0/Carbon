@@ -1,4 +1,4 @@
-package com.lastabyss.carbon.ai;
+package com.lastabyss.carbon.ai.rabbit;
 
 import java.util.List;
 
@@ -10,6 +10,8 @@ import net.minecraft.server.v1_7_R4.PathEntity;
 import net.minecraft.server.v1_7_R4.RandomPositionGenerator;
 import net.minecraft.server.v1_7_R4.Vec3D;
 
+import com.lastabyss.carbon.ai.ImprovedEntitySelector;
+import com.lastabyss.carbon.ai.PathfinderWrapper;
 import com.lastabyss.carbon.utils.Utilities;
 
 public class PathfinderGoalRabbitAvoidEntity extends PathfinderWrapper {

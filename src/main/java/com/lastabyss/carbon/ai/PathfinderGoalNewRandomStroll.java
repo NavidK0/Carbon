@@ -1,27 +1,26 @@
 package com.lastabyss.carbon.ai;
 
 import net.minecraft.server.v1_7_R4.EntityCreature;
-import net.minecraft.server.v1_7_R4.RandomPositionGenerator;
 import net.minecraft.server.v1_7_R4.Vec3D;
 
 public class PathfinderGoalNewRandomStroll extends PathfinderWrapper {
 
 	private EntityCreature entityCreature;
-	private double b;
-	private double c;
-	private double d;
-	private double e;
+	private double x;
+	private double y;
+	private double z;
+	private double speed;
 	private int f;
 	private boolean g;
 
-	public PathfinderGoalNewRandomStroll(EntityCreature creature, double var2) {
-		this(creature, var2, 120);
+	public PathfinderGoalNewRandomStroll(EntityCreature creature, double speed) {
+		this(creature, speed, 120);
 	}
 
-	public PathfinderGoalNewRandomStroll(EntityCreature creature, double d1, int d2) {
-		entityCreature = creature;
-		e = d1;
-		f = d2;
+	public PathfinderGoalNewRandomStroll(EntityCreature creature, double speed, int d2) {
+		this.entityCreature = creature;
+		this.speed = speed;
+		this.f = d2;
 	}
 
 	@Override
@@ -36,13 +35,13 @@ public class PathfinderGoalNewRandomStroll extends PathfinderWrapper {
 			}
 		}
 
-		Vec3D vec = RandomPositionGenerator.a(entityCreature, 10, 7);
+		Vec3D vec = NewRandomPositionGenerator.a(entityCreature, 10, 7);
 		if (vec == null) {
 			return false;
 		} else {
-			b = vec.a;
-			c = vec.b;
-			d = vec.c;
+			x = vec.a;
+			y = vec.b;
+			z = vec.c;
 			g = false;
 			return true;
 		}
@@ -55,15 +54,11 @@ public class PathfinderGoalNewRandomStroll extends PathfinderWrapper {
 
 	@Override
 	public void setup() {
-		entityCreature.getNavigation().a(b, c, d, e);
+		entityCreature.getNavigation().a(x, y, z, speed);
 	}
 
-	public void f() {
+	public void force() {
 		g = true;
-	}
-
-	public void b(int var1) {
-		f = var1;
 	}
 
 }

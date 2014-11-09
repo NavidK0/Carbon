@@ -1,10 +1,11 @@
-package com.lastabyss.carbon.ai;
+package com.lastabyss.carbon.ai.rabbit;
 
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.BlockCarrots;
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.World;
 
+import com.lastabyss.carbon.ai.PathfinderGoalMoveToBlock;
 import com.lastabyss.carbon.entity.EntityRabbit;
 import com.lastabyss.carbon.utils.nmsclasses.Position;
 

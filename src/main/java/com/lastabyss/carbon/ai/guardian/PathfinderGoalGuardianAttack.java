@@ -1,10 +1,12 @@
-package com.lastabyss.carbon.ai;
+package com.lastabyss.carbon.ai.guardian;
 
 import net.minecraft.server.v1_7_R4.DamageSource;
 import net.minecraft.server.v1_7_R4.EntityLiving;
 import net.minecraft.server.v1_7_R4.EnumDifficulty;
 import net.minecraft.server.v1_7_R4.GenericAttributes;
 
+import com.lastabyss.carbon.ai.PathfinderGoalNewRandomStroll;
+import com.lastabyss.carbon.ai.PathfinderWrapper;
 import com.lastabyss.carbon.entity.EntityGuardian;
 import com.lastabyss.carbon.utils.Utilities;
 
@@ -38,7 +40,7 @@ public class PathfinderGoalGuardianAttack extends PathfinderWrapper {
 	public void finish() {
 		guardian.updateBeamTarget(0);
 		guardian.setGoalTarget(null);
-		stroll.f();
+		stroll.force();
 	}
 
 	@Override

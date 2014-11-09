@@ -36,10 +36,10 @@ import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
 
 import com.lastabyss.carbon.Carbon;
 import com.lastabyss.carbon.ai.PathfinderGoalNewRandomStroll;
-import com.lastabyss.carbon.ai.PathfinderGoalRabbitAvoidEntity;
-import com.lastabyss.carbon.ai.PathfinderGoalRabbitRaidFarm;
-import com.lastabyss.carbon.ai.RabbitJumpController;
-import com.lastabyss.carbon.ai.RabbitMoveController;
+import com.lastabyss.carbon.ai.rabbit.PathfinderGoalRabbitAvoidEntity;
+import com.lastabyss.carbon.ai.rabbit.PathfinderGoalRabbitRaidFarm;
+import com.lastabyss.carbon.ai.rabbit.RabbitJumpController;
+import com.lastabyss.carbon.ai.rabbit.RabbitMoveController;
 import com.lastabyss.carbon.entity.bukkit.Rabbit;
 import com.lastabyss.carbon.utils.Utilities;
 

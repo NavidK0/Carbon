@@ -1,4 +1,4 @@
-package com.lastabyss.carbon.ai;
+package com.lastabyss.carbon.ai.guardian;
 
 import net.minecraft.server.v1_7_R4.ControllerMove;
 import net.minecraft.server.v1_7_R4.GenericAttributes;
