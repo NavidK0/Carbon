@@ -50,8 +50,7 @@ public class Instrumentator {
         	"net/minecraft/server/v1_7_R4/DataWatcher.class",
         	"net/minecraft/server/v1_7_R4/SpawnerCreature.class",
         	"net/minecraft/server/v1_7_R4/SpawnerCreature$1.class",
-        	"org/bukkit/Material.class",
-        	"org/bukkit/Material$1.class"
+        	"org/bukkit/Material.class"
         );
     }
 

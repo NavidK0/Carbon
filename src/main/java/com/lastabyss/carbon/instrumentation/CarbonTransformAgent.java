@@ -91,10 +91,6 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 				new ClassDefinition(
 					Class.forName("org.bukkit.Material"),
 					getPreTransformedClass("org/bukkit/Material")
-				),
-				new ClassDefinition(
-					Class.forName("org.bukkit.Material$1"),
-					getPreTransformedClass("org/bukkit/Material$1")
 				)
 			);
 
@@ -187,8 +183,7 @@ public class CarbonTransformAgent implements ClassFileTransformer {
 			className.equals("net/minecraft/server/v1_7_R4/DataWatcher") ||
 			className.equals("net/minecraft/server/v1_7_R4/SpawnerCreature") ||
 			className.equals("net/minecraft/server/v1_7_R4/SpawnerCreature$1") ||
-			className.equals("org/bukkit/Material") ||
-			className.equals("org/bukkit/Material$1")
+			className.equals("org/bukkit/Material")
 		) {
 			LogManager.getLogger().log(Level.INFO, "[Carbon] Transforming "+className);
 			try {

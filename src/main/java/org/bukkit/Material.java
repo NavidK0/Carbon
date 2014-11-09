@@ -506,33 +506,29 @@ public enum Material {
 			case 412: 
 			case 413:
 			case 423: 
-			case 424: {
-				return true;
-			}
-		}
-		switch (this) {
-			case BREAD:
-			case CARROT_ITEM:
-			case BAKED_POTATO:
-			case POTATO_ITEM:
-			case POISONOUS_POTATO:
-			case GOLDEN_CARROT:
-			case PUMPKIN_PIE:
-			case COOKIE:
-			case MELON:
-			case MUSHROOM_SOUP:
-			case RAW_CHICKEN:
-			case COOKED_CHICKEN:
-			case RAW_BEEF:
-			case COOKED_BEEF:
-			case RAW_FISH:
-			case COOKED_FISH:
-			case PORK:
-			case GRILLED_PORK:
-			case APPLE:
-			case GOLDEN_APPLE:
-			case ROTTEN_FLESH:
-			case SPIDER_EYE: {
+			case 424:
+			case 297:
+			case 391:
+			case 393:
+			case 392:
+			case 394:
+			case 396:
+			case 400:
+			case 357:
+			case 360:
+			case 282:
+			case 365:
+			case 366:
+			case 363:
+			case 364:
+			case 349:
+			case 350:
+			case 319:
+			case 320:
+			case 260:
+			case 322:
+			case 367:
+			case 375: {
 				return true;
 			}
 			default: {
@@ -582,134 +578,129 @@ public enum Material {
 			case 168:
 			case 169:
 			case 179:
-			case 181: {
-				return true;
-			}
-		}
-		switch (this) {
-			case STONE:
-			case GRASS:
-			case DIRT:
-			case COBBLESTONE:
-			case WOOD:
-			case BEDROCK:
-			case SAND:
-			case GRAVEL:
-			case GOLD_ORE:
-			case IRON_ORE:
-			case COAL_ORE:
-			case LOG:
-			case LEAVES:
-			case SPONGE:
-			case GLASS:
-			case LAPIS_ORE:
-			case LAPIS_BLOCK:
-			case DISPENSER:
-			case SANDSTONE:
-			case NOTE_BLOCK:
-			case BED_BLOCK:
-			case PISTON_STICKY_BASE:
-			case PISTON_BASE:
-			case PISTON_EXTENSION:
-			case WOOL:
-			case PISTON_MOVING_PIECE:
-			case GOLD_BLOCK:
-			case IRON_BLOCK:
-			case DOUBLE_STEP:
-			case STEP:
-			case BRICK:
-			case TNT:
-			case BOOKSHELF:
-			case MOSSY_COBBLESTONE:
-			case OBSIDIAN:
-			case MOB_SPAWNER:
-			case WOOD_STAIRS:
-			case CHEST:
-			case DIAMOND_ORE:
-			case DIAMOND_BLOCK:
-			case WORKBENCH:
-			case SOIL:
-			case FURNACE:
-			case BURNING_FURNACE:
-			case SIGN_POST:
-			case WOODEN_DOOR:
-			case COBBLESTONE_STAIRS:
-			case WALL_SIGN:
-			case STONE_PLATE:
-			case IRON_DOOR_BLOCK:
-			case WOOD_PLATE:
-			case REDSTONE_ORE:
-			case GLOWING_REDSTONE_ORE:
-			case ICE:
-			case SNOW_BLOCK:
-			case CACTUS:
-			case CLAY:
-			case JUKEBOX:
-			case FENCE:
-			case PUMPKIN:
-			case NETHERRACK:
-			case SOUL_SAND:
-			case GLOWSTONE:
-			case JACK_O_LANTERN:
-			case CAKE_BLOCK:
-			case LOCKED_CHEST:
-			case STAINED_GLASS:
-			case TRAP_DOOR:
-			case MONSTER_EGGS:
-			case SMOOTH_BRICK:
-			case HUGE_MUSHROOM_1:
-			case HUGE_MUSHROOM_2:
-			case IRON_FENCE:
-			case THIN_GLASS:
-			case MELON_BLOCK:
-			case FENCE_GATE:
-			case BRICK_STAIRS:
-			case SMOOTH_STAIRS:
-			case MYCEL:
-			case NETHER_BRICK:
-			case NETHER_FENCE:
-			case NETHER_BRICK_STAIRS:
-			case ENCHANTMENT_TABLE:
-			case BREWING_STAND:
-			case CAULDRON:
-			case ENDER_PORTAL_FRAME:
-			case ENDER_STONE:
-			case DRAGON_EGG:
-			case REDSTONE_LAMP_OFF:
-			case REDSTONE_LAMP_ON:
-			case WOOD_DOUBLE_STEP:
-			case WOOD_STEP:
-			case SANDSTONE_STAIRS:
-			case EMERALD_ORE:
-			case ENDER_CHEST:
-			case EMERALD_BLOCK:
-			case SPRUCE_WOOD_STAIRS:
-			case BIRCH_WOOD_STAIRS:
-			case JUNGLE_WOOD_STAIRS:
-			case COMMAND:
-			case BEACON:
-			case COBBLE_WALL:
-			case ANVIL:
-			case TRAPPED_CHEST:
-			case GOLD_PLATE:
-			case IRON_PLATE:
-			case DAYLIGHT_DETECTOR:
-			case REDSTONE_BLOCK:
-			case QUARTZ_ORE:
-			case HOPPER:
-			case QUARTZ_BLOCK:
-			case QUARTZ_STAIRS:
-			case DROPPER:
-			case STAINED_CLAY:
-			case HAY_BLOCK:
-			case HARD_CLAY:
-			case COAL_BLOCK:
-			case STAINED_GLASS_PANE:
-			case LEAVES_2:
-			case LOG_2:
-			case ACACIA_STAIRS:
-			case DARK_OAK_STAIRS:
-			case PACKED_ICE: {
+			case 181:
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+			case 7:
+			case 12:
+			case 13:
+			case 14:
+			case 15:
+			case 16:
+			case 17:
+			case 18:
+			case 19:
+			case 20:
+			case 21:
+			case 22:
+			case 23:
+			case 24:
+			case 25:
+			case 26:
+			case 29:
+			case 33:
+			case 34:
+			case 35:
+			case 36:
+			case 41:
+			case 42:
+			case 43:
+			case 44:
+			case 45:
+			case 46:
+			case 47:
+			case 48:
+			case 49:
+			case 52:
+			case 53:
+			case 54:
+			case 56:
+			case 57:
+			case 58:
+			case 60:
+			case 61:
+			case 62:
+			case 63:
+			case 64:
+			case 67:
+			case 68:
+			case 70:
+			case 71:
+			case 72:
+			case 73:
+			case 74:
+			case 79:
+			case 80:
+			case 81:
+			case 82:
+			case 84:
+			case 85:
+			case 86:
+			case 87:
+			case 88:
+			case 89:
+			case 91:
+			case 92:
+			case 95:
+			case 96:
+			case 97:
+			case 98:
+			case 99:
+			case 100:
+			case 101:
+			case 102:
+			case 103:
+			case 107:
+			case 108:
+			case 109:
+			case 110:
+			case 112:
+			case 113:
+			case 114:
+			case 116:
+			case 117:
+			case 118:
+			case 120:
+			case 121:
+			case 122:
+			case 123:
+			case 124:
+			case 125:
+			case 126:
+			case 128:
+			case 129:
+			case 130:
+			case 133:
+			case 134:
+			case 135:
+			case 136:
+			case 137:
+			case 138:
+			case 139:
+			case 145:
+			case 146:
+			case 147:
+			case 148:
+			case 151:
+			case 152:
+			case 153:
+			case 154:
+			case 155:
+			case 156:
+			case 158:
+			case 159:
+			case 170:
+			case 172:
+			case 173:
+			case 160:
+			case 161:
+			case 162:
+			case 163:
+			case 164:
+			case 174: {
 				return true;
 			}
 			default: {
@@ -722,54 +713,52 @@ public enum Material {
 		if (!isBlock()) {
 			return false;
 		}
-		if (getId() == 166) {
-			return true;
-		}
-		switch (this) {
-			case AIR:
-			case SAPLING:
-			case POWERED_RAIL:
-			case DETECTOR_RAIL:
-			case LONG_GRASS:
-			case DEAD_BUSH:
-			case YELLOW_FLOWER:
-			case RED_ROSE:
-			case BROWN_MUSHROOM:
-			case RED_MUSHROOM:
-			case TORCH:
-			case FIRE:
-			case REDSTONE_WIRE:
-			case CROPS:
-			case LADDER:
-			case RAILS:
-			case LEVER:
-			case REDSTONE_TORCH_OFF:
-			case REDSTONE_TORCH_ON:
-			case STONE_BUTTON:
-			case SNOW:
-			case SUGAR_CANE_BLOCK:
-			case PORTAL:
-			case DIODE_BLOCK_OFF:
-			case DIODE_BLOCK_ON:
-			case PUMPKIN_STEM:
-			case MELON_STEM:
-			case VINE:
-			case WATER_LILY:
-			case NETHER_WARTS:
-			case ENDER_PORTAL:
-			case COCOA:
-			case TRIPWIRE_HOOK:
-			case TRIPWIRE:
-			case FLOWER_POT:
-			case CARROT:
-			case POTATO:
-			case WOOD_BUTTON:
-			case SKULL:
-			case REDSTONE_COMPARATOR_OFF:
-			case REDSTONE_COMPARATOR_ON:
-			case ACTIVATOR_RAIL:
-			case CARPET:
-			case DOUBLE_PLANT: {
+		switch (getId()) {
+			case 166:
+			case 0:
+			case 6:
+			case 27:
+			case 28:
+			case 31:
+			case 32:
+			case 37:
+			case 38:
+			case 39:
+			case 40:
+			case 50:
+			case 51:
+			case 55:
+			case 59:
+			case 65:
+			case 66:
+			case 69:
+			case 75:
+			case 76:
+			case 77:
+			case 78:
+			case 83:
+			case 90:
+			case 93:
+			case 94:
+			case 104:
+			case 105:
+			case 106:
+			case 111:
+			case 115:
+			case 119:
+			case 127:
+			case 131:
+			case 132:
+			case 140:
+			case 141:
+			case 142:
+			case 143:
+			case 144:
+			case 149:
+			case 150:
+			case 157:
+			case 171:
+			case 175: {
 				return true;
 			}
 			default: {
@@ -785,43 +774,51 @@ public enum Material {
 		if (getId() >= 183 && getId() <= 197) {
 			return true;
 		}
-		switch (this) {
-			case WOOD:
-			case LOG:
-			case LEAVES:
-			case NOTE_BLOCK:
-			case BED_BLOCK:
-			case WOOL:
-			case TNT:
-			case BOOKSHELF:
-			case WOOD_STAIRS:
-			case CHEST:
-			case WORKBENCH:
-			case SIGN_POST:
-			case WOODEN_DOOR:
-			case WALL_SIGN:
-			case WOOD_PLATE:
-			case JUKEBOX:
-			case FENCE:
-			case TRAP_DOOR:
-			case HUGE_MUSHROOM_1:
-			case HUGE_MUSHROOM_2:
-			case FENCE_GATE:
-			case WOOD_DOUBLE_STEP:
-			case WOOD_STEP:
-			case SPRUCE_WOOD_STAIRS:
-			case BIRCH_WOOD_STAIRS:
-			case JUNGLE_WOOD_STAIRS:
-			case TRAPPED_CHEST:
-			case DAYLIGHT_DETECTOR:
-			case LEAVES_2:
-			case LOG_2:
-			case ACACIA_STAIRS:
-			case DARK_OAK_STAIRS:
-			case LONG_GRASS:
-			case DEAD_BUSH:
-			case VINE:
-			case CARPET: {
+		switch (getId()) {
+			case 0:
+			case 6:
+			case 27:
+			case 28:
+			case 31:
+			case 32:
+			case 37:
+			case 38:
+			case 39:
+			case 40:
+			case 50:
+			case 51:
+			case 55:
+			case 59:
+			case 65:
+			case 66:
+			case 69:
+			case 75:
+			case 76:
+			case 77:
+			case 78:
+			case 83:
+			case 90:
+			case 93:
+			case 94:
+			case 104:
+			case 105:
+			case 106:
+			case 111:
+			case 115:
+			case 119:
+			case 127:
+			case 131:
+			case 132:
+			case 140:
+			case 141:
+			case 142:
+			case 143:
+			case 144:
+			case 149:
+			case 150:
+			case 157:
+			case 171:
+			case 175: {
 				return true;
 			}
 			default: {
@@ -834,30 +831,30 @@ public enum Material {
 		if (!isBlock()) {
 			return false;
 		}
-		switch (this) {
-			case WOOD:
-			case LOG:
-			case LEAVES:
-			case WOOL:
-			case TNT:
-			case BOOKSHELF:
-			case WOOD_STAIRS:
-			case FENCE:
-			case WOOD_DOUBLE_STEP:
-			case WOOD_STEP:
-			case SPRUCE_WOOD_STAIRS:
-			case BIRCH_WOOD_STAIRS:
-			case JUNGLE_WOOD_STAIRS:
-			case HAY_BLOCK:
-			case COAL_BLOCK:
-			case LEAVES_2:
-			case LOG_2:
-			case LONG_GRASS:
-			case YELLOW_FLOWER:
-			case RED_ROSE:
-			case VINE:
-			case CARPET:
-			case DOUBLE_PLANT: {
+		switch (getId()) {
+			case 5:
+			case 17:
+			case 18:
+			case 35:
+			case 46:
+			case 47:
+			case 53:
+			case 85:
+			case 125:
+			case 126:
+			case 134:
+			case 135:
+			case 136:
+			case 170:
+			case 173:
+			case 161:
+			case 162:
+			case 31:
+			case 37:
+			case 38:
+			case 106:
+			case 171:
+			case 175: {
 				return true;
 			}
 			default: {
@@ -874,76 +871,72 @@ public enum Material {
 			case 168:
 			case 169:
 			case 179:
-			case 181: {
-				return true;
-			}
-		}
-		switch (this) {
-			case STONE:
-			case GRASS:
-			case DIRT:
-			case COBBLESTONE:
-			case WOOD:
-			case BEDROCK:
-			case SAND:
-			case GRAVEL:
-			case GOLD_ORE:
-			case IRON_ORE:
-			case COAL_ORE:
-			case LOG:
-			case SPONGE:
-			case LAPIS_ORE:
-			case LAPIS_BLOCK:
-			case DISPENSER:
-			case SANDSTONE:
-			case NOTE_BLOCK:
-			case WOOL:
-			case GOLD_BLOCK:
-			case IRON_BLOCK:
-			case DOUBLE_STEP:
-			case BRICK:
-			case BOOKSHELF:
-			case MOSSY_COBBLESTONE:
-			case OBSIDIAN:
-			case MOB_SPAWNER:
-			case DIAMOND_ORE:
-			case DIAMOND_BLOCK:
-			case WORKBENCH:
-			case FURNACE:
-			case BURNING_FURNACE:
-			case REDSTONE_ORE:
-			case GLOWING_REDSTONE_ORE:
-			case SNOW_BLOCK:
-			case CLAY:
-			case JUKEBOX:
-			case PUMPKIN:
-			case NETHERRACK:
-			case SOUL_SAND:
-			case JACK_O_LANTERN:
-			case MONSTER_EGGS:
-			case SMOOTH_BRICK:
-			case HUGE_MUSHROOM_1:
-			case HUGE_MUSHROOM_2:
-			case MELON_BLOCK:
-			case MYCEL:
-			case NETHER_BRICK:
-			case ENDER_PORTAL_FRAME:
-			case ENDER_STONE:
-			case REDSTONE_LAMP_OFF:
-			case REDSTONE_LAMP_ON:
-			case WOOD_DOUBLE_STEP:
-			case EMERALD_ORE:
-			case EMERALD_BLOCK:
-			case COMMAND:
-			case QUARTZ_ORE:
-			case QUARTZ_BLOCK:
-			case DROPPER:
-			case STAINED_CLAY:
-			case HAY_BLOCK:
-			case HARD_CLAY:
-			case COAL_BLOCK:
-			case LOG_2:
-			case PACKED_ICE: {
+			case 181:
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+			case 7:
+			case 12:
+			case 13:
+			case 14:
+			case 15:
+			case 16:
+			case 17:
+			case 19:
+			case 21:
+			case 22:
+			case 23:
+			case 24:
+			case 25:
+			case 35:
+			case 41:
+			case 42:
+			case 43:
+			case 45:
+			case 47:
+			case 48:
+			case 49:
+			case 52:
+			case 56:
+			case 57:
+			case 58:
+			case 61:
+			case 62:
+			case 73:
+			case 74:
+			case 80:
+			case 82:
+			case 84:
+			case 86:
+			case 87:
+			case 88:
+			case 91:
+			case 97:
+			case 98:
+			case 99:
+			case 100:
+			case 103:
+			case 110:
+			case 112:
+			case 120:
+			case 121:
+			case 123:
+			case 124:
+			case 125:
+			case 129:
+			case 133:
+			case 137:
+			case 153:
+			case 155:
+			case 158:
+			case 159:
+			case 170:
+			case 172:
+			case 173:
+			case 162:
+			case 174: {
 				return true;
 			}
 			default: {
@@ -956,12 +949,12 @@ public enum Material {
 		if (!isBlock()) {
 			return false;
 		}
-		switch (this) {
-			case SAND:
-			case GRAVEL:
-			case ANVIL: {
+		switch (getId()) {
+			case 12:
+			case 13:
+			case 145: {
 				return true;
-			}
+			} 
 			default: {
 				return false;
 			}
