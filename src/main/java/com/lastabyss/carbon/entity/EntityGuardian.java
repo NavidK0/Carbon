@@ -2,6 +2,7 @@ package com.lastabyss.carbon.entity;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.DamageSource;
 import net.minecraft.server.v1_7_R4.Entity;
@@ -180,12 +181,6 @@ public class EntityGuardian extends EntityMonster {
 		if (flag && isElder()) {
 			this.a(new ItemStack(Blocks.SPONGE, 1, 1), 1.0F);
 		}
-	}
-
-	// isInWater
-	@Override
-	public boolean M() {
-		return world.a(boundingBox.grow(0.0D, -0.6000000238418579D, 0.0D), Material.WATER, this);
 	}
 
 	private boolean isDataSet(int data) {
