@@ -47,7 +47,6 @@ import com.lastabyss.carbon.utils.Utilities;
  */
 public class EntityGuardian extends EntityMonster {
 
-	private EntityLiving beamTarget;
 	private int beamTargetTicks;
 	private boolean bp;
 	private PathfinderGoalNewRandomStroll stroll;
@@ -289,21 +288,8 @@ public class EntityGuardian extends EntityMonster {
 	public EntityLiving getBeamTarget() {
 		if (!hasBeamTarget()) {
 			return null;
-		} else if (world.isStatic) {
-			if (beamTarget != null) {
-				return beamTarget;
-			} else {
-				Entity beamTarget = world.getEntity(datawatcher.getInt(17));
-				if (beamTarget instanceof EntityLiving) {
-					this.beamTarget = (EntityLiving) beamTarget;
-					return this.beamTarget;
-				} else {
-					return null;
-				}
-			}
-		} else {
-			return getGoalTarget();
 		}
+		return getGoalTarget();
 	}
 
 	public float getBeamShootReadyPercent(float initial) {
@@ -319,7 +305,6 @@ public class EntityGuardian extends EntityMonster {
 			}
 		} else if (id == 17) {
 			beamTargetTicks = 0;
-			beamTarget = null;
 		}
 	}
 

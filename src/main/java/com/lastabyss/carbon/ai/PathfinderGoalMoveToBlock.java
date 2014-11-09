@@ -8,7 +8,7 @@ import com.lastabyss.carbon.utils.nmsclasses.Position;
 public abstract class PathfinderGoalMoveToBlock extends PathfinderWrapper {
 
 	private final EntityCreature creature;
-	private final double navigationFloatValue;
+	private final double speed;
 	protected int cooldown;
 	private int timeSpent;
 	private int maxTimeSpent;
@@ -16,11 +16,11 @@ public abstract class PathfinderGoalMoveToBlock extends PathfinderWrapper {
 	private boolean reachedTarget;
 	private int scanRadius;
 
-	public PathfinderGoalMoveToBlock(EntityCreature creature, double navigationFloatValue, int scanRadius) {
+	public PathfinderGoalMoveToBlock(EntityCreature creature, double navigationFloatValue, int speed) {
 		this.pos = Position.ZERO;
 		this.creature = creature;
-		this.navigationFloatValue = navigationFloatValue;
-		this.scanRadius = scanRadius;
+		this.speed = navigationFloatValue;
+		this.scanRadius = speed;
 		setMutexBits(5);
 	}
 
@@ -42,7 +42,7 @@ public abstract class PathfinderGoalMoveToBlock extends PathfinderWrapper {
 
 	@Override
 	public void setup() {
-		creature.getNavigation().a((pos.getX()) + 0.5D, pos.getY() + 1, (pos.getZ()) + 0.5D, navigationFloatValue);
+		creature.getNavigation().a((pos.getX()) + 0.5D, pos.getY() + 1, (pos.getZ()) + 0.5D, speed);
 		timeSpent = 0;
 		maxTimeSpent = creature.aI().nextInt(creature.aI().nextInt(1200) + 1200) + 1200;
 	}
@@ -57,7 +57,7 @@ public abstract class PathfinderGoalMoveToBlock extends PathfinderWrapper {
 			reachedTarget = false;
 			++timeSpent;
 			if ((timeSpent % 40) == 0) {
-				creature.getNavigation().a(pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, navigationFloatValue);
+				creature.getNavigation().a(pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, speed);
 			}
 		} else {
 			reachedTarget = true;
