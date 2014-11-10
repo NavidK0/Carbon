@@ -47,12 +47,28 @@ public final class SpawnerCreature {
 	public SpawnerCreature() {
 	}
 
-	protected static ChunkPosition getRandomPosition(World world, int i, int j) {
-		Chunk chunk = world.getChunkAt(i, j);
-		int k = i * 16 + world.random.nextInt(16);
-		int l = j * 16 + world.random.nextInt(16);
-		int i1 = world.random.nextInt(chunk == null ? world.S() : chunk.h() + 16 - 1);
-		return new ChunkPosition(k, i1, l);
+	protected static ChunkPosition getRandomPosition(World world, int chunkX, int chunkZ) {
+		Chunk chunk = world.getChunkAt(chunkX, chunkZ);
+		int x = chunkX * 16 + world.random.nextInt(16);
+		int z = chunkZ * 16 + world.random.nextInt(16);
+		int y = someStrangeMathOp(chunk.b(x & 0xF, z & 0xF) + 1, 16);
+		int realY = world.random.nextInt(y > 0 ? y : chunk.h() + 16 - 1);
+		return new ChunkPosition(x, realY, z);
+	}
+
+	private static int someStrangeMathOp(int i, int m) {
+		if (m == 0) {
+			return 0;
+		} else if (i == 0) {
+			return m;
+		} else {
+			if (i < 0) {
+				m *= -1;
+			}
+
+			int remainder = i % m;
+			return remainder == 0 ? i : i + m - remainder;
+		}
 	}
 
 	@SuppressWarnings("unchecked")

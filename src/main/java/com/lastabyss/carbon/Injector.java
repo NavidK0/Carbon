@@ -80,10 +80,12 @@ import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
 import com.lastabyss.carbon.recipes.RecipesBanners;
 import com.lastabyss.carbon.utils.Utilities;
 import com.lastabyss.carbon.worldborder.WorldBorder;
+import com.lastabyss.enchants.EnchantmentDepthStrider;
 
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.DataWatcher;
+import net.minecraft.server.v1_7_R4.Enchantment;
 import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.EntitySpawnZone;
 import net.minecraft.server.v1_7_R4.EntityTypes;
@@ -123,6 +125,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -328,38 +332,26 @@ public class Injector {
     public static void registerBlock(int id, String name, Block block) {
         if (plugin.getConfig().getBoolean("modify.blocks." + name, true)) {
             Block.REGISTRY.a(id, name, block);
-        } else {
             if (plugin.getConfig().getBoolean("debug.verbose", false))
-                Carbon.log.log(Level.INFO, "[Carbon] Block {0} is disabled in the config; skipped.", name);  
-            return;
+                Carbon.log.log(Level.INFO, "[Carbon] Block {0} was registered into Minecraft.", name);
         }
-        if (plugin.getConfig().getBoolean("debug.verbose", false))
-            Carbon.log.log(Level.INFO, "[Carbon] Block {0} was registered into Minecraft.", name);
     }
 
   public static void registerBlock(int id, String name, Block block, Item item) {
       if (plugin.getConfig().getBoolean("modify.blocks." + name, true)) {
         Block.REGISTRY.a(id, name, block);
         Item.REGISTRY.a(id, name, item);
-      } else {
-          if (plugin.getConfig().getBoolean("debug.verbose", false))
-            Carbon.log.log(Level.INFO, "[Carbon] Block {0} with item {1} is disabled in the config; skipped.", new Object[]{name + "(" + block.getName() + ")", item.getName()});
-          return;
+        if (plugin.getConfig().getBoolean("debug.verbose", false))
+            Carbon.log.log(Level.INFO, "[Carbon] Block {0} with item {1} was registered into Minecraft.", new Object[]{name + "(" + block.getName() + ")", item.getName()});
       }
-      if (plugin.getConfig().getBoolean("debug.verbose", false))
-        Carbon.log.log(Level.INFO, "[Carbon] Block {0} with item {1} was registered into Minecraft.", new Object[]{name + "(" + block.getName() + ")", item.getName()});
   }
 
   public static void registerItem(int id, String name, Item item) {
       if (plugin.getConfig().getBoolean("modify.items." + name, true)) {
         Item.REGISTRY.a(id, name, item);
-      } else {
-          if (plugin.getConfig().getBoolean("debug.verbose", false))
-            Carbon.log.log(Level.INFO, "[Carbon] Item {0} is disabled in the config; skipped.", name);
-          return;
+        if (plugin.getConfig().getBoolean("debug.verbose", false))
+            Carbon.log.log(Level.INFO, "[Carbon] Item {0} was registered into Minecraft.", name);
       }
-      if (plugin.getConfig().getBoolean("debug.verbose", false))
-        Carbon.log.log(Level.INFO, "[Carbon] Item {0} was registered into Minecraft.", name);
   }
 
   @SuppressWarnings("unchecked")
@@ -373,9 +365,6 @@ public class Injector {
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
           e.printStackTrace(System.out);
         }
-      } else {
-            if (plugin.getConfig().getBoolean("debug.verbose", false))
-                Carbon.log.log(Level.INFO, "[Carbon] Tile Entity {0} is disabled in the config; skipped.", name);
       }
   }
 
@@ -388,7 +377,7 @@ public class Injector {
             if (plugin.getConfig().getBoolean("debug.verbose", false))
                 Carbon.log.log(Level.INFO, "[Carbon] DataWatcher type {0} was registered into Minecraft.", type.getCanonicalName());
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-          e.printStackTrace(System.out);
+            e.printStackTrace(System.out);
         }
   }
 
@@ -403,12 +392,9 @@ public class Injector {
     	  ((Map<String, Integer>) Utilities.setAccessible(Field.class, EntityTypes.class.getDeclaredField("g"), true).get(null)).put(name, id);
           if (plugin.getConfig().getBoolean("debug.verbose", false))
             Carbon.log.log(Level.INFO, "[Carbon] Entity {0} was registered into Minecraft.", entityClass.getCanonicalName());
-      } catch (SecurityException | IllegalAccessException | IllegalArgumentException | NoSuchFieldException e) {
-        e.printStackTrace(System.out);
-      }
-      } else {
-            if (plugin.getConfig().getBoolean("debug.verbose", false))
-                Carbon.log.log(Level.INFO, "[Carbon] Entity {0} is disabled in the config; skipped.", name);
+        } catch (SecurityException | IllegalAccessException | IllegalArgumentException | NoSuchFieldException e) {
+          e.printStackTrace(System.out);
+        }
       }
   }
 
@@ -418,12 +404,9 @@ public class Injector {
         try {
     	  registerEntity(entityClass, name, id);
     	  EntityTypes.eggInfo.put(id, new MonsterEggInfo(id, monsterEgg, monsterEggData));
-      } catch (SecurityException | IllegalArgumentException e) {
+        } catch (SecurityException | IllegalArgumentException e) {
           e.printStackTrace(System.out);
         }
-      } else {
-            if (plugin.getConfig().getBoolean("debug.verbose", false))
-                Carbon.log.log(Level.INFO, "[Carbon] Entity {0} is disabled in the config; skipped.", name);
       }
   }
 
@@ -445,9 +428,6 @@ public class Injector {
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
            e.printStackTrace(System.out);
         }
-      } else {
-            if (plugin.getConfig().getBoolean("debug.verbose", false))
-                Carbon.log.log(Level.INFO, "[Carbon] Packet {0} is disabled in the config; skipped.", packetID);
       }
   }
 
@@ -469,19 +449,32 @@ public class Injector {
         try {
             ((Map<Integer, String>)Utilities.setAccessible(Field.class, PotionBrewer.class.getDeclaredField("effectDurations"), true).get(null)).put(effectId, durations);
             ((Map<Integer, String>)Utilities.setAccessible(Field.class, PotionBrewer.class.getDeclaredField("effectAmplifiers"), true).get(null)).put(effectId, amplifier);
+            if (plugin.getConfig().getBoolean("debug.verbose", false))
+                Carbon.log.log(Level.INFO, "[Carbon] PoitonEffect {0} was registered into Minecraft.", effectId);
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
             e.printStackTrace(System.out);
         }
-      } else {
-            if (plugin.getConfig().getBoolean("debug.verbose", false))
-                Carbon.log.log(Level.INFO, "[Carbon] Potion effect {0} is disabled in the config; skipped.", effectId);
       }
   }
 
-public static void registerWorldGenFactoryAddition(boolean isStructureStart, Class<?> clazz, String string) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-  Method method = Utilities.setAccessible(Method.class, WorldGenFactory.class.getDeclaredMethod(isStructureStart ? "b" : "a", Class.class, String.class), true);
-  method.invoke(null, clazz, string);
-}
+  public static void registerEnchantment(Enchantment enhcantment) {
+	  if (plugin.getConfig().getBoolean("modify.enchantments."+enhcantment.id)) {
+		  try {
+			  ArrayList<Enchantment> enchants = new ArrayList<Enchantment>(Arrays.asList(Enchantment.c));
+			  enchants.add(enhcantment);
+			  setStaticFinalField(Enchantment.class.getField("c"), enchants.toArray(new Enchantment[0]));
+		      if (plugin.getConfig().getBoolean("debug.verbose", false))
+		          Carbon.log.log(Level.INFO, "[Carbon] Enchantment {0} was registered into Minecraft.", enhcantment);
+		  } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+	          e.printStackTrace(System.out);
+	      }
+	  }
+  }
+
+  public static void registerWorldGenFactoryAddition(boolean isStructureStart, Class<?> clazz, String string) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+    Method method = Utilities.setAccessible(Method.class, WorldGenFactory.class.getDeclaredMethod(isStructureStart ? "b" : "a", Class.class, String.class), true);
+    method.invoke(null, clazz, string);
+  }
   
   public void registerAll() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, InvocationTargetException, NoSuchMethodException  {
     //Register datawatcher types
@@ -586,6 +579,11 @@ public static void registerWorldGenFactoryAddition(boolean isStructureStart, Cla
     //Register additional 1.8 client replacement to prevent crashes
     registerSpigotDebreakifierAddition(redSandstoneDoubleSlabBlock, redSandstoneSlabBlock);
 
+    //Register additional enchantments
+    Utilities.setAccessible(Field.class, org.bukkit.enchantments.Enchantment.class.getDeclaredField("acceptingNew"), true).set(null, true);
+    registerEnchantment(new EnchantmentDepthStrider(8, 2));
+    Utilities.setAccessible(Field.class, org.bukkit.enchantments.Enchantment.class.getDeclaredField("acceptingNew"), true).set(null, false);
+
     //Register additional potion effects
     registerPotionEffect(MobEffectList.JUMP.getId(), "0 & 1 & !2 & 3", "5");
 
@@ -633,7 +631,7 @@ public static void registerWorldGenFactoryAddition(boolean isStructureStart, Cla
     EntitySpawnZone.register(EntityGuardian.class, EnumEntitySpawnZone.IN_WATER);
   }
 
-  private void setStaticFinalField(Field field, Object newValue) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+  private static void setStaticFinalField(Field field, Object newValue) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
       field.setAccessible(true);
       Field fieldModifiers = Field.class.getDeclaredField("modifiers");
       fieldModifiers.setAccessible(true);
