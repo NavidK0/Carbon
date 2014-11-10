@@ -56,8 +56,8 @@ public final class SpawnerCreature {
 	}
 
 	@SuppressWarnings("unchecked")
-	public int spawnEntities(WorldServer worldserver, boolean flag, boolean flag1, boolean flag2) {
-		if (!flag && !flag1) {
+	public int spawnEntities(WorldServer worldserver, boolean monsterSpawn, boolean animalSpawn, boolean timeFlag) {
+		if (!monsterSpawn && !animalSpawn) {
 			return 0;
 		} else {
 			int spawnedEntities = 0;
@@ -71,10 +71,8 @@ public final class SpawnerCreature {
 					for (int k = -b; k <= b; ++k) {
 						boolean flag3 = j == -b || j == b || k == -b || k == b;
 						long chunkCoords = LongHash.toLong(j + chunkX, k + chunkZ);
-						if (!flag3) {
-							this.a.put(chunkCoords, false);
-						} else if (!this.a.containsKey(chunkCoords)) {
-							this.a.put(chunkCoords, true);
+						if (!this.a.containsKey(chunkCoords)) {
+							this.a.put(chunkCoords, flag3);
 						}
 					}
 				}
@@ -99,8 +97,7 @@ public final class SpawnerCreature {
 				if (limit == 0) {
 					continue;
 				}
-				// CraftBukkit end
-				if ((!enumcreaturetype.d() || flag1) && (enumcreaturetype.d() || flag) && (!enumcreaturetype.e() || flag2) && worldserver.a(enumcreaturetype.a()) <= limit * this.a.size() / 289) {
+				if ((!enumcreaturetype.d() || animalSpawn) && (enumcreaturetype.d() || monsterSpawn) && (!enumcreaturetype.e() || timeFlag) && worldserver.a(enumcreaturetype.a()) <= limit * this.a.size() / 289) {
 					Iterator<?> iterator = this.a.keySet().iterator();
 					label110: while (iterator.hasNext()) {
 						long key = ((Long) iterator.next()).longValue();
@@ -134,7 +131,7 @@ public final class SpawnerCreature {
 													float diffY = mobY - spawn.y;
 													float diffZ = mobZ - spawn.z;
 													float sqDist = diffX * diffX + diffY * diffY + diffZ * diffZ;
-													if (sqDist >= 576.0F) {
+													if (sqDist >= 576.0D) {
 														if (biomemeta == null) {
 															biomemeta = worldserver.a(enumcreaturetype, localX, localY, localZ);
 															if (biomemeta == null) {
