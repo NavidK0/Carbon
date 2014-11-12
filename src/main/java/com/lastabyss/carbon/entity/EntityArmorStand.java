@@ -44,12 +44,6 @@ public class EntityArmorStand extends EntityLiving {
 	private boolean invisible;
 	private long lastDamageTime;
 	private int disabledSlots;
-	private ArmorStandPose headpose = defaultHeadPose;
-	private ArmorStandPose bodypose = defaultBodyPose;
-	private ArmorStandPose leftarmpose = defaultLeftArmPose;
-	private ArmorStandPose rightarmpose = defaultRightArmPose;
-	private ArmorStandPose leftlegpose = defaultLeftLegPose;
-	private ArmorStandPose rightlegpose = defaultRightLegPose;
 
 	public EntityArmorStand(World world) {
 		super(world);
@@ -212,28 +206,35 @@ public class EntityArmorStand extends EntityLiving {
 
 	private NBTTagCompound getPose() {
 		NBTTagCompound pose = new NBTTagCompound();
-		if (!defaultHeadPose.equals(this.headpose)) {
-			pose.set("Head", this.headpose.asNBTList());
+
+		ArmorStandPose head = getHeadPose();
+		if (!defaultHeadPose.equals(head)) {
+			pose.set("Head", head.asNBTList());
 		}
 
-		if (!defaultBodyPose.equals(this.bodypose)) {
-			pose.set("Body", this.bodypose.asNBTList());
+		ArmorStandPose body = getHeadPose();
+		if (!defaultBodyPose.equals(body)) {
+			pose.set("Body", body.asNBTList());
 		}
 
-		if (!defaultLeftArmPose.equals(this.leftarmpose)) {
-			pose.set("LeftArm", this.leftarmpose.asNBTList());
+		ArmorStandPose leftarm = getHeadPose();
+		if (!defaultLeftArmPose.equals(leftarm)) {
+			pose.set("LeftArm", leftarm.asNBTList());
 		}
 
-		if (!defaultRightArmPose.equals(this.rightarmpose)) {
-			pose.set("RightArm", this.rightarmpose.asNBTList());
+		ArmorStandPose rightarm = getHeadPose();
+		if (!defaultRightArmPose.equals(rightarm)) {
+			pose.set("RightArm", rightarm.asNBTList());
 		}
 
-		if (!defaultLeftLegPose.equals(this.leftlegpose)) {
-			pose.set("LeftLeg", this.leftlegpose.asNBTList());
+		ArmorStandPose leftleg = getHeadPose();
+		if (!defaultLeftLegPose.equals(leftleg)) {
+			pose.set("LeftLeg", leftleg.asNBTList());
 		}
 
-		if (!defaultRightLegPose.equals(this.rightlegpose)) {
-			pose.set("RightLeg", this.rightlegpose.asNBTList());
+		ArmorStandPose rightleg = getHeadPose();
+		if (!defaultRightLegPose.equals(rightleg)) {
+			pose.set("RightLeg", rightleg.asNBTList());
 		}
 
 		return pose;
@@ -478,48 +479,6 @@ public class EntityArmorStand extends EntityLiving {
 	}
 
 	@Override
-	public void e() {
-		super.e();
-		try {
-			ArmorStandPose headpose = getArmorStandPose(11);
-			if (!this.headpose.equals(headpose)) {
-				this.setHeadPose(headpose);
-			}
-	
-			ArmorStandPose bodypose = getArmorStandPose(12);
-			if (!this.bodypose.equals(bodypose)) {
-				this.setBodyPose(bodypose);
-			}
-	
-			ArmorStandPose leftarmpose = getArmorStandPose(13);
-			if (!this.leftarmpose.equals(leftarmpose)) {
-				this.setLeftArmPose(leftarmpose);
-			}
-	
-			ArmorStandPose rightarmpose = getArmorStandPose(14);
-			if (!this.rightarmpose.equals(rightarmpose)) {
-				this.setRightArmPose(rightarmpose);
-			}
-	
-			ArmorStandPose leftlegpose = getArmorStandPose(15);
-			if (!this.leftlegpose.equals(leftlegpose)) {
-				this.setLeftLegPose(leftlegpose);
-			}
-	
-			ArmorStandPose rightlegpose = getArmorStandPose(16);
-			if (!this.rightlegpose.equals(rightlegpose)) {
-				this.setRightLegPose(rightlegpose);
-			}
-		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			e.printStackTrace(System.out);
-		}
-	}
-
-	private ArmorStandPose getArmorStandPose(int id) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		return (ArmorStandPose) ((WatchableObject) Utilities.setAccessible(Method.class, datawatcher.getClass().getDeclaredMethod("i", int.class), true).invoke(datawatcher, id)).b();
-	}
-
-	@Override
 	public void setInvisible(boolean invisible) {
 		this.invisible = invisible;
 		super.setInvisible(invisible);
@@ -591,41 +550,79 @@ public class EntityArmorStand extends EntityLiving {
 	}
 
 	public void setHeadPose(ArmorStandPose pose) {
-		this.headpose = pose;
 		this.datawatcher.watch(11, pose);
 	}
 
+	public ArmorStandPose getHeadPose() {
+		try {
+			return getArmorStandPose(11);
+		} catch (Exception e) {
+			return defaultHeadPose;
+		}
+	}
+
 	public void setBodyPose(ArmorStandPose pose) {
-		this.bodypose = pose;
 		this.datawatcher.watch(12, pose);
 	}
 
+	public ArmorStandPose getBodyPose() {
+		try {
+			return getArmorStandPose(12);
+		} catch (Exception e) {
+			return defaultBodyPose;
+		}
+	}
+
 	public void setLeftArmPose(ArmorStandPose pose) {
-		this.leftarmpose = pose;
 		this.datawatcher.watch(13, pose);
 	}
 
+	public ArmorStandPose getLeftArmPose() {
+		try {
+			return getArmorStandPose(13);
+		} catch (Exception e) {
+			return defaultLeftArmPose;
+		}
+	}
+
 	public void setRightArmPose(ArmorStandPose pose) {
-		this.rightarmpose = pose;
 		this.datawatcher.watch(14, pose);
 	}
 
+	public ArmorStandPose getRightArmPose() {
+		try {
+			return getArmorStandPose(14);
+		} catch (Exception e) {
+			return defaultRightArmPose;
+		}
+	}
+
 	public void setLeftLegPose(ArmorStandPose pose) {
-		this.leftlegpose = pose;
 		this.datawatcher.watch(15, pose);
 	}
 
+	public ArmorStandPose getLeftLegPose() {
+		try {
+			return getArmorStandPose(15);
+		} catch (Exception e) {
+			return defaultLeftLegPose;
+		}
+	}
+
 	public void setRightLegPose(ArmorStandPose pose) {
-		this.rightlegpose = pose;
 		this.datawatcher.watch(16, pose);
 	}
 
-	public ArmorStandPose getHeadPose() {
-		return this.headpose;
+	public ArmorStandPose getRightLegPose() {
+		try {
+			return getArmorStandPose(16);
+		} catch (Exception e) {
+			return defaultRightLegPose;
+		}
 	}
 
-	public ArmorStandPose getBodyPose() {
-		return this.bodypose;
+	private ArmorStandPose getArmorStandPose(int id) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		return (ArmorStandPose) ((WatchableObject) Utilities.setAccessible(Method.class, datawatcher.getClass().getDeclaredMethod("i", int.class), true).invoke(datawatcher, id)).b();
 	}
 
     private ArmorStand bukkitEntity;
