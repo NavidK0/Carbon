@@ -35,7 +35,7 @@ public class PlayerListener implements Listener {
     }
 
     @SuppressWarnings("deprecation")
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerInteractMobSpawner(PlayerInteractEvent evt) {
         if (plugin.getConfig().getBoolean("features.monsterEggMobSpawner", true)) {
             if (evt.getAction() == Action.RIGHT_CLICK_BLOCK) {
