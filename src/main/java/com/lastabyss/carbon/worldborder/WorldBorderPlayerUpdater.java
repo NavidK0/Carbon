@@ -1,6 +1,6 @@
 package com.lastabyss.carbon.worldborder;
 
-import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com.lastabyss.carbon.packets.PacketPlayOutWorldBorder;
@@ -10,6 +10,11 @@ import com.lastabyss.carbon.utils.Utilities;
 import net.minecraft.server.v1_7_R4.Packet;
 
 public class WorldBorderPlayerUpdater implements WorldBorderChangeListener {
+
+	private World world;
+	public WorldBorderPlayerUpdater(World world) {
+		this.world = world;
+	}
 
 	public void onSizeSet(WorldBorder worldborder, double size) {
 		sendToAll(new PacketPlayOutWorldBorder(worldborder, WorldBorderAction.SET_SIZE));
@@ -38,8 +43,10 @@ public class WorldBorderPlayerUpdater implements WorldBorderChangeListener {
 	}
 
 	private void sendToAll(Packet packet) {
-		for (Player player : Bukkit.getOnlinePlayers()) {
-			Utilities.sendPacket(player, packet);
+		for (Player player : world.getPlayers()) {
+			if (player.getWorld().equals(world)) {
+				Utilities.sendPacket(player, packet);
+			}
 		}
 	}
 

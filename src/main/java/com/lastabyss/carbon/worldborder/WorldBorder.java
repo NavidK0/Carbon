@@ -20,7 +20,7 @@ public class WorldBorder {
 	private static WeakHashMap<World, WorldBorder> worldsWorldBorder = new WeakHashMap<World, WorldBorder>();
 	public static WorldBorder getInstance(World world) {
 		if (!worldsWorldBorder.containsKey(world)) {
-			WorldBorder newWorldBorder = new WorldBorder();
+			WorldBorder newWorldBorder = new WorldBorder(world);
 			worldsWorldBorder.put(world, newWorldBorder);
 			YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(world.getWorldFolder(), "worldborder.yml"));
 			newWorldBorder.setCenter(config.getDouble("x", newWorldBorder.x), config.getDouble("z", newWorldBorder.z));
@@ -75,8 +75,8 @@ public class WorldBorder {
 	private int warningTime = 15;
 	private int warningBlocks = 5;
 
-	protected WorldBorder() {
-		listeners.add(new WorldBorderPlayerUpdater());
+	protected WorldBorder(World world) {
+		listeners.add(new WorldBorderPlayerUpdater(world));
 	}
 
 	public boolean isInside(Location location) {
