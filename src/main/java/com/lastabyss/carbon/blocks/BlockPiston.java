@@ -86,16 +86,19 @@ public class BlockPiston extends net.minecraft.server.v1_7_R4.BlockPiston {
                     world.playBlockAction(x, y, z, this, 0, clampedFace);
                 }
             } else if (!flag && isExtended(face)) {
-            	BlockPistonBlocksCalc calc = new BlockPistonBlocksCalc(world, new Position(x, y, z), BlockFace.getById(face), false);
+                world.setData(x, y, z, clampedFace, 2);
+                BlockFace retrface = BlockFace.getById(clampedFace);
+                world.setAir(x + retrface.getFrontDirectionX(), retrface.getFrontDirectionY(), retrface.getFrontDirectionZ());
+            	BlockPistonBlocksCalc calc = new BlockPistonBlocksCalc(world, new Position(x, y, z), retrface, false);
             	calc.calculate();
             	List<Position> blocks = calc.getBlocksToBreak();
             	blocks.addAll(calc.getBlocksToPush());
-            	CarbonBlockPistonRetractEvent retractEvent = new CarbonBlockPistonRetractEvent(world.getWorld().getBlockAt(x, y, z), blocks, CraftBlock.notchToBlockFace(clampedFace));
+            	CarbonBlockPistonRetractEvent retractEvent = new CarbonBlockPistonRetractEvent(world.getWorld().getBlockAt(x, y, z), blocks, CraftBlock.notchToBlockFace(clampedFace).getOppositeFace());
             	Bukkit.getPluginManager().callEvent(retractEvent);
             	if (retractEvent.isCancelled()) {
+            		world.setData(x, y, z, clampedFace | 0x8, 2);
             		return;
             	}
-                world.setData(x, y, z, clampedFace, 2);
                 world.playBlockAction(x, y, z, this, 1, clampedFace);
             }
         }
@@ -245,10 +248,6 @@ public class BlockPiston extends net.minecraft.server.v1_7_R4.BlockPiston {
     private boolean move(final World world, final int x, final int y, final int z, final int faceId, boolean push) {
     	Position position = new Position(x, y, z);
     	BlockFace face = BlockFace.getById(faceId);
-		if (!push) {
-			Position relative = position.getRelative(face);
-			world.setAir(relative.getX(), relative.getY(), relative.getZ());
-		}
 
 		BlockPistonBlocksCalc calc = new BlockPistonBlocksCalc(world, position, face, push);
 		List<Position> blocksToPush = calc.getBlocksToPush();
