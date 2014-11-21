@@ -1,6 +1,7 @@
 package com.lastabyss.carbon.nettyinjector;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,6 +15,9 @@ import net.minecraft.server.v1_7_R4.NetworkManager;
 import net.minecraft.server.v1_7_R4.NetworkStatistics;
 import net.minecraft.server.v1_7_R4.Packet;
 import net.minecraft.server.v1_7_R4.PacketDataSerializer;
+import net.minecraft.server.v1_7_R4.PacketStatusOutServerInfo;
+import net.minecraft.server.v1_7_R4.ServerPing;
+import net.minecraft.server.v1_7_R4.ServerPingServerData;
 import net.minecraft.util.com.google.common.collect.BiMap;
 import net.minecraft.util.io.netty.buffer.ByteBuf;
 import net.minecraft.util.io.netty.channel.ChannelHandlerContext;
@@ -52,6 +56,14 @@ public class PacketEncoder extends net.minecraft.server.v1_7_R4.PacketEncoder {
 		}
 
 		PacketDataSerializer packetdataserializer = new PacketDataSerializer(bytebuf, version);
+		if (BlockedProtocols.is17Blocked() && packet instanceof PacketStatusOutServerInfo) {
+			try {
+				ServerPing serverPing = (ServerPing) Utilities.setAccessible(Field.class, PacketStatusOutServerInfo.class.getDeclaredField("b"), true).get(packet);
+				serverPing.setServerInfo(new ServerPingServerData(serverPing.c().a(), 47));
+			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace(System.out);
+			}
+		}
 		packetdataserializer.b(packetid.intValue());
 		packet.b(packetdataserializer);
 		//don't use packet statistic because it is a waste of resources

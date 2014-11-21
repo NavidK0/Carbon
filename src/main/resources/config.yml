@@ -148,6 +148,9 @@ optimizations:
   world:
     tileentitytick: false
   usercache: false
+  cleanupreferences:
+    player: false
+    world: false
     
 debug:
   verbose: true

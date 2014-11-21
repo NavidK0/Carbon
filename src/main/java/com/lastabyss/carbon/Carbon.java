@@ -8,8 +8,9 @@ import com.lastabyss.carbon.listeners.CommandListener;
 import com.lastabyss.carbon.listeners.EntityListener;
 import com.lastabyss.carbon.listeners.ItemListener;
 import com.lastabyss.carbon.listeners.PlayerListener;
+import com.lastabyss.carbon.listeners.ReferenceCleanup;
 import com.lastabyss.carbon.listeners.WorldBorderListener;
-import com.lastabyss.carbon.nettyinjector.PacketDecoder;
+import com.lastabyss.carbon.nettyinjector.BlockedProtocols;
 import com.lastabyss.carbon.optimizations.usercache.OptimizedUserCacheInjector;
 import com.lastabyss.carbon.optimizations.world.WorldTileEntityListInjectorListener;
 import com.lastabyss.carbon.protocolmodifier.ProtocolBlockListener;
@@ -136,7 +137,9 @@ public class Carbon extends JavaPlugin {
     getServer().getPluginManager().registerEvents(worldBorderListener, this);
     getServer().getPluginManager().registerEvents(playerListener, this);
 
-    PacketDecoder.loadConfig(this);
+    getServer().getPluginManager().registerEvents(new ReferenceCleanup(this), this);
+
+    BlockedProtocols.loadConfig(this);
     
     if (getConfig().getDouble("donottouch.configVersion", 0.0f) < localConfigVersion) {
       log.warning("Please delete your Carbon config and let it regenerate! Yours is outdated and may cause issues with the mod!");
@@ -176,7 +179,7 @@ public class Carbon extends JavaPlugin {
                         sender.sendMessage(ChatColor.GREEN + "[Carbon] The world generator has been reset for all worlds.");
                         log.log(Level.INFO, "{0}[Carbon] The world generator has been reset for all worlds.", ChatColor.GREEN);
                         reloadConfig();
-                        PacketDecoder.loadConfig(this);
+                        BlockedProtocols.loadConfig(this);
                         sender.sendMessage(ChatColor.GREEN + "[Carbon] The config has been reloaded.");
                         log.log(Level.INFO, "{0}[Carbon] The config has been reloaded.", ChatColor.GREEN);
                         worldGenerator.populate();
