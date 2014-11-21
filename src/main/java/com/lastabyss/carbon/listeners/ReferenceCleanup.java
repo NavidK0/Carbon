@@ -68,7 +68,7 @@ public class ReferenceCleanup implements Listener {
 		Class<?> clazz = obj.getClass();
 		do {
 			for (Field field : clazz.getDeclaredFields()) {
-				if (!field.getType().isPrimitive()) {
+				if (!field.getType().isPrimitive() && !Modifier.isStatic(field.getModifiers())) {
 					try {
 						setField(field, obj, null);
 					} catch (NoSuchFieldException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
