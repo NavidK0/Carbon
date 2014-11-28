@@ -3,8 +3,16 @@ Carbon
 
 Carbon is a plugin which adds 1.8 blocks and features into a spigot protocol hacked server.
 
-IMPORTANT: [http://www.spigotmc.org/threads/1-8-progress-check.32792/](http://www.spigotmc.org/threads/1-8-progress-check.32792/)
-Please remember that this plugin was always meant to be a temporary plugin, and should be removed once 1.8 truly comes out. Once it does, this plugin will no longer be supported, and the issue tracker will be closed. All 1.8 features created by this plugin are fully compatible with actual version of 1.8, so the transition should be seamless.
+CARBON IS NO LONGER SUPPORTED FOR UPDATING TO 1.8! DO NOT USE THIS ON SPIGOT 1.8.
+
+How to update to Spigot 1.8 from Carbon:
+1) Shut off your server, saving all data.
+2) Uninstall Carbon by removing it from the plugins folder.
+3) Update your Spigot to Spigot 1.8.
+4) ????
+5) Congrats, your server is now full 1.8!
+
+Do not turn on your server if it's not updated to 1.8 -- all 1.8 blocks will be removed if you do not do this right.
 
 <h4><b>Proper issue format is: [issue type] Title of Issue</b></h4>
 <h4><b>Proper pull request format is: [PR type] Title of Pull Request</b></h4>
